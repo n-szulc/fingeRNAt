@@ -1,4 +1,13 @@
-**Table of Contents**
+
+<img src="docs/README_pics/logo_fingernat.png" width="500" class="center" />
+
+
+# Welcome to fingeRNAt's README
+
+fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucleic acids - ligands complexes.
+
+
+## Table of Contents
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
