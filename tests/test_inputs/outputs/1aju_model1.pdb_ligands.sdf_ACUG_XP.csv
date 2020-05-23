@@ -1,0 +1,5 @@
+	A_How_many_HB	A_HB_Strong	A_HB_Moderate	A_HB_Weak	A_How_many_HAL	A_How_many_CA	A_How_many_Pi_Cation	A_How_many_Pi_Anion	A_Pi_Stacking	C_How_many_HB	C_HB_Strong	C_HB_Moderate	C_HB_Weak	C_How_many_HAL	C_How_many_CA	C_How_many_Pi_Cation	C_How_many_Pi_Anion	C_Pi_Stacking	U_How_many_HB	U_HB_Strong	U_HB_Moderate	U_HB_Weak	U_How_many_HAL	U_How_many_CA	U_How_many_Pi_Cation	U_How_many_Pi_Anion	U_Pi_Stacking	G_How_many_HB	G_HB_Strong	G_HB_Moderate	G_HB_Weak	G_How_many_HAL	G_How_many_CA	G_How_many_Pi_Cation	G_How_many_Pi_Anion	G_Pi_Stacking
+molecule_00001^2	0	0	0	0	0	2	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0
+molecule_00006^1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+molecule_00001^1	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+molecule_00002^1	1	0	1	0	0	0	1	0	1	0	0	0	0	0	0	0	0	0	1	0	0	1	0	0	0	0	0	2	0	2	0	0	0	0	0	0
