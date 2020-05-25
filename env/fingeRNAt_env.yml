@@ -25,8 +25,6 @@ dependencies:
   - libcxx=10.0.0
   - libedit=3.1.20181209
   - libffi=3.3
-  - libgfortran=3.0.1
-  - libiconv=1.16
   - libpng=1.6.37
   - libxml2=2.9.9
   - matplotlib=2.2.5
