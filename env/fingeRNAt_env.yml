@@ -59,5 +59,8 @@ dependencies:
   - wheel=0.33.6
   - xz=5.2.5
   - zlib=1.2.11
+  - pip:
+    - libiconv=1.16
+    - libgfortran=3.0.1
 prefix: /Users/ns/opt/anaconda3/envs/fingernat
 
