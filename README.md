@@ -57,7 +57,7 @@ fingeRNAt calculates different interaction between input RNA/DNA structure and l
 
 # Installation
 
-We recommend fingeRNAt usage in conda environment, however it is possible to manually install required dependencies and run fingeRNAt in user-customed environment.
+Recommended fingeRNAt usage is in conda environment.
 
 Required dependencies are:
 
@@ -68,7 +68,7 @@ Required dependencies are:
 - matplotlib  2.2.5
 - tk 8.6.8
 
----
+
 
 ## Recommended installation instructions
 
@@ -84,6 +84,18 @@ Required dependencies are:
 3. Restore conda environment
 
       `conda env create -f fingeRNAt/env/fingeRNAt_env.yml`
+
+
+---
+
+It is also possible to install all the required dependencies and run fingeRNAt in user-customed environment using `pip` installer. User should install Python 2.7, `virtualenv` and `pip` and create virtual environment with Python 2.7
+
+```virtualenv -p `which python2.7` <path/to/new/virtualenv>```
+
+
+then activate the aforementioned virtual environment, clone the repository and run
+
+`pip install -r <path/to/fingeRNAt/env/fingeRNAt_requirements.txt>`
 
 
 # Usage
