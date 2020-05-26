@@ -319,7 +319,7 @@ def find_ligands_HBA_HBD(extension_ligand, filename_ligand):
     mols = list(pybel.readfile(extension_ligand, filename_ligand))
     dictionary = {}
 
-    print ("Looking for HBA nad HBD bonds...")
+    print ("Looking for hydrogen bonds donors & acceptors...")
     for i in tqdm(range(len(mols))):
 
         name = get_ligand_name_pose(dictionary, mols[i].title)
@@ -356,7 +356,7 @@ def find_ligands_HAL_don(extension_ligand, filename_ligand):
     mols = list(pybel.readfile(extension_ligand,filename_ligand))
     dictionary = {}
 
-    print ("Looking for halogen bonds...")
+    print ("Looking for halogen bonds donors & acceptors...")
     for i in tqdm(range(len(mols))): # for molecule in ligand file
 
         name = get_ligand_name_pose(dictionary, mols[i].title)

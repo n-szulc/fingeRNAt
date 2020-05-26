@@ -524,9 +524,8 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
     mols = list(pybel.readfile(extension_ligand, filename_ligand))
     all_ligands_rings_dict= {}
 
-    # print("Creating dictionary of aromatic rings...")
-    # for i in tqdm(range(len(mols))):
-    for i in range(len(mols)):
+    print("Looking for Pi-interactions...")
+    for i in tqdm(range(len(mols))):
 
         rings_candidates = mols[i].OBMol.GetSSSR()
 
@@ -706,7 +705,12 @@ if __name__ == "__main__":
     # Create empty list of all RNA residues
     RNA_nucleotides = []
     RNA_LENGTH = structure.OBMol.NumResidues()
-
+    
+    mssg = '# Calculating fingerprint type {} #'.format(fingerprint)
+    print('#'*len(mssg))
+    print(mssg)
+    print('#'*len(mssg))
+	
     if fingerprint == 'SIMPLE' or fingerprint == 'PBS':
 
         # Create ligands acceptors & donors dictionary
@@ -797,6 +801,7 @@ if __name__ == "__main__":
 
         WRAP_RESULTS = {}
         for w in wrapper:
+            print('Wrapping fingerprint type {} results to {} wrapper'.format(fingerprint, w))
             WRAP_RESULTS[w] = wrap_results(w, RESULTS, RNA_nucleotides, FUNCTIONS[fingerprint], WRAPPERS[w])
 
     # Create dataframe
@@ -814,6 +819,8 @@ if __name__ == "__main__":
         nucleotides_letters = ['A','C','U','G']
     else:
         nucleotides_letters = ['A','C','T','G']
+
+    print('Calculations completed, saving the results...')
 
     for analysis in ANALYSIS_NAME:
 
@@ -838,7 +845,8 @@ if __name__ == "__main__":
                 ALL_FINGERPRINTS_DF.loc[index] = WRAP_RESULTS[analysis][index]
 
 
-        # Save output as csv
+        # Save output as tsv
+        
 
         if output:
             if analysis in FUNCTIONS.keys():
@@ -852,7 +860,8 @@ if __name__ == "__main__":
             else:
                 ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), sep='\t')
 
-
+    	
+	
     # Visualize output as heatmap
 
         if visualization:
@@ -932,3 +941,5 @@ if __name__ == "__main__":
                 else:
                     plt.tight_layout()
                     plt.savefig('outputs/%s_%s_%s_%s.png' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), dpi = 300)
+
+        print('Results saved successfully!')
