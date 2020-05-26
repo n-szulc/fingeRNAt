@@ -6,11 +6,11 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in
 nucleic acids - ligands complexes.
 
 Authors:
-Natalia Szulc
+Natalia A. Szulc, nszulc@iimcb.gov.pl
 Filip Stefaniak, fstefaniak@genesilico.pl
 
 If you use this software, please cite:
-Natalia Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak
+Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak
 [in preparation]
 
 This programs requires python3

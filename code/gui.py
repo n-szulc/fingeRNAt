@@ -1,6 +1,6 @@
 
-import Tkinter as tk
-from tkFileDialog import askopenfilename
+import tkinter as tk
+from tkinter.filedialog import askopenfilename
 import subprocess
 
 f1 = None # RNA/DNA file path
