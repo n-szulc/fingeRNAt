@@ -748,7 +748,7 @@ if __name__ == "__main__":
         for ligand_name in ligands_hba_hbd.keys():
             RESULTS[ligand_name] = [0] * RNA_LENGTH * FUNCTIONS[fingerprint]
 
-        
+
         for residue in openbabel.OBResidueIter(structure.OBMol): # Loop over all RNA residue to calculate hydrogen bondings, halogen bondings & cation-anion interactions
             #print residue.GetNum()
             RNA_residues.append(str(residue.GetNum())+ ':' + str(residue.GetChain()))
@@ -920,11 +920,15 @@ if __name__ == "__main__":
 
             if output:
                 if analysis in FUNCTIONS.keys():
+                    plt.tight_layout()
                     plt.savefig('%s_%s.png' %(output, fingerprint), dpi = 300)
                 else:
+                    plt.tight_layout()
                     plt.savefig('%s_%s_%s.png' %(output, fingerprint, analysis), dpi = 300)
             else:
                 if analysis in FUNCTIONS.keys():
+                    plt.tight_layout()
                     plt.savefig('outputs/%s_%s_%s.png' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1],fingerprint), dpi = 300)
                 else:
+                    plt.tight_layout()
                     plt.savefig('outputs/%s_%s_%s_%s.png' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), dpi = 300)
