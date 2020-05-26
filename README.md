@@ -63,13 +63,13 @@ Recommended fingeRNAt usage is in conda environment.
 
 Required dependencies are:
 
-- Python = 3.8
-- openbabel = 3.1.1
-- pybel
+- Python v.3.8
+- openbabel v.3.1.1
 - numpy  
 - pandas
 - matplotlib
 - tk
+- sphinx
 
 
 ## Recommended installation instructions
