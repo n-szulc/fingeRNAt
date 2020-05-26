@@ -6,7 +6,6 @@ channels:
 dependencies:
   - matplotlib
   - numpy
-  - pybel=0.13.2
   - openbabel=3.1.1
   - pandas
   - python=3.8.2
