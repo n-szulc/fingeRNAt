@@ -1,6 +1,8 @@
 import numpy as np
-import pybel
-import openbabel
+# import pybel
+# import openbabel
+from openbabel import openbabel
+from openbabel import pybel
 
 # Own module
 import config
@@ -8,7 +10,7 @@ import config
 
 def vector(p1, p2):
     """Calculates vector between 2 points
-    
+
     :param p1: coordinates of point 1
     :param p2: coordinates of point 2
     :type p1: tuple, numpy.ndarray
@@ -16,12 +18,12 @@ def vector(p1, p2):
     :return: vector between two points
     :rtype: numpy.ndarray
     """
-    
+
     return None if len(p1) != len(p2) else np.array([p2[i] - p1[i] for i in range(len(p1))])
 
 def measure_distance(v1, v2):
     """Calculates distance between 2 vectors
-    
+
     :param v1: vector 1 coordinates
     :param v2: vector 2 coordinates
     :type v1: tuple, numpy.ndarray
@@ -29,12 +31,12 @@ def measure_distance(v1, v2):
     :return: distance between 2 vectors
     :rtype: numpy.float64
     """
-    
-    return np.round(np.linalg.norm(v1 - v2), 5) 
+
+    return np.round(np.linalg.norm(v1 - v2), 5)
 
 def check_distance(v1, v2, cutoff):
     """Checks if distance between 2 vectors is within cutoff range and return bool
-    
+
     :param v1: vector 1 coordinates
     :param v2: vector 2 coordinate
     :param cutoff: cutoff value
@@ -44,12 +46,12 @@ def check_distance(v1, v2, cutoff):
     :return: `True` if distance between 2 vectors is within cutoff range, `False` otherwise
     :rtype: bool
     """
-    
-    return (np.all(np.linalg.norm(v1 - v2)  <= cutoff)) 
+
+    return (np.all(np.linalg.norm(v1 - v2)  <= cutoff))
 
 def calculate_angle(v1, v2, deg = True):
     """Calculates angle between 2 vectors
-    
+
     :param v1: vector 1 coordinates
     :param v2: vector 2 coordinates
     :param deg: output type; default degrees
@@ -59,7 +61,7 @@ def calculate_angle(v1, v2, deg = True):
     :return: calculated angle value; in degrees or radians
     :rtype: numpy.float64
     """
-    
+
     if np.array_equal(v1, v2): return 0.0
     dm = np.dot(v1, v2)
     cm = np.linalg.norm(v1) * np.linalg.norm(v2)
@@ -69,7 +71,7 @@ def calculate_angle(v1, v2, deg = True):
 
 def modify_HB_result_list(precision, result, dist):
     """Modifies hydrogen bond output list according to it's presence and strength
-    
+
     :param precision: fingerprint type
     :param result: list to modify
     :param dist: hydrogen bond donor - hydrogen bond acceptor distance
@@ -79,10 +81,10 @@ def modify_HB_result_list(precision, result, dist):
     :return: modified hydrogen bond output list
     :rtype: NoneType
     """
-    
+
     if precision == 'FULL':
         result[-1] = 1
-    
+
     else:
         result[-4]+= 1
 
@@ -94,39 +96,39 @@ def modify_HB_result_list(precision, result, dist):
             result[-1] += 1
         else:
             print('Too short D-A distance: %s A' %str(dist))
-            
+
 def calculate_planar(atoms_list):
     """Calculates planarity normal vector
-    
+
     :param atoms_list: list of 3 atoms creating planar space
     :type atoms_list: numpy.ndarray
     :return: planarity normal vector
     :rtype: numpy.ndarray
     """
-    
+
     v1 = np.array(atoms_list[-1]) - np.array(atoms_list[-3])
     v2 = np.array(atoms_list[-2]) - np.array(atoms_list[-3])
 
     cp = np.cross(v1, v2)
     a, b,c  = cp
     pl = [a, b, c]
-    
+
     return np.round(pl, 5)
 
 def centroid(coo):
     """Finds ring center
-    
+
     :param coo: list of ring's atoms
     :type coo: list
     :return: coordinates of ring center
     :rtype: numpy.ndarray
     """
-    
+
     return np.round(np.array(list(map(np.mean, (([c[0] for c in coo]), ([c[1] for c in coo]), ([c[2] for c in coo]))))), 5)
-    
+
 def get_ligand_name_pose(dictionary, title):
     """Gets currently processed ligand's name and it's pose number from ligands input file
-    
+
     :param dictionary: dictionary of all so far processed ligands
     :param title: currently processed ligand's title obtained from parsing by OpenBabel
     :type: dictionary: dict
@@ -134,13 +136,13 @@ def get_ligand_name_pose(dictionary, title):
     :return: ligand's name as ligand_name^pose_number
     :rtype: str
     """
-    
+
     dictionary_keys_only_ligand_names = [el.split('^')[0] for el in dictionary.keys()] # list of ligands names (prefixes; without pose no) that are so far present in the dictionary
     title_cleaned = title.split('/')[-1]
-    
+
     if title_cleaned == "":
         title_cleaned = "COMPOUND"
-        
+
     if title_cleaned not in dictionary_keys_only_ligand_names: # if molecule title (prefix) is not present in dict keys prefixes
         name = title_cleaned + '^1' # prefix^pose
     else:
@@ -153,7 +155,7 @@ def get_ligand_name_pose(dictionary, title):
 
 def find_ligands_all_atoms(file_type, ligands_file):
     """Creates dictionary of ligand_name^pose_number with list of sublists of ligand's all atoms coords
-    
+
     :param file_type: extension of ligands file
     :param ligands_file: path to ligands file
     :type file_type: str
@@ -161,24 +163,24 @@ def find_ligands_all_atoms(file_type, ligands_file):
     :return: dictionary of ligand_name^pose_number : [list of sublists of ligand's all atoms coords]
     :rtype: dict
     """
-    
+
     mols = list(pybel.readfile(file_type, ligands_file))
     dictionary = {}
 
     for i in range(len(mols)):
-        
+
         name = get_ligand_name_pose(dictionary, mols[i].title)
-        tmp=[] 
-        
+        tmp=[]
+
         for atom in mols[i].atoms:
             tmp.extend(np.array([atom.coords]))
         dictionary[name] = tmp # {'prefix^pose':[list of sublists of all atoms coords]}
-        
+
     return dictionary
 
 def projection(pnormal1, ppoint, tpoint):
     """Calculates the centroid from a 3D point cloud and returns the coordinates
-    
+
     :param pnormal1: normal of plane
     :param ppoint: coordinates of point in the plane
     :param tpoint: coordinates of point to be projected
@@ -188,13 +190,13 @@ def projection(pnormal1, ppoint, tpoint):
     :return: coordinates of point orthogonally projected on the plane
     :rtype: list
     """
-    
+
     # Choose the plane normal pointing to the point to be projected
     pnormal2 = np.array([coo*(-1) for coo in pnormal1])
     d1 = measure_distance(tpoint, pnormal1 + ppoint)
     d2 = measure_distance(tpoint, pnormal2 + ppoint)
     pnormal = pnormal1 if d1 < d2 else pnormal2
-    
+
     # Calculate the projection of tpoint to the plane
     sn = -np.dot(pnormal, vector(ppoint, tpoint))
     sd = np.dot(pnormal, pnormal)
@@ -203,8 +205,8 @@ def projection(pnormal1, ppoint, tpoint):
     return [c1 + c2 for c1, c2 in zip(tpoint, [sb * pn for pn in pnormal])]
 
 def assign_interactions_results(result, RESULTS, RNA_LENGTH, RNA_seq_index, FINGERPRINT_DESCRIPTORS_NO, desc_index, multiple_results = False):
-    """Adds interaction from residue - ligand pair into fingerprint held in a dictionary indexed by ligand ID 
-    
+    """Adds interaction from residue - ligand pair into fingerprint held in a dictionary indexed by ligand ID
+
     :param result: result obtained from calling one of functions that calculate molecular interaction between residue-ligand
     :param RESULTS: final dictionary holding all SIFs for each ligand - RNA complex
     :param RNA_LENGTH: total length of RNA chains from the input file
@@ -222,35 +224,35 @@ def assign_interactions_results(result, RESULTS, RNA_LENGTH, RNA_seq_index, FING
     :return: modified RESULTS dictionary
     :rtype: None
     """
-    
+
     ligand_id = result[0]
     descriptor_index = desc_index
-    
+
     if not multiple_results: # Most results have only one value to add
-        
+
         # XP fingerprint 3 additional HB strong/moderate/weak descriptors have to be taken into account
         if FINGERPRINT_DESCRIPTORS_NO == 9:
             # Change index in XP fingerprint for halogen bondings, cation-anion, Pi-interactions (XP hydrogen bonding is the first calculated interaction and it took 3 additional places in results list)
-            descriptor_index += 3 
-            
+            descriptor_index += 3
+
         RESULTS[ligand_id][(RNA_seq_index * FINGERPRINT_DESCRIPTORS_NO) + descriptor_index] = result[-1]
 
     else: # In case of PBS and HB_XP results
-        
+
         if FINGERPRINT_DESCRIPTORS_NO == 9: # Hydrogen bondings XP result
             for i in range(4):
                 RESULTS[ligand_id][(RNA_seq_index*FINGERPRINT_DESCRIPTORS_NO) + descriptor_index+i] = result[-4+i]
-        
+
         else: # PBS result
             for i in range(3):
                 RESULTS[ligand_id][(RNA_seq_index*FINGERPRINT_DESCRIPTORS_NO) + descriptor_index+i] = result[-3+i]
-                
+
 def wrap_results(wrapper, RESULTS, RNA_nucleotides, fingerprint_length, wrapper_length):
     """Wrap results from calculating fingerprint to the desired output
-    
+
     :param wrapper: wrapper type
     :rtype wrapper: str
-    :param RESULTS: calculated fingerprint results  
+    :param RESULTS: calculated fingerprint results
     :rtype RESULTS: dict
     :param RNA_nucleotides: list of RNA nucleotides names
     :rtype RNA_nucleotides: list
@@ -260,51 +262,51 @@ def wrap_results(wrapper, RESULTS, RNA_nucleotides, fingerprint_length, wrapper_
     :rtype wrapper_length: int
     :return: list of wrapped results
     :rtype: list
-    
+
     """
     WRAP_RESULTS = {}
-    
+
     if wrapper == 'ACUG':
         letter_order = {'A':0, 'C':1, 'U':2, 'G':3}
     if wrapper == 'PuPy':
         letter_order = {'A':0, 'C':1, 'U':1, 'G':0}
-       
+
     for key, values in RESULTS.items():
-        
+
         WRAP_RESULTS[key] = [0] * fingerprint_length * wrapper_length
-        
+
         i=0
-        
+
         while i < len(values):
             chunk = values[i:(i+fingerprint_length)]
-            
+
             if wrapper == 'ACUG' or wrapper == 'PuPy':
-            
-                try: 
+
+                try:
                     nucleotide_index = letter_order[RNA_nucleotides[(i/fingerprint_length)]]
-                    
+
                 except KeyError: # non-canonical nucleotide
                     i += fingerprint_length
                     continue
-                
+
                 for el in range(len(chunk)):
                     if fingerprint_length != 9: # if not XP, we overwrite 0 with 1
                         if WRAP_RESULTS[key][fingerprint_length*nucleotide_index+el] < chunk[el]:
                              WRAP_RESULTS[key][fingerprint_length*nucleotide_index+el] = chunk[el]
                     else:
                         WRAP_RESULTS[key][fingerprint_length*nucleotide_index+el] += chunk[el] # XP, we sum all interactions
-                        
+
             else: # wrapper Counter
                 for el in range(len(chunk)):
                     WRAP_RESULTS[key][el] += chunk[el]
-                    
+
             i += fingerprint_length
-            
+
     return WRAP_RESULTS
-        
+
 def find_ligands_HBA_HBD(extension_ligand, filename_ligand):
     """Finds all donors/acceptors in all ligands
-    
+
     :param filename_ligand: path to ligands input file
     :param extension_ligand: extension of ligands input file
     :type filename_ligand: str
@@ -312,27 +314,27 @@ def find_ligands_HBA_HBD(extension_ligand, filename_ligand):
     :return: dictionary indexed by ligand name, with the coords od all ligand's hydrogen bonds acceptors & donors
     :rtype: dict
     """
-    
+
     mols = list(pybel.readfile(extension_ligand, filename_ligand))
     dictionary = {}
-    
+
     for i in range(len(mols)):
-        
+
         name = get_ligand_name_pose(dictionary, mols[i].title)
         dictionary[name] = [] # {'prefix^pose':[[sublist of acceptors coords],[sublist of tuples donor-H coords]]}
         acceptors = []
         donors = []
-        
+
         for atom in filter(lambda at: at.OBAtom.IsHbondAcceptor(), mols[i].atoms): # Find all acceptors
             if atom.atomicnum not in [9, 17, 35, 53]: # Exclude halogen atoms
                 acceptors.append(atom.coords)
-        
+
         for atom in filter(lambda at: at.OBAtom.IsHbondDonor(), mols[i].atoms): # Find all donors with their hydrogens
             for neighbour in pybel.ob.OBAtomAtomIter(atom.OBAtom):
                 if neighbour.IsHbondDonorH():
                     neighbour_coords = np.array([neighbour.GetX(),neighbour.GetY(),neighbour.GetZ()])
                     donors.append((atom.coords, neighbour_coords))
-                    
+
         dictionary[name].append(acceptors)
         dictionary[name].append(donors)
 
@@ -340,7 +342,7 @@ def find_ligands_HBA_HBD(extension_ligand, filename_ligand):
 
 def find_ligands_HAL_don(extension_ligand, filename_ligand):
     """Finds all halogens donors in all ligands
-    
+
     :param filename_ligand: path to ligands input file
     :param extension_ligand: extension of ligands input file
     :type filename_ligand: str
@@ -348,29 +350,29 @@ def find_ligands_HAL_don(extension_ligand, filename_ligand):
     :return: dictionary indexed by ligand name, with the coords od all ligand's halogens & halogen bonds donors
     :rtype: dict
     """
-    
+
     mols = list(pybel.readfile(extension_ligand,filename_ligand))
     dictionary = {}
-    
+
     for i in range(len(mols)): # for molecule in ligand file
-        
+
         name = get_ligand_name_pose(dictionary, mols[i].title)
         dictionary[name] = [] # {'prefix^pose':[list of tuples (C,halogen)]}
         halogen_donors = []
-        
+
         for atom in mols[i].atoms:
             if atom.atomicnum in [9, 17, 35, 53]:  # Include only halogen atoms
                 for neighbour in pybel.ob.OBAtomAtomIter(atom.OBAtom):
                     neighbour_coords = np.array([neighbour.GetX(),neighbour.GetY(),neighbour.GetZ()]) # Get Carbon coords
                     halogen_donors.append((neighbour_coords, atom.coords))
-                    
+
         dictionary[name].extend(halogen_donors)
 
     return dictionary
 
 def find_ligands_CA(extension_ligand, filename_ligand):
      """Finds all cations & anions in all ligands
-     
+
     :param filename_ligand: path to ligands input file
     :param extension_ligand: extension of ligands input file
     :type filename_ligand: str
@@ -378,31 +380,31 @@ def find_ligands_CA(extension_ligand, filename_ligand):
     :return: dictionary indexed by ligand name, with the coords od all ligand's cations & anions
     :rtype: dict
     """
-     
+
      mols = list(pybel.readfile(extension_ligand, filename_ligand))
      dictionary = {}
-     
+
      for i in range(len(mols)): # For molecule in ligand file
-        
+
         name = get_ligand_name_pose(dictionary, mols[i].title)
         dictionary[name]=[] # {'prefix^pose':[[list of cations coords],[list of anions coords]]}
         cations = []
         anions = []
-        
+
         for atom in mols[i]:
             if atom.formalcharge >= 1:
                 cations.append(atom.coords)
             if atom.formalcharge <= -1:
-                anions.append(atom.coords)      
-                    
+                anions.append(atom.coords)
+
         dictionary[name].append(cations)
         dictionary[name].append(anions)
 
      return dictionary
- 
+
 def find_RNA_rings(structure, extension_structure):
     """Finds all aromatic rings in whole RNA
-    
+
     :param structure: RNA structure object
     :param extension_structure: extension of RNA input file
     :type structure: pybel.Molecule
@@ -414,33 +416,33 @@ def find_RNA_rings(structure, extension_structure):
     all_atoms = structure.atoms
     rings_candidates = structure.OBMol.GetSSSR()
     rings = []
-    
+
     for ring in rings_candidates:
             ring_atoms = [a for a in all_atoms if ring.IsMember(a.OBAtom)]
             res = structure.OBMol.GetAtom(ring_atoms[0].idx).GetResidue() # Residue according to first ring's atom
-            
+
             if extension_structure == 'pdb':
                 res_id = res.GetName()
             elif extension_structure == 'mol2':
                 res_id = res.GetName()[:-len(str(res.GetNum()))] # Need res.GetName() without last characters of its res number, because when RNA is in mol2 format, res.GetName() gives for example U22 as residue name
             else:
                 raise Exception('Unknown RNA format')
-                
-            if res_id in config.CANONICAL_RESIDUES: 
+
+            if res_id in config.CANONICAL_RESIDUES:
                 sugar = False
                 if len([atom for atom in ring_atoms if (atom.atomicnum == config.OXYGEN_NUM)]) > 0:
                     sugar = True
                 if not sugar:
-                    rings.append(ring) 
+                    rings.append(ring)
             else:
                 if ring.IsAromatic():
                     rings.append(ring)
-                    
+
     return rings
 
 def find_RNA_HB_HAL_acc_don(residue):
     """Finds all hydrogen/halogen bonds acceptors with all of their neighbours and all hydrogen bonds donors together with hydrogens in RNA residue
-    
+
     :param residue: RNA residue object
     :type residue: openbabel.OBResidue
     :return: coords of residue's halogen/hydrogen bonds acceptors & their neighbours
@@ -448,20 +450,20 @@ def find_RNA_HB_HAL_acc_don(residue):
     :rtype: list
     :rtype: list
     """
-    
+
     residue_atoms_list = []
     for atom in openbabel.OBResidueAtomIter(residue):
         residue_atoms_list.append(atom) # Create list of all residue's atoms
 
     acceptors_RNA = [] # List of sublists [[acceptor,acceptor',acceptor'(if the 2nd one exists)]]
     donors_RNA = []
-  
+
     for atom in filter(lambda at: at.IsHbondAcceptor(), residue_atoms_list): # Find all acceptors
         acceptors_RNA.append([atom])
         for neighbour in pybel.ob.OBAtomAtomIter(atom):
              if neighbour.GetAtomicNum() != 1: # If not hydrogen
                  acceptors_RNA[-1].append(neighbour) # Append acceptors' - all Y
-                 
+
     for atom in filter(lambda at: at.IsHbondDonor(), residue_atoms_list): # Find all donors with their hydrogens
         for neighbour in pybel.ob.OBAtomAtomIter(atom):
             if neighbour.IsHbondDonorH():
@@ -470,40 +472,41 @@ def find_RNA_HB_HAL_acc_don(residue):
     return acceptors_RNA, donors_RNA
 
 def find_RNA_anions(residue):
-    """Finds all RNA residue's anions 
-    
+    """Finds all RNA residue's anions
+
     :param residue: RNA residue object
     :type residue: openbabel.OBResidue
     :return: coords of residue's anions
     :rtype: list
     """
-    
+
     P = None
     anions_RNA = []
-    
+
     for atom in openbabel.OBResidueAtomIter(residue):
         if atom.GetAtomicNum() == 15:
             P = atom
             break # Assuming there is only 1 Phosphate in residue
-                
+
     if P: # 5'end has no phosphate group
         O = [] # List of 2 negative charged Oxygens
         for oxygen in pybel.ob.OBAtomAtomIter(P):
-            if oxygen.BOSum() == 1 or oxygen.HasDoubleBond():
+            # https://open-babel.readthedocs.io/en/latest/UseTheLibrary/migration.html
+            if oxygen.GetExplicitValence() == 1 or oxygen.HasDoubleBond():
                 O.append(oxygen)
         anions_RNA.extend(O)
-        
+
     return anions_RNA
 
 def check_if_RNA(all_nucleotides):
     """Check if input struture is RNA or DNA
-    
+
     :param all_nucleotides: list of all structure nucleotides
     :type all_nucleotides: list
     :return: information if structure is RNA
     :rtype: bool
     """
-    
+
     if 'U' in all_nucleotides:
         if 'T' in all_nucleotides:
             raise Exception('Invalid input structure, has both uracil and thymine')
