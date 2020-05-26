@@ -25,6 +25,8 @@ import os
 from openbabel import openbabel
 from openbabel import pybel
 
+from tqdm import tqdm
+
 # Own modules
 import config
 from preprocessing import measure_distance, check_distance, vector, calculate_angle, modify_HB_result_list
@@ -522,6 +524,8 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
     mols = list(pybel.readfile(extension_ligand, filename_ligand))
     all_ligands_rings_dict= {}
 
+    # print("Creating dictionary of aromatic rings...")
+    # for i in tqdm(range(len(mols))):
     for i in range(len(mols)):
 
         rings_candidates = mols[i].OBMol.GetSSSR()
@@ -546,6 +550,7 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
     # There will be 3 results of Pi-interactions: : Pi-cation, Pi-anion, Pi-stacking
     RESULTS = [[],[],[]]
 
+    # print ("Looping over RNA rings...")
     for ring in RNA_rings: # Unlike in previous functions, iteration is over all RNA rings
 
         ring_atoms_RNA = [a for a in RNA_all_atoms if ring.IsMember(a.OBAtom)]
@@ -743,6 +748,7 @@ if __name__ == "__main__":
         for ligand_name in ligands_hba_hbd.keys():
             RESULTS[ligand_name] = [0] * RNA_LENGTH * FUNCTIONS[fingerprint]
 
+        
         for residue in openbabel.OBResidueIter(structure.OBMol): # Loop over all RNA residue to calculate hydrogen bondings, halogen bondings & cation-anion interactions
             #print residue.GetNum()
             RNA_residues.append(str(residue.GetNum())+ ':' + str(residue.GetChain()))
