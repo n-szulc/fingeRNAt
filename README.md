@@ -446,9 +446,11 @@ You are welcome to send me an email, open an issue or make pull request.
 
 Authors:
 Natalia A. Szulc, nszulc@iimcb.gov.pl
+
 Filip Stefaniak, fstefaniak@genesilico.pl
 
 If you use this software, please cite:
+
 Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak
 [in preparation]
 
