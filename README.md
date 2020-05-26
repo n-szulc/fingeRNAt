@@ -61,8 +61,8 @@ Recommended fingeRNAt usage is in conda environment.
 
 Required dependencies are:
 
-- Python = 2.7
-- openbabel = 2.4.1
+- Python = 3.8
+- openbabel = 3.1.1
 - pybel
 - numpy  
 - pandas
@@ -70,12 +70,11 @@ Required dependencies are:
 - tk
 
 
-
 ## Recommended installation instructions
 
 1. Install conda
 
-  Please refer to [conda manual](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) and install conda version according to your operating system.
+  Please refer to [conda manual](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) and install conda version according to your operating system. Please use Python3 version.
 
 
 2. Clone fingeRNAt repository

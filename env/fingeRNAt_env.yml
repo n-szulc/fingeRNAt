@@ -4,9 +4,11 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - matplotlib=2.2.5
-  - numpy=1.16.2
-  - openbabel=2.4.1
-  - pandas=0.24.2
-  - python=2.7.18
-  - tk=8.6.8
+  - matplotlib
+  - numpy
+  - pybel=0.13.2
+  - openbabel=3.1.1
+  - pandas
+  - python=3.8.2
+  - tk
+  - tqdm

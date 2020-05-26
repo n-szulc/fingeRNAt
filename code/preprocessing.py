@@ -1,8 +1,9 @@
 import numpy as np
-# import pybel
-# import openbabel
+
 from openbabel import openbabel
 from openbabel import pybel
+
+from tqdm import tqdm
 
 # Own module
 import config
@@ -318,7 +319,8 @@ def find_ligands_HBA_HBD(extension_ligand, filename_ligand):
     mols = list(pybel.readfile(extension_ligand, filename_ligand))
     dictionary = {}
 
-    for i in range(len(mols)):
+    print ("Looking for HBA nad HBD bonds...")
+    for i in tqdm(range(len(mols))):
 
         name = get_ligand_name_pose(dictionary, mols[i].title)
         dictionary[name] = [] # {'prefix^pose':[[sublist of acceptors coords],[sublist of tuples donor-H coords]]}
@@ -354,7 +356,8 @@ def find_ligands_HAL_don(extension_ligand, filename_ligand):
     mols = list(pybel.readfile(extension_ligand,filename_ligand))
     dictionary = {}
 
-    for i in range(len(mols)): # for molecule in ligand file
+    print ("Looking for halogen bonds...")
+    for i in tqdm(range(len(mols))): # for molecule in ligand file
 
         name = get_ligand_name_pose(dictionary, mols[i].title)
         dictionary[name] = [] # {'prefix^pose':[list of tuples (C,halogen)]}
@@ -384,7 +387,8 @@ def find_ligands_CA(extension_ligand, filename_ligand):
      mols = list(pybel.readfile(extension_ligand, filename_ligand))
      dictionary = {}
 
-     for i in range(len(mols)): # For molecule in ligand file
+     print ("Looking for cation-anion interactions...")
+     for i in tqdm(range(len(mols))): # For molecule in ligand file
 
         name = get_ligand_name_pose(dictionary, mols[i].title)
         dictionary[name]=[] # {'prefix^pose':[[list of cations coords],[list of anions coords]]}
