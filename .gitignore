@@ -1,2 +1,3 @@
 *.pyc
 tests/outputs/
+example_inputs/outputs/
