@@ -32,16 +32,18 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 	- [Wrappers](#wrappers)
 	- [Visualization](#visualization)
 	- [Unit test](#unit-test)
+	- [Documentation](#documentation)
 	- [GUI](#gui)
 - [Contributing](#contributing)
 - [Acknowledgements](#acknowledgements)
+- [Citing](#citing)
 - [License](#license)
 
 <!-- /TOC -->
 
 # Overview
 
-fingeRNAt is a Python 2.7 script calculating Structural Interactions Fingerprints (SIFs) in complexes of:
+fingeRNAt is a Python 3.8 script calculating Structural Interactions Fingerprints (SIFs) in complexes of:
 
 | Nucleic acid |Ligand|
 |:---:|:---:|
@@ -88,9 +90,9 @@ Required dependencies are:
 
 ---
 
-It is also possible to install all the required dependencies and run fingeRNAt in user-customed environment using `pip` installer. User should install Python 2.7, `virtualenv` and `pip` and create virtual environment with Python 2.7
+It is also possible to install all the required dependencies and run fingeRNAt in user-customed environment using `pip` installer. User should install Python 3.8, `virtualenv` and `pip` and create virtual environment with Python 3.8
 
-```virtualenv -p `which python2.7` <path/to/new/virtualenv>```
+```virtualenv -p `which python3.8` <path/to/new/virtualenv>```
 
 
 then activate the aforementioned virtual environment, clone the repository and run
@@ -401,6 +403,15 @@ Heatmap for SIFt type `XP` with wrapper `PuPy` obtained from running `python cod
 Heatmap for SIFt type `XP` with wrapper `Counter` obtained from running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -vis -wrapper Counter`
 
 
+## Documentation
+
+To generate documentation file using sphinx:
+
+`cd docs`
+`make html`
+
+The documentation will be available from `_build/html`.
+
 ## Unit test
 
 To run a unit test:
@@ -430,6 +441,16 @@ You are welcome to send me an email, open an issue or make pull request.
 [Bujnicki Lab](http://genesilico.pl)
 
 [Open Babel](http://openbabel.org)
+
+# Citing
+
+Authors:
+Natalia A. Szulc, nszulc@iimcb.gov.pl
+Filip Stefaniak, fstefaniak@genesilico.pl
+
+If you use this software, please cite:
+Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak
+[in preparation]
 
 # License
 
