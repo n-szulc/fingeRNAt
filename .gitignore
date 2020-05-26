@@ -2,4 +2,5 @@
 outputs/
 tests/outputs/
 example_inputs/outputs/
+docs/_build/
 .DS_Store
