@@ -21,14 +21,31 @@ def run_test():
         for root, dirs, files in os.walk('outputs/'):
             files = [f for f in files if not f[0] == '.']
             for name in files:
-                out = subprocess.check_output('comm -3 outputs/%s expected_outputs/%s' %(name, name), shell = True)
-                if len(out) != 0:
-                    OK = False
-                    print ('outputs/%s and expected_outputs/%s differ!' %(name, name))
+            	try:
+                    out = subprocess.check_output('comm -3 outputs/%s expected_outputs/%s' %(name, name), shell = True)
+                    if len(out) != 0:
+                        OK = False
+                        print ('outputs/%s and expected_outputs/%s differ!' %(name, name))
+            	except subprocess.CalledProcessError:
+                		mssg = '# Something is wrong, attention needed! #'
+		                print('#'*len(mssg))
+		                print(mssg)
+		                print('#'*len(mssg))
+		                exit(1)
 
     return OK
+
 
 OK = run_test()
 
 if OK:
-    print ('Tests ran successfully, everything is OK!')
+    mssg = '# Tests ran successfully, everything is OK! #'
+    print('#'*len(mssg))
+    print(mssg)
+    print('#'*len(mssg))
+else:
+    mssg = '# Something is wrong, attention needed! #'
+    print('#'*len(mssg))
+    print(mssg)
+    print('#'*len(mssg))
+    exit(1)
