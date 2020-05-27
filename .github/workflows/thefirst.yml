@@ -5,10 +5,10 @@ jobs:
   build:
     strategy:
       matrix:
-        #os: ['ubuntu-latest', 'macos-latest', 'windows-latest']
-        os: ['ubuntu-latest']
-        #python-version: [3.7, 3.8]
-        python-version: [3.8]
+        os: ['ubuntu-latest', 'macos-latest', 'windows-latest']
+        # os: ['ubuntu-latest']
+        python-version: [3.5, 3.7, 3.8]
+        # python-version: [3.8]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -16,17 +16,15 @@ jobs:
       - name: Setup Miniconda
         uses: goanpeca/setup-miniconda@v1
         with:
-          activate-environment: fingernat
           auto-update-conda: true
           auto-activate-base: false
           miniconda-version: 'latest'
           python-version: ${{ matrix.python-version }}
           environment-file: env/fingeRNAt_env.yml
+          activate-environment: fingernat
       - name: run test
+        shell: pwsh
         run: |
+          conda env list
           cd tests
-          conda env list
-          source activate fingernat
-          conda env list
-          conda list
           python fingeRNAt_test.py
