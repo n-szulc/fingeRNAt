@@ -17,7 +17,7 @@ jobs:
         uses: goanpeca/setup-miniconda@v1
         with:
           auto-update-conda: true
-          auto-activate-base: false
+          auto-activate-base: true
           miniconda-version: 'latest'
           python-version: ${{ matrix.python-version }}
           environment-file: env/fingeRNAt_env.yml
@@ -25,5 +25,7 @@ jobs:
       - name: run test
         run: |
           cd tests
+          conda env list
           conda activate fingernat
+          conda list
           python fingeRNAt_test.py
