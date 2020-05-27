@@ -1,5 +1,7 @@
-matplotlib==2.2.5
-numpy==1.16.2
-openbabel==2.4.1
-pandas==0.24.2
-tk==8.6.8
+matplotlib
+numpy
+openbabel==3.1.1
+pandas
+tk
+tqdm
+sphinx
