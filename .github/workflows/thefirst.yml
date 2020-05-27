@@ -1,0 +1,25 @@
+name: CI (conda)
+on: [push]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: ['ubuntu-latest', 'macos-latest']
+        python-version: [3.7, 3.8]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Miniconda
+        uses: goanpeca/setup-miniconda@v1
+        with:
+          auto-update-conda: false
+          auto-activate-base: false
+          miniconda-version: 'latest'
+          python-version: ${{ matrix.python-version }}
+          environment-file: env/fingeRNAt_env.yml
+          activate-environment: fingernat
+      - name: run test
+        run: |
+          python tests/fingeRNAt_test.py
