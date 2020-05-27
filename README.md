@@ -445,9 +445,12 @@ You are welcome to send me an email, open an issue or make pull request.
 # Citing
 
 Authors:
-Natalia A. Szulc, nszulc@iimcb.gov.pl
 
-Filip Stefaniak, fstefaniak@genesilico.pl
+Natalia A. Szulc,
+<img src="docs/README_pics/nszulc_mail.png" width="120" />
+
+Filip Stefaniak, &nbsp;
+<img src="docs/README_pics/fstefaniak_mail.png" width="125" />
 
 If you use this software, please cite:
 
