@@ -31,7 +31,7 @@ def run_test():
 		                print('#'*len(mssg))
 		                print(mssg)
 		                print('#'*len(mssg))
-		                exit(1)
+		                sys.exit(1)
 
     return OK
 
@@ -43,9 +43,10 @@ if OK:
     print('#'*len(mssg))
     print(mssg)
     print('#'*len(mssg))
+    sys.exit(0)
 else:
     mssg = '# Something is wrong, attention needed! #'
     print('#'*len(mssg))
     print(mssg)
     print('#'*len(mssg))
-    exit(1)
+    sys.exit(1)
