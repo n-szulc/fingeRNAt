@@ -35,7 +35,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 	- [Documentation](#documentation)
 	- [GUI](#gui)
 - [Contributing](#contributing)
-- [Acknowledgements](#acknowledgements)
+- [Acknowledgments](#acknowledgments)
 - [Citing](#citing)
 - [License](#license)
 
@@ -427,7 +427,7 @@ To use GUI, simply run
 
 GUI is user-friendly and has all aforementioned functionalities.
 
-<img src="docs/README_pics/gui.png" width="350" />
+<img src="docs/README_pics/gui.png" width="500" />
 
 Example GUI usage
 
@@ -436,7 +436,7 @@ Example GUI usage
 You are welcome to send me an email, open an issue or make pull request.
 
 
-# Acknowledgements
+# Acknowledgments
 
 [Bujnicki Lab](http://genesilico.pl)
 
@@ -447,10 +447,10 @@ You are welcome to send me an email, open an issue or make pull request.
 Authors:
 
 Natalia A. Szulc,
-<img src="docs/README_pics/nszulc_mail.png" width="120" />
+<img src="docs/README_pics/nszulc_mail.png" width="130" />
 
-Filip Stefaniak, &nbsp;
-<img src="docs/README_pics/fstefaniak_mail.png" width="125" />
+Filip Stefaniak, &nbsp;&nbsp;
+<img src="docs/README_pics/fstefaniak_mail.png" width="135" />
 
 If you use this software, please cite:
 
