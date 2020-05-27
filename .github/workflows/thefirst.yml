@@ -22,9 +22,21 @@ jobs:
           environment-file: env/fingeRNAt_env.yml
       - name: run test
         run: |
-          cd tests
-          conda env list
-          conda activate fingernat
           conda env list
           conda list
+          cd tests
+          python fingeRNAt_test.py
+      - name: Conda info
+        shell: bash -l {0}
+        run: |
+          conda info
+          conda env list
+          cd tests
+          python fingeRNAt_test.py
+      - name: Conda list
+        shell: pwsh
+        run: |
+          conda info
+          conda env list
+          cd tests
           python fingeRNAt_test.py
