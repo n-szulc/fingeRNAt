@@ -553,7 +553,7 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
     for ring in RNA_rings: # Unlike in previous functions, iteration is over all RNA rings
 
         ring_atoms_RNA = [a for a in RNA_all_atoms if ring.IsMember(a.OBAtom)]
-        atoms_creating_planar_space_RNA = np.array([ring_atoms_RNA[0].coords,ring_atoms_RNA[1].coords,ring_atoms_RNA[2].coords],dtype=np.float128) # add 3 atoms (we do not need more) from RNA ring to calculate planar
+        atoms_creating_planar_space_RNA = np.array([ring_atoms_RNA[0].coords,ring_atoms_RNA[1].coords,ring_atoms_RNA[2].coords],dtype=np.longdouble) # add 3 atoms (we do not need more) from RNA ring to calculate planar
         planar_RNA = calculate_planar(atoms_creating_planar_space_RNA)
         residue = structure.OBMol.GetAtom(ring_atoms_RNA[0].idx).GetResidue() # Get RNA ring's residue
         ring_center_RNA = centroid([ra.coords for ra in ring_atoms_RNA])
@@ -599,7 +599,7 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
             for aring in ligand_rings:
 
                 ring_atoms_ligand = aring[1]
-                atoms_creating_planar_space_ligand = np.array([ring_atoms_ligand[0].coords,ring_atoms_ligand[1].coords,ring_atoms_ligand[2].coords], dtype=np.float128) # Add 3 atoms (we do not need more) from ring to calculate planar
+                atoms_creating_planar_space_ligand = np.array([ring_atoms_ligand[0].coords,ring_atoms_ligand[1].coords,ring_atoms_ligand[2].coords], dtype=np.longdouble) # Add 3 atoms (we do not need more) from ring to calculate planar
                 planar_ligand = calculate_planar(atoms_creating_planar_space_ligand)
                 ring_center_ligand = centroid([ra.coords for ra in ring_atoms_ligand])
                 centroid_distance = measure_distance(ring_center_RNA,ring_center_ligand) # Measure ring - ring distance
