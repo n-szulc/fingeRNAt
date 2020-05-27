@@ -58,6 +58,8 @@ fingeRNAt is a Python 3.8 script calculating Structural Interactions Fingerprint
 
 fingeRNAt calculates different interaction between input RNA/DNA structure and ligand, returns long binary string describing if particular interaction type occurred between given nucleic acid residue and ligand or not.
 
+fingeRNAt runs under Python 3.5 - 3.8 on Linux, Mac OS and Windows.
+
 # Installation
 
 Recommended fingeRNAt usage is in conda environment.
