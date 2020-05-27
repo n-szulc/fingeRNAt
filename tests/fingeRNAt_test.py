@@ -1,4 +1,4 @@
-import subprocess, os
+import subprocess, os, sys, traceback
 
 
 RNA = ['1aju_model1.pdb']
@@ -26,12 +26,13 @@ def run_test():
                     if len(out) != 0:
                         OK = False
                         print ('outputs/%s and expected_outputs/%s differ!' %(name, name))
-            	except subprocess.CalledProcessError:
+            	except:
                 		mssg = '# Something is wrong, attention needed! #'
 		                print('#'*len(mssg))
 		                print(mssg)
 		                print('#'*len(mssg))
-		                sys.exit(1)
+		                traceback.print_exc()
+		                sys.exit(3)
 
     return OK
 
