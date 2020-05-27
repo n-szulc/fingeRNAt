@@ -21,7 +21,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 	- [Molecular Interactions' Geometric Rules](#molecular-interactions-geometric-rules)
 		- [1. Hydrogen Bonds](#1-hydrogen-bonds)
 		- [2. Halogen Bonds](#2-halogen-bonds)
-		- [3. Cation - Anion](#3-cation--anion)
+		- [3. Cation - Anion](#3-cation-anion)
 		- [4. Pi - Cation & 5. Pi - Anion](#4-pi-cation-5-pi-anion)
 		- [6. Pi - Stacking](#6-pi-stacking)
 	- [Parametres](#parametres)
