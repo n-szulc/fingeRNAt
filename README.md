@@ -17,7 +17,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 	- [Recommended installation instructions](#recommended-installation-instructions)
 - [Usage](#usage)
 	- [Inputs](#inputs)
-	- [Structural interactions fingerprints' (SIFs) types](#structural-interactions-fingerprints-sifs-types)
+	- [Structural Interactions Fingerprints' (SIFs) types](#structural-interactions-fingerprints-sifs-types)
 	- [Molecular Interactions' Geometric Rules](#molecular-interactions-geometric-rules)
 		- [1. Hydrogen Bonds](#1-hydrogen-bonds)
 		- [2. Halogen Bonds](#2-halogen-bonds)
@@ -163,7 +163,7 @@ where:
         	- if RNA/DNA structure was obtained from XR or cryo-EM, hydrogens may be added (e.g. in PyMol, VMD, Chimera)
 
 
-## Structural interactions fingerprints' (SIFs) types
+## Structural Interactions Fingerprints' (SIFs) types
 
 *Structural interactions fingerprint (SIFt)* is a binary string, describing existence (1/0) of specified molecular interactions between all RNA/DNA residues and ligand (small molecule compound or another RNA/DNA structure).
 
