@@ -411,6 +411,7 @@ Heatmap for SIFt type `XP` with wrapper `Counter` obtained from running `python 
 To generate documentation file using sphinx:
 
 `cd docs`
+
 `make html`
 
 The documentation will be available from `_build/html`.
@@ -420,6 +421,7 @@ The documentation will be available from `_build/html`.
 To run a unit test:
 
 `cd tests`
+
 `python fingeRNAt_test.py`
 
 ## GUI
