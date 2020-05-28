@@ -15,6 +15,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 - [Overview](#overview)
 - [Installation](#installation)
 	- [Recommended installation instructions](#recommended-installation-instructions)
+	- [Alternative installation instructions](#alternative-installation-instructions)
 - [Usage](#usage)
 	- [Inputs](#inputs)
 	- [Structural Interactions Fingerprints' (SIFs) types](#structural-interactions-fingerprints-sifs-types)
@@ -91,16 +92,27 @@ Required dependencies are:
       `conda env create -f fingeRNAt/env/fingeRNAt_env.yml`
 
 
----
+## Alternative installation instructions
 
-It is also possible to install all the required dependencies and run fingeRNAt in user-customed environment using `pip` installer. User should install Python 3.8, `virtualenv` and `pip` and create virtual environment with Python 3.8
+It is also possible to install all the required dependencies and run fingeRNAt in user-customed environment using `pip` installer. 
+
+User should install [Python 3.8](https://www.python.org/downloads/) and [`virtualenv`](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/). 
+
+1. Create virtual environment with Python 3.8
 
 ```virtualenv -p `which python3.8` <path/to/new/virtualenv>```
 
+2. Activate the aforementioned virtual environment
 
-then activate the aforementioned virtual environment, clone the repository and run
+```source <path/to/new/virtualenv>/bin/activate```
 
-`pip install -r <path/to/fingeRNAt/env/fingeRNAt_requirements.txt>`
+3. Clone fingeRNAt repository into the desired location
+
+`git clone https://github.com/n-szulc/fingernat.git`
+
+4. Install fingeRNAt dependencies
+
+`pip install -r fingeRNAt/env/fingeRNAt_requirements.txt`
 
 
 # Usage
