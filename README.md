@@ -96,7 +96,7 @@ Required dependencies are:
 
 It is also possible to install all the required dependencies and run fingeRNAt in user-customed environment using `pip` installer. 
 
-User should install [Python 3.8](https://www.python.org/downloads/) and [`virtualenv`](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/). 
+User should beforehand install [Python 3.8](https://www.python.org/downloads/) and [`virtualenv`](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/). 
 
 1. Create virtual environment with Python 3.8
 
