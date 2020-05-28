@@ -441,9 +441,10 @@ You are welcome to send me an email, open an issue or make pull request.
 
 # Acknowledgments
 
-[Bujnicki Lab](http://genesilico.pl)
+Special thanks of gratitude to [Masoud Farsani](https://github.com/mafarsani), [Pritha Ghosh](https://github.com/prithaghosh) and [Tomasz Wirecki](https://github.com/fryzjergda) for their invaluable feedback as well as to Prof. Janusz M. Bujnicki and the entire [Bujnicki Lab](http://genesilico.pl) for all the support and project guidelines.
 
-[Open Babel](http://openbabel.org)
+Assistance provided by [Open Babel Community](http://openbabel.org) was greatly appreciated.
+
 
 # Citing
 
