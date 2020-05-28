@@ -4,6 +4,7 @@ on:
     paths-ignore:
     - 'README.md'
     - '.gitignore'
+    - 'docs/'
 
 jobs:
   build:
