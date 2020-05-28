@@ -438,7 +438,7 @@ Example GUI usage
 
 # Contributing
 
-You are welcome to send me an email, open an issue or make pull request.
+You are welcome to send an email, open an issue or make pull request.
 
 
 # Acknowledgments
