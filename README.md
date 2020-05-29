@@ -6,7 +6,7 @@
 
 fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucleic acids - ligands complexes.
 
-![CI (conda)](https://github.com/n-szulc/fingeRNAt/workflows/CI%20(conda)/badge.svg?branch=master)
+[![CI (conda)](https://github.com/n-szulc/fingeRNAt/workflows/CI%20(conda)/badge.svg?branch=master)](https://github.com/n-szulc/fingeRNAt/actions?query=workflow%3A%22CI+%28conda%29%22)
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
@@ -16,6 +16,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 	- [Alternative installation instructions](#alternative-installation-instructions)
 	- [Manual installation](#manual-installation)
 - [Usage](#usage)
+	- [Quick start](#quick-start)
 	- [Inputs](#inputs)
 	- [Structural Interactions Fingerprints' (SIFs) types](#structural-interactions-fingerprints-sifs-types)
 	- [Molecular Interactions' Geometric Rules](#molecular-interactions-geometric-rules)
@@ -118,13 +119,18 @@ Required dependencies are:
 
 # Usage
 
+## Quick start
+
 To call fingeRNAt with example inputs:
 
-`conda activate fingernat`
+```bash
 
-`cd fingeRNAt`
+conda activate fingernat
 
-`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o my_output`
+cd fingeRNAt
+
+python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o my_output
+```
 
 <br/>
 where:
