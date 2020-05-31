@@ -40,7 +40,7 @@ from preprocessing import find_ligands_CA, find_RNA_rings, find_RNA_HB_HAL_acc_d
 ##################################################
 
 
-def calculate_SIMPLE(residue, ligand_name, ligand_atoms):
+def calculate_SIMPLE(residue, ligand_name, ligand_atoms, centroid_ligand):
     """Calculates SIMPLE interaction between residue - ligand pair:
             1. Check RNA residue - ligand distance
             2. Compare the distance to CUTOFF:
@@ -64,6 +64,10 @@ def calculate_SIMPLE(residue, ligand_name, ligand_atoms):
         residue_atoms.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
 
     result = [ligand_name, str(residue.GetNum())+ ':' + str(residue.GetChain()), 0]
+
+    if measure_distance(centroid(residue_atoms), centroid_ligand) > 12: #RNA residue centroid and ligand centroid are futher than 12A, no chance for any contact
+        return result
+
     # Flag to iterate over residue's atoms as long as we do not find an atom within CUTOFF distance from ligand
     flag=True
 
@@ -76,6 +80,7 @@ def calculate_SIMPLE(residue, ligand_name, ligand_atoms):
                         break
         else:
             break
+
 
     return result
 
@@ -705,12 +710,12 @@ if __name__ == "__main__":
     # Create empty list of all RNA residues
     RNA_nucleotides = []
     RNA_LENGTH = structure.OBMol.NumResidues()
-    
+
     mssg = '# Calculating fingerprint type {} #'.format(fingerprint)
     print('#'*len(mssg))
     print(mssg)
     print('#'*len(mssg))
-	
+
     if fingerprint == 'SIMPLE' or fingerprint == 'PBS':
 
         # Create ligands acceptors & donors dictionary
@@ -727,8 +732,10 @@ if __name__ == "__main__":
 
             for ligand_name, ligand_atoms in ligands_all_atoms.items():
 
+                centroid_ligand = centroid(ligand_atoms)
+
                 if fingerprint == 'SIMPLE':
-                    result = calculate_SIMPLE(residue, ligand_name, ligand_atoms)
+                    result = calculate_SIMPLE(residue, ligand_name, ligand_atoms, centroid_ligand)
                     if result[-1] != 0:
                         assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 0)
                 else:
@@ -846,7 +853,7 @@ if __name__ == "__main__":
 
 
         # Save output as tsv
-        
+
 
         if output:
             if analysis in FUNCTIONS.keys():
@@ -860,8 +867,8 @@ if __name__ == "__main__":
             else:
                 ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), sep='\t')
 
-    	
-	
+
+
     # Visualize output as heatmap
 
         if visualization:
