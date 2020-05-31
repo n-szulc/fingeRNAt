@@ -6,9 +6,7 @@
 
 fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucleic acids - ligands complexes.
 
-![CI (conda)](https://github.com/n-szulc/fingeRNAt/workflows/CI%20(conda)/badge.svg?branch=master)
-
-## Table of Contents
+[![CI (conda)](https://github.com/n-szulc/fingeRNAt/workflows/CI%20(conda)/badge.svg?branch=master)](https://github.com/n-szulc/fingeRNAt/actions?query=workflow%3A%22CI+%28conda%29%22)
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
@@ -16,7 +14,9 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 - [Installation](#installation)
 	- [Recommended installation instructions](#recommended-installation-instructions)
 	- [Alternative installation instructions](#alternative-installation-instructions)
+	- [Manual installation](#manual-installation)
 - [Usage](#usage)
+	- [Quick start](#quick-start)
 	- [Inputs](#inputs)
 	- [Structural Interactions Fingerprints' (SIFs) types](#structural-interactions-fingerprints-sifs-types)
 	- [Molecular Interactions' Geometric Rules](#molecular-interactions-geometric-rules)
@@ -65,17 +65,6 @@ fingeRNAt runs under Python 3.5 - 3.8 on Linux, Mac OS and Windows.
 
 Recommended fingeRNAt usage is in conda environment.
 
-Required dependencies are:
-
-- Python v.3.8
-- openbabel v.3.1.1
-- numpy  
-- pandas
-- matplotlib
-- tk
-- sphinx
-
-
 ## Recommended installation instructions
 
 1. Install conda
@@ -94,17 +83,17 @@ Required dependencies are:
 
 ## Alternative installation instructions
 
-It is also possible to install all the required dependencies and run fingeRNAt in user-customed environment using `pip` installer. 
+It is also possible to install all the required dependencies and run fingeRNAt in user-customed environment using `pip` installer.
 
-User should beforehand install [Python 3.8](https://www.python.org/downloads/) and [`virtualenv`](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/). 
+User should beforehand install [Python 3.8](https://www.python.org/downloads/) and [`virtualenv`](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
 
 1. Create virtual environment with Python 3.8
 
-```virtualenv -p `which python3.8` <path/to/new/virtualenv>```
+`virtualenv -p `which python3.8` <path/to/new/virtualenv>`
 
 2. Activate the aforementioned virtual environment
 
-```source <path/to/new/virtualenv>/bin/activate```
+`source <path/to/new/virtualenv>/bin/activate`
 
 3. Clone fingeRNAt repository into the desired location
 
@@ -115,15 +104,33 @@ User should beforehand install [Python 3.8](https://www.python.org/downloads/) a
 `pip install -r fingeRNAt/env/fingeRNAt_requirements.txt`
 
 
+## Manual installation
+
+Required dependencies are:
+
+- Python 3.8
+- openbabel 3.1.1
+- numpy  
+- pandas
+- matplotlib
+- tk
+- sphinx
+
+
 # Usage
+
+## Quick start
 
 To call fingeRNAt with example inputs:
 
-`conda activate fingernat`
+```bash
 
-`cd fingeRNAt`
+conda activate fingernat
 
-`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o my_output`
+cd fingeRNAt
+
+python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o my_output
+```
 
 <br/>
 where:
