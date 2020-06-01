@@ -81,29 +81,6 @@ Recommended fingeRNAt usage is in conda environment.
       `conda env create -f fingeRNAt/env/fingeRNAt_env.yml`
 
 
-## Alternative installation instructions
-
-It is also possible to install all the required dependencies and run fingeRNAt in user-customed environment using `pip` installer.
-
-User should beforehand install [Python 3.8](https://www.python.org/downloads/) and [`virtualenv`](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
-
-1. Create virtual environment with Python 3.8
-
-`virtualenv -p `which python3.8` <path/to/new/virtualenv>`
-
-2. Activate the aforementioned virtual environment
-
-`source <path/to/new/virtualenv>/bin/activate`
-
-3. Clone fingeRNAt repository into the desired location
-
-`git clone https://github.com/n-szulc/fingernat.git`
-
-4. Install fingeRNAt dependencies
-
-`pip install -r fingeRNAt/env/fingeRNAt_requirements.txt`
-
-
 ## Manual installation
 
 Required dependencies are:
