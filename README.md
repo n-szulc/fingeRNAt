@@ -296,7 +296,7 @@ If fingeRNAT was run without optional parameter `-o`, script will create `output
 
 ### `FULL`
 
-<img src="docs/README_pics/full-explanation.png" width="900" />
+<img src="docs/README_pics/full-explanation.png" width="1100" />
 
 Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf`
 
