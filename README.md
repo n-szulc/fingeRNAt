@@ -163,7 +163,7 @@ where:
 
 *Structural interactions fingerprint (SIFt)* is a binary string, describing existence (1/0) of specified molecular interactions between all RNA/DNA residues and ligand (small molecule compound or another RNA/DNA structure).
 
-<img src="docs/README_pics/SIFs.png" width="700" />
+<img src="docs/README_pics/SIFs.png" width="1000" />
 
 <br/>
 <br/>
@@ -296,7 +296,7 @@ If fingeRNAT was run without optional parameter `-o`, script will create `output
 
 ### `FULL`
 
-<img src="docs/README_pics/full-explanation.png" width="1100" />
+<img src="docs/README_pics/full-explanation.png" width="1000" />
 
 Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf`
 
@@ -305,7 +305,7 @@ Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/
 
 ### `SIMPLE`
 
-<img src="docs/README_pics/simple-explanation.png" width="900" />
+<img src="docs/README_pics/simple-explanation.png" width="1000" />
 
 Sample extract od output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE`
 
@@ -314,7 +314,7 @@ Sample extract od output of running `python code/fingeRNAt.py -r example_inputs/
 
 ### `PBS`
 
-<img src="docs/README_pics/pbs-explanation.png" width="900" />
+<img src="docs/README_pics/pbs-explanation.png" width="1000" />
 
 Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS`
 
@@ -337,7 +337,7 @@ There are 3 types of wrappers:
 
 	Wraps calculated results according to nucleotide, gives information if particular kind of interaction between e.g. any adenine from RNA/DNA and ligand occurred (SIFt types: `SIMPLE`, `PBS`, `FULL`) or returns number of these interactions with all adenines (SIFt type `XP`; see -> [`XP`](#xp)).
 
-	<img src="docs/README_pics/acug_full.png" width="900" />
+	<img src="docs/README_pics/acug_full.png" width="1000" />
 
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper ACUG`
 
@@ -351,7 +351,7 @@ There are 3 types of wrappers:
 
 	Wraps calculated results according to nucleobase type (purine or pyrimidyne), gives information if particular kind of interaction between e.g. any purine from RNA/DNA and ligand occurred (`SIMPLE`, `PBS`, `FULL`) or returns number of these interactions with all purines (`XP`; see -> [`XP`](#xp)).
 
-	<img src="docs/README_pics/pupy_full.png" width="900" />
+	<img src="docs/README_pics/pupy_full.png" width="1000" />
 
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper PuPy`
 
@@ -365,7 +365,7 @@ There are 3 types of wrappers:
 
 	Counts total number of given interaction type for any SIFt type. In `SIMPLE`, `PBS` & `FULL` SIFs types sums all binary interactions values, but if ran together with `XP`, calculates total number of non-Pi interaction & total number of binary interactions values for Pi interactions (see -> [`XP`](#xp)).
 
-	<img src="docs/README_pics/counter_full.png" width="900" />
+	<img src="docs/README_pics/counter_full.png" width="1000" />
 
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper Counter`
 
@@ -428,7 +428,7 @@ To use GUI, simply run
 
 GUI is user-friendly and has all aforementioned functionalities.
 
-<img src="docs/README_pics/gui.png" width="500" />
+<img src="docs/README_pics/gui.png" width="800" />
 
 Example GUI usage
 
