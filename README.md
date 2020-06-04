@@ -463,4 +463,4 @@ Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak
 
 # License
 
-fingeRNAt is licensed under the XXX
+fingeRNAt is licensed under the GNU General Public License v3.0
