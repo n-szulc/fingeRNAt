@@ -36,7 +36,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 	- [Unit test](#unit-test)
 	- [Documentation](#documentation)
 	- [GUI](#gui)
-- [Contributing](#contributing)
+- [Feedback](#feedback)
 - [Acknowledgments](#acknowledgments)
 - [Citing](#citing)
 - [License](#license)
@@ -432,9 +432,9 @@ GUI is user-friendly and has all aforementioned functionalities.
 
 Example GUI usage
 
-# Contributing
+# Feedback
 
-You are welcome to send an email, open an issue or make pull request.
+We welcome any feedback, please send an email to Natalia Szulc <img src="docs/README_pics/nszulc_mail.png" width="130" />
 
 
 # Acknowledgments
