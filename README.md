@@ -75,11 +75,11 @@ Recommended fingeRNAt usage is in conda environment.
 
 2. Download fingeRNAt repository
 
-      Download it manually (Right to the repository name click on the green field `Clone or download`, then `Download zip`)
+      Manually - click on the green field `Clone or download`, then `Download ZIP`
       
-      or 
+      **or** 
       
-      clone it into the desired location `git clone https://github.com/n-szulc/fingernat.git`
+      Clone it into the desired location [requires [git](https://git-scm.com/downloads) installation] `git clone https://github.com/n-szulc/fingernat.git`
 
 3. Restore conda environment
 
@@ -111,7 +111,7 @@ conda activate fingernat
 
 cd fingeRNAt
 
-python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o my_output
+python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE
 ```
 
 ## Parametres description
