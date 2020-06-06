@@ -75,7 +75,7 @@ Recommended fingeRNAt usage is in conda environment.
 
 2. Download fingeRNAt repository
 
-      Download it manually 
+      Download it manually (Right to the repository name click on the green field `Clone or download`, then `Download zip`)
       
       or 
       
