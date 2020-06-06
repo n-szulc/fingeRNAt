@@ -73,9 +73,13 @@ Recommended fingeRNAt usage is in conda environment.
   Please refer to [conda manual](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) and install conda version according to your operating system. Please use Python3 version.
 
 
-2. Clone fingeRNAt repository
+2. Download fingeRNAt repository
 
-      `git clone https://github.com/n-szulc/fingernat.git`
+      Manually - click on the green field `Clone or download`, then `Download ZIP`
+      
+      **or** 
+      
+      Clone it into the desired location [requires [git](https://git-scm.com/downloads) installation] `git clone https://github.com/n-szulc/fingernat.git`
 
 3. Restore conda environment
 
@@ -107,7 +111,7 @@ conda activate fingernat
 
 cd fingeRNAt
 
-python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o my_output
+python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE
 ```
 
 ## Parametres description
@@ -193,7 +197,7 @@ where:
 
     Calculates the same six different molecular interactions for each RNA/DNA residue as `FULL`, however it is of no binary type - it **calculates total number of each potential interactions occurrence** (except Pi - interactions) for each RNA/DNA residue - ligand (small molecule compound or another RNA/DNA structure) pair, therefore being an **extra precision hologram**.
 
-		> **_NOTE:_** It returns total number of potential interactions between given residue and ligand pair, e.g. if the residue has one hydrogen bond donor and the ligand has two hydrogen bond acceptors, both fulfilling hydrogen bonding geometrical rules (see -> [Hydrogen Bonds](###1.Hydrogen Bonds)), XP will return 2 for the given residue-ligand pair, despite the fact that one hydrogen bond donor may interact with only one hydrogen bond acceptor.
+    > **_NOTE:_** It returns total number of potential interactions between given residue and ligand pair, e.g. if the residue has one hydrogen bond donor and the ligand has two hydrogen bond acceptors, both fulfilling hydrogen bonding geometrical rules, XP will return 2 for the given residue-ligand pair, despite the fact that one hydrogen bond donor may interact with only one hydrogen bond acceptor.
 
     - In case of hydrogen bonds, it not only calculates total number of its potential occurrence in each RNA/DNA - ligand pair, but **also assigns each hydrogen bond as strong/moderate/weak type** and calculates total number of each type potential occurrence in each RNA/DNA - ligand pair.
 
@@ -408,7 +412,7 @@ Heatmap for SIFt type `XP` with wrapper `Counter` obtained from running `python 
 
 `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o /path/to/my_output`
 
-Calculates fingerprint SIMPLE and saves the SIFs output in the declared localisation.
+Calculates fingerprint SIMPLE and saves the SIFs output in the declared location.
 
 `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -vis`
 
@@ -420,7 +424,7 @@ Calculates default fingerprint FULL and saves the SIFs output and 3 SIFs wrapped
 
 `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -dha -o /path/to/my_output -vis -wrapper ACUG`
 
-Calculates fingerprint XP considering donor-hydrogen-acceptor angle calculation when detecting hydrogen bonds and saves the SIFs output, 1 SIFs wrapped output and 2 results heatmaps in the declared localisation.
+Calculates fingerprint XP considering donor-hydrogen-acceptor angle calculation when detecting hydrogen bonds and saves the SIFs output, 1 SIFs wrapped output and 2 results heatmaps in the declared location.
 
 ## Documentation
 
