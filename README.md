@@ -73,9 +73,13 @@ Recommended fingeRNAt usage is in conda environment.
   Please refer to [conda manual](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) and install conda version according to your operating system. Please use Python3 version.
 
 
-2. Clone fingeRNAt repository
+2. Download fingeRNAt repository
 
-      `git clone https://github.com/n-szulc/fingernat.git`
+      Download it manually 
+      
+      or 
+      
+      clone it into the desired location `git clone https://github.com/n-szulc/fingernat.git`
 
 3. Restore conda environment
 
@@ -408,7 +412,7 @@ Heatmap for SIFt type `XP` with wrapper `Counter` obtained from running `python 
 
 `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o /path/to/my_output`
 
-Calculates fingerprint SIMPLE and saves the SIFs output in the declared localisation.
+Calculates fingerprint SIMPLE and saves the SIFs output in the declared location.
 
 `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -vis`
 
@@ -420,7 +424,7 @@ Calculates default fingerprint FULL and saves the SIFs output and 3 SIFs wrapped
 
 `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -dha -o /path/to/my_output -vis -wrapper ACUG`
 
-Calculates fingerprint XP considering donor-hydrogen-acceptor angle calculation when detecting hydrogen bonds and saves the SIFs output, 1 SIFs wrapped output and 2 results heatmaps in the declared localisation.
+Calculates fingerprint XP considering donor-hydrogen-acceptor angle calculation when detecting hydrogen bonds and saves the SIFs output, 1 SIFs wrapped output and 2 results heatmaps in the declared location.
 
 ## Documentation
 
