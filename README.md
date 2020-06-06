@@ -13,7 +13,6 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 - [Overview](#overview)
 - [Installation](#installation)
 	- [Recommended installation instructions](#recommended-installation-instructions)
-	- [Alternative installation instructions](#alternative-installation-instructions)
 	- [Manual installation](#manual-installation)
 - [Usage](#usage)
 	- [Quick start](#quick-start)
