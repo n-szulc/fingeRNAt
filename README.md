@@ -162,8 +162,8 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
 2. `-l`: path to small molecule ligands **OR** RNA/DNA structure
 	- **small molecule ligands**
-         - supported file types: sdf, mol2, pdb for small molecule ligands
-         - possible multiple ligands in multiple poses in one file
+         - supported file types: sdf, mol2, pdb
+         - possible multiple poses of ligands in one file
     - **RNA/DNA structure**
     	- supported file types: pdb, mol2
     	- possible multiple models of RNA/DNA structure
