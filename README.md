@@ -16,6 +16,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 	- [Manual installation](#manual-installation)
 - [Usage](#usage)
 	- [Quick start](#quick-start)
+	- [Parametres description](#parametres-description)
 	- [Inputs](#inputs)
 	- [Structural Interactions Fingerprints' (SIFs) types](#structural-interactions-fingerprints-sifs-types)
 	- [Molecular Interactions' Geometric Rules](#molecular-interactions-geometric-rules)
@@ -24,7 +25,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 		- [3. Cation - Anion](#3-cation---anion)
 		- [4. Pi - Cation & 5. Pi - Anion](#4-pi---cation-5-pi---anion)
 		- [6. Pi - Stacking](#6-pi---stacking)
-	- [Parametres](#parametres)
+	- [Defining own thresholds](#defining-own-thresholds)
 	- [Outputs](#outputs)
 		- [`FULL`](#full)
 		- [`SIMPLE`](#simple)
@@ -108,6 +109,8 @@ cd fingeRNAt
 
 python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o my_output
 ```
+
+## Parametres description
 
 <br/>
 where:
@@ -286,9 +289,9 @@ For Sandwich & Parallel - displaced:
 For T - shaped:
 - angle between the ring planes ~ 90&deg; &#177; 30&deg;
 
-## Parametres
+## Defining own thresholds
 
-All the declared default parametres can be changed in `code/config.py`
+All the default thresholds can be changed in `code/config.py`
 
 ## Outputs
 
