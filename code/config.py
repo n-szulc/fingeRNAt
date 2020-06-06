@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 MIN_DIST = 0.5 # Minimum atoms distance
+RES_LIGAND_MIN_DIST = 30.0 # Maximum RNA residue centroid and ligand centroid distance to calculate interactions
 CUT_OFF_SIMPLE  = 4.0 # Distance cutoff for SIMPLE & PBS interactions
 MAX_HB_DIST = 3.9 # Maximum Donor-Acceptor distance in Hydrogen Bond
 MIN_HB_ANGLE = 100.0 # Minimum Donor-Hydrogen-Acceptor angle in Hydrogen Bond
@@ -13,7 +14,7 @@ HALOGEN_ANGLE_DEV = 30.0 # Tolerated halogen angles deviation
 MAX_CA_DIST = 5.5 # Maximum cation-anion distance in electrostatic interaction
 PI_ION_ANGLE = 90.0 # Preferred aromatic ring - cation/anion angle
 PI_ION_ANGLE_DEV = 30.0 # Maximum angle deviation for Pi-cation/anion interaction
-PI_ION_DISTANCE = 6.0 # Maximum cation/anion - aromatic ring center distance 
+PI_ION_DISTANCE = 6.0 # Maximum cation/anion - aromatic ring center distance
 RING_RING_MAX = 5.5 # Aromatic rings' centroids maximum distance
 PISTACK_OFFSET_MAX = 2.0  # Maximum offset of the two aromatic rings (corresponds to the radius of benzene + 0.5 A)
 PI_ANGLE_DISPLACED = 30.0 # Maximum angle value for Pi-stacking parallel & displaced interactions
