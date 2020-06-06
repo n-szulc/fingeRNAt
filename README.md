@@ -197,7 +197,7 @@ where:
 
     Calculates the same six different molecular interactions for each RNA/DNA residue as `FULL`, however it is of no binary type - it **calculates total number of each potential interactions occurrence** (except Pi - interactions) for each RNA/DNA residue - ligand (small molecule compound or another RNA/DNA structure) pair, therefore being an **extra precision hologram**.
 
-		> **_NOTE:_** It returns total number of potential interactions between given residue and ligand pair, e.g. if the residue has one hydrogen bond donor and the ligand has two hydrogen bond acceptors, both fulfilling hydrogen bonding geometrical rules (see -> [Hydrogen Bonds](###1.Hydrogen Bonds)), XP will return 2 for the given residue-ligand pair, despite the fact that one hydrogen bond donor may interact with only one hydrogen bond acceptor.
+    > **_NOTE:_** It returns total number of potential interactions between given residue and ligand pair, e.g. if the residue has one hydrogen bond donor and the ligand has two hydrogen bond acceptors, both fulfilling hydrogen bonding geometrical rules (see -> [Hydrogen Bonds](###1.Hydrogen Bonds)), XP will return 2 for the given residue-ligand pair, despite the fact that one hydrogen bond donor may interact with only one hydrogen bond acceptor.
 
     - In case of hydrogen bonds, it not only calculates total number of its potential occurrence in each RNA/DNA - ligand pair, but **also assigns each hydrogen bond as strong/moderate/weak type** and calculates total number of each type potential occurrence in each RNA/DNA - ligand pair.
 
