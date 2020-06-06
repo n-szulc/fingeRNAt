@@ -404,7 +404,7 @@ Heatmap for SIFt type `XP` with wrapper `PuPy` obtained from running `python cod
 
 <br/>
 
-<img src="docs/README_pics/xp_counter_heatmap.png" width="400" />
+<img src="docs/README_pics/xp_counter_heatmap.png" width="800" />
 
 Heatmap for SIFt type `XP` with wrapper `Counter` obtained from running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -vis -wrapper Counter`
 
