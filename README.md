@@ -32,8 +32,9 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 		- [`XP`](#xp)
 	- [Wrappers](#wrappers)
 	- [Visualization](#visualization)
-	- [Unit test](#unit-test)
+	- [Usage examples](#usage-examples)
 	- [Documentation](#documentation)
+	- [Unit test](#unit-test)
 	- [GUI](#gui)
 - [Feedback](#feedback)
 - [Acknowledgments](#acknowledgments)
@@ -123,7 +124,7 @@ where:
 
 `[-o]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional output file name
 
-`[-dha]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional donor-hydrogen-acceptor angle calculation when calculating hydrogen bonds; see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
+`[-dha]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional donor-hydrogen-acceptor angle calculation when detecting hydrogen bonds; see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
 `[-vis]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional calculated Structural Interaction Fingerprints results heatmap visualization; see -> [Visualization](#Heatmap-visualization)
 
@@ -400,6 +401,23 @@ Heatmap for SIFt type `XP` with wrapper `PuPy` obtained from running `python cod
 
 Heatmap for SIFt type `XP` with wrapper `Counter` obtained from running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -vis -wrapper Counter`
 
+## Usage examples
+
+`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o /path/to/my_output`
+
+Calculates fingerprint SIMPLE and saves the SIFs output in the declared localisation.
+
+`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -vis`
+
+Calculates fingerprint PBS and saves the SIFs output with the deafult name in the current directory together with results heatmap.
+
+`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper ACUG,PuPy,Counter`
+
+Calculates default fingerprint FULL and saves the SIFs output and 3 SIFs wrapped outputs with the deafult names in the current directory.
+
+`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -dha -o /path/to/my_output -vis -wrapper ACUG`
+
+Calculates fingerprint XP considering donor-hydrogen-acceptor angle calculation when detecting hydrogen bonds and saves the SIFs output, 1 SIFs wrapped output and 2 results heatmaps in the declared localisation.
 
 ## Documentation
 
@@ -427,9 +445,8 @@ To use GUI, simply run
 
 GUI is user-friendly and has all aforementioned functionalities.
 
-<img src="docs/README_pics/gui.png" width="800" />
+<img src="docs/README_pics/gui.png" width="600" />
 
-Example GUI usage
 
 # Feedback
 
