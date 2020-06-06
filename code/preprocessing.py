@@ -284,7 +284,7 @@ def wrap_results(wrapper, RESULTS, RNA_nucleotides, fingerprint_length, wrapper_
             if wrapper == 'ACUG' or wrapper == 'PuPy':
 
                 try:
-                    nucleotide_index = letter_order[RNA_nucleotides[(i/fingerprint_length)]]
+                    nucleotide_index = letter_order[RNA_nucleotides[(int(i/fingerprint_length))]]
 
                 except KeyError: # non-canonical nucleotide
                     i += fingerprint_length

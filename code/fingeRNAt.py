@@ -949,4 +949,4 @@ if __name__ == "__main__":
                     plt.tight_layout()
                     plt.savefig('outputs/%s_%s_%s_%s.png' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), dpi = 300)
 
-        print('Results saved successfully!')
+        print('{} results saved successfully!'.format(analysis))
