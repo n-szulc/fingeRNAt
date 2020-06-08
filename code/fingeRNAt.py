@@ -38,7 +38,6 @@ from preprocessing import find_ligands_CA, find_RNA_rings, find_RNA_HB_HAL_acc_d
 #  FUNCTIONS CALCULATING MOLECULAR INTERACTIONS  #
 ##################################################
 
-
 def calculate_SIMPLE(residue, ligand_name, ligand_atoms, centroid_ligand):
     """Calculates SIMPLE interaction between residue - ligand pair:
             1. Check RNA residue - ligand distance
@@ -115,7 +114,6 @@ def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand):
 
     if measure_distance(centroid(residue_atoms_coords), centroid_ligand) > config.RES_LIGAND_MIN_DIST: # RNA residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
         return result
-
 
     # Flag to iterate over residue's atoms as long as we do not find an atom of the defined P/B/S group within CUTOFF distance from ligand
     flags=[True, True, True]
@@ -194,7 +192,6 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
     # Important for 'FULL' fingerprint as we are searching only for the first hydrogen bond
     searching_flag = True
 
-
     for RNA_acceptor_set in acceptors_RNA:
 
         RNA_acc = RNA_acceptor_set[0] # We do not need coords of acceptor's neighobours
@@ -253,6 +250,7 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
             else: break
 
     return result
+
 
 def calculate_HB_no_dha(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_acceptors, precision):
     """Calculates hydrogen bond between residue - ligand pair.
@@ -696,7 +694,6 @@ if __name__ == "__main__":
     WRAPPERS = {'ACUG': 4, 'PuPy':2, 'Counter': 1 }
     ANALYSIS_NAME = []
 
-
     if fingerprint not in FUNCTIONS.keys(): raise Exception('Unknown fingerprint')
     if wrapper:
         for w in wrapper:
@@ -705,7 +702,6 @@ if __name__ == "__main__":
     ANALYSIS_NAME.append(fingerprint)
     if wrapper:
         ANALYSIS_NAME.extend(wrapper)
-
 
     # Create dictionary of all residues with their calculated interactions
     RESULTS = {}
@@ -762,14 +758,11 @@ if __name__ == "__main__":
         # Find all RNA rings
         rings_RNA = find_RNA_rings(structure, extension_structure)
 
-
         # Fill the RESULTS dictionary of keys - ligand ids and values - lists of 0
         for ligand_name in ligands_hba_hbd.keys():
             RESULTS[ligand_name] = [0] * RNA_LENGTH * FUNCTIONS[fingerprint]
 
-
         for residue in openbabel.OBResidueIter(structure.OBMol): # Loop over all RNA residue to calculate hydrogen bondings, halogen bondings & cation-anion interactions
-            #print residue.GetNum()
             RNA_residues.append(str(residue.GetNum())+ ':' + str(residue.GetChain()))
             RNA_nucleotides.append(str(residue.GetName()))
             acceptors_RNA, donors_RNA = find_RNA_HB_HAL_acc_don(residue)
@@ -778,7 +771,6 @@ if __name__ == "__main__":
             residue_atoms_coords = []
             for atom in openbabel.OBResidueAtomIter(residue):
                 residue_atoms_coords.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
-
 
             for ligand_name_HB, ligand_values_HB in ligands_hba_hbd.items():
                 if measure_distance(centroid(residue_atoms_coords), ligands_all_atoms[ligand_name_HB]) > config.RES_LIGAND_MIN_DIST: # RNA residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
@@ -833,13 +825,10 @@ if __name__ == "__main__":
             WRAP_RESULTS[w] = wrap_results(w, RESULTS, RNA_nucleotides, FUNCTIONS[fingerprint], WRAPPERS[w])
 
     # Create dataframe
-
     columns = {'SIMPLE': ['SIMPLE'],
                'PBS': ['P', 'B', 'S'],
                'FULL': ['HB', 'HAL', 'CA', 'Pi_Cation', 'Pi_Anion', 'Pi_Stacking'],
                'XP': ['How_many_HB','HB_Strong','HB_Moderate','HB_Weak','How_many_HAL','How_many_CA','Pi_Cation','Pi_Anion', 'Pi_Stacking']}
-
-    # previously were 'XP': ['How_many_HB','HB_Strong','HB_Moderate','HB_Weak','How_many_HAL','How_many_CA','How_many_Pi_Cation','How_many_Pi_Anion', 'Pi_Stacking']
 
     is_structure_RNA = check_if_RNA(RNA_nucleotides)
 
@@ -861,7 +850,6 @@ if __name__ == "__main__":
         else:
             DF_COLUMNS = [filename_RNA.split('/')[-1] + '#' + res + '#' + fing_type for res in RNA_residues for fing_type in columns[fingerprint]]
 
-
         DF_INDEXES = list(RESULTS.keys())
         ALL_FINGERPRINTS_DF = pd.DataFrame(index = DF_INDEXES, columns = DF_COLUMNS)
 
@@ -872,10 +860,7 @@ if __name__ == "__main__":
             for index in DF_INDEXES:
                 ALL_FINGERPRINTS_DF.loc[index] = WRAP_RESULTS[analysis][index]
 
-
         # Save output as tsv
-
-
         if output:
             if analysis in FUNCTIONS.keys():
                 ALL_FINGERPRINTS_DF.to_csv('%s_%s.tsv' %(output, fingerprint), sep='\t')
@@ -888,10 +873,7 @@ if __name__ == "__main__":
             else:
                 ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), sep='\t')
 
-
-
     # Visualize output as heatmap
-
         if visualization:
 
             fig = plt.figure()
@@ -912,48 +894,35 @@ if __name__ == "__main__":
             plt.figure(figsize=(width, height))
             plt.axes(aspect='equal')
 
-
-            if analysis == 'XP' or analysis == 'Counter' :
+            if fingerprint == 'XP' or analysis == 'Counter' :
                 cmap = colors.ListedColormap(['cornflowerblue','turquoise','bisque', 'orange', 'lightcoral', 'darkred'])
-                bounds = [-0.5, 0.5, 1.5, 2.5, 3.5, 4.5, 5.5]
             else:
                 cmap = colors.ListedColormap(['cornflowerblue','turquoise'])
-                bounds = [-0.5, 0.5, 1.5]
 
+            max_value = ALL_FINGERPRINTS_DF.to_numpy().max()
+            bounds = np.arange(-0.5, max_value + 1, 1)
             norm = colors.BoundaryNorm(bounds,cmap.N)
+
             heatmap = plt.pcolormesh(ALL_FINGERPRINTS_DF, cmap=cmap, norm=norm, edgecolors='silver')
 
+            plt.yticks(np.arange(0.5, len(ALL_FINGERPRINTS_DF.index), 1), ALL_FINGERPRINTS_DF.index, fontsize = 14)
 
-            plt.yticks(np.arange(0.5, len(ALL_FINGERPRINTS_DF.index), 1), ALL_FINGERPRINTS_DF.index, fontsize = 10)
-
-            if analysis in FUNCTIONS.keys():
+            if analysis in FUNCTIONS.keys(): # no wrapper
                 x = list(res + '#' + fing_type for res in RNA_residues for fing_type in columns[fingerprint])
-
-                #plt.xticks(np.arange(0.0, len(RNA_residues)*FUNCTIONS[fingerprint], FUNCTIONS[fingerprint]), RNA_residues, fontsize = 10, rotation = 90)
-                plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 10, rotation = 90)
-                plt.colorbar(heatmap, ticks = [0,1,2,3,4,5], shrink = 0.2)
+                plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
 
             else:
                 if analysis == 'PuPy':
                     x = list(res + '#' + fing_type for res in ['Purines','Pyrimidynes'] for fing_type in columns[fingerprint])
-                    plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 10, rotation = 90)
-
+                    plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
                 elif analysis == 'Counter':
                     x = list(res + '#' + fing_type for res in ['Total'] for fing_type in columns[fingerprint])
-                    plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 10, rotation = 90)
-
+                    plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
                 else:
                     x = list(res + '#' + fing_type for res in nucleotides_letters for fing_type in columns[fingerprint])
-                    plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 10, rotation = 90)
+                    plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
 
-                plt.colorbar(heatmap,ticks = [0,1], shrink = 0.2)
-
-
-
-#            if fingerprint == 'XP' or wrapper == 'Counter' :
-#                plt.colorbar(heatmap, ticks = [0,1,2,3,4,5], shrink = 0.2)
-#            else:
-#                plt.colorbar(heatmap,ticks = [0,1], shrink = 0.2)
+            plt.colorbar(heatmap,ticks = range(max_value+1), shrink = 0.2)
 
             if output:
                 if analysis in FUNCTIONS.keys():
