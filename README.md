@@ -22,7 +22,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 		- [1. Hydrogen Bonds](#1-hydrogen-bonds)
 		- [2. Halogen Bonds](#2-halogen-bonds)
 		- [3. Cation - Anion](#3-cation---anion)
-		- [4. Pi - Cation & 5. Pi - Anion](#4-pi---cation-5-pi---anion)
+		- [4. Pi - Cation and 5. Pi - Anion](#4-pi---cation-and-5-pi---anion)
 		- [6. Pi - stacking](#6-pi---stacking)
 	- [Defining own thresholds](#defining-own-thresholds)
 	- [Outputs](#outputs)
@@ -274,7 +274,7 @@ In case of `XP` hologram, there is additional assignment of each hydrogen bond t
 
 (*Barlow and Thornton*, 1983)
 
-### 4. Pi - Cation & 5. Pi - Anion
+### 4. Pi - Cation and 5. Pi - Anion
 
 <img src="docs/README_pics/pi-ion.png" width="200" alt="Wikimedia Commons, modified" />
 
