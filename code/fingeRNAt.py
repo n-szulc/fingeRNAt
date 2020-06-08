@@ -863,9 +863,13 @@ if __name__ == "__main__":
         # Save output as tsv
         if output:
             if analysis in FUNCTIONS.keys():
-                ALL_FINGERPRINTS_DF.to_csv('%s_%s.tsv' %(output, fingerprint), sep='\t')
+                if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
+                    output += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint
             else:
-                ALL_FINGERPRINTS_DF.to_csv('%s_%s_%s.tsv' %(output, fingerprint, analysis), sep='\t')
+                if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
+                    output += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint + '_' + analysis
+            ALL_FINGERPRINTS_DF.to_csv('%s.tsv' %output, sep='\t')
+            
         else:
             if not os.path.exists('outputs'): os.makedirs('outputs')
             if analysis in FUNCTIONS.keys():
