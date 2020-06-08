@@ -164,7 +164,7 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
          - possible multiple poses of ligands in one file
     - **RNA/DNA structure**
     	- supported file types: pdb, mol2
-    	- possible multiple models of RNA/DNA structure
+    	- possible multiple models of DNA/RNA structure
     	- **only** DNA/RNA chains
         	- no water, ions, ligands
     	- optionally with hydrogens
