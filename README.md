@@ -1,6 +1,6 @@
-
+<p align="center">
 <img src="docs/README_pics/logo_fingernat.png" width="500" class="center" />
-
+</p>
 
 # Welcome to fingeRNAt's README
 
@@ -177,12 +177,16 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
 *Structural Interaction Fingerprint (SIFt)* is a binary string, describing existence (1/0) of specified molecular interactions between all target's residues and ligand (*Deng et al.*, 2004).
 
-<img src="docs/README_pics/SIFs.png" width="1000" />
+<p align="center">
+<img src="docs/README_pics/SIFs.png" width="800" />
+</p>
 
 <br/>
 <br/>
 
-<img src="docs/README_pics/SIFs_merging.png" width="1000" />
+<p align="center">
+<img src="docs/README_pics/SIFs_merging.png" width="500" />
+</p>
 
 <br/>
 <br/>
@@ -227,8 +231,6 @@ Inspired by [PLIP](https://github.com/pharmai/plip) implementation.
 
 <img src="docs/README_pics/hb.png" width="250" alt="Torshin, Weber, & Harrison, 2002" />
 
-<br/>
-<br/>
 
 **Geometric rules:**
 
@@ -254,8 +256,6 @@ In case of `XP` hologram, there is additional assignment of each hydrogen bond t
 
 <img src="docs/README_pics/hal.png" width="300" alt="Auffinger et al., 2004" />
 
-<br/>
-<br/>
 
 **Geometric rules:**
 
@@ -270,8 +270,7 @@ In case of `XP` hologram, there is additional assignment of each hydrogen bond t
 
 <img src="docs/README_pics/ca.png" width="200" alt="Barlow and Thornton, 1983" />
 
-<br/>
-<br/>
+
 
 **Geometric rule:**
 
@@ -283,8 +282,7 @@ In case of `XP` hologram, there is additional assignment of each hydrogen bond t
 
 <img src="docs/README_pics/pi-ion.png" width="200" alt="Wikimedia Commons, modified" />
 
-<br/>
-<br/>
+
 
 **Geometric rules:**
 
@@ -295,8 +293,7 @@ In case of `XP` hologram, there is additional assignment of each hydrogen bond t
 
 <img src="docs/README_pics/pi-stacking.png" width="500" alt="Wikimedia Commons, modified" />
 
-<br/>
-<br/>
+
 
 > **_NOTE:_** All above interactions' types are considered by fingeRNAt.
 
