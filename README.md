@@ -1,4 +1,3 @@
-
 <img src="docs/README_pics/logo_fingernat.png" width="500" class="center" />
 
 
@@ -128,7 +127,7 @@ where:
 
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   available types are: `FULL` [default], &nbsp;&nbsp;`SIMPLE`, &nbsp;&nbsp;`PBS`, &nbsp;&nbsp;`XP`
 
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; see -> [SIFs types](#structural-interactions-fingerprints-sifs-types)
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; see -> [SIFs types](#structural-interaction-fingerprints-sifs-types)
 
 `[-o]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional path to save output
 
@@ -177,15 +176,16 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
 *Structural Interaction Fingerprint (SIFt)* is a binary string, describing existence (1/0) of specified molecular interactions between all target's residues and ligand (*Deng et al.*, 2004).
 
-<img src="docs/README_pics/SIFs.png" width="1000" />
+<p align="center">
+<img src="docs/README_pics/SIFs.png" width="800" />
+</p>
 
 <br/>
 <br/>
 
-<img src="docs/README_pics/SIFs_merging.png" width="1000" />
-
-<br/>
-<br/>
+<p align="center">
+<img src="docs/README_pics/SIFs_merging.png" width="500" />
+</p>
 
 **Fig. 1.** Example of SIFt calculated for six non-covalent interactions between HIV Trans-activation response element (TAR) structure (PDB ID: 1AJU) and imatinib.
 
@@ -206,7 +206,7 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
     Divides each DNA/RNA residue in **3 groups: Phosphate, Base, Sugar** and for each group **calculates distance** to the ligand; returns three 0/1 values for each group within residue - 1 if the distance is less than declared threshold (default = 4.0 &#8491;), 0 otherwise.
 
-    > **_NOTE:_** Only for RNA/DNA with canonical residues.
+    > **_NOTE:_** Only for DNA/RNA with canonical residues.
 
 - `XP`
 
@@ -227,17 +227,15 @@ Inspired by [PLIP](https://github.com/pharmai/plip) implementation.
 
 <img src="docs/README_pics/hb.png" width="250" alt="Torshin, Weber, & Harrison, 2002" />
 
-<br/>
-<br/>
 
 **Geometric rules:**
 
 - |D - A| < 3.9 &#8491;
 
 > **_NOTE:_**
-If hydrogens are present in DNA/RNA structure and in ligand, fingeRNAt can be run with flag `-dha`, that additionaly calculates Donor-Hydrogen-Acceptor angle  used as supplementary criteria in hydrogen bonds detection:
-- 100&deg; <   D-H-A angle < 260&deg; <br/>
-Applies only to `FULL`/`XP` SIFt type, as `SIMPLE` & `PBS` do not calculate hydrogen bonds.
+If hydrogens are present in DNA/RNA structure and in ligand, fingeRNAt can be run with flag `-dha`, that additionaly calculates Donor-Hydrogen-Acceptor angle  used as supplementary criteria in hydrogen bonds detection:&nbsp;&nbsp;&nbsp;&nbsp;
+  100&deg; <   D-H-A angle < 260&deg; <br/>
+  Applies only to `FULL`/`XP` SIFt type, as `SIMPLE` & `PBS` do not calculate hydrogen bonds.
 
 
 (*Torshin, Weber, & Harrison*, 2002)
@@ -254,8 +252,6 @@ In case of `XP` hologram, there is additional assignment of each hydrogen bond t
 
 <img src="docs/README_pics/hal.png" width="300" alt="Auffinger et al., 2004" />
 
-<br/>
-<br/>
 
 **Geometric rules:**
 
@@ -270,8 +266,7 @@ In case of `XP` hologram, there is additional assignment of each hydrogen bond t
 
 <img src="docs/README_pics/ca.png" width="200" alt="Barlow and Thornton, 1983" />
 
-<br/>
-<br/>
+
 
 **Geometric rule:**
 
@@ -283,8 +278,7 @@ In case of `XP` hologram, there is additional assignment of each hydrogen bond t
 
 <img src="docs/README_pics/pi-ion.png" width="200" alt="Wikimedia Commons, modified" />
 
-<br/>
-<br/>
+
 
 **Geometric rules:**
 
@@ -295,8 +289,7 @@ In case of `XP` hologram, there is additional assignment of each hydrogen bond t
 
 <img src="docs/README_pics/pi-stacking.png" width="500" alt="Wikimedia Commons, modified" />
 
-<br/>
-<br/>
+
 
 > **_NOTE:_** All above interactions' types are considered by fingeRNAt.
 
@@ -325,7 +318,9 @@ If fingeRNAT was run without optional parameter `-o`, script will create `output
 
 ### `FULL`
 
+<p align="center">
 <img src="docs/README_pics/full-explanation.png" width="900" />
+</p>
 
 Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf`
 
@@ -334,7 +329,9 @@ Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/
 
 ### `SIMPLE`
 
+<p align="center">
 <img src="docs/README_pics/simple-explanation.png" width="900" />
+</p>
 
 Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE`
 
@@ -343,7 +340,9 @@ Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/
 
 ### `PBS`
 
+<p align="center">
 <img src="docs/README_pics/pbs-explanation.png" width="900" />
+</p>
 
 Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS`
 
@@ -351,7 +350,9 @@ Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/
 
 ### `XP`
 
+<p align="center">
 <img src="docs/README_pics/xp-explanation.png" width="1000" />
+</p>
 
 Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP`
 
@@ -366,13 +367,17 @@ There are 3 types of wrappers:
 
 	Wraps calculated results according to nucleotide, gives information if particular kind of interaction between e.g. any adenine from DNA/RNA and ligand occurred (for SIFt types: `SIMPLE`, `PBS`, `FULL`) or returns number of possible interactions with all adenines (for SIFt type `XP`; see -> [`XP`](#xp)).
 
+	<p align="center">
 	<img src="docs/README_pics/acug_full.png" width="900" />
+	</p>
 
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper ACUG`
 
 	<br/>
 
+	<p align="center">
 	<img src="docs/README_pics/acug_xp.png" width="1000" />
+	</p>
 
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -wrapper ACUG`
 
@@ -380,13 +385,17 @@ There are 3 types of wrappers:
 
 	Wraps calculated results according to nucleobase type (purine or pyrimidyne), gives information if particular kind of interaction between e.g. any purine from DNA/RNA and ligand occurred (for SIFt types: `SIMPLE`, `PBS`, `FULL`) or returns number of possible interactions with all purines (for SIFt type `XP`; see -> [`XP`](#xp)).
 
+	<p align="center">
 	<img src="docs/README_pics/pupy_full.png" width="900" />
+	</p>
 
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper PuPy`
 
 	<br/>
-
+	
+	<p align="center">
 	<img src="docs/README_pics/pupy_xp.png" width="1000" />
+	</p>
 
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -wrapper PuPy`
 
@@ -394,39 +403,51 @@ There are 3 types of wrappers:
 
 	Counts total number of given interaction type for any SIFt type. Sums all binary interactions (for SIFt types: `SIMPLE`, `PBS`, `FULL`) or calculates total number of possible interactions (for SIFt type `XP`; see -> [`XP`](#xp)).
 
+	<p align="center">
 	<img src="docs/README_pics/counter_full.png" width="900" />
-
+	</p>
+	
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper Counter`
 
 	<br/>
 
+	<p align="center">
 	<img src="docs/README_pics/counter_xp.png" width="1000" />
-
+	</p>
+	
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -wrapper Counter`
 
 ## Visualization
 
 All SIFs outputs can be visualized as heatmap and saved as png files with the same name as tsv output.
 
+<p align="center">
 <img src="docs/README_pics/simple_heatmap.png" width="1200" />
+</p>
 
 Heatmap for SIFt type `SIMPLE` obtained from running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -vis`
 
 <br/>
 
+<p align="center">
 <img src="docs/README_pics/full_acug_heatmap.png" width="1000" />
+</p>
 
 Heatmap for SIFt type `FULL` with wrapper `ACUG` obtained from running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -vis -wrapper ACUG`
 
 <br/>
 
+<p align="center">
 <img src="docs/README_pics/xp_pupy_heatmap.png" width="800" />
+</p>
 
 Heatmap for SIFt type `XP` with wrapper `PuPy` obtained from running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -vis -wrapper PuPy`
 
 <br/>
 
-<img src="docs/README_pics/xp_counter_heatmap.png" width="800" />
+<p align="center">
+<img src="docs/README_pics/xp_counter_heatmap.png" width="600" />
+</p>
 
 Heatmap for SIFt type `XP` with wrapper `Counter` obtained from running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -vis -wrapper Counter`
 
@@ -438,8 +459,9 @@ To use Graphical User Interface (GUI), simply run
 
 GUI is user-friendly and has all aforementioned functionalities.
 
+<p align="center">
 <img src="docs/README_pics/gui.png" width="600" />
-
+</p>
 
 ## Usage examples
 
