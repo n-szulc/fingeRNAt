@@ -192,7 +192,7 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 <br/>
 
 
-**Possible SIFs types `[-f]`**
+**Available SIFs types `[-f]`**
 
 - `FULL`
 
@@ -306,7 +306,7 @@ For Sandwich & Parallel - displaced:
 For T - shaped:
 - angle between the ring planes ~ 90&deg; &#177; 30&deg;
 
-## Defining own thresholds
+## User defined thresholds
 
 All the default thresholds can be changed in `code/config.py`
 
@@ -392,7 +392,7 @@ There are 3 types of wrappers:
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper PuPy`
 
 	<br/>
-	
+
 	<p align="center">
 	<img src="docs/README_pics/pupy_xp.png" width="1000" />
 	</p>
@@ -406,7 +406,7 @@ There are 3 types of wrappers:
 	<p align="center">
 	<img src="docs/README_pics/counter_full.png" width="900" />
 	</p>
-	
+
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper Counter`
 
 	<br/>
@@ -414,7 +414,7 @@ There are 3 types of wrappers:
 	<p align="center">
 	<img src="docs/README_pics/counter_xp.png" width="1000" />
 	</p>
-	
+
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -wrapper Counter`
 
 ## Visualization
@@ -504,7 +504,7 @@ python fingeRNAt_test.py
 
 # Feedback
 
-We welcome any feedback, please send an email to Natalia Szulc <img src="docs/README_pics/nszulc_mail.png" width="130" />
+We welcome any feedback, please send an email to Natalia Szulc @n-szulc <img src="docs/README_pics/nszulc_mail.png" width="130" />
 
 
 # Acknowledgments
@@ -516,14 +516,14 @@ Extensive script testing provided by Zuzanna Mackiewicz has been a great help in
 Assistance provided by [Open Babel Community](http://openbabel.org) was greatly appreciated.
 
 
-# Citing
+# How to cite
 
 Authors:
 
-Natalia A. Szulc,
+Natalia A. Szulc @n-szulc
 <img src="docs/README_pics/nszulc_mail.png" width="130" />
 
-Filip Stefaniak, &nbsp;&nbsp;
+Filip Stefaniak, @filipsPL &nbsp;&nbsp;
 <img src="docs/README_pics/fstefaniak_mail.png" width="135" />
 
 <br />
