@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 MIN_DIST = 0.5 # Minimum atoms distance
-RES_LIGAND_MIN_DIST = 85.0 # Maximum nucleic acid residue's centroid - ligand's centroid distance to calculate interactions
+RES_LIGAND_MIN_DIST = 85.0 # Maximum nucleic acid residue's centroid - ligand's centroid distance to calculate interactions; decrease to speed up software but some interactions may be omitted!
 CUT_OFF_SIMPLE  = 4.0 # Distance cutoff for SIMPLE & PBS interactions
 MAX_HB_DIST = 3.9 # Maximum Donor-Acceptor distance in Hydrogen Bond
 MIN_HB_ANGLE = 100.0 # Minimum Donor-Hydrogen-Acceptor angle in Hydrogen Bond
