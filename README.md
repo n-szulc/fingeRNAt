@@ -24,7 +24,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 		- [3. Cation - Anion](#3-cation---anion)
 		- [4. Pi - Cation and 5. Pi - Anion](#4-pi---cation-and-5-pi---anion)
 		- [6. Pi - stacking](#6-pi---stacking)
-	- [Defining own thresholds](#defining-own-thresholds)
+	- [User defined thresholds](#user-defined-thresholds)
 	- [Outputs](#outputs)
 		- [`FULL`](#full)
 		- [`SIMPLE`](#simple)
@@ -38,7 +38,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 - [Unit test](#unit-test)
 - [Feedback](#feedback)
 - [Acknowledgments](#acknowledgments)
-- [Citing](#citing)
+- [How to cite](#how-to-cite)
 - [License](#license)
 
 <!-- /TOC -->
@@ -187,7 +187,7 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 <img src="docs/README_pics/SIFs_merging.png" width="500" />
 </p>
 
-**Fig. 1.** Example of SIFt calculated for six non-covalent interactions between HIV Trans-activation response element (TAR) structure (PDB ID: 1AJU) and imatinib.
+**Fig. 1.** Example of SIFt calculated for six non-covalent interactions between HIV-2 Trans-activation response element (TAR) structure (PDB ID: 1AJU) and imatinib.
 
 <br/>
 
