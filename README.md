@@ -504,7 +504,7 @@ python fingeRNAt_test.py
 
 # Feedback
 
-We welcome any feedback, please send an email to Natalia Szulc @n-szulc <img src="docs/README_pics/nszulc_mail.png" width="130" />
+We welcome any feedback, please send an email to Natalia Szulc @n-szulc ![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen)
 
 
 # Acknowledgments
@@ -520,11 +520,10 @@ Assistance provided by [Open Babel Community](http://openbabel.org) was greatly 
 
 Authors:
 
-Natalia A. Szulc @n-szulc
-<img src="docs/README_pics/nszulc_mail.png" width="130" />
+Natalia A. Szulc, @n-szulc
+![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen)
 
-Filip Stefaniak, @filipsPL &nbsp;&nbsp;
-<img src="docs/README_pics/fstefaniak_mail.png" width="135" />
+Filip Stefaniak, @filipsPL ![](https://img.shields.io/badge/fstefaniak-%40genesilico.pl-brightgreen)
 
 <br />
 
