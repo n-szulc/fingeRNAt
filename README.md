@@ -529,7 +529,8 @@ Filip Stefaniak, @filipsPL ![](https://img.shields.io/badge/fstefaniak-%40genesi
 
 If you use this software, please cite:
 
-**fingeRNAt - a software for analysis of nucleic acids-ligand complexes. Design and applications.** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+**fingeRNAt - a software for analysis of nucleic acids-ligand complexes. Design and applications.** 
+
 Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak
 [in preparation]
 
