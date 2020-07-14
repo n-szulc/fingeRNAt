@@ -22,6 +22,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import colors
 import os
+import shutil
 from openbabel import openbabel
 from openbabel import pybel
 from tqdm import tqdm
@@ -311,9 +312,8 @@ def calculate_HB_no_dha(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_
 
             for donor in ligand_donors_coords:
                 dist = measure_distance(donor[0], RNA_acc_coords) # Measure D-A distance
-
+                
                 if config.MIN_DIST < dist < config.MAX_HB_DIST:
-
                     modify_HB_result_list(precision, result, dist)
 
                     if precision == 'FULL':
@@ -333,11 +333,10 @@ def calculate_HB_no_dha(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_
                 #RNA_donH_coords = np.array([RNA_don[1].GetX(), RNA_don[1].GetY(), RNA_don[1].GetZ()])
 
                 for acceptor in ligand_acceptors_coords:
-
+                    
                     dist = measure_distance(RNA_don_coords,acceptor) # Measure D-A distance
 
                     if config.MIN_DIST < dist < config.MAX_HB_DIST:
-
 
                         modify_HB_result_list(precision, result, dist)
 
@@ -551,7 +550,7 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
                 rings.append([ring,ring_atoms])
 
         all_ligands_rings_dict[name].extend(rings)
-
+    print(all_ligands_rings_dict)
     #########################################
     #  Common part for all Pi-interactions  #
     #########################################
@@ -645,6 +644,14 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
 
 
 if __name__ == "__main__":
+
+    welcome_mssg = '# Welcome to fingeRNAt! #'
+    columns = shutil.get_terminal_size().columns
+    print('')
+    print(('#'*len(welcome_mssg)).center(columns))
+    print(welcome_mssg.center(columns))
+    print(('#'*len(welcome_mssg)).center(columns))
+    print('')
 
     #######################
     #  ARGUMENTS PARSING  #
@@ -747,7 +754,7 @@ if __name__ == "__main__":
 
     else: # fingerprint == 'FULL' or fingerprint == 'XP'
 
-        # Create ligands all atoms dictionary
+        # Create ligands' all atoms dictionary
         ligands_all_atoms = find_ligands_all_atoms(extension_ligand, filename_ligand)
         # Create ligands acceptors' & donors' dictionary
         ligands_hba_hbd = find_ligands_HBA_HBD(extension_ligand, filename_ligand)
@@ -757,6 +764,7 @@ if __name__ == "__main__":
         ligands_CA = find_ligands_CA(extension_ligand, filename_ligand)
         # Find all RNA rings
         rings_RNA = find_RNA_rings(structure, extension_structure)
+        
 
         # Fill the RESULTS dictionary of keys - ligand ids and values - lists of 0
         for ligand_name in ligands_hba_hbd.keys():
@@ -773,7 +781,7 @@ if __name__ == "__main__":
                 residue_atoms_coords.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
 
             for ligand_name_HB, ligand_values_HB in ligands_hba_hbd.items():
-                if measure_distance(centroid(residue_atoms_coords), ligands_all_atoms[ligand_name_HB]) > config.RES_LIGAND_MIN_DIST: # RNA residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
+                if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_HB])) > config.RES_LIGAND_MIN_DIST: # RNA residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
                     continue
 
                 if consider_dha:
@@ -790,7 +798,7 @@ if __name__ == "__main__":
                         assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 0, True) # XP fingerprint holds information about 4 hydrogen bonds types (total number/strong number/moderate number/weak number)
 
             for ligand_name_HAL, ligand_values_HAL in ligands_HAL.items():
-                if measure_distance(centroid(residue_atoms_coords), ligands_all_atoms[ligand_name_HAL]) > config.RES_LIGAND_MIN_DIST: # RNA residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
+                if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_HAL])) > config.RES_LIGAND_MIN_DIST: # RNA residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
                     continue
 
                 result = calculate_HAL(residue, acceptors_RNA, ligand_name_HAL, ligand_values_HAL, fingerprint)
@@ -799,7 +807,7 @@ if __name__ == "__main__":
                     assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 1)
 
             for ligand_name_CA, ligand_values_CA in ligands_CA.items():
-                if measure_distance(centroid(residue_atoms_coords), ligands_all_atoms[ligand_name_CA]) > config.RES_LIGAND_MIN_DIST: # RNA residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
+                if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_CA])) > config.RES_LIGAND_MIN_DIST: # RNA residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
                     continue
 
                 result = calculate_CATION_ANION(residue, anions_RNA, ligand_name_CA, ligand_values_CA[0], fingerprint)
