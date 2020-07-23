@@ -154,22 +154,18 @@ def get_ligand_name_pose(dictionary, title):
 
     return name
 
-def find_ligands_all_atoms(file_type, ligands_file):
+def find_ligands_all_atoms(mols):
     """Creates dictionary of ligand_name^pose_number with list of sublists of ligand's all atoms coords
 
-    :param file_type: extension of ligands file
-    :param ligands_file: path to ligands file
-    :type file_type: str
-    :type ligands_file: str
+    :param mols: list of Pybel-parsed ligands' objects
+    :type mole: list
     :return: dictionary of ligand_name^pose_number : [list of sublists of ligand's all atoms coords]
     :rtype: dict
     """
 
-    mols = list(pybel.readfile(file_type, ligands_file))
     dictionary = {}
 
     for i in range(len(mols)):
-
         name = get_ligand_name_pose(dictionary, mols[i].title)
         tmp=[]
 
@@ -305,18 +301,15 @@ def wrap_results(wrapper, RESULTS, RNA_nucleotides, fingerprint_length, wrapper_
 
     return WRAP_RESULTS
 
-def find_ligands_HBA_HBD(extension_ligand, filename_ligand):
+def find_ligands_HBA_HBD(mols):
     """Finds all donors/acceptors in all ligands
 
-    :param filename_ligand: path to ligands input file
-    :param extension_ligand: extension of ligands input file
-    :type filename_ligand: str
-    :type extension_ligand: str
+    :param mols: list of Pybel-parsed ligands' objects
+    :type mole: list
     :return: dictionary indexed by ligand name, with the coords od all ligand's hydrogen bonds acceptors & donors
     :rtype: dict
     """
 
-    mols = list(pybel.readfile(extension_ligand, filename_ligand))
     dictionary = {}
 
     print ("Looking for hydrogen bonds donors & acceptors...")
@@ -342,18 +335,15 @@ def find_ligands_HBA_HBD(extension_ligand, filename_ligand):
 
     return dictionary
 
-def find_ligands_HAL_don(extension_ligand, filename_ligand):
+def find_ligands_HAL_don(mols):
     """Finds all halogens donors in all ligands
 
-    :param filename_ligand: path to ligands input file
-    :param extension_ligand: extension of ligands input file
-    :type filename_ligand: str
-    :type extension_ligand: str
+    :param mols: list of Pybel-parsed ligands' objects
+    :type mole: list
     :return: dictionary indexed by ligand name, with the coords od all ligand's halogens & halogen bonds donors
     :rtype: dict
     """
 
-    mols = list(pybel.readfile(extension_ligand,filename_ligand))
     dictionary = {}
 
     print ("Looking for halogen bonds donors & acceptors...")
@@ -373,18 +363,15 @@ def find_ligands_HAL_don(extension_ligand, filename_ligand):
 
     return dictionary
 
-def find_ligands_CA(extension_ligand, filename_ligand):
+def find_ligands_CA(mols):
      """Finds all cations & anions in all ligands
 
-    :param filename_ligand: path to ligands input file
-    :param extension_ligand: extension of ligands input file
-    :type filename_ligand: str
-    :type extension_ligand: str
+    :param mols: list of Pybel-parsed ligands' objects
+    :type mole: list
     :return: dictionary indexed by ligand name, with the coords od all ligand's cations & anions
     :rtype: dict
     """
 
-     mols = list(pybel.readfile(extension_ligand, filename_ligand))
      dictionary = {}
 
      print ("Looking for cation-anion interactions...")

@@ -312,7 +312,7 @@ def calculate_HB_no_dha(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_
 
             for donor in ligand_donors_coords:
                 dist = measure_distance(donor[0], RNA_acc_coords) # Measure D-A distance
-                
+
                 if config.MIN_DIST < dist < config.MAX_HB_DIST:
                     modify_HB_result_list(precision, result, dist)
 
@@ -333,7 +333,7 @@ def calculate_HB_no_dha(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_
                 #RNA_donH_coords = np.array([RNA_don[1].GetX(), RNA_don[1].GetY(), RNA_don[1].GetZ()])
 
                 for acceptor in ligand_acceptors_coords:
-                    
+
                     dist = measure_distance(RNA_don_coords,acceptor) # Measure D-A distance
 
                     if config.MIN_DIST < dist < config.MAX_HB_DIST:
@@ -550,7 +550,7 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
                 rings.append([ring,ring_atoms])
 
         all_ligands_rings_dict[name].extend(rings)
-    print(all_ligands_rings_dict)
+
     #########################################
     #  Common part for all Pi-interactions  #
     #########################################
@@ -728,8 +728,15 @@ if __name__ == "__main__":
 
     if fingerprint == 'SIMPLE' or fingerprint == 'PBS':
 
+        # Read all ligands
+        ligands_mols = list(pybel.readfile(extension_ligand, filename_ligand))
+
+        # Add missing hydrogens to all ligands
+        for i in range(len(ligands_mols)):
+            ligands_mols[i].OBMol.AddHydrogens()
+
         # Create ligands all atoms dictionary
-        ligands_all_atoms = find_ligands_all_atoms(extension_ligand, filename_ligand)
+        ligands_all_atoms = find_ligands_all_atoms(ligands_mols)
 
         # Fill the RESULTS dictionary of keys - ligand ids and values - lists of 0
         for ligand_name in ligands_all_atoms.keys():
@@ -754,17 +761,24 @@ if __name__ == "__main__":
 
     else: # fingerprint == 'FULL' or fingerprint == 'XP'
 
+        # Read all ligands
+        ligands_mols = list(pybel.readfile(extension_ligand, filename_ligand))
+
+        # Add missing hydrogens to all ligands
+        for i in range(len(ligands_mols)):
+            ligands_mols[i].OBMol.AddHydrogens()
+
         # Create ligands' all atoms dictionary
-        ligands_all_atoms = find_ligands_all_atoms(extension_ligand, filename_ligand)
+        ligands_all_atoms = find_ligands_all_atoms(ligands_mols)
         # Create ligands acceptors' & donors' dictionary
-        ligands_hba_hbd = find_ligands_HBA_HBD(extension_ligand, filename_ligand)
+        ligands_hba_hbd = find_ligands_HBA_HBD(ligands_mols)
         # Create ligands halogens' donors dictionary
-        ligands_HAL = find_ligands_HAL_don(extension_ligand, filename_ligand)
+        ligands_HAL = find_ligands_HAL_don(ligands_mols)
         # Create ligands cations' & anions' dictionary
-        ligands_CA = find_ligands_CA(extension_ligand, filename_ligand)
+        ligands_CA = find_ligands_CA(ligands_mols)
         # Find all RNA rings
         rings_RNA = find_RNA_rings(structure, extension_structure)
-        
+
 
         # Fill the RESULTS dictionary of keys - ligand ids and values - lists of 0
         for ligand_name in ligands_hba_hbd.keys():
@@ -785,7 +799,6 @@ if __name__ == "__main__":
                     continue
 
                 if consider_dha:
-
                     result = calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name_HB, ligand_values_HB, fingerprint)
                 else:
                     result = calculate_HB_no_dha(residue, acceptors_RNA, donors_RNA, ligand_name_HB, ligand_values_HB, fingerprint)

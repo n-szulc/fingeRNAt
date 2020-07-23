@@ -1,5 +1,3 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
 
 MIN_DIST = 0.5 # Minimum atoms distance
 RES_LIGAND_MIN_DIST = 85.0 # Maximum nucleic acid residue's centroid - ligand's centroid distance to calculate interactions; decrease to speed up software but some interactions may be omitted!
