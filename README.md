@@ -152,9 +152,10 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
          - if there are more models, you have to choose only one (e.g. manually delete remaining models)
     - **only** DNA/RNA chains
         - no water, ions, ligands
-    - optionally with hydrogens
+
+		**We recommend adding hydrogens**
         - if DNA/RNA structure was obtained from NMR, hydrogens are already there
-        - if DNA/RNA structure was obtained from XR or cryo-EM, hydrogens may be added (e.g. in PyMOL, VMD, Chimera)
+        - if DNA/RNA structure was obtained from XR or cryo-EM, hydrogens can be added using e.g. PyMOL, VMD, Chimera.
 
 <br />
 
@@ -167,9 +168,8 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
     	- possible multiple models of DNA/RNA structure
     	- **only** DNA/RNA chains
         	- no water, ions, ligands
-    	- optionally with hydrogens
-        	- if DNA/RNA structure was obtained from NMR, hydrogens are already there
-        	- if DNA/RNA structure was obtained from XR or cryo-EM, hydrogens may be added (e.g. in PyMOL, VMD, Chimera)
+
+	All the missing ligands' hydrogens will be automatically added.
 
 
 ## Structural Interaction Fingerprints' (SIFs) types
@@ -529,7 +529,7 @@ Filip Stefaniak, @filipsPL ![](https://img.shields.io/badge/fstefaniak-%40genesi
 
 If you use this software, please cite:
 
-**fingeRNAt - a software for analysis of nucleic acids-ligand complexes. Design and applications.** 
+**fingeRNAt - a software for analysis of nucleic acids-ligand complexes. Design and applications.**
 
 Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak
 [in preparation]
