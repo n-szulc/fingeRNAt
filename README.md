@@ -169,7 +169,9 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
     	- **only** DNA/RNA chains
         	- no water, ions, ligands
 
-	All the missing ligands' hydrogens will be automatically added.
+	We recommend protonating ligands prior running analysis, e.g. using OpenBabel.
+
+	If calculating SIFs `FULL` or `XP` type, all the missing ligands' hydrogens will be automatically added.
 
 
 ## Structural Interaction Fingerprints' (SIFs) types
@@ -200,11 +202,11 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
 - `SIMPLE`
 
-    **Calculates distances** between each DNA/RNA residue and ligand; returns 1 if the distance is less than declared threshold (default = 4.0 &#8491;), 0 otherwise.
+    **Calculates distances** between each DNA/RNA residue and ligand; returns 1 if the distance is less than declared threshold (default = 4.0 &#8491;), 0 otherwise. Does not take into account distances between hydrogens or hydrogen - heavy atom.
 
 - `PBS`
 
-    Divides each DNA/RNA residue in **3 groups: Phosphate, Base, Sugar** and for each group **calculates distance** to the ligand; returns three 0/1 values for each group within residue - 1 if the distance is less than declared threshold (default = 4.0 &#8491;), 0 otherwise.
+    Divides each DNA/RNA residue in **3 groups: Phosphate, Base, Sugar** and for each group **calculates distance** to the ligand; returns three 0/1 values for each group within residue - 1 if the distance is less than declared threshold (default = 4.0 &#8491;), 0 otherwise. Does not take into account distances between hydrogens or hydrogen - heavy atom.
 
     > **_NOTE:_** Only for DNA/RNA with canonical residues.
 
