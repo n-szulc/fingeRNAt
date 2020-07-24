@@ -60,7 +60,8 @@ def calculate_SIMPLE(residue, ligand_name, ligand_atoms, centroid_ligand):
     residue_atoms = []
 
     for atom in openbabel.OBResidueAtomIter(residue):
-        residue_atoms.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
+        if atom.GetAtomicNum() != 1:
+            residue_atoms.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
 
     result = [ligand_name, str(residue.GetNum())+ ':' + str(residue.GetChain()), 0]
 
@@ -107,8 +108,9 @@ def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand):
     residue_atoms_coords = []
 
     for atom in openbabel.OBResidueAtomIter(residue):
-        residue_atoms.append(atom)
-        residue_atoms_coords.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
+        if atom.GetAtomicNum() != 1:
+            residue_atoms.append(atom)
+            residue_atoms_coords.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
 
 
     result = [ligand_name, str(residue.GetNum()) + ':' + str(residue.GetChain()), 0, 0, 0]
@@ -731,11 +733,7 @@ if __name__ == "__main__":
         # Read all ligands
         ligands_mols = list(pybel.readfile(extension_ligand, filename_ligand))
 
-        # Add missing hydrogens to all ligands
-        for i in range(len(ligands_mols)):
-            ligands_mols[i].OBMol.AddHydrogens()
-
-        # Create ligands all atoms dictionary
+        # Create ligands all atoms (except hydrogens) dictionary
         ligands_all_atoms = find_ligands_all_atoms(ligands_mols)
 
         # Fill the RESULTS dictionary of keys - ligand ids and values - lists of 0
@@ -792,7 +790,8 @@ if __name__ == "__main__":
 
             residue_atoms_coords = []
             for atom in openbabel.OBResidueAtomIter(residue):
-                residue_atoms_coords.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
+                if atom.GetAtomicNum() != 1:
+                    residue_atoms_coords.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
 
             for ligand_name_HB, ligand_values_HB in ligands_hba_hbd.items():
                 if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_HB])) > config.RES_LIGAND_MIN_DIST: # RNA residue centroid and ligand centroid are futher than declared threshold, no chance for any contact

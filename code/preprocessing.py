@@ -155,7 +155,7 @@ def get_ligand_name_pose(dictionary, title):
     return name
 
 def find_ligands_all_atoms(mols):
-    """Creates dictionary of ligand_name^pose_number with list of sublists of ligand's all atoms coords
+    """Creates dictionary of ligand_name^pose_number with list of sublists of ligand's all atoms coords (except hydrogens)
 
     :param mols: list of Pybel-parsed ligands' objects
     :type mole: list
@@ -170,7 +170,8 @@ def find_ligands_all_atoms(mols):
         tmp=[]
 
         for atom in mols[i].atoms:
-            tmp.extend(np.array([atom.coords]))
+            if atom.atomicnum != 1:
+                tmp.extend(np.array([atom.coords]))
         dictionary[name] = tmp # {'prefix^pose':[list of sublists of all atoms coords]}
 
     return dictionary
