@@ -1,5 +1,5 @@
 Ligand_name	1aju_model1.pdb#16:A#SIMPLE	1aju_model1.pdb#17:A#SIMPLE	1aju_model1.pdb#18:A#SIMPLE	1aju_model1.pdb#19:A#SIMPLE	1aju_model1.pdb#20:A#SIMPLE	1aju_model1.pdb#21:A#SIMPLE	1aju_model1.pdb#22:A#SIMPLE	1aju_model1.pdb#23:A#SIMPLE	1aju_model1.pdb#25:A#SIMPLE	1aju_model1.pdb#26:A#SIMPLE	1aju_model1.pdb#27:A#SIMPLE	1aju_model1.pdb#28:A#SIMPLE	1aju_model1.pdb#29:A#SIMPLE	1aju_model1.pdb#30:A#SIMPLE	1aju_model1.pdb#31:A#SIMPLE	1aju_model1.pdb#32:A#SIMPLE	1aju_model1.pdb#33:A#SIMPLE	1aju_model1.pdb#34:A#SIMPLE	1aju_model1.pdb#35:A#SIMPLE	1aju_model1.pdb#36:A#SIMPLE	1aju_model1.pdb#37:A#SIMPLE	1aju_model1.pdb#38:A#SIMPLE	1aju_model1.pdb#39:A#SIMPLE	1aju_model1.pdb#40:A#SIMPLE	1aju_model1.pdb#41:A#SIMPLE	1aju_model1.pdb#42:A#SIMPLE	1aju_model1.pdb#43:A#SIMPLE	1aju_model1.pdb#44:A#SIMPLE	1aju_model1.pdb#45:A#SIMPLE	1aju_model1.pdb#46:A#SIMPLE
-molecule_00001^1	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0
-molecule_00001^2	0	0	0	0	0	0	1	1	0	1	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0
-molecule_00002^1	0	0	0	0	0	0	1	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0
-molecule_00006^1	0	0	0	0	0	0	1	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0
+molecule_00001^1	0	0	0	0	0	0	1	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+molecule_00001^2	0	0	0	0	0	0	1	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+molecule_00002^1	0	0	0	0	0	0	1	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+molecule_00006^1	0	0	0	0	0	0	1	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
