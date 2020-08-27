@@ -1,0 +1,5 @@
+Ligand_name	1aju_model1.pdb#Purines#HB	1aju_model1.pdb#Purines#HAL	1aju_model1.pdb#Purines#CA	1aju_model1.pdb#Purines#Pi_Cation	1aju_model1.pdb#Purines#Pi_Anion	1aju_model1.pdb#Purines#Pi_Stacking	1aju_model1.pdb#Pyrimidynes#HB	1aju_model1.pdb#Pyrimidynes#HAL	1aju_model1.pdb#Pyrimidynes#CA	1aju_model1.pdb#Pyrimidynes#Pi_Cation	1aju_model1.pdb#Pyrimidynes#Pi_Anion	1aju_model1.pdb#Pyrimidynes#Pi_Stacking
+molecule_00001^1	0	0	1	0	0	0	0	0	0	0	0	0
+molecule_00001^2	0	0	1	0	0	1	0	0	1	0	0	0
+molecule_00002^1	1	0	0	1	0	1	1	0	0	0	0	0
+molecule_00006^1	0	0	0	0	0	1	0	0	0	0	0	0

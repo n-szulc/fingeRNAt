@@ -1,0 +1,5 @@
+Ligand_name	1aju_model1.pdb#A#HB	1aju_model1.pdb#A#HAL	1aju_model1.pdb#A#CA	1aju_model1.pdb#A#Pi_Cation	1aju_model1.pdb#A#Pi_Anion	1aju_model1.pdb#A#Pi_Stacking	1aju_model1.pdb#C#HB	1aju_model1.pdb#C#HAL	1aju_model1.pdb#C#CA	1aju_model1.pdb#C#Pi_Cation	1aju_model1.pdb#C#Pi_Anion	1aju_model1.pdb#C#Pi_Stacking	1aju_model1.pdb#U#HB	1aju_model1.pdb#U#HAL	1aju_model1.pdb#U#CA	1aju_model1.pdb#U#Pi_Cation	1aju_model1.pdb#U#Pi_Anion	1aju_model1.pdb#U#Pi_Stacking	1aju_model1.pdb#G#HB	1aju_model1.pdb#G#HAL	1aju_model1.pdb#G#CA	1aju_model1.pdb#G#Pi_Cation	1aju_model1.pdb#G#Pi_Anion	1aju_model1.pdb#G#Pi_Stacking
+molecule_00001^1	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+molecule_00001^2	0	0	1	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0
+molecule_00002^1	1	0	0	1	0	1	0	0	0	0	0	0	1	0	0	0	0	0	1	0	0	0	0	0
+molecule_00006^1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
