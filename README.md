@@ -114,7 +114,7 @@ cd fingeRNAt
 python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE
 ```
 
-## Parametres description
+## Parameters description
 
 <br/>
 where:
