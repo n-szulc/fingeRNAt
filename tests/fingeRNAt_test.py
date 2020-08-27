@@ -13,7 +13,7 @@ def run_test():
 
     for i in range(len(RNA)):
         for j in range(len(fingerprints)):
-            if subprocess.call('python ../code/fingeRNAt.py -r test_inputs/%s -l test_inputs/%s -f %s' %(RNA[i], ligands[i], fingerprints[j]), shell = True):
+            if subprocess.call('python ../code/fingeRNAt.py -r test_inputs/%s -l test_inputs/%s -f %s -wrapper ACUG,PuPy,Counter' %(RNA[i], ligands[i], fingerprints[j]), shell = True):
                 print ('fingeRNAt had problem running fingerprint %s on test_inputs/%s  and test_inputs/%s' % (fingerprints[j], RNA[i], ligands[i]))
                 OK = False
 
