@@ -48,7 +48,7 @@ def calculate_SIMPLE(residue, ligand_name, ligand_atoms, centroid_ligand):
 
         :param residue: residue as OpenBabel object
         :param ligand_name: ligand_name^pose_number
-        :param ligand_atoms: coordinates of all ligand's atoms
+        :param ligand_atoms: coordinates of all ligand's atoms (except hydrogens)
         :type residue: openbabel.OBResidue
         :type ligand_name: str
         :type ligand_atoms: list
@@ -60,7 +60,7 @@ def calculate_SIMPLE(residue, ligand_name, ligand_atoms, centroid_ligand):
     residue_atoms = []
 
     for atom in openbabel.OBResidueAtomIter(residue):
-        if atom.GetAtomicNum() != 1:
+        if atom.GetAtomicNum() != 1: # do not consider hydrogens
             residue_atoms.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
 
     result = [ligand_name, str(residue.GetNum())+ ':' + str(residue.GetChain()), 0]
@@ -95,7 +95,7 @@ def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand):
 
         :param residue: residue as OpenBabel object
         :param ligand_name: ligand_name^pose_number
-        :param ligand_atoms: coordinates of all ligand's atoms
+        :param ligand_atoms: coordinates of all ligand's atoms (except hydrogens)
         :type residue: openbabel.OBResidue
         :type ligand_name: str
         :type ligand_atoms: list
@@ -108,7 +108,7 @@ def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand):
     residue_atoms_coords = []
 
     for atom in openbabel.OBResidueAtomIter(residue):
-        if atom.GetAtomicNum() != 1:
+        if atom.GetAtomicNum() != 1: # do not consider hydrogens
             residue_atoms.append(atom)
             residue_atoms_coords.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
 
