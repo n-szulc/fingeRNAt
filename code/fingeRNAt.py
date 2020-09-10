@@ -881,15 +881,17 @@ if __name__ == "__main__":
             for index in DF_INDEXES:
                 ALL_FINGERPRINTS_DF.loc[index] = WRAP_RESULTS[analysis][index]
 
+        print(output)
         # Save output as tsv
         if output:
+            output_proper = output
             if analysis in FUNCTIONS.keys():
                 if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
-                    output += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint
+                    output_proper += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint
             else:
                 if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
-                    output += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint + '_' + analysis
-            ALL_FINGERPRINTS_DF.to_csv('%s.tsv' %output, sep='\t')
+                    output_proper += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint + '_' + analysis
+            ALL_FINGERPRINTS_DF.to_csv('%s.tsv' %output_proper, sep='\t')
 
         else:
             if not os.path.exists('outputs'): os.makedirs('outputs')
