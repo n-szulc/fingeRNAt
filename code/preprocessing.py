@@ -206,8 +206,8 @@ def assign_interactions_results(result, RESULTS, RNA_LENGTH, RNA_seq_index, FING
     """Adds interaction from residue - ligand pair into fingerprint held in a dictionary indexed by ligand ID
 
     :param result: result obtained from calling one of functions that calculate molecular interaction between residue-ligand
-    :param RESULTS: final dictionary holding all SIFs for each ligand - RNA complex
-    :param RNA_LENGTH: total length of RNA chains from the input file
+    :param RESULTS: final dictionary holding all SIFs for each ligand - nucleic acid complex
+    :param RNA_LENGTH: total length of nucleic acid chains from the input file
     :param RNA_seq_index: index of position of particular residue in the dictionary value list, does not have to correspond to residue number due to possible shifts in sequence
     :param FINGERPRINT_DESCRIPTORS_NO: value responding to total no of calculated interactions for each fingerprint type
     :param descriptor_index: index of particular descriptor in the dictionary value list
@@ -252,7 +252,7 @@ def wrap_results(wrapper, RESULTS, RNA_nucleotides, fingerprint_length, wrapper_
     :rtype wrapper: str
     :param RESULTS: calculated fingerprint results
     :rtype RESULTS: dict
-    :param RNA_nucleotides: list of RNA nucleotides names
+    :param RNA_nucleotides: list of nucleic acid nucleotides names
     :rtype RNA_nucleotides: list
     :param fingerprint_length: number of calculated molecular interactions
     :rtype fingerprint: int
@@ -302,7 +302,7 @@ def wrap_results(wrapper, RESULTS, RNA_nucleotides, fingerprint_length, wrapper_
 
     return WRAP_RESULTS
 
-def find_ligands_HBA_HBD(mols):
+def find_ligands_HBA_HBD(mols, verbose):
     """Finds all donors/acceptors in all ligands
 
     :param mols: list of Pybel-parsed ligands' objects
@@ -313,8 +313,10 @@ def find_ligands_HBA_HBD(mols):
 
     dictionary = {}
 
-    print ("Looking for hydrogen bonds donors & acceptors...")
-    for i in tqdm(range(len(mols))):
+    if verbose:
+        print("Looking for hydrogen bonds donors & acceptors...")
+
+    for i in tqdm(range(len(mols)), disable=(not verbose)):
 
         name = get_ligand_name_pose(dictionary, mols[i].title)
         dictionary[name] = [] # {'prefix^pose':[[sublist of acceptors coords],[sublist of tuples donor-H coords]]}
@@ -336,7 +338,7 @@ def find_ligands_HBA_HBD(mols):
 
     return dictionary
 
-def find_ligands_HAL_don(mols):
+def find_ligands_HAL_don(mols, verbose):
     """Finds all halogens donors in all ligands
 
     :param mols: list of Pybel-parsed ligands' objects
@@ -347,8 +349,10 @@ def find_ligands_HAL_don(mols):
 
     dictionary = {}
 
-    print ("Looking for halogen bonds donors & acceptors...")
-    for i in tqdm(range(len(mols))): # for molecule in ligand file
+    if verbose:
+        print("Looking for halogen bonds donors & acceptors...")
+
+    for i in tqdm(range(len(mols)), disable=(not verbose)): # for molecule in ligand file
 
         name = get_ligand_name_pose(dictionary, mols[i].title)
         dictionary[name] = [] # {'prefix^pose':[list of tuples (C,halogen)]}
@@ -364,7 +368,7 @@ def find_ligands_HAL_don(mols):
 
     return dictionary
 
-def find_ligands_CA(mols):
+def find_ligands_CA(mols, verbose):
      """Finds all cations & anions in all ligands
 
     :param mols: list of Pybel-parsed ligands' objects
@@ -375,8 +379,10 @@ def find_ligands_CA(mols):
 
      dictionary = {}
 
-     print ("Looking for cation-anion interactions...")
-     for i in tqdm(range(len(mols))): # For molecule in ligand file
+     if verbose:
+         print("Looking for cation-anion interactions...")
+
+     for i in tqdm(range(len(mols)), disable=(not verbose)): # For molecule in ligand file
 
         name = get_ligand_name_pose(dictionary, mols[i].title)
         dictionary[name]=[] # {'prefix^pose':[[list of cations coords],[list of anions coords]]}
@@ -395,13 +401,13 @@ def find_ligands_CA(mols):
      return dictionary
 
 def find_RNA_rings(structure, extension_structure):
-    """Finds all aromatic rings in whole RNA
+    """Finds all aromatic rings in whole nucleic acid
 
-    :param structure: RNA structure object
-    :param extension_structure: extension of RNA input file
+    :param structure: nucleic acid structure object
+    :param extension_structure: extension of nucleic acid input file
     :type structure: pybel.Molecule
     :type extension_structure: str
-    :return: list of coords of all aromatic rings in RNA found by OpenBabel
+    :return: list of coords of all aromatic rings in nucleic acid found by OpenBabel
     :rtype: list
     """
 
@@ -416,9 +422,9 @@ def find_RNA_rings(structure, extension_structure):
             if extension_structure == 'pdb':
                 res_id = res.GetName()
             elif extension_structure == 'mol2':
-                res_id = res.GetName()[:-len(str(res.GetNum()))] # Need res.GetName() without last characters of its res number, because when RNA is in mol2 format, res.GetName() gives for example U22 as residue name
+                res_id = res.GetName()[:-len(str(res.GetNum()))] # Need res.GetName() without last characters of its res number, because when nucleic acid is in mol2 format, res.GetName() gives for example U22 as residue name
             else:
-                raise Exception('Unknown RNA format')
+                raise Exception('Unknown nucleic acid structure format')
 
             if res_id in config.CANONICAL_RESIDUES:
                 sugar = False
@@ -433,9 +439,9 @@ def find_RNA_rings(structure, extension_structure):
     return rings
 
 def find_RNA_HB_HAL_acc_don(residue):
-    """Finds all hydrogen/halogen bonds acceptors with all of their neighbours and all hydrogen bonds donors together with hydrogens in RNA residue
+    """Finds all hydrogen/halogen bonds acceptors with all of their neighbours and all hydrogen bonds donors together with hydrogens in nucleic acid residue
 
-    :param residue: RNA residue object
+    :param residue: nucleic acid residue object
     :type residue: openbabel.OBResidue
     :return: coords of residue's halogen/hydrogen bonds acceptors & their neighbours
     :return: coords of residue's hydrogen bonds donors together with hydrogens
@@ -464,9 +470,9 @@ def find_RNA_HB_HAL_acc_don(residue):
     return acceptors_RNA, donors_RNA
 
 def find_RNA_anions(residue):
-    """Finds all RNA residue's anions
+    """Finds all nucleic acid's residue's anions
 
-    :param residue: RNA residue object
+    :param residue: nucleic acid's residue object
     :type residue: openbabel.OBResidue
     :return: coords of residue's anions
     :rtype: list
@@ -491,11 +497,11 @@ def find_RNA_anions(residue):
     return anions_RNA
 
 def check_if_RNA(all_nucleotides):
-    """Check if input struture is RNA or DNA
+    """Check if input structure is RNA or DNA
 
     :param all_nucleotides: list of all structure nucleotides
     :type all_nucleotides: list
-    :return: information if structure is RNA
+    :return: information if structure is RNA (True)
     :rtype: bool
     """
 

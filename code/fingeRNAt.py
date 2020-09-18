@@ -41,7 +41,7 @@ from preprocessing import find_ligands_CA, find_RNA_rings, find_RNA_HB_HAL_acc_d
 
 def calculate_SIMPLE(residue, ligand_name, ligand_atoms, centroid_ligand):
     """Calculates SIMPLE interaction between residue - ligand pair:
-            1. Check RNA residue - ligand distance
+            1. Check nucleic acid residue - ligand distance
             2. Compare the distance to CUTOFF:
                 - write down 1 if the distance <= CUTOFF
                 - write down 0 if the distance > CUTOFF
@@ -65,7 +65,7 @@ def calculate_SIMPLE(residue, ligand_name, ligand_atoms, centroid_ligand):
 
     result = [ligand_name, str(residue.GetNum())+ ':' + str(residue.GetChain()), 0]
 
-    if measure_distance(centroid(residue_atoms), centroid_ligand) > config.RES_LIGAND_MIN_DIST: # RNA residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
+    if measure_distance(centroid(residue_atoms), centroid_ligand) > config.RES_LIGAND_MIN_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
         return result
 
     # Flag to iterate over residue's atoms as long as we do not find an atom within CUTOFF distance from ligand
@@ -87,7 +87,7 @@ def calculate_SIMPLE(residue, ligand_name, ligand_atoms, centroid_ligand):
 
 def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand):
     """Calculates PBS interaction between residue - ligand pair:
-            1. Divide RNA residue into 3 groups Phosphate/Base/Sugar (P/B/S)
+            1. Divide nucleic acid's residue into 3 groups Phosphate/Base/Sugar (P/B/S)
             2. Check each group - ligand distance
             3. Compare the distance to CUTOFF:
                 - write down 1 if the distance <= CUTOFF
@@ -115,7 +115,7 @@ def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand):
 
     result = [ligand_name, str(residue.GetNum()) + ':' + str(residue.GetChain()), 0, 0, 0]
 
-    if measure_distance(centroid(residue_atoms_coords), centroid_ligand) > config.RES_LIGAND_MIN_DIST: # RNA residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
+    if measure_distance(centroid(residue_atoms_coords), centroid_ligand) > config.RES_LIGAND_MIN_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
         return result
 
     # Flag to iterate over residue's atoms as long as we do not find an atom of the defined P/B/S group within CUTOFF distance from ligand
@@ -140,7 +140,7 @@ def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand):
                                 break
 
         if not atom_group_type:
-            raise Exception('Unknown atom type %s' %rna_atom_name)  # MAYBE NEEDS TO BE CHANGED
+            raise Exception('Unknown atom type %s' %rna_atom_name)
 
     return result
 
@@ -222,8 +222,6 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
     if searching_flag:
 
         for RNA_don in donors_RNA:
-            #res = str(residue.GetNum())+ ':' + str(residue.GetChain())
-            #if res == '35:B': print donors_RNA
 
             if searching_flag:
 
@@ -240,7 +238,6 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
                         ha = vector(acceptor, RNA_donH_coords)
                         angle = calculate_angle(dh, ha)
 
-                        #if ligand_name == '37^1' and res == '35:B': print angle
 
                         if config.MIN_HB_ANGLE < angle < config.MAX_HB_ANGLE:
 
@@ -326,13 +323,10 @@ def calculate_HB_no_dha(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_
     if searching_flag:
 
         for RNA_don in donors_RNA:
-            #res = str(residue.GetNum())+ ':' + str(residue.GetChain())
-            #if res == '35:B': print donors_RNA
 
             if searching_flag:
 
                 RNA_don_coords = np.array([RNA_don[0].GetX(), RNA_don[0].GetY(), RNA_don[0].GetZ()])
-                #RNA_donH_coords = np.array([RNA_don[1].GetX(), RNA_don[1].GetY(), RNA_don[1].GetZ()])
 
                 for acceptor in ligand_acceptors_coords:
 
@@ -405,7 +399,7 @@ def calculate_HAL(residue, acceptors_RNA, ligand_name, ligand_donors_coords, pre
 
                     for y in range(len(RNA_acceptor_set[1:])): # For all Y's neighbours (max 2)
 
-                        RNA_acc_y_coords = np.array([RNA_acceptor_set[y+1].GetX(), RNA_acceptor_set[y+1].GetY(), RNA_acceptor_set[y+1].GetZ()]) # coords of RNA acceptor' - Y
+                        RNA_acc_y_coords = np.array([RNA_acceptor_set[y+1].GetX(), RNA_acceptor_set[y+1].GetY(), RNA_acceptor_set[y+1].GetZ()]) # coords of nucleic acid acceptor' - Y
                         dist = measure_distance(donor[1], RNA_acc_coords) # Measure X-O distance
 
                         if config.MIN_DIST < dist < config.MAX_HAL_DIST:
@@ -535,8 +529,11 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
     mols = list(pybel.readfile(extension_ligand, filename_ligand))
     all_ligands_rings_dict= {}
 
-    print("Looking for Pi-interactions...")
-    for i in tqdm(range(len(mols))):
+    if verbose:
+        print("Looking for Pi-interactions...")
+
+
+    for i in tqdm(range(len(mols)), disable=(not verbose)):
 
         rings_candidates = mols[i].OBMol.GetSSSR()
 
@@ -560,16 +557,16 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
     # There will be 3 results of Pi-interactions: : Pi-cation, Pi-anion, Pi-stacking
     RESULTS = [[],[],[]]
 
-    # print ("Looping over RNA rings...")
-    for ring in RNA_rings: # Unlike in previous functions, iteration is over all RNA rings
+    # print ("Looping over nucleic acid rings...")
+    for ring in RNA_rings: # Unlike in previous functions, iteration is over all nucleic acid rings
 
         ring_atoms_RNA = [a for a in RNA_all_atoms if ring.IsMember(a.OBAtom)]
-        atoms_creating_planar_space_RNA = np.array([ring_atoms_RNA[0].coords,ring_atoms_RNA[1].coords,ring_atoms_RNA[2].coords],dtype=np.longdouble) # add 3 atoms (we do not need more) from RNA ring to calculate planar
+        atoms_creating_planar_space_RNA = np.array([ring_atoms_RNA[0].coords,ring_atoms_RNA[1].coords,ring_atoms_RNA[2].coords],dtype=np.longdouble) # add 3 atoms (we do not need more) from nucleic acid's ring to calculate planar
         planar_RNA = calculate_planar(atoms_creating_planar_space_RNA)
-        residue = structure.OBMol.GetAtom(ring_atoms_RNA[0].idx).GetResidue() # Get RNA ring's residue
+        residue = structure.OBMol.GetAtom(ring_atoms_RNA[0].idx).GetResidue() # Get nucleic acid's ring's residue
         ring_center_RNA = centroid([ra.coords for ra in ring_atoms_RNA])
 
-        results = [[],[],[]] # There will 3 be results for each RNA residue from 3 Pi-interactions: : Pi-cation, Pi-anion, Pi-stacking
+        results = [[],[],[]] # There will 3 be results for each nucleic acid's residue from 3 Pi-interactions: : Pi-cation, Pi-anion, Pi-stacking
 
         #################################################
         #  Calculate Pi-cation & Pi-anion interactions  #
@@ -647,14 +644,6 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
 
 if __name__ == "__main__":
 
-    welcome_mssg = '# Welcome to fingeRNAt! #'
-    columns = shutil.get_terminal_size().columns
-    print('')
-    print(('#'*len(welcome_mssg)).center(columns))
-    print(welcome_mssg.center(columns))
-    print(('#'*len(welcome_mssg)).center(columns))
-    print('')
-
     #######################
     #  ARGUMENTS PARSING  #
     #######################
@@ -675,6 +664,7 @@ if __name__ == "__main__":
     optional_arguments.add_argument('-dha', help='consider Donor-Hydrogen-Acceptor angle in hydrogen bonds calculation', action='store_true')
     optional_arguments.add_argument('-wrapper', help='pass results wrapper types (multiple types possible at once, but have to be comma separated)', metavar='WRAPPER')
     optional_arguments.add_argument('-vis', help='make heatmap visualization', action='store_true')
+    optional_arguments.add_argument('-verbose', help='provides additional details about calculations performed at the given moment', action='store_true')
     optional_arguments.add_argument('-h', action = 'help', help = 'show this help message and exit')
     optional_arguments.add_argument('--help', '-h', action = 'help', help = 'show this help message and exit')
 
@@ -694,6 +684,7 @@ if __name__ == "__main__":
         wrapper = None
 
     visualization = args['vis']
+    verbose = args['verbose']
 
     #########################
     #  FINGERPRINT CALLING  #
@@ -715,18 +706,26 @@ if __name__ == "__main__":
     # Create dictionary of all residues with their calculated interactions
     RESULTS = {}
 
-    # Parse RNA using OpenBabel
+    # Parse nucleic acid using OpenBabel
     structure = next(pybel.readfile(extension_structure,filename_RNA))
-    # Create empty list of all RNA residues
+    # Create empty list of all nucleic acid residues
     RNA_residues = []
-    # Create empty list of all RNA residues
+    # Create empty list of all nucleic acid residues
     RNA_nucleotides = []
     RNA_LENGTH = structure.OBMol.NumResidues()
 
-    mssg = '# Calculating fingerprint type {} #'.format(fingerprint)
-    print('#'*len(mssg))
-    print(mssg)
-    print('#'*len(mssg))
+    if verbose:
+        welcome_mssg = '# Welcome to fingeRNAt! #'
+        columns = shutil.get_terminal_size().columns
+        print('')
+        print(('#'*len(welcome_mssg)).center(columns))
+        print(welcome_mssg.center(columns))
+        print(('#'*len(welcome_mssg)).center(columns))
+        print('')
+        mssg = '# Calculating fingerprint type {} #'.format(fingerprint)
+        print('#'*len(mssg))
+        print(mssg)
+        print('#'*len(mssg))
 
     if fingerprint == 'SIMPLE' or fingerprint == 'PBS':
 
@@ -740,7 +739,7 @@ if __name__ == "__main__":
         for ligand_name in ligands_all_atoms.keys():
             RESULTS[ligand_name] = [0] * RNA_LENGTH * FUNCTIONS[fingerprint]
 
-        for residue in openbabel.OBResidueIter(structure.OBMol): # Loop over all RNA residues
+        for residue in openbabel.OBResidueIter(structure.OBMol): # Loop over all nucleic acid residues
             RNA_residues.append(str(residue.GetNum())+ ':' + str(residue.GetChain()))
             RNA_nucleotides.append(str(residue.GetName()))
 
@@ -769,11 +768,11 @@ if __name__ == "__main__":
         # Create ligands' all atoms dictionary
         ligands_all_atoms = find_ligands_all_atoms(ligands_mols)
         # Create ligands acceptors' & donors' dictionary
-        ligands_hba_hbd = find_ligands_HBA_HBD(ligands_mols)
+        ligands_hba_hbd = find_ligands_HBA_HBD(ligands_mols, verbose)
         # Create ligands halogens' donors dictionary
-        ligands_HAL = find_ligands_HAL_don(ligands_mols)
+        ligands_HAL = find_ligands_HAL_don(ligands_mols, verbose)
         # Create ligands cations' & anions' dictionary
-        ligands_CA = find_ligands_CA(ligands_mols)
+        ligands_CA = find_ligands_CA(ligands_mols, verbose)
         # Find all RNA rings
         rings_RNA = find_RNA_rings(structure, extension_structure)
 
@@ -782,7 +781,7 @@ if __name__ == "__main__":
         for ligand_name in ligands_hba_hbd.keys():
             RESULTS[ligand_name] = [0] * RNA_LENGTH * FUNCTIONS[fingerprint]
 
-        for residue in openbabel.OBResidueIter(structure.OBMol): # Loop over all RNA residue to calculate hydrogen bondings, halogen bondings & cation-anion interactions
+        for residue in openbabel.OBResidueIter(structure.OBMol): # Loop over all nucleic acid residue to calculate hydrogen bondings, halogen bondings & cation-anion interactions
             RNA_residues.append(str(residue.GetNum())+ ':' + str(residue.GetChain()))
             RNA_nucleotides.append(str(residue.GetName()))
             acceptors_RNA, donors_RNA = find_RNA_HB_HAL_acc_don(residue)
@@ -794,7 +793,7 @@ if __name__ == "__main__":
                     residue_atoms_coords.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
 
             for ligand_name_HB, ligand_values_HB in ligands_hba_hbd.items():
-                if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_HB])) > config.RES_LIGAND_MIN_DIST: # RNA residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
+                if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_HB])) > config.RES_LIGAND_MIN_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
                     continue
 
                 if consider_dha:
@@ -810,7 +809,7 @@ if __name__ == "__main__":
                         assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 0, True) # XP fingerprint holds information about 4 hydrogen bonds types (total number/strong number/moderate number/weak number)
 
             for ligand_name_HAL, ligand_values_HAL in ligands_HAL.items():
-                if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_HAL])) > config.RES_LIGAND_MIN_DIST: # RNA residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
+                if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_HAL])) > config.RES_LIGAND_MIN_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
                     continue
 
                 result = calculate_HAL(residue, acceptors_RNA, ligand_name_HAL, ligand_values_HAL, fingerprint)
@@ -819,7 +818,7 @@ if __name__ == "__main__":
                     assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 1)
 
             for ligand_name_CA, ligand_values_CA in ligands_CA.items():
-                if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_CA])) > config.RES_LIGAND_MIN_DIST: # RNA residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
+                if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_CA])) > config.RES_LIGAND_MIN_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
                     continue
 
                 result = calculate_CATION_ANION(residue, anions_RNA, ligand_name_CA, ligand_values_CA[0], fingerprint)
@@ -841,7 +840,7 @@ if __name__ == "__main__":
 
         WRAP_RESULTS = {}
         for w in wrapper:
-            print('Wrapping fingerprint type {} results to {} wrapper'.format(fingerprint, w))
+            if verbose: print('Wrapping fingerprint type {} results to {} wrapper'.format(fingerprint, w))
             WRAP_RESULTS[w] = wrap_results(w, RESULTS, RNA_nucleotides, FUNCTIONS[fingerprint], WRAPPERS[w])
 
     # Create dataframe
@@ -857,7 +856,7 @@ if __name__ == "__main__":
     else:
         nucleotides_letters = ['A','C','T','G']
 
-    print('Calculations completed, saving the results...')
+    if verbose: print('Calculations completed, saving the results...')
 
     for analysis in ANALYSIS_NAME:
 
@@ -881,7 +880,6 @@ if __name__ == "__main__":
             for index in DF_INDEXES:
                 ALL_FINGERPRINTS_DF.loc[index] = WRAP_RESULTS[analysis][index]
 
-        print(output)
         # Save output as tsv
         if output:
             output_proper = output
@@ -966,4 +964,4 @@ if __name__ == "__main__":
                     plt.tight_layout()
                     plt.savefig('outputs/%s_%s_%s_%s.png' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), dpi = 300)
 
-        print('{} results saved successfully!'.format(analysis))
+        if verbose: print('{} results saved successfully!'.format(analysis))
