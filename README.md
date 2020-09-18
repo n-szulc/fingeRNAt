@@ -15,7 +15,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 	- [Manual installation](#manual-installation)
 - [Usage](#usage)
 	- [Quick start](#quick-start)
-	- [Parametres description](#parametres-description)
+	- [Parameters description](#parametres-description)
 	- [Inputs](#inputs)
 	- [Structural Interaction Fingerprints' (SIFs) types](#structural-interaction-fingerprints-sifs-types)
 	- [Molecular Interactions' Geometric Rules](#molecular-interactions-geometric-rules)
@@ -140,10 +140,10 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
 `[-wrapper]` &nbsp;&nbsp;&nbsp;&nbsp; optional SIFs results wrapper, see -> [Wrappers](#Wrappers)
 
-`[-verbose]` &nbsp;&nbsp;&nbsp;&nbsp; provides additional information about performed calculations at the given moment
-
 
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   available types are: `ACUG`, &nbsp;&nbsp;`PuPy`, &nbsp;&nbsp;`Counter`
+
+ `[-verbose]` &nbsp;&nbsp;&nbsp;&nbsp; provides additional information about performed calculations at the given moment
 
  `[-h]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; show help message
 
