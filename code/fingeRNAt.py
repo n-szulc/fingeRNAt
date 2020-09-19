@@ -60,12 +60,12 @@ def calculate_SIMPLE(residue, ligand_name, ligand_atoms, centroid_ligand):
     residue_atoms = []
 
     for atom in openbabel.OBResidueAtomIter(residue):
-        if atom.GetAtomicNum() != 1: # do not consider hydrogens
+        if atom.GetAtomicNum() != config.HYDROGEN_NUM: # do not consider hydrogens
             residue_atoms.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
 
     result = [ligand_name, str(residue.GetNum())+ ':' + str(residue.GetChain()), 0]
 
-    if measure_distance(centroid(residue_atoms), centroid_ligand) > config.RES_LIGAND_MIN_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
+    if measure_distance(centroid(residue_atoms), centroid_ligand) > config.RES_LIGAND_MAX_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
         return result
 
     # Flag to iterate over residue's atoms as long as we do not find an atom within CUTOFF distance from ligand
@@ -108,14 +108,14 @@ def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand):
     residue_atoms_coords = []
 
     for atom in openbabel.OBResidueAtomIter(residue):
-        if atom.GetAtomicNum() != 1: # do not consider hydrogens
+        if atom.GetAtomicNum() != config.HYDROGEN_NUM: # do not consider hydrogens
             residue_atoms.append(atom)
             residue_atoms_coords.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
 
 
     result = [ligand_name, str(residue.GetNum()) + ':' + str(residue.GetChain()), 0, 0, 0]
 
-    if measure_distance(centroid(residue_atoms_coords), centroid_ligand) > config.RES_LIGAND_MIN_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
+    if measure_distance(centroid(residue_atoms_coords), centroid_ligand) > config.RES_LIGAND_MAX_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
         return result
 
     # Flag to iterate over residue's atoms as long as we do not find an atom of the defined P/B/S group within CUTOFF distance from ligand
@@ -644,6 +644,14 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
 
 if __name__ == "__main__":
 
+    welcome_mssg = '# Welcome to fingeRNAt! #'
+    columns = shutil.get_terminal_size().columns
+    print('')
+    print(('#'*len(welcome_mssg)).center(columns))
+    print(welcome_mssg.center(columns))
+    print(('#'*len(welcome_mssg)).center(columns))
+    print('')
+
     #######################
     #  ARGUMENTS PARSING  #
     #######################
@@ -714,14 +722,8 @@ if __name__ == "__main__":
     RNA_nucleotides = []
     RNA_LENGTH = structure.OBMol.NumResidues()
 
+
     if verbose:
-        welcome_mssg = '# Welcome to fingeRNAt! #'
-        columns = shutil.get_terminal_size().columns
-        print('')
-        print(('#'*len(welcome_mssg)).center(columns))
-        print(welcome_mssg.center(columns))
-        print(('#'*len(welcome_mssg)).center(columns))
-        print('')
         mssg = '# Calculating fingerprint type {} #'.format(fingerprint)
         print('#'*len(mssg))
         print(mssg)
@@ -789,11 +791,11 @@ if __name__ == "__main__":
 
             residue_atoms_coords = []
             for atom in openbabel.OBResidueAtomIter(residue):
-                if atom.GetAtomicNum() != 1:
+                if atom.GetAtomicNum() != config.HYDROGEN_NUM:
                     residue_atoms_coords.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
 
             for ligand_name_HB, ligand_values_HB in ligands_hba_hbd.items():
-                if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_HB])) > config.RES_LIGAND_MIN_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
+                if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_HB])) > config.RES_LIGAND_MAX_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
                     continue
 
                 if consider_dha:
@@ -809,7 +811,7 @@ if __name__ == "__main__":
                         assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 0, True) # XP fingerprint holds information about 4 hydrogen bonds types (total number/strong number/moderate number/weak number)
 
             for ligand_name_HAL, ligand_values_HAL in ligands_HAL.items():
-                if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_HAL])) > config.RES_LIGAND_MIN_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
+                if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_HAL])) > config.RES_LIGAND_MAX_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
                     continue
 
                 result = calculate_HAL(residue, acceptors_RNA, ligand_name_HAL, ligand_values_HAL, fingerprint)
@@ -818,7 +820,7 @@ if __name__ == "__main__":
                     assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 1)
 
             for ligand_name_CA, ligand_values_CA in ligands_CA.items():
-                if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_CA])) > config.RES_LIGAND_MIN_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
+                if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_CA])) > config.RES_LIGAND_MAX_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
                     continue
 
                 result = calculate_CATION_ANION(residue, anions_RNA, ligand_name_CA, ligand_values_CA[0], fingerprint)
@@ -964,4 +966,4 @@ if __name__ == "__main__":
                     plt.tight_layout()
                     plt.savefig('outputs/%s_%s_%s_%s.png' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), dpi = 300)
 
-        if verbose: print('{} results saved successfully!'.format(analysis))
+        print('{} results saved successfully!'.format(analysis))

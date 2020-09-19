@@ -482,7 +482,7 @@ def find_RNA_anions(residue):
     anions_RNA = []
 
     for atom in openbabel.OBResidueAtomIter(residue):
-        if atom.GetAtomicNum() == 15:
+        if atom.GetAtomicNum() == config.PHOSPHORUS_NUM:
             P = atom
             break # Assuming there is only 1 Phosphate in residue
 

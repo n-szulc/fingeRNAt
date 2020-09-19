@@ -1,6 +1,6 @@
 
 MIN_DIST = 0.5 # Minimum atoms distance
-RES_LIGAND_MIN_DIST = 85.0 # Maximum nucleic acid residue's centroid - ligand's centroid distance to calculate interactions; decrease to speed up software but some interactions may be omitted!
+RES_LIGAND_MAX_DIST = 85.0 # Maximum nucleic acid residue's centroid - ligand's centroid distance to calculate interactions; decrease to speed up software but some interactions may be omitted!
 CUT_OFF_SIMPLE  = 4.0 # Distance cutoff for SIMPLE & PBS interactions
 MAX_HB_DIST = 3.9 # Maximum Donor-Acceptor distance in Hydrogen Bond
 MIN_HB_ANGLE = 100.0 # Minimum Donor-Hydrogen-Acceptor angle in Hydrogen Bond
@@ -25,3 +25,5 @@ GROUPS = [["P","OP1","OP2","OP3"],\
 CANONICAL_RESIDUES = ['A','G','C','U','T']
 
 OXYGEN_NUM = 8 # Oxygen atomic number
+HYDROGEN_NUM = 1 # Hydrogen atomic number
+PHOSPHORUS_NUM = 15 # Phosphorus atomic number
