@@ -279,6 +279,8 @@ In case of `XP` hologram, there is additional assignment of each hydrogen bond t
 
 (*Barlow and Thornton*, 1983)
 
+    > **_NOTE:_** We consider both oxygens from phosphate group (OP1 and OP2) of DNA/RNA as negatively charged.
+
 ### 4. Pi - Cation and 5. Pi - Anion
 
 <img src="docs/README_pics/pi-ion.png" width="200" alt="Wikimedia Commons, modified" />
