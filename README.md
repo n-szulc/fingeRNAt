@@ -156,7 +156,7 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
     - **only** DNA/RNA chains
         - no water, ions, ligands
 
-		**We recommend adding hydrogens**
+		**Hydrogens need to be added**
         - if DNA/RNA structure was obtained from NMR, hydrogens are already there
         - if DNA/RNA structure was obtained from XR or cryo-EM, hydrogens can be added using e.g. PyMOL, VMD, Chimera.
 
@@ -174,7 +174,7 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
 	We recommend protonating ligands prior running analysis, e.g. using OpenBabel.
 
-	If calculating SIFs `FULL` or `XP` type, all the missing ligands' hydrogens will be automatically added.
+	All the missing ligands' hydrogens will be automatically added.
 
 
 ## Structural Interaction Fingerprints' (SIFs) types
