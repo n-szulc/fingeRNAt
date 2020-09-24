@@ -23,7 +23,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 		- [2. Halogen Bonds](#2-halogen-bonds)
 		- [3. Cation - Anion](#3-cation---anion)
 		- [4. Pi - Cation and 5. Pi - Anion](#4-pi---cation-and-5-pi---anion)
-		- [6. Pi - stacking](#6-pi---stacking)
+		- [6. Pi - Stacking](#6-pi---stacking)
 	- [User defined thresholds](#user-defined-thresholds)
 	- [Outputs](#outputs)
 		- [`FULL`](#full)
@@ -32,8 +32,17 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 		- [`XP`](#xp)
 	- [Wrappers](#wrappers)
 	- [Visualization](#visualization)
-	- [Graphical User Interface](#graphical-user-interface)
 	- [Usage examples](#usage-examples)
+	- [Graphical User Interface](#graphical-user-interface)
+- [fingerDISt](#fingerdist)
+	- [Installation](#installation-1)
+	- [Usage](#usage-1)
+		- [Quick start](#quick-start-1)
+		- [Parameters description](#parameters-description-1)
+		- [Inputs](#inputs-1)
+		- [Distance Metrics](distance-metrics)
+		- [Outputs](#outputs-1)
+		- [Usage examples](#usage-examples-1)
 - [Documentation](#documentation)
 - [Unit test](#unit-test)
 - [Feedback](#feedback)
@@ -116,8 +125,7 @@ python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/lig
 
 ## Parameters description
 
-<br/>
-where:
+fingeRNAt accepts the following parameters:
 
 `-r` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; path to RNA/DNA structure; see -> [Inputs](#Inputs)
 
@@ -292,7 +300,7 @@ In case of `XP` hologram, there is additional assignment of each hydrogen bond t
 - |cation/anion - aromatic ring center| < 6.0 &#8491; (*Gallivan and Dougherty*, 1999)
 - angle between the ring plane and the line between cation/anion - ring center ~ 90&deg; &#177; 30&deg;
 
-### 6. Pi - stacking
+### 6. Pi - Stacking
 
 <img src="docs/README_pics/pi-stacking.png" width="500" alt="Wikimedia Commons, modified" />
 
@@ -322,6 +330,8 @@ All the default thresholds can be changed in `code/config.py`
 Calculated SIFs are saved to tsv files. This is a simple text format similar to csv, except for the data being tab-separated instead of comma-separated (as in csv).
 
 If fingeRNAT was run without optional parameter `-o`, script will create `outputs/` directory in the working directory and save there the output in tsv format. Otherwise fingeRNAt will save outputs in the user-specified location.
+
+Example outputs for four SIFs types and their three wrappers are available from `fingeRNAt/example_outputs`.
 
 ### `FULL`
 
@@ -458,6 +468,24 @@ Heatmap for SIFt type `XP` with wrapper `PuPy` obtained from running `python cod
 
 Heatmap for SIFt type `XP` with wrapper `Counter` obtained from running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -vis -wrapper Counter`
 
+## Usage examples
+
+		- Calculate SIFt `SIMPLE` and save the output in the user-declared location with the default filename.
+
+		  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o /path/to/my_output/`
+
+		- Calculate SIFt `PBS`, see what is being calculated using verbose mode, and save the output with the default filename in the `outputs` directory together with heatmap.
+
+		  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -verbose -vis`
+
+		- Calculate default SIFt `FULL` and save it's output and three wrapped outputs with the default filenames in the in the `outputs` directory.
+
+		  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper ACUG,PuPy,Counter`
+
+		- Calculate SIFt `XP` considering Donor-Hydrogen-Acceptor angle calculation (when detecting hydrogen bonds) and save the output, one wrapped output and two heatmaps in the user-declared location with the desired filename.
+
+		  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -dha -o /path/to/my_output/my_filename -vis -wrapper ACUG`
+
 ## Graphical User Interface
 
 To use Graphical User Interface (GUI), simply run
@@ -470,28 +498,96 @@ GUI is user-friendly and has all aforementioned functionalities.
 <img src="docs/README_pics/gui.png" width="600" />
 </p>
 
-## Usage examples
+# fingerDISt
 
-- Calculate SIFt `SIMPLE` and save the output in the user-declared location.
+<img src="docs/README_pics/logo_fingerdist.png" width="300" class="center" />
 
-  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o /path/to/my_output`
+fingerDISt is an additional, standalone tool which calculates different Distance Metrics based on Structural Interaction Fingerprints (SIFs) - outputs of fingeRNAt.
 
-- Calculate SIFt `PBS` and save the output with the default name in the current directory together with heatmap.
+It calculates the selected Distance Metric for all SIFs vs. all SIFs from input file - creates a matrix of scores and saves it to tsv file.
 
-  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -vis`
+## Installation
 
-- Calculate default SIFt `FULL` and save it's output and three wrapped outputs with the deafult names in the current directory.
+fingerDISt, similarly like fingeRNAt, requires Python 3.5 - 3.8, and may be run from within fingeRNAt's environment, but it is not obligatory. No external modules are needed.
 
-  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper ACUG,PuPy,Counter`
+## Usage
 
-- Calculate SIFt `XP` considering Donor-Hydrogen-Acceptor angle calculation (when detecting hydrogen bonds) and save the output, one wrapped output and two heatmaps in the user-declared location.
+### Quick start
 
-  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -dha -o /path/to/my_output -vis -wrapper ACUG`
+```bash
 
+cd fingeRNAt
+
+python code/fingerDISt.py -i example_outputs/FULL/1aju_model1.pdb_ligands.sdf_FULL.tsv -m tanimoto
+```
+
+### Parameters description
+
+fingerDISt accepts the following parameters:
+
+`-i` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; path to tsv/csv file with calculated SIFs; see -> [Inputs](#Inputs-1)
+
+`-m` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; types of desired Distance Metrics; see -> [Distance Metrics](#distance-metrics)
+
+`[-o]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional path to save output
+
+`[-verbose]` &nbsp;&nbsp;&nbsp;&nbsp; prints calculated Distance Metrics on the screen
+
+`[-h]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; show help message
+
+### Inputs
+
+1. `-i `: path to tsv/csv file with calculated SIFs
+
+		**fingeRNAt outputs are fingerDISt inputs**
+
+		Example inputs may be found in `fingeRNAt/tests/expected_outputs`.
+
+### Distance Metrics
+
+fingerDISt calculates the following Distance Metrics:
+
+* Tanimoto Coefficient
+* Cosine Similarity
+* Manhattan
+* Euclidean
+* Square Euclidean
+* Half Square Euclidean
+
+The abovementioned Distance Metrics calculations were implemented based on code [github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py](github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py) under MIT license.
+
+  > **_NOTE:_** **Tanimoto Coefficient works only for SIFs with binary values**, therefore it will  not work neither on input SIFs type XP (holograms) nor on any input SIFs wrapped with Counter wrapper.
+
+
+### Outputs
+
+fingerDISt saves scores for each selected Distance Metric to separate tsv files. This is a simple text format similar to csv, except for the data being tab-separated instead of comma-separated (as in csv).
+
+If fingerDISt was run without optional parameter `-o`, script will create `outputs/` directory in the working directory and save there the output in tsv format. Otherwise fingerDISt will save outputs in the user-specified location.
+
+<p align="center">
+<img src="docs/README_pics/tanimoto_full.png" width="900" />
+</p>
+
+Sample output of running `python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_FULL.tsv -m tanimoto`
+
+### Usage examples
+
+- Calculate all available Distance Metrics on SIFs inputs type `FULL` and save the output with the default filename in the `outputs` directory.
+
+`python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_FULL.tsv -m manhattan,square_euclidean,euclidean,half_square_euclidean,cosine_similarity,tanimoto`
+
+- Calculate two Distance Metrics on SIFs inputs type `XP` wrapped with `ACUG` wrapper and save the output to user-specified location with the default filename.
+
+`python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_XP_ACUG.tsv -m manhattan,square_euclidean -o my_dir/`
+
+- Calculate one Distance Metric on SIFs inputs type `SIMPLE`, print it on the screen and save the output to the user-specified location with the desired filename.
+
+`python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_SIMPLE.tsv -m tanimoto -verbose -o my_dir/my_filename`
 
 # Documentation
 
-To generate documentation file using sphinx:
+To generate fingeRNAt documentation file using sphinx:
 
 ```bash
 cd docs
