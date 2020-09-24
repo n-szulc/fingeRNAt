@@ -22,6 +22,7 @@ PLANAR_ANGLE_TSHAPED_DEV = 30.0 # Maximum angle deviation for the T-shaped Pi-st
 GROUPS = [["P","OP1","OP2","OP3"],\
           ["C2","C4","C5","C6","C8","N1","N2","N3","N4","N6","N7","N9","O2","O4","O6","C7"],\
           ["C1'","C2'","C3'","C4'","C5'","O2'","O3'","O4'","O5'"]]
+WHICH_GROUP = {0:'PHOSPHATE', 1:'BASE', 2:'SUGAR'}
 CANONICAL_RESIDUES = ['A','G','C','U','T']
 
 OXYGEN_NUM = 8 # Oxygen atomic number

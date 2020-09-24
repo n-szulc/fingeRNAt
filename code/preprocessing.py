@@ -4,6 +4,7 @@ from openbabel import openbabel
 from openbabel import pybel
 
 from tqdm import tqdm
+import collections
 
 # Own module
 import config
@@ -302,6 +303,44 @@ def wrap_results(wrapper, RESULTS, RNA_nucleotides, fingerprint_length, wrapper_
 
     return WRAP_RESULTS
 
+def ligands_coords_atom_index_dict(mols):
+    """For the debug mode only; creates a dictionary of dictionaries - each ligand's name and the dictionary of its coords with their atom indices as values
+
+    :param mols: list of Pybel-parsed ligands' objects
+    :type mole: list
+    :return: dictionary indexed by ligand name, with the coords as subdictionary keys and their atom indices as values
+    :rtype: dict
+    """
+
+    dictionary = {}
+
+    for i in range(len(mols)):
+
+        name = get_ligand_name_pose(dictionary, mols[i].title)
+        dictionary[name] = {} # {'prefix^pose':[[sublist of acceptors coords],[sublist of tuples donor-H coords]]}
+
+        for atom in mols[i]:
+            dictionary[name][atom.coords] = atom.idx
+
+    return dictionary
+
+def rna_coords_atom_index_dict(structure):
+    """For the debug mode only; creates a dictionary or nucleic acid's atoms' coords with their atom ids as values
+
+    :param structure: nucleic acid structure object
+    :type structure: pybel.Molecule
+    :return: dictionary indexed by nucleic acid's atoms' coords, with their atom ids as values
+    :rtype: dict
+    """
+
+    dictionary = {}
+
+    for residue in openbabel.OBResidueIter(structure.OBMol):
+        for atom in openbabel.OBResidueAtomIter(residue):
+            dictionary[(atom.GetX(), atom.GetY(), atom.GetZ())] = atom.GetResidue().GetAtomID(atom).strip()
+
+    return dictionary
+
 def find_ligands_HBA_HBD(mols, verbose):
     """Finds all donors/acceptors in all ligands
 
@@ -510,3 +549,196 @@ def check_if_RNA(all_nucleotides):
             raise Exception('Invalid input structure, has both uracil and thymine')
         return True
     return False
+
+def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, arom_ring_ligands_info, debug_dict_ligand,
+RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info, HB_RNA_acc_info, HB_RNA_donor_info,
+HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_info, T_shaped_info, columns):
+    """Prints all collected information in debug mode of SIFt type FULL/XP about ligands/nucleic acid properties and detected interactions.
+
+    :param ligands_hba_hbd: dictionary indexed by ligand name, with the coords od all ligand's hydrogen bonds acceptors & donors
+    :type ligands_hba_hbd: dict
+    :param ligands_HAL: dictionary indexed by ligand name, with the coords od all ligand's halogens & halogen bonds donors
+    :type ligands_HAL: dict
+    :param ligands_CA: dictionary indexed by ligand name, with the coords od all ligand's cations & anions
+    :type ligands_CA: dict
+    :param arom_ring_ligands_info: dictionary indexed by ligand name, with set of indices of atoms building ligand's aromatic rings
+    :type arom_ring_ligands_info: dict
+    :param debug_dict_ligand: dictionary of dictionaries of ligand's atom's coords with their corresponding atom index - {ligand_name : {(x1,y1,z1) : 1, (x2,y2,z2) : 2}}
+    :type debug_dict_ligand: dict
+    :param RNA_HB_acc_don_info: dictionary of dictionaries of nucleic acid's residue's numbers and list of it's HB acceptors & HB donors {chain : {res_no : [[list of HB acceptors][list of HB donors]]}}
+    :type RNA_HB_acc_don_info: dict
+    :param RNA_anion_info: dictionary of dictionaries of nucleic acid's residue's numbers and list of it's Anions {chain : {res_no : [list of Anions]}}
+    :type RNA_anion_info: dict
+    :param arom_RNA_ligands_info: dictionary of dictionaries of nucleic acid's residue's numbers and set of it's aromatic ring's atoms IDs {chain : {res_no : {set of aromatic ring's atoms IDs}}}
+    :type arom_RNA_ligands_info: dict
+    :param HB_RNA_acc_info: all found Hydrogen Bonds where nucleic acid is HB acceptor
+    :type HB_RNA_acc_info: str
+    :param HB_RNA_donor_info: all found Hydrogen Bonds where nucleic acid is HB donor
+    :type HB_RNA_donor_info: str
+    :param HAL_info: all found Halogen Bonds
+    :type HAL_info: str
+    :param Cation_Anion_info: all found Cation-Anion interactions
+    :type Cation_Anion_info: str
+    :param Pi_Cation_info: all found Pi-Cation interactions
+    :type Pi_Cation_info: str
+    :param Pi_Anion_info: all found Pi-Anion interactions
+    :type Pi_Anion_info: str
+    :param Sandwich_Displaced_info: all found Pi-Stacking type Sandwich/Displaced interactions
+    :type Sandwich_Displaced_info: str
+    :param T_shaped_info: all found Pi-Stacking type T-shaped interactions
+    :type T_shaped_info: str
+    :param columns: width of terminal
+    :type columns: int
+    :return: prints debug info
+    :rtype: None
+    """
+
+    print(('*** LIGANDS PROPERTIES ***').center(columns))
+    print()
+    print()
+
+    print(('#'*len('# Acceptors & Donors atom indices #')))
+    print(('# 1. HB ACCEPTORS/DONORS          #'))
+    print(('# Acceptors & Donors atom indices #'))
+    print(('#'*len('# Acceptors & Donors atom indices #')))
+
+    for k in ligands_hba_hbd.keys():
+        print()
+        print('### {} ###'.format(k))
+        print('Acceptors')
+        for c0 in ligands_hba_hbd[k][0]:
+            print(str(debug_dict_ligand[k][c0]), end=" ")
+        print()
+        print('Donors')
+        for c1 in ligands_hba_hbd[k][1]:
+            print(str(debug_dict_ligand[k][c1[0]]), end=" ")
+        print()
+
+    print(('#'*len('# Carbons & Halogens atom indices #')))
+    print(('#       2. HAL DONORS             #'))
+    print(('# Carbons & Halogens atom indices #'))
+    print(('#'*len('# Carbons & Halogens atom indices #')))
+
+    for k in ligands_HAL.keys():
+        print()
+        print('### {} ###'.format(k))
+        for c0 in ligands_HAL[k]:
+            tuple_c = (c0[0][0], c0[0][1], c0[0][2])
+            tuple_h = (c0[1][0], c0[1][1], c0[1][2])
+            print('{}&{}'.format(debug_dict_ligand[k][tuple_c], debug_dict_ligand[k][tuple_h]), end=" ")
+        print()
+
+    print()
+    print(('#'*len('# 3. CATIONS & ANIONS #')))
+    print(('# 3. CATIONS & ANIONS #'))
+    print(('#'*len('# 3. CATIONS & ANIONS #')))
+
+    for k in ligands_CA.keys():
+        print()
+        print('### {} ###'.format(k))
+        print('Cations atom indices')
+        for c0 in ligands_CA[k][0]:
+            print(str(debug_dict_ligand[k][c0]), end=" ", sep=',')
+        print('\nAnion atom indices')
+        for c1 in ligands_CA[k][1]:
+            print(str(debug_dict_ligand[k][c1]), end=" ", sep=',')
+        print()
+
+    print()
+    print(('#'*len("# Indices of ligand's aromatic rings #")))
+    print(('#         4. AROMATIC RINGS          #'))
+    print(("# Indices of ligand's aromatic rings #"))
+    print(('#'*len("# Indices of ligand's aromatic rings #")))
+
+    for key in arom_ring_ligands_info.keys():
+        print()
+        print('### {} ###'.format(key))
+        for el in arom_ring_ligands_info[key]:
+            print(el)
+
+    print()
+    print(('*** NUCLEIC ACID PROPERTIES ***').center(columns))
+    print()
+    print()
+    print(('#'*len('# 1. HB ACCEPTORS/DONORS #')))
+    print(('# 1. HB ACCEPTORS/DONORS #'))
+    print(('#'*len('# 1. HB ACCEPTORS/DONORS #')))
+
+    for ch in RNA_HB_acc_don_info.keys():
+        print()
+        print('@@@ CHAIN {} @@@'.format(ch))
+        for k, v in collections.OrderedDict(sorted(RNA_HB_acc_don_info[ch].items())).items():
+            print()
+            print('### Res {} ###'.format(k))
+            print('Acceptors')
+            for el in v[0]:
+                print('{}'.format(el), end=' ')
+            print('\nDonors')
+            for el in v[1]:
+                print('{}'.format(el), end=' ')
+            print()
+
+    print()
+    print(('#'*len("# IDs of nucleic acid anions #")))
+    print(('#         2. ANIONS          #'))
+    print(('#'*len("# IDs of nucleic acid anions #")))
+    print()
+    print('@@@ CHAIN {} @@@'.format(ch))
+    for k, v in collections.OrderedDict(sorted(RNA_anion_info[ch].items())).items():
+        print()
+        print('### Res {} ###'.format(k))
+        for el in v:
+            print('{}'.format(el), end=' ')
+        print()
+
+    print()
+    print(('#'*len("# IDs of nucleic acid aromatic rings #")))
+    print(('#         3. AROMATIC RINGS          #'))
+    print(('#'*len("# IDs of nucleic acid aromatic rings #")))
+
+    for ch in arom_RNA_ligands_info.keys():
+        print()
+        print('@@@ CHAIN {} @@@'.format(ch))
+        for k, v in collections.OrderedDict(sorted(arom_RNA_ligands_info[ch].items())).items():
+            print()
+            print('### Res {} ###'.format(k))
+            for el in v:
+                print('{}'.format(el))
+
+    print()
+    print()
+    print(('*** DETECTED INTERACTIONS ***').center(columns))
+    print()
+    print()
+    print(('#'*len("# HB - nucleic acid as acceptor #")))
+    print(("# HB - nucleic acid as acceptor #"))
+    print(('#'*len("# HB - nucleic acid as acceptor #")))
+    print((HB_RNA_acc_info))
+    print(('#'*len("# HB - nucleic acid as donor #")))
+    print(("# HB - nucleic acid as donor #"))
+    print(('#'*len("# HB - nucleic acid as donor #")))
+    print((HB_RNA_donor_info))
+    print(('#'*len("# HAL #")))
+    print(("# HAL #"))
+    print(('#'*len("# HAL #")))
+    print(HAL_info)
+    print(('#'*len("# CA #")))
+    print(("# CA #"))
+    print(('#'*len("# CA #")))
+    print(Cation_Anion_info)
+    print(('#'*len("# Pi-Cation #")))
+    print(("# Pi-Cation #"))
+    print(('#'*len("# Pi-Cation #")))
+    print(Pi_Cation_info)
+    print(('#'*len("# Pi-Anion #")))
+    print(("# Pi-Anion #"))
+    print(('#'*len("# Pi-Anion #")))
+    print(Pi_Anion_info)
+    print(('#'*len("# Pi-Stacking: Sandwich/Displaced #")))
+    print(("# Pi-Stacking: Sandwich/Displaced #"))
+    print(('#'*len("# Pi-Stacking: Sandwich/Displaced #")))
+    print(Sandwich_Displaced_info)
+    print(('#'*len("# Pi-Stacking: T-shaped #")))
+    print(("# Pi-Stacking: T-shaped #"))
+    print(('#'*len("# Pi-Stacking: T-shaped #")))
+    print(T_shaped_info)
