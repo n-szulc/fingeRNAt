@@ -475,21 +475,21 @@ Heatmap for SIFt type `XP` with wrapper `Counter` obtained from running `python 
 
 ## Usage examples
 
-		- Calculate SIFt `SIMPLE` and save the output in the user-declared location with the default filename.
+- Calculate SIFt `SIMPLE` and save the output in the user-declared location with the default filename.
 
-		  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o /path/to/my_output/`
+`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o /path/to/my_output/`
 
-		- Calculate SIFt `PBS`, see what is being calculated using verbose mode, and save the output with the default filename in the `outputs` directory together with heatmap.
+- Calculate SIFt `PBS`, see what is being calculated using verbose mode, and save the output with the default filename in the `outputs` directory together with heatmap.
 
-		  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -verbose -vis`
+`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -verbose -vis`
 
-		- Calculate default SIFt `FULL` and save it's output and three wrapped outputs with the default filenames in the in the `outputs` directory.
+- Calculate default SIFt `FULL` and save it's output and three wrapped outputs with the default filenames in the in the `outputs` directory.
 
-		  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper ACUG,PuPy,Counter`
+`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper ACUG,PuPy,Counter`
 
-		- Calculate SIFt `XP` considering Donor-Hydrogen-Acceptor angle calculation (when detecting hydrogen bonds) and save the output, one wrapped output and two heatmaps in the user-declared location with the desired filename.
+- Calculate SIFt `XP` considering Donor-Hydrogen-Acceptor angle calculation (when detecting hydrogen bonds) and save the output, one wrapped output and two heatmaps in the user-declared location with the desired filename.
 
-		  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -dha -o /path/to/my_output/my_filename -vis -wrapper ACUG`
+`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -dha -o /path/to/my_output/my_filename -vis -wrapper ACUG`
 
 ## Graphical User Interface
 
@@ -513,7 +513,7 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 
     1. prints the following properties of each ligand, detected by OpenBabel:
 
-		    * atom indices of hydrogen bonds acceptors & donors
+        * atom indices of hydrogen bonds acceptors & donors
 				* atom indices of halogen bonds donors
 				* atom indices of cations & anions
 				* atom indices of aromatic rings
@@ -524,7 +524,7 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 				* atom IDs of anions
 				* atom IDs of aromatic rings
 
-		3. prints detected interactions for pair of each nucleic acid residue - ligand:
+    3. prints detected interactions for pair of each nucleic acid residue - ligand:
 
 				* atoms creating hydrogen bond with their distance and angle (if flag `-dha` was used), separately for cases when nucleic acid is hydrogen bond acceptor and hydrogen bond donor
 				* atoms creating halogen bond with their distance and angles
@@ -540,7 +540,7 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 
 		**Usage example**
 
-`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -debug`
+    `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -debug`
 
 
 
@@ -551,7 +551,7 @@ Debugging mode may be used with each of four SIFt types and provides the followi
     e.g.
 
     ```
-### 1aju_model1.pdb - molecule_00001^2 first below cutoff dist: 3.5578 ###
+    ### 1aju_model1.pdb - molecule_00001^2 first below cutoff dist: 3.5578 ###
 		between	A:22:P	 7 atom molecule_00001^2
     ```
 
@@ -559,7 +559,7 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 
      **Usage example**
 
-`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -debug`
+    `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -debug`
 
 - `PBS`
 
@@ -568,9 +568,9 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 		e.g.
 
 		```
-### 1aju_model1.pdb - molecule_00001^2 first below cutoff PHOSPHATE GROUP dist: 3.5578 ###
+    ### 1aju_model1.pdb - molecule_00001^2 first below cutoff PHOSPHATE GROUP dist: 3.5578 ###
     between	A:22:P	 7 atom molecule_00001^2
-### 1aju_model1.pdb - molecule_00001^2 first below cutoff SUGAR GROUP dist: 3.7453 ###
+    ### 1aju_model1.pdb - molecule_00001^2 first below cutoff SUGAR GROUP dist: 3.7453 ###
     between	A:22:O5'	 1 atom molecule_00001^2
 		```
 
@@ -581,7 +581,7 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 			**Usage example**
 
 
-`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -debug`
+    `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -debug`
 
 ## Frequently Asked Questions
 
