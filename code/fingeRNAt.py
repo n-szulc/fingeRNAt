@@ -753,6 +753,7 @@ if __name__ == "__main__":
     optional_arguments.add_argument('-o', help='pass output name', metavar='NAME')
     optional_arguments.add_argument('-dha', help='consider Donor-Hydrogen-Acceptor angle in hydrogen bonds calculation', action='store_true')
     optional_arguments.add_argument('-wrapper', help='pass results wrapper types (multiple types possible at once, but have to be comma separated)', metavar='WRAPPER')
+    optional_arguments.add_argument('-print', help='print found interactions on screen', action='store_true')
     optional_arguments.add_argument('-vis', help='make heatmap visualization', action='store_true')
     optional_arguments.add_argument('-verbose', help='provides additional details about calculations performed at the given moment', action='store_true')
     optional_arguments.add_argument('-debug', help='enter debug mode', action='store_true')
@@ -774,6 +775,7 @@ if __name__ == "__main__":
     except AttributeError:
         wrapper = None
 
+    print_flag = args['print']
     visualization = args['vis']
     verbose = args['verbose']
     debug = args['debug']
@@ -1047,6 +1049,22 @@ if __name__ == "__main__":
                 ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint), sep='\t')
             else:
                 ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), sep='\t')
+
+    # Print found interactions on screen
+        if print_flag:
+            interact_names = {'HB': 'Hydrogen Bonds', 'HAL': 'Halogen Bonds', 'CA': 'Cation-Anion', 'Pi_Cation': 'Pi-Cation',
+                              'Pi-Anion': 'Pi-Anion', 'Pi_Stacking':'Pi-Stacking', 'How_many_HB': 'Total Hydrogen Bonds',
+                              'HB_Strong': 'No of strong Hydrogen Bonds', 'HB_Moderate': 'No of moderate Hydrogen Bonds',
+                              'HB_Weak': 'No of weak Hydrogen Bonds', 'How_many_HAL': 'Total Halogen Bonds', 'How_many_CA': 'Total Cation-Anion',
+                              'P':'Phosphate contact', 'B': 'Base contact', 'S':'Sugar contact', 'SIMPLE':'contact'}
+            for index, row in ALL_FINGERPRINTS_DF.iterrows():
+                print('# {} - {} #'.format(filename_RNA.split('/')[-1], index))
+                print()
+                for el in range(len(row)):
+                    if row[el] > 0:
+                        s = DF_COLUMNS[el].split('#')[1:]
+                        print('{}\t{}\t{}'.format(s[0],interact_names[s[1]], row[el]))
+                print()
 
     # Visualize output as heatmap
         if visualization:
