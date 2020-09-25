@@ -512,11 +512,11 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 - `FULL` & `XP`
 
      1. prints the following properties of each ligand, detected by OpenBabel:
-         * atom indices of hydrogen bonds acceptors & donors
-				 * atom indices of halogen bonds donors
-				 * atom indices of cations & anions
-				 * atom indices of aromatic rings
-
+		 	* atom indices of hydrogen bonds acceptors & donors
+		 	* atom indices of halogen bonds donors
+		 	* atom indices of cations & anions
+		 	* atom indices of aromatic rings
+         
      2. prints the following properties for each residue of nucleic acid, detected by OpenBabel:
 
 				* atom IDs of hydrogen bonds acceptors & donors
