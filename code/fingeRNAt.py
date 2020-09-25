@@ -576,7 +576,6 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
     if verbose:
         print("Looking for Pi-interactions...")
 
-
     for i in tqdm(range(len(mols)), disable=(not verbose)):
 
         rings_candidates = mols[i].OBMol.GetSSSR()
@@ -818,7 +817,7 @@ if __name__ == "__main__":
         # Read all ligands
         ligands_mols = list(pybel.readfile(extension_ligand, filename_ligand))
 
-        ### For debug mode ###
+        ############################ For debug mode #########################
 
         if debug:
             # create dicts with atoms coors as keys ant their id as values
@@ -831,7 +830,7 @@ if __name__ == "__main__":
             print(('#'*len(debug_mssg)).center(columns))
             print()
 
-        #########################
+        ####################################################################
 
         # Create ligands all atoms (except hydrogens) dictionary
         ligands_all_atoms = find_ligands_all_atoms(ligands_mols)
@@ -877,7 +876,7 @@ if __name__ == "__main__":
         # Find all RNA rings
         rings_RNA = find_RNA_rings(structure, extension_structure)
 
-        ### For debug mode ###
+        ############################ For debug mode #########################
 
         if debug:
 
@@ -904,7 +903,7 @@ if __name__ == "__main__":
             Sandwich_Displaced_info = ''
             T_shaped_info = ''
 
-        #########################
+        ####################################################################
 
         # Fill the RESULTS dictionary of keys - ligand ids and values - lists of 0
         for ligand_name in ligands_hba_hbd.keys():

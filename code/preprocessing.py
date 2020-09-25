@@ -303,44 +303,6 @@ def wrap_results(wrapper, RESULTS, RNA_nucleotides, fingerprint_length, wrapper_
 
     return WRAP_RESULTS
 
-def ligands_coords_atom_index_dict(mols):
-    """For the debug mode only; creates a dictionary of dictionaries - each ligand's name and the dictionary of its coords with their atom indices as values
-
-    :param mols: list of Pybel-parsed ligands' objects
-    :type mole: list
-    :return: dictionary indexed by ligand name, with the coords as subdictionary keys and their atom indices as values
-    :rtype: dict
-    """
-
-    dictionary = {}
-
-    for i in range(len(mols)):
-
-        name = get_ligand_name_pose(dictionary, mols[i].title)
-        dictionary[name] = {} # {'prefix^pose':[[sublist of acceptors coords],[sublist of tuples donor-H coords]]}
-
-        for atom in mols[i]:
-            dictionary[name][atom.coords] = atom.idx
-
-    return dictionary
-
-def rna_coords_atom_index_dict(structure):
-    """For the debug mode only; creates a dictionary or nucleic acid's atoms' coords with their atom ids as values
-
-    :param structure: nucleic acid structure object
-    :type structure: pybel.Molecule
-    :return: dictionary indexed by nucleic acid's atoms' coords, with their atom ids as values
-    :rtype: dict
-    """
-
-    dictionary = {}
-
-    for residue in openbabel.OBResidueIter(structure.OBMol):
-        for atom in openbabel.OBResidueAtomIter(residue):
-            dictionary[(atom.GetX(), atom.GetY(), atom.GetZ())] = atom.GetResidue().GetAtomID(atom).strip()
-
-    return dictionary
-
 def find_ligands_HBA_HBD(mols, verbose):
     """Finds all donors/acceptors in all ligands
 
@@ -550,6 +512,46 @@ def check_if_RNA(all_nucleotides):
         return True
     return False
 
+########################### FUNCTIONS FOR DEBUG MODE ###########################
+
+def ligands_coords_atom_index_dict(mols):
+    """For the debug mode only; creates a dictionary of dictionaries - each ligand's name and the dictionary of its coords with their atom indices as values
+
+    :param mols: list of Pybel-parsed ligands' objects
+    :type mole: list
+    :return: dictionary indexed by ligand name, with the coords as subdictionary keys and their atom indices as values
+    :rtype: dict
+    """
+
+    dictionary = {}
+
+    for i in range(len(mols)):
+
+        name = get_ligand_name_pose(dictionary, mols[i].title)
+        dictionary[name] = {} # {'prefix^pose':[[sublist of acceptors coords],[sublist of tuples donor-H coords]]}
+
+        for atom in mols[i]:
+            dictionary[name][atom.coords] = atom.idx
+
+    return dictionary
+
+def rna_coords_atom_index_dict(structure):
+    """For the debug mode only; creates a dictionary or nucleic acid's atoms' coords with their atom ids as values
+
+    :param structure: nucleic acid structure object
+    :type structure: pybel.Molecule
+    :return: dictionary indexed by nucleic acid's atoms' coords, with their atom ids as values
+    :rtype: dict
+    """
+
+    dictionary = {}
+
+    for residue in openbabel.OBResidueIter(structure.OBMol):
+        for atom in openbabel.OBResidueAtomIter(residue):
+            dictionary[(atom.GetX(), atom.GetY(), atom.GetZ())] = atom.GetResidue().GetAtomID(atom).strip()
+
+    return dictionary
+
 def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, arom_ring_ligands_info, debug_dict_ligand,
 RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info, HB_RNA_acc_info, HB_RNA_donor_info,
 HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_info, T_shaped_info, columns):
@@ -610,6 +612,7 @@ HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_i
             print(str(debug_dict_ligand[k][c0]), end=" ")
         print()
         print('Donors')
+        # prints atom inedx for each Donor-Hydrogen pair therefore if donor has 2 hydrogens it will be printed twice
         for c1 in ligands_hba_hbd[k][1]:
             print(str(debug_dict_ligand[k][c1[0]]), end=" ")
         print()
@@ -629,17 +632,18 @@ HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_i
         print()
 
     print()
-    print(('#'*len('# 3. CATIONS & ANIONS #')))
-    print(('# 3. CATIONS & ANIONS #'))
-    print(('#'*len('# 3. CATIONS & ANIONS #')))
+    print(('#'*len('# Cations & Anions atom indices #')))
+    print(('# 3. CATIONS & ANIONS           #'))
+    print(('# Cations & Anions atom indices #'))
+    print(('#'*len('# Cations & Anions atom indices #')))
 
     for k in ligands_CA.keys():
         print()
         print('### {} ###'.format(k))
-        print('Cations atom indices')
+        print('Cations')
         for c0 in ligands_CA[k][0]:
             print(str(debug_dict_ligand[k][c0]), end=" ", sep=',')
-        print('\nAnion atom indices')
+        print('\nAnions')
         for c1 in ligands_CA[k][1]:
             print(str(debug_dict_ligand[k][c1]), end=" ", sep=',')
         print()
