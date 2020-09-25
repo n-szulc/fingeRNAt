@@ -516,7 +516,7 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 		* atom indices of halogen bonds donors
 		* atom indices of cations & anions
 		* atom indices of aromatic rings
-         
+
      2. prints the following properties for each residue of nucleic acid:
 		* atom IDs of hydrogen bonds acceptors & donors
 		* atom IDs of anions
@@ -611,6 +611,13 @@ Please note we consider both oxygens from phosphate group (OP1 and OP2) of nucle
 | `Counter`  |  OK |  OK | Does not work |  OK |
 
 Please note  we consider both oxygens from phosphate group (OP1 and OP2) of nucleic acid as negatively charged, therefore fingeRNAt will not consider differently named atoms as anions.
+
+> What happens when I have nucleic acid with two residues with the same number e.g. due to errors in structure?
+
+In case of SIFt types `SIMPLE` and `PBS`, the only difference is that their outputs will have two columns with the same name in output, SIFs will be OK. It will have no influence on their wrapped results though.
+
+However in case of SIFt types `FULL` and `XP`, there will be two columns with the same name but their Pi-interactions may be swapped and their SIFs together with wrapped results may be unreliable.
+
 
 # fingerDISt
 
