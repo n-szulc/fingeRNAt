@@ -5,7 +5,7 @@
 
 fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucleic acids - ligands complexes.
 
-[![CI (conda)](https://github.com/n-szulc/fingeRNAt/workflows/CI%20(conda)/badge.svg?branch=master)](https://github.com/n-szulc/fingeRNAt/actions?query=workflow%3A%22CI+%28conda%29%22)
+[![CI (conda)](https://github.com/n-szulc/fingeRNAt/workflows/CI%20(conda)/badge.svg?branch=master)](https://github.com/n-szulc/fingeRNAt/actions?query=workflow%3A%22CI+%28conda%29%22)[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
@@ -34,6 +34,8 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 	- [Visualization](#visualization)
 	- [Usage examples](#usage-examples)
 	- [Graphical User Interface](#graphical-user-interface)
+	- [Debbuging mode](#debugging-mode)
+	- [Frequently Asked Questions](#frequently-asked-questions)
 - [fingerDISt](#fingerdist)
 	- [Installation](#installation-1)
 	- [Usage](#usage-1)
@@ -45,6 +47,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 		- [Usage examples](#usage-examples-1)
 - [Documentation](#documentation)
 - [Unit test](#unit-test)
+- [Contributors](#contributors)
 - [Feedback](#feedback)
 - [Acknowledgments](#acknowledgments)
 - [How to cite](#how-to-cite)
@@ -152,6 +155,8 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   available types are: `ACUG`, &nbsp;&nbsp;`PuPy`, &nbsp;&nbsp;`Counter`
 
  `[-verbose]` &nbsp;&nbsp;&nbsp;&nbsp; provides additional information about performed calculations at the given moment
+
+ `[-debug]` &nbsp;&nbsp;&nbsp;&nbsp; enters debug mode, see -> [Debbuging mode](#debugging-mode)
 
  `[-h]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; show help message
 
@@ -498,6 +503,112 @@ GUI is user-friendly and has all aforementioned functionalities.
 <img src="docs/README_pics/gui.png" width="600" />
 </p>
 
+## Debugging mode
+
+fingeRNAt has debugging mode in which it prints on screen exhaustive information about detected interactions.
+
+Debugging mode may be used with each of four SIFt types and provides the following information:
+
+- `FULL` & `XP`
+
+    1. prints the following properties of each ligand, detected by OpenBabel:
+		    * atom indices of hydrogen bonds acceptors & donors
+				* atom indices of halogen bonds donors
+				* atom indices of cations & anions
+				* atom indices of aromatic rings
+
+    2. prints the following properties for each residue of nucleic acid, detected by OpenBabel:
+				* atom IDs of hydrogen bonds acceptors & donors
+				* atom IDs of anions
+				* atom IDs of aromatic rings
+
+		3. prints detected interactions for pair of each nucleic acid residue - ligand
+				* atoms creating hydrogen bond with their distance and angle (if flag `-dha` was used), separately for cases when nucleic acid is hydrogen bond acceptor and hydrogen bond donor
+				* atoms creating halogen bond with their distance and angles
+				* atoms creating cation-anion interaction with their distance (note that nucleic acid's atoms are anions)
+				* atoms creating Pi-cation interaction with their distance and angle
+				* atoms creating Pi-anion interaction with their distance and angle (note that ligand's atoms are anions)
+				* atoms creating Pi-stacking interaction type Sandwich/Displaced with their distance, offset and angle
+				* atoms creating Pi-stacking interaction type T-shaped with their distance, offset and angle
+
+    > **_NOTE:_** If run with SIFt type `FULL`, it prints only the first detected interaction of given type between nucleic acid's residue - ligand , as `FULL` stops searching for more  once it detected one such interaction. Therefore we recommend to run debugging mode with SIFt type `XP` to see **all** interactions between given nucleic acid's residue - ligand.
+
+		**Usage example**
+
+	 `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -debug`
+
+
+- `SIMPLE`
+
+    for each detected contact of nucleic acid residue - ligand prints information about atoms IDs and the distance between them
+
+    e.g.
+
+    ```
+		### 1aju_model1.pdb - molecule_00001^2 first below cutoff dist: 3.5578 ###
+		    between	A:22:P	 7 atom molecule_00001^2
+    ```
+
+    > **_NOTE:_** It prints only the first detected pair of atoms in contact, as `SIMPLE` stops searching for more contacts of particular nucleic acid's residue - ligand once it detected one contact.
+
+     **Usage example**
+
+    `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -debug`
+
+- `PBS`
+
+    for each detected contact of nucleic acid residue's group - ligand prints information about atoms IDs and the distance between them
+
+		e.g.
+
+		```
+		### 1aju_model1.pdb - molecule_00001^2 first below cutoff PHOSPHATE GROUP dist: 3.5578 ###
+        between	A:22:P	 7 atom molecule_00001^2
+		### 1aju_model1.pdb - molecule_00001^2 first below cutoff SUGAR GROUP dist: 3.7453 ###
+        between	A:22:O5'	 1 atom molecule_00001^2
+		```
+
+	    > **_NOTE:_** It prints only the first detected pair of atoms in contact, as `PBS` stops searching for more contacts of particular nucleic acid's residue's group - ligand once it detected one contact.
+
+			**Usage example**
+
+			`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -debug`
+
+## Frequently Asked Questions
+
+> **_NOTE:_** What happens when I have a non-canonical nucleotide in my nucleic acid?
+
+* If you have a residue with **only** non-canonical name (all atom names are canonical), e.g. X
+
+|   | `FULL`  | `SIMPLE`  | `PBS`  | `XP`  |
+|:-:|:-:|:-:|:-:|:-:|
+| No wrapper  |  OK |  OK  | OK   |  OK  |
+| `ACUG`  | Omits interaction for residue with non-canonical name  | Omits interaction for residue with non-canonical name  |  Omits interaction for residue with non-canonical name |  Omits interaction for residue with non-canonical name |
+|  `PuPy` |  Omits interaction for residue with non-canonical name | Omits interaction for residue with non-canonical name  |  Omits interaction for residue with non-canonical name |  Omits interaction for residue with non-canonical name |
+| `Counter`  |  OK |  OK | OK  |  OK |
+
+* If you have a residue with canonical name but with non-canonical atom name, e.g. P9
+
+|   | `FULL`  | `SIMPLE`  | `PBS`  | `XP`  |
+|:-:|:-:|:-:|:-:|:-:|
+| No wrapper  |  OK |  OK  | Does not work   |  OK  |
+| `ACUG`  |  OK   | OK  |  Does not work|   OK  |
+|  `PuPy` |   OK  | OK |  Does not work|   OK  |
+| `Counter`  |  OK |  OK | Does not work  |  OK |
+
+Please note, that we consider both oxygens from phosphate group (OP1 and OP2) of nucleic acid as negatively charged, therefore fingeRNAt will not consider differently named atoms as anions.
+
+* If you have a residue with non-canonical name and non-canonical atom name, e.g. P9
+
+|   | `FULL`  | `SIMPLE`  | `PBS`  | `XP`  |
+|:-:|:-:|:-:|:-:|:-:|
+| No wrapper  |  OK |  OK  | Does not work   |  OK  |
+| `ACUG`  |  Omits interaction for residue with non-canonical name | Omits interaction for residue with non-canonical name  |  Does not work |  Omits interaction for residue with non-canonical name |
+|  `PuPy` | Omits interaction for residue with non-canonical name  | Omits interaction for residue with non-canonical name  |  Does not work |  Omits interaction for residue with non-canonical name |
+| `Counter`  |  OK |  OK | Does not work |  OK |
+
+Please note, that we consider both oxygens from phosphate group (OP1 and OP2) of nucleic acid as negatively charged, therefore fingeRNAt will not consider differently named atoms as anions.
+
 # fingerDISt
 
 <img src="docs/README_pics/logo_fingerdist.png" width="300" class="center" />
@@ -547,8 +658,8 @@ fingerDISt accepts the following parameters:
 
 fingerDISt calculates the following Distance Metrics:
 
-* Tanimoto Coefficient
-* Cosine Similarity
+* Tanimoto coefficient
+* Cosine similarity
 * Manhattan
 * Euclidean
 * Square Euclidean
@@ -556,7 +667,7 @@ fingerDISt calculates the following Distance Metrics:
 
 The abovementioned Distance Metrics calculations were implemented based on code [github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py](github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py) under MIT license.
 
-  > **_NOTE:_** **Tanimoto Coefficient works only for SIFs with binary values**, therefore it will  not work neither on input SIFs type XP (holograms) nor on any input SIFs wrapped with Counter wrapper.
+  > **_NOTE:_** **Tanimoto coefficient works only for SIFs with binary values**, therefore it will  not work neither on input SIFs type XP (holograms) nor on any input SIFs wrapped with Counter wrapper.
 
 
 ### Outputs
@@ -585,6 +696,7 @@ Sample output of running `python code/fingerDISt.py -i tests/expected_outputs/1a
 
 `python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_SIMPLE.tsv -m tanimoto -verbose -o my_dir/my_filename`
 
+
 # Documentation
 
 To generate fingeRNAt documentation file using sphinx:
@@ -605,6 +717,14 @@ cd tests
 python fingeRNAt_test.py
 ```
 
+# Contributors
+
+
+Natalia A. Szulc, @n-szulc
+![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen)
+
+Filip Stefaniak, @filipsPL ![](https://img.shields.io/badge/fstefaniak-%40genesilico.pl-brightgreen)
+
 # Feedback
 
 We welcome any feedback, please send an email to Natalia Szulc @n-szulc ![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen)
@@ -621,18 +741,9 @@ Assistance provided by [Open Babel Community](http://openbabel.org) was greatly 
 
 # How to cite
 
-Authors:
-
-Natalia A. Szulc, @n-szulc
-![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen)
-
-Filip Stefaniak, @filipsPL ![](https://img.shields.io/badge/fstefaniak-%40genesilico.pl-brightgreen)
-
-<br />
-
 If you use this software, please cite:
 
-**fingeRNAt - a software for analysis of nucleic acids-ligand complexes. Design and applications.**
+*fingeRNAt - a software for analysis of nucleic acids-ligand complexes. Design and applications.*
 
 Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak
 [in preparation]
