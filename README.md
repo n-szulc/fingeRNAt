@@ -579,7 +579,7 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 
 ## Frequently Asked Questions
 
-> What happens when I have a non-canonical nucleotide in my nucleic acid?
+**What happens when I have a non-canonical nucleotide in my nucleic acid?**
 
 * If you have a residue with **only** non-canonical name (all atom names are canonical), e.g. X
 
@@ -612,7 +612,9 @@ Please note we consider both oxygens from phosphate group (OP1 and OP2) of nucle
 
 Please note  we consider both oxygens from phosphate group (OP1 and OP2) of nucleic acid as negatively charged, therefore fingeRNAt will not consider differently named atoms as anions.
 
-> What happens when I have nucleic acid with two residues with the same number e.g. due to errors in structure?
+---
+
+**What happens when I have nucleic acid with two residues with the same number e.g. due to errors in structure?**
 
 In case of SIFt types `SIMPLE` and `PBS`, the only difference is that their outputs will have two columns with the same name in output, SIFs will be OK. It will have no influence on their wrapped results though.
 
