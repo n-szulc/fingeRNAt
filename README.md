@@ -147,6 +147,9 @@ fingeRNAt accepts the following parameters:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
+`[-print]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print detected interactions for each nucleic acid - ligand complex on screen
+
+
 `[-vis]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional SIFs results heatmap visualization; see -> [Visualization](#Heatmap-visualization)
 
 `[-wrapper]` &nbsp;&nbsp;&nbsp;&nbsp; optional SIFs results wrapper, see -> [Wrappers](#Wrappers)
@@ -156,7 +159,7 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
  `[-verbose]` &nbsp;&nbsp;&nbsp;&nbsp; provides additional information about performed calculations at the given moment
 
- `[-debug]` &nbsp;&nbsp;&nbsp;&nbsp; enters debug mode, see -> [Debbuging mode](#debugging-mode)
+ `[-debug]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; enters debug mode, see -> [Debbuging mode](#debugging-mode)
 
  `[-h]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; show help message
 
@@ -474,6 +477,10 @@ Heatmap for SIFt type `XP` with wrapper `PuPy` obtained from running `python cod
 Heatmap for SIFt type `XP` with wrapper `Counter` obtained from running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -vis -wrapper Counter`
 
 ## Usage examples
+
+- Calculate SIFt `FULL`, print detected interactions on screen and save the output in the default location with the default filename.
+
+`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -print`
 
 - Calculate SIFt `SIMPLE` and save the output in the user-declared location with the default filename.
 
