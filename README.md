@@ -512,17 +512,20 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 - `FULL` & `XP`
 
     1. prints the following properties of each ligand, detected by OpenBabel:
+
 		    * atom indices of hydrogen bonds acceptors & donors
 				* atom indices of halogen bonds donors
 				* atom indices of cations & anions
 				* atom indices of aromatic rings
 
     2. prints the following properties for each residue of nucleic acid, detected by OpenBabel:
+
 				* atom IDs of hydrogen bonds acceptors & donors
 				* atom IDs of anions
 				* atom IDs of aromatic rings
 
-		3. prints detected interactions for pair of each nucleic acid residue - ligand
+		3. prints detected interactions for pair of each nucleic acid residue - ligand:
+
 				* atoms creating hydrogen bond with their distance and angle (if flag `-dha` was used), separately for cases when nucleic acid is hydrogen bond acceptor and hydrogen bond donor
 				* atoms creating halogen bond with their distance and angles
 				* atoms creating cation-anion interaction with their distance (note that nucleic acid's atoms are anions)
@@ -531,11 +534,14 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 				* atoms creating Pi-stacking interaction type Sandwich/Displaced with their distance, offset and angle
 				* atoms creating Pi-stacking interaction type T-shaped with their distance, offset and angle
 
+
     > **_NOTE:_** If run with SIFt type `FULL`, it prints only the first detected interaction of given type between nucleic acid's residue - ligand , as `FULL` stops searching for more  once it detected one such interaction. Therefore we recommend to run debugging mode with SIFt type `XP` to see **all** interactions between given nucleic acid's residue - ligand.
+
 
 		**Usage example**
 
-	 `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -debug`
+`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -debug`
+
 
 
 - `SIMPLE`
@@ -545,15 +551,15 @@ Debugging mode may be used with each of four SIFt types and provides the followi
     e.g.
 
     ```
-		### 1aju_model1.pdb - molecule_00001^2 first below cutoff dist: 3.5578 ###
-		    between	A:22:P	 7 atom molecule_00001^2
+### 1aju_model1.pdb - molecule_00001^2 first below cutoff dist: 3.5578 ###
+		between	A:22:P	 7 atom molecule_00001^2
     ```
 
     > **_NOTE:_** It prints only the first detected pair of atoms in contact, as `SIMPLE` stops searching for more contacts of particular nucleic acid's residue - ligand once it detected one contact.
 
      **Usage example**
 
-    `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -debug`
+`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -debug`
 
 - `PBS`
 
@@ -562,21 +568,24 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 		e.g.
 
 		```
-		### 1aju_model1.pdb - molecule_00001^2 first below cutoff PHOSPHATE GROUP dist: 3.5578 ###
-        between	A:22:P	 7 atom molecule_00001^2
-		### 1aju_model1.pdb - molecule_00001^2 first below cutoff SUGAR GROUP dist: 3.7453 ###
-        between	A:22:O5'	 1 atom molecule_00001^2
+### 1aju_model1.pdb - molecule_00001^2 first below cutoff PHOSPHATE GROUP dist: 3.5578 ###
+    between	A:22:P	 7 atom molecule_00001^2
+### 1aju_model1.pdb - molecule_00001^2 first below cutoff SUGAR GROUP dist: 3.7453 ###
+    between	A:22:O5'	 1 atom molecule_00001^2
 		```
+
 
 	    > **_NOTE:_** It prints only the first detected pair of atoms in contact, as `PBS` stops searching for more contacts of particular nucleic acid's residue's group - ligand once it detected one contact.
 
+
 			**Usage example**
 
-			`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -debug`
+
+`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -debug`
 
 ## Frequently Asked Questions
 
-> **_NOTE:_** What happens when I have a non-canonical nucleotide in my nucleic acid?
+> What happens when I have a non-canonical nucleotide in my nucleic acid?
 
 * If you have a residue with **only** non-canonical name (all atom names are canonical), e.g. X
 
@@ -587,7 +596,7 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 |  `PuPy` |  Omits interaction for residue with non-canonical name | Omits interaction for residue with non-canonical name  |  Omits interaction for residue with non-canonical name |  Omits interaction for residue with non-canonical name |
 | `Counter`  |  OK |  OK | OK  |  OK |
 
-* If you have a residue with canonical name but with non-canonical atom name, e.g. P9
+* If you have a residue with canonical name but with non-canonical atom name e.g. P9
 
 |   | `FULL`  | `SIMPLE`  | `PBS`  | `XP`  |
 |:-:|:-:|:-:|:-:|:-:|
@@ -596,9 +605,9 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 |  `PuPy` |   OK  | OK |  Does not work|   OK  |
 | `Counter`  |  OK |  OK | Does not work  |  OK |
 
-Please note, that we consider both oxygens from phosphate group (OP1 and OP2) of nucleic acid as negatively charged, therefore fingeRNAt will not consider differently named atoms as anions.
+	Please note, that we consider both oxygens from phosphate group (OP1 and OP2) of nucleic acid as negatively charged, therefore fingeRNAt will not consider differently named atoms as anions.
 
-* If you have a residue with non-canonical name and non-canonical atom name, e.g. P9
+* If you have a residue with non-canonical name and non-canonical atom name e.g. P9
 
 |   | `FULL`  | `SIMPLE`  | `PBS`  | `XP`  |
 |:-:|:-:|:-:|:-:|:-:|
@@ -607,7 +616,7 @@ Please note, that we consider both oxygens from phosphate group (OP1 and OP2) of
 |  `PuPy` | Omits interaction for residue with non-canonical name  | Omits interaction for residue with non-canonical name  |  Does not work |  Omits interaction for residue with non-canonical name |
 | `Counter`  |  OK |  OK | Does not work |  OK |
 
-Please note, that we consider both oxygens from phosphate group (OP1 and OP2) of nucleic acid as negatively charged, therefore fingeRNAt will not consider differently named atoms as anions.
+	Please note, that we consider both oxygens from phosphate group (OP1 and OP2) of nucleic acid as negatively charged, therefore fingeRNAt will not consider differently named atoms as anions.
 
 # fingerDISt
 
