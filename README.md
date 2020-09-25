@@ -512,11 +512,10 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 - `FULL` & `XP`
 
      1. prints the following properties of each ligand, detected by OpenBabel:
-
-        * atom indices of hydrogen bonds acceptors & donors
-				* atom indices of halogen bonds donors
-				* atom indices of cations & anions
-				* atom indices of aromatic rings
+         * atom indices of hydrogen bonds acceptors & donors
+				 * atom indices of halogen bonds donors
+				 * atom indices of cations & anions
+				 * atom indices of aromatic rings
 
      2. prints the following properties for each residue of nucleic acid, detected by OpenBabel:
 
@@ -552,7 +551,7 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 
     ```
     ### 1aju_model1.pdb - molecule_00001^2 first below cutoff dist: 3.5578 ###
-		between	A:22:P	 7 atom molecule_00001^2
+		    between	A:22:P	 7 atom molecule_00001^2
     ```
 
     > **_NOTE:_** It prints only the first detected pair of atoms in contact, as `SIMPLE` stops searching for more contacts of particular nucleic acid's residue - ligand once it detected one contact.
@@ -567,19 +566,16 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 
 		e.g.
 
-		```
+    ```
     ### 1aju_model1.pdb - molecule_00001^2 first below cutoff PHOSPHATE GROUP dist: 3.5578 ###
-    between	A:22:P	 7 atom molecule_00001^2
+        between	A:22:P	 7 atom molecule_00001^2
     ### 1aju_model1.pdb - molecule_00001^2 first below cutoff SUGAR GROUP dist: 3.7453 ###
-    between	A:22:O5'	 1 atom molecule_00001^2
+        between	A:22:O5'	 1 atom molecule_00001^2
 		```
-
 
     > **_NOTE:_** It prints only the first detected pair of atoms in contact, as `PBS` stops searching for more contacts of particular nucleic acid's residue's group - ligand once it detected one contact.
 
-
      **Usage example**
-
 
     `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -debug`
 
