@@ -221,6 +221,7 @@ Required dependencies are:
 - numpy  
 - pandas
 - matplotlib
+- rdkit
 - tk
 - sphinx
 
