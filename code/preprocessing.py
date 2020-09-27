@@ -2,6 +2,7 @@ import numpy as np
 
 from openbabel import openbabel
 from openbabel import pybel
+from rdkit import Chem
 
 from tqdm import tqdm
 import collections
@@ -374,7 +375,7 @@ def find_ligands_CA(mols, verbose):
 
     :param mols: list of Pybel-parsed ligands' objects
     :type mole: list
-    :return: dictionary indexed by ligand name, with the coords od all ligand's cations & anions
+    :return: dictionary indexed by ligand name, with the coords of all ligand's cations & anions
     :rtype: dict
     """
 
@@ -400,6 +401,48 @@ def find_ligands_CA(mols, verbose):
         dictionary[name].append(anions)
 
      return dictionary
+
+def findAromaticRingsWithRDKit(sdfFile):
+    """Finds all aromatic rings coords in all ligands using RDKit
+    :param sdfFile: path to a valid sdf file
+    :type sdfFile: str
+    :return: dictionary indexed by ligand name, with the coords of all ligand's aromatic rings
+    :rtype: dict
+    """
+
+    suppl = Chem.SDMolSupplier(sdfFile)
+
+    aromaticRingsDict = {}
+
+    # iterate over molecules
+    for m in suppl:
+        aromaticRingsAtomsCoords = []
+        if m is not None:
+            # get rings
+            ssr = Chem.GetSymmSSSR(m)
+            molTitleTemp = m.GetProp('_Name')
+            molTitle = get_ligand_name_pose(aromaticRingsDict, molTitleTemp)
+
+            for ring in ssr:
+                is_aromatic = True
+                for atom_idx in ring:
+                    # if any atom of the ring is not aromatic...
+                    if not m.GetAtoms()[atom_idx].GetIsAromatic():
+                        is_aromatic = False
+                        break
+
+                if is_aromatic == True:
+                    tempRingCoords = []
+                    for ring_idx, atom_idx in enumerate(ring):
+                        # only aromatic rings here
+                        position = m.GetConformer().GetAtomPosition(atom_idx)
+                        tempRingCoords.append((position.x, position.y, position.z))
+
+                    aromaticRingsAtomsCoords.extend([tempRingCoords])
+
+            aromaticRingsDict[molTitle] = aromaticRingsAtomsCoords
+
+    return aromaticRingsDict
 
 def find_RNA_rings(structure, extension_structure):
     """Finds all aromatic rings in whole nucleic acid
@@ -649,10 +692,10 @@ HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_i
         print()
 
     print()
-    print(('#'*len("# Indices of ligand's aromatic rings #")))
+    print(('#'*len("# Number of ligand's aromatic rings #")))
     print(('#         4. AROMATIC RINGS          #'))
-    print(("# Indices of ligand's aromatic rings #"))
-    print(('#'*len("# Indices of ligand's aromatic rings #")))
+    print(("# Number of ligand's aromatic rings #"))
+    print(('#'*len("# Number of ligand's aromatic rings #")))
 
     for key in arom_ring_ligands_info.keys():
         print()
@@ -726,9 +769,9 @@ HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_i
     print(("# HAL #"))
     print(('#'*len("# HAL #")))
     print(HAL_info)
-    print(('#'*len("# CA #")))
-    print(("# CA #"))
-    print(('#'*len("# CA #")))
+    print(('#'*len("# AC #")))
+    print(("# AC #"))
+    print(('#'*len("# AC #")))
     print(Cation_Anion_info)
     print(('#'*len("# Pi-Cation #")))
     print(("# Pi-Cation #"))

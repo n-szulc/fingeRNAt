@@ -33,10 +33,8 @@ from preprocessing import measure_distance, check_distance, vector, calculate_an
 from preprocessing import calculate_planar, centroid, get_ligand_name_pose, projection, find_ligands_all_atoms
 from preprocessing import assign_interactions_results, wrap_results, find_ligands_HBA_HBD, find_ligands_HAL_don
 from preprocessing import find_ligands_CA, find_RNA_rings, find_RNA_HB_HAL_acc_don, find_RNA_anions, check_if_RNA
-from preprocessing import rna_coords_atom_index_dict, ligands_coords_atom_index_dict, print_debug_info
+from preprocessing import findAromaticRingsWithRDKit, rna_coords_atom_index_dict, ligands_coords_atom_index_dict, print_debug_info
 
-
-#Sandwich_Displaced_info = ''
 
 ##################################################
 #  FUNCTIONS CALCULATING MOLECULAR INTERACTIONS  #
@@ -209,7 +207,7 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
 
     for RNA_acceptor_set in acceptors_RNA:
 
-        RNA_acc = RNA_acceptor_set[0] # We do not need coords of acceptor's neighobours
+        RNA_acc = RNA_acceptor_set[0] # We do not need coords of acceptor's neighbours
 
         if searching_flag:
             RNA_acc_coords = np.array([RNA_acc.GetX(), RNA_acc.GetY(), RNA_acc.GetZ()])
@@ -566,32 +564,11 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
         :rtype: list
        """
 
-    ######################################################
-    #  Create dictionary of all ligands' aromatic rings  #
-    ######################################################
+    #################################################################
+    #  Create dictionary of all ligands' aromatic rings with RDKit  #
+    ################################################################
 
-    mols = list(pybel.readfile(extension_ligand, filename_ligand))
-    all_ligands_rings_dict= {}
-
-    if verbose:
-        print("Looking for Pi-interactions...")
-
-    for i in tqdm(range(len(mols)), disable=(not verbose)):
-
-        rings_candidates = mols[i].OBMol.GetSSSR()
-
-        name = get_ligand_name_pose(all_ligands_rings_dict, mols[i].title)
-
-        all_ligands_rings_dict[name]=[] # {'prefix^pose':[[aromatic ring,[its atoms coords]]]}
-        rings = []
-        all_atoms = mols[i].atoms
-
-        for ring in rings_candidates:
-            if ring.IsAromatic():
-                ring_atoms = [a for a in all_atoms if ring.IsMember(a.OBAtom)]
-                rings.append([ring,ring_atoms])
-
-        all_ligands_rings_dict[name].extend(rings)
+    all_ligands_rings_dict  = findAromaticRingsWithRDKit(filename_ligand)
 
     #########################################
     #  Common part for all Pi-interactions  #
@@ -661,27 +638,24 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
         ########################################
 
         for ligand_name in all_ligands_rings_dict.keys():
+            #print(ligand_name)
 
             results[2].append([ligand_name,  str(residue.GetNum()) + ':' + str(residue.GetChain()), 0])
 
-            ligand_rings = all_ligands_rings_dict[ligand_name] # Take list of ligand's aromatic rings & their atoms as Pybel Atom objects
+            ligand_rings = all_ligands_rings_dict[ligand_name] # Take list of ligand's aromatic rings atoms coords
 
             if debug:
                 global arom_ring_ligands_info
-                if ligand_name not in arom_ring_ligands_info.keys():
-                    arom_ring_ligands_info[ligand_name] = set()
+                arom_ring_ligands_info[ligand_name] = str(len(all_ligands_rings_dict[ligand_name]))
 
             for aring in ligand_rings:
 
-                ring_atoms_ligand = aring[1]
-                atoms_creating_planar_space_ligand = np.array([ring_atoms_ligand[0].coords,ring_atoms_ligand[1].coords,ring_atoms_ligand[2].coords], dtype=np.longdouble) # Add 3 atoms (we do not need more) from ring to calculate planar
+                ring_atoms_ligand = aring
+                atoms_creating_planar_space_ligand = np.array([ring_atoms_ligand[0],ring_atoms_ligand[1],ring_atoms_ligand[2]], dtype=np.longdouble) # Add 3 atoms (we do not need more) from ring to calculate planar
                 planar_ligand = calculate_planar(atoms_creating_planar_space_ligand)
-                ring_center_ligand = centroid([ra.coords for ra in ring_atoms_ligand])
+                ring_center_ligand = centroid([ra for ra in ring_atoms_ligand])
                 centroid_distance = measure_distance(ring_center_RNA,ring_center_ligand) # Measure ring - ring distance
                 planar_angle = calculate_angle(planar_RNA,planar_ligand)
-
-                if debug:
-                    arom_ring_ligands_info[ligand_name].add(' '.join([str(debug_dict_ligand[ligand_name][ring_atoms_ligand[i].coords]) for i in range(len(ring_atoms_ligand))]) + '\n')
 
                 # Calculate aromatic rings' center offset (project each ring center into the other ring)
                 proj1 = projection(planar_ligand, ring_center_ligand, ring_center_RNA)
@@ -700,7 +674,7 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
                             global Sandwich_Displaced_info
                             Sandwich_Displaced_info += '***\n'
                             Sandwich_Displaced_info += "{} - {}\nrings center dist: {}; rings offset: {}; rings planars angle: {}\n".format(filename_RNA.split('/')[-1], ligand_name, round(centroid_distance, 4), round(offset, 4), round(planar_angle, 4))
-                            Sandwich_Displaced_info += '{}:{}:{}\t{} atoms of {}\n'.format(residue.GetChain(), residue.GetNum(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]), ','.join([str(debug_dict_ligand[ligand_name][ring_atoms_ligand[i].coords]) for i in range(len(ring_atoms_ligand))]), ligand_name)
+                            Sandwich_Displaced_info += '{}:{}:{}\t{} atoms of {}\n'.format(residue.GetChain(), residue.GetNum(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]), ring_atoms_ligand, ligand_name)
 
                     elif abs(config.PLANAR_ANGLE_TSHAPED - planar_angle) < config.PLANAR_ANGLE_TSHAPED_DEV: # T-shaped Pi-stacking interaction
                         results[2][-1][-1] = 1
@@ -709,7 +683,7 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
                             global T_shaped_info
                             T_shaped_info += '***\n'
                             T_shaped_info += "{} - {}\nrings center dist: {}; rings offset: {}; rings planars angle: {}\n".format(filename_RNA.split('/')[-1], ligand_name, round(centroid_distance, 4), round(offset, 4), round(planar_angle, 4))
-                            T_shaped_info += '{}:{}:{}\t{} atoms of {}\n'.format(residue.GetChain(), residue.GetNum(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]), ','.join([str(debug_dict_ligand[ligand_name][ring_atoms_ligand[i].coords]) for i in range(len(ring_atoms_ligand))]), ligand_name)
+                            T_shaped_info += '{}:{}:{}\t{} atoms of {}\n'.format(residue.GetChain(), residue.GetNum(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]), ring_atoms_ligand, ligand_name)
 
                     else:
                         continue
@@ -822,7 +796,7 @@ if __name__ == "__main__":
         ############################ For debug mode #########################
 
         if debug:
-            # create dicts with atoms coors as keys ant their id as values
+            # Create dicts with atoms' coords as keys and their indices as values
             debug_dict_rna = rna_coords_atom_index_dict(structure)
             debug_dict_ligand = ligands_coords_atom_index_dict(ligands_mols)
 
@@ -882,7 +856,7 @@ if __name__ == "__main__":
 
         if debug:
 
-            # create dicts with atoms coors as keys ant their id as values
+            # Create dicts with atoms' coords as keys and their indices as values
             debug_dict_rna = rna_coords_atom_index_dict(structure)
             debug_dict_ligand = ligands_coords_atom_index_dict(ligands_mols)
 
@@ -1052,10 +1026,10 @@ if __name__ == "__main__":
 
     # Print found interactions on screen
         if print_flag:
-            interact_names = {'HB': 'Hydrogen Bonds', 'HAL': 'Halogen Bonds', 'CA': 'Cation-Anion', 'Pi_Cation': 'Pi-Cation',
+            interact_names = {'HB': 'Hydrogen Bonds', 'HAL': 'Halogen Bonds', 'AC': 'Anion-Cation', 'Pi_Cation': 'Pi-Cation',
                               'Pi-Anion': 'Pi-Anion', 'Pi_Stacking':'Pi-Stacking', 'How_many_HB': 'Total Hydrogen Bonds',
                               'HB_Strong': 'No of strong Hydrogen Bonds', 'HB_Moderate': 'No of moderate Hydrogen Bonds',
-                              'HB_Weak': 'No of weak Hydrogen Bonds', 'How_many_HAL': 'Total Halogen Bonds', 'How_many_CA': 'Total Cation-Anion',
+                              'HB_Weak': 'No of weak Hydrogen Bonds', 'How_many_HAL': 'Total Halogen Bonds', 'How_many_AC': 'Total Anion-Cation',
                               'P':'Phosphate contact', 'B': 'Base contact', 'S':'Sugar contact', 'SIMPLE':'contact'}
             for index, row in ALL_FINGERPRINTS_DF.iterrows():
                 print('# {} - {} #'.format(filename_RNA.split('/')[-1], index))
@@ -1065,6 +1039,7 @@ if __name__ == "__main__":
                         s = DF_COLUMNS[el].split('#')[1:]
                         print('{}\t{}\t{}'.format(s[0],interact_names[s[1]], row[el]))
                 print()
+            print_flag = False
 
     # Visualize output as heatmap
         if visualization:
