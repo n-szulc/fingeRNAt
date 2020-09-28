@@ -1,30 +1,20 @@
 <img src="docs/README_pics/logo_fingernat.png" width="500" class="center" />
 
 
-# Welcome to fingeRNAt's README
+Welcome to fingeRNAt's README
+===================
 
 fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucleic acids - ligands complexes.
 
 [![CI (conda)](https://github.com/n-szulc/fingeRNAt/workflows/CI%20(conda)/badge.svg?branch=master)](https://github.com/n-szulc/fingeRNAt/actions?query=workflow%3A%22CI+%28conda%29%22)[![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-360/)[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
-
+<!-- TOC START min:1 max:6 link:true asterisk:false update:true -->
 - [Overview](#overview)
-- [Detection of interactions](#detection-of-interactions)
-	- [Nucleic acid properties](#nucleic-acid-properties)
-	- [Ligand properties](#ligand-properties)
-	- [Molecular interactions' geometric rules](#molecular-interactions-geometric-rules)
-		- [1. Hydrogen Bonds](#1-hydrogen-bonds)
-		- [2. Halogen Bonds](#2-halogen-bonds)
-		- [3. Cation - Anion](#3-cation---anion)
-		- [4. Pi - Cation and 5. Pi - Anion](#4-pi---cation-and-5-pi---anion)
-		- [6. Pi - Stacking](#6-pi---stacking)
-	- [Warnings](#warnings)
 - [Installation](#installation)
-	- [Recommended installation instructions](#recommended-installation-instructions)
+	- [Recommended method](#recommended-method)
 	- [Manual installation](#manual-installation)
 - [Usage](#usage)
-	- [Quick start](#quick-start)
+	- [Quick start :zap:](#quick-start-zap)
 	- [Parameters description](#parameters-description)
 	- [Inputs](#inputs)
 	- [Structural Interaction Fingerprints' (SIFs) types](#structural-interaction-fingerprints-sifs-types)
@@ -38,26 +28,37 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 	- [Visualization](#visualization)
 	- [Usage examples](#usage-examples)
 	- [Graphical User Interface](#graphical-user-interface)
-	- [Debbuging mode](#debugging-mode)
+	- [Debugging mode](#debugging-mode)
+	- [Warnings/Errors](#warningserrors)
 - [Frequently Asked Questions](#frequently-asked-questions)
 - [fingerDISt](#fingerdist)
 	- [Installation](#installation-1)
 	- [Usage](#usage-1)
-		- [Quick start](#quick-start-1)
+		- [Quick start :zap:](#quick-start-zap-1)
 		- [Parameters description](#parameters-description-1)
 		- [Inputs](#inputs-1)
-		- [Distance Metrics](distance-metrics)
+		- [Distance Metrics](#distance-metrics)
 		- [Outputs](#outputs-1)
 		- [Usage examples](#usage-examples-1)
 - [Documentation](#documentation)
 - [Unit test](#unit-test)
+- [Detection of interactions](#detection-of-interactions)
+	- [Nucleic acid properties](#nucleic-acid-properties)
+	- [Ligand properties](#ligand-properties)
+	- [Molecular Interactions' Geometric Rules](#molecular-interactions-geometric-rules)
+		- [1. Hydrogen Bonds](#1-hydrogen-bonds)
+		- [2. Halogen Bonds](#2-halogen-bonds)
+		- [3. Cation - Anion](#3-cation---anion)
+		- [4. Pi - Cation and 5. Pi - Anion](#4-pi---cation-and-5-pi---anion)
+		- [6. Pi - Stacking](#6-pi---stacking)
 - [Contributors](#contributors)
 - [Feedback](#feedback)
 - [Acknowledgments](#acknowledgments)
 - [How to cite](#how-to-cite)
 - [License](#license)
+<!-- TOC END -->
 
-<!-- /TOC -->
+
 
 # Overview
 
@@ -81,122 +82,11 @@ fingeRNAt calculates different non-covalent interactions between input RNA/DNA s
 
 fingeRNAt runs under Python 3.5 - 3.8 on Linux, Mac OS and Windows.
 
-
-# Detection of interactions
-
-## Nucleic acid properties
-
-The nucleic acid's detected properties are as follows:
-
-* Hydrogen Bonds Acceptors & Donors - detected with OpenBabel
-* Halogen Bonds Acceptors - detected with OpenBabel (same as Hydrogen Bonds Acceptors)
-* Negative charges - assigned to *both* oxygens (OP1 & OP2) of each residue's phosphate group
-* Aromatic rings - - detected with OpenBabel
-
-## Ligand properties
-
-The ligand's detected properties are as follows:
-
-* Hydrogen Bonds Acceptors & Donors - detected with OpenBabel
-* Halogen Bonds Donors - detected with OpenBabel
-* Positive & Negative charges - detected with OpenBabel
-* Aromatic rings - detected with RDKit
-
-## Molecular Interactions' Geometric Rules
-
-Inspired by [PLIP](https://github.com/pharmai/plip) implementation.
-
-### 1. Hydrogen Bonds
-
-<img src="docs/README_pics/hb.png" width="250" alt="Torshin, Weber, & Harrison, 2002" />
-
-
-**Geometric rules:**
-
-- |D - A| < 3.9 &#8491;
-
-> **_NOTE:_**
-If hydrogens are present in DNA/RNA structure and in ligand, fingeRNAt can be run with flag `-dha`, that additionaly calculates Donor-Hydrogen-Acceptor angle  used as supplementary criteria in hydrogen bonds detection:&nbsp;&nbsp;&nbsp;&nbsp;
-  100&deg; <   D-H-A angle < 260&deg; <br/>
-  Applies only to `FULL`/`XP` SIFt type, as `SIMPLE` & `PBS` do not calculate hydrogen bonds.
-
-
-(*Torshin, Weber, & Harrison*, 2002)
-
-In case of `XP` hologram, there is additional assignment of each hydrogen bond type. Depending on Donor - Acceptor distance, each hydrogen bond can be assigned as strong/moderate/weak.
-
-- 2.2 &#8491; < |D - A| < 2.5 &#8491;: strong
-- 2.5 &#8491; < |D - A| < 3.5 &#8491;: moderate, mostly electrostatic
-- 3.5 &#8491; < |D - A| < 4.0 &#8491;: weak, electrostatic
-
-(*Jeffrey*, 1997)
-
-### 2. Halogen Bonds
-
-<img src="docs/README_pics/hal.png" width="300" alt="Auffinger et al., 2004" />
-
-
-**Geometric rules:**
-
-
-- |X - O| < 4.0 &#8491;
-- C-X-O angle ~ 165&deg; &#177; 30&deg;
-- X-O-Y angle ~ 120&deg; &#177; 30&deg;
-
-(*Auffinger et al.*, 2004)
-
-### 3. Cation - Anion
-
-<img src="docs/README_pics/ca.png" width="200" alt="Barlow and Thornton, 1983" />
-
-
-
-**Geometric rule:**
-
-- 0.5 &#8491; < |cation - anion| < 5.5 &#8491;
-
-(*Barlow and Thornton*, 1983)
-
-    > **_NOTE:_** We consider both oxygens from phosphate group (OP1 and OP2) of DNA/RNA as negatively charged.
-
-### 4. Pi - Cation and 5. Pi - Anion
-
-<img src="docs/README_pics/pi-ion.png" width="200" alt="Wikimedia Commons, modified" />
-
-
-
-**Geometric rules:**
-
-- |cation/anion - aromatic ring center| < 6.0 &#8491; (*Gallivan and Dougherty*, 1999)
-- angle between the ring plane and the line between cation/anion - ring center ~ 90&deg; &#177; 30&deg;
-
-### 6. Pi - Stacking
-
-<img src="docs/README_pics/pi-stacking.png" width="500" alt="Wikimedia Commons, modified" />
-
-
-
-> **_NOTE:_** All above interactions' types are considered by fingeRNAt.
-
-**Geometric rules:**
-
-Common rules for all Pi - stacking interactions' types:
-
-- |rings' centroids| < 5.5 &#8491; (*McGaughey*, 1998)
-- rings' outset < 2.0 &#8491;
-
-For Sandwich & Parallel - displaced:
-- angle between the ring planes < 30&deg;
-
-For T - shaped:
-- angle between the ring planes ~ 90&deg; &#177; 30&deg;
-
-
 # Installation
 
 Recommended fingeRNAt usage is in conda environment.
 
-## Recommended installation instructions
+## Recommended method
 
 1. Install conda
 
@@ -209,7 +99,7 @@ Recommended fingeRNAt usage is in conda environment.
 
       **or**
 
-      Clone it into the desired location [requires [git](https://git-scm.com/downloads) installation] `git clone https://github.com/n-szulc/fingernat.git`
+      Clone it into the desired location [requires [git](https://git-scm.com/downloads) installation] `git clone --depth=1 https://github.com/n-szulc/fingernat.git`
 
 3. Restore conda environment
 
@@ -231,7 +121,7 @@ Required dependencies are:
 
 # Usage
 
-## Quick start
+## Quick start :zap:
 
 To call fingeRNAt with example inputs:
 
@@ -686,7 +576,7 @@ fingerDISt, similarly like fingeRNAt, requires Python 3.5 - 3.8, and may be run 
 
 ## Usage
 
-### Quick start
+### Quick start :zap:
 
 ```bash
 
@@ -779,6 +669,116 @@ To run a unit test:
 cd tests
 python fingeRNAt_test.py
 ```
+
+# Detection of interactions
+
+## Nucleic acid properties
+
+The nucleic acid's detected properties are as follows:
+
+* Hydrogen Bonds Acceptors & Donors - detected with OpenBabel
+* Halogen Bonds Acceptors - detected with OpenBabel (same as Hydrogen Bonds Acceptors)
+* Negative charges - assigned to *both* oxygens (OP1 & OP2) of each residue's phosphate group
+* Aromatic rings - - detected with OpenBabel
+
+## Ligand properties
+
+The ligand's detected properties are as follows:
+
+* Hydrogen Bonds Acceptors & Donors - detected with OpenBabel
+* Halogen Bonds Donors - detected with OpenBabel
+* Positive & Negative charges - detected with OpenBabel
+* Aromatic rings - detected with RDKit
+
+## Molecular Interactions' Geometric Rules
+
+Inspired by [PLIP](https://github.com/pharmai/plip) implementation.
+
+### 1. Hydrogen Bonds
+
+<img src="docs/README_pics/hb.png" width="250" alt="Torshin, Weber, & Harrison, 2002" />
+
+
+**Geometric rules:**
+
+- |D - A| < 3.9 &#8491;
+
+> **_NOTE:_**
+If hydrogens are present in DNA/RNA structure and in ligand, fingeRNAt can be run with flag `-dha`, that additionaly calculates Donor-Hydrogen-Acceptor angle  used as supplementary criteria in hydrogen bonds detection:&nbsp;&nbsp;&nbsp;&nbsp;
+  100&deg; <   D-H-A angle < 260&deg; <br/>
+  Applies only to `FULL`/`XP` SIFt type, as `SIMPLE` & `PBS` do not calculate hydrogen bonds.
+
+
+(*Torshin, Weber, & Harrison*, 2002)
+
+In case of `XP` hologram, there is additional assignment of each hydrogen bond type. Depending on Donor - Acceptor distance, each hydrogen bond can be assigned as strong/moderate/weak.
+
+- 2.2 &#8491; < |D - A| < 2.5 &#8491;: strong
+- 2.5 &#8491; < |D - A| < 3.5 &#8491;: moderate, mostly electrostatic
+- 3.5 &#8491; < |D - A| < 4.0 &#8491;: weak, electrostatic
+
+(*Jeffrey*, 1997)
+
+### 2. Halogen Bonds
+
+<img src="docs/README_pics/hal.png" width="300" alt="Auffinger et al., 2004" />
+
+
+**Geometric rules:**
+
+
+- |X - O| < 4.0 &#8491;
+- C-X-O angle ~ 165&deg; &#177; 30&deg;
+- X-O-Y angle ~ 120&deg; &#177; 30&deg;
+
+(*Auffinger et al.*, 2004)
+
+### 3. Cation - Anion
+
+<img src="docs/README_pics/ca.png" width="200" alt="Barlow and Thornton, 1983" />
+
+
+
+**Geometric rule:**
+
+- 0.5 &#8491; < |cation - anion| < 5.5 &#8491;
+
+(*Barlow and Thornton*, 1983)
+
+    > **_NOTE:_** We consider both oxygens from phosphate group (OP1 and OP2) of DNA/RNA as negatively charged.
+
+### 4. Pi - Cation and 5. Pi - Anion
+
+<img src="docs/README_pics/pi-ion.png" width="200" alt="Wikimedia Commons, modified" />
+
+
+
+**Geometric rules:**
+
+- |cation/anion - aromatic ring center| < 6.0 &#8491; (*Gallivan and Dougherty*, 1999)
+- angle between the ring plane and the line between cation/anion - ring center ~ 90&deg; &#177; 30&deg;
+
+### 6. Pi - Stacking
+
+<img src="docs/README_pics/pi-stacking.png" width="500" alt="Wikimedia Commons, modified" />
+
+
+
+> **_NOTE:_** All above interactions' types are considered by fingeRNAt.
+
+**Geometric rules:**
+
+Common rules for all Pi - stacking interactions' types:
+
+- |rings' centroids| < 5.5 &#8491; (*McGaughey*, 1998)
+- rings' outset < 2.0 &#8491;
+
+For Sandwich & Parallel - displaced:
+- angle between the ring planes < 30&deg;
+
+For T - shaped:
+- angle between the ring planes ~ 90&deg; &#177; 30&deg;
+
 
 # Contributors
 
