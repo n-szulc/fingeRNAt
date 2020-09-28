@@ -19,6 +19,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 		- [3. Cation - Anion](#3-cation---anion)
 		- [4. Pi - Cation and 5. Pi - Anion](#4-pi---cation-and-5-pi---anion)
 		- [6. Pi - Stacking](#6-pi---stacking)
+	- [Warnings](#warnings)
 - [Installation](#installation)
 	- [Recommended installation instructions](#recommended-installation-instructions)
 	- [Manual installation](#manual-installation)
@@ -189,6 +190,7 @@ For Sandwich & Parallel - displaced:
 
 For T - shaped:
 - angle between the ring planes ~ 90&deg; &#177; 30&deg;
+
 
 # Installation
 
@@ -610,7 +612,7 @@ Debugging mode may be used with each of four SIFt types and provides the followi
 
     `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -debug`
 
-## Warnings
+## Warnings/Errors
 
 Please pay attention to the following types of errors: **Could not sanitize molecule ending on line ...**. This means that RDKit library used by the fingeRNAt can not properly reat the molecule.
 
