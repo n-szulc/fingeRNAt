@@ -31,7 +31,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 	- [Debugging mode](#debugging-mode)
 	- [Warnings/Errors](#warningserrors)
 - [Frequently Asked Questions](#frequently-asked-questions)
-- [fingerDISt](#fingerdist)
+- [fingerDISt :straight_ruler:](#fingerdist-straight_ruler)
 	- [Installation](#installation-1)
 	- [Usage](#usage-1)
 		- [Quick start :zap:](#quick-start-zap-1)
@@ -566,7 +566,7 @@ In case of SIFt types `SIMPLE` and `PBS`, the only difference is that their outp
 However in case of SIFt types `FULL` and `XP`, there will be two columns with the same name but their Pi-interactions may be swapped and their SIFs together with wrapped results may be unreliable.
 
 
-# fingerDISt
+# fingerDISt :straight_ruler:
 
 <img src="docs/README_pics/logo_fingerdist.png" width="300" class="center" />
 
