@@ -19,6 +19,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 		- [3. Cation - Anion](#3-cation---anion)
 		- [4. Pi - Cation and 5. Pi - Anion](#4-pi---cation-and-5-pi---anion)
 		- [6. Pi - Stacking](#6-pi---stacking)
+	- [Warnings](#warnings)
 - [Installation](#installation)
 	- [Recommended installation instructions](#recommended-installation-instructions)
 	- [Manual installation](#manual-installation)
@@ -88,7 +89,7 @@ The nucleic acid's detected properties are as follows:
 * Hydrogen Bonds Acceptors & Donors - detected with OpenBabel
 * Halogen Bonds Acceptors - detected with OpenBabel (same as Hydrogen Bonds Acceptors)
 * Negative charges - assigned to oxygens (OP1 & OP2) of each residue's phosphate group
-* Aromatic rings - - detected with OpenBabel
+* Aromatic rings - detected with OpenBabel
 
 ## Ligand properties
 
@@ -187,6 +188,24 @@ For Sandwich & Parallel - displaced:
 
 For T - shaped:
 - angle between the ring planes ~ 90&deg; &#177; 30&deg;
+
+## Warnings
+
+Please pay attention to the following types of errors: 
+
+Error: **Could not sanitize molecule ending on line ...**
+
+Error: **non-ring atom ... marked aromatic**
+
+e.g.
+
+```
+[08:46:45] non-ring atom 39 marked aromatic
+[08:46:45] ERROR: Could not sanitize molecule ending on line 168
+[08:46:45] ERROR: non-ring atom 39 marked aromatic
+```
+
+**Solution:** please make sure that the mentioned molecule has a proper aromatic ring representation.
 
 # Installation
 
