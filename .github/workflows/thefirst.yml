@@ -4,11 +4,6 @@ on:
     paths:
     - '**.py'
     - '.github/workflows/thefirst.yml'
-    paths-ignore:
-    - 'README.md'
-    - '.gitignore'
-    - 'docs/'
-
 jobs:
   build:
     strategy:
