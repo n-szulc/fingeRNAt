@@ -5,7 +5,7 @@
 
 fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucleic acids - ligands complexes.
 
-[![CI (conda)](https://github.com/n-szulc/fingeRNAt/workflows/CI%20(conda)/badge.svg?branch=master)](https://github.com/n-szulc/fingeRNAt/actions?query=workflow%3A%22CI+%28conda%29%22)[![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-360/)[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![CI (conda)](https://github.com/n-szulc/fingeRNAt/workflows/CI%20(conda)/badge.svg?branch=master)](https://github.com/n-szulc/fingeRNAt/actions?query=workflow%3A%22CI+%28conda%29%22)[![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-360/)[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
@@ -61,7 +61,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 
 # Overview
 
-fingeRNAt is a Python 3.7 script calculating Structural Interaction Fingerprints (SIFs) in complexes of:
+fingeRNAt is a Python 3.8 script calculating Structural Interaction Fingerprints (SIFs) in complexes of:
 
 | Nucleic acid |Ligand|
 |:---:|:---:|
@@ -79,7 +79,7 @@ fingeRNAt is a Python 3.7 script calculating Structural Interaction Fingerprints
 
 fingeRNAt calculates different non-covalent interactions between input RNA/DNA structure and ligand and returns long binary string describing if particular interaction occurred between given nucleic acid residue and ligand or not.
 
-fingeRNAt runs under Python 3.5 - 3.7 on Linux, Mac OS and Windows.
+fingeRNAt runs under Python 3.5 - 3.8 on Linux, Mac OS and Windows.
 
 
 # Detection of interactions
@@ -220,7 +220,7 @@ Recommended fingeRNAt usage is in conda environment.
 
 Required dependencies are:
 
-- Python 3.7
+- Python 3.8
 - openbabel 3.1.1
 - numpy  
 - pandas
@@ -682,7 +682,7 @@ It calculates the selected Distance Metric for all SIFs vs. all SIFs from input 
 
 ## Installation
 
-fingerDISt, similarly like fingeRNAt, requires Python 3.5 - 3.7, and may be run from within fingeRNAt's environment, but it is not obligatory. No external modules are needed.
+fingerDISt, similarly like fingeRNAt, requires Python 3.5 - 3.8, and may be run from within fingeRNAt's environment, but it is not obligatory. No external modules are needed.
 
 ## Usage
 
