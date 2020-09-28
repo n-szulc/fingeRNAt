@@ -172,7 +172,7 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
 ## Inputs
 
-1. `-r `: path to DNA/RNA structure
+1. `-r `: path to receptor - DNA/RNA structure
     - supported file types: pdb, mol2
     - **only 1 model** of DNA/RNA structure
          - if there are more models, you have to choose only one (e.g. manually delete remaining models)
@@ -180,24 +180,27 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
         - no water, ions, ligands
 
 		**Hydrogens need to be added**
-        - if DNA/RNA structure was obtained from NMR, hydrogens are already there
-        - if DNA/RNA structure was obtained from XR or cryo-EM, hydrogens can be added using e.g. PyMOL, VMD, Chimera.
+
 
 <br />
 
-2. `-l`: path to small molecule ligands **OR** DNA/RNA structure
+2. `-l`: path to ligand - small molecule, DNA/RNA/LNA or protein structure
 	- **small molecule ligands**
-         - supported file types: sdf, mol2, pdb
+         - supported file types: sdf
          - possible multiple poses of ligands in one file
     - **RNA/DNA structure**
-    	- supported file types: pdb, mol2
+    	- supported file types: sdf
     	- possible multiple models of DNA/RNA structure
     	- **only** DNA/RNA chains
         	- no water, ions, ligands
 
-	We recommend protonating ligands prior running analysis, e.g. using OpenBabel.
 
-	All the missing ligands' hydrogens will be automatically added.
+
+**Notes:**
+- Input ligand molecules should have assigned desired protonation state and formal charges.
+- In the receptor molecule, charges on the phosphate groups do not need to be assigned (fingeRNAt always treats OP1 and OP2 atoms as negatively charged anions).
+- Please pay attention to sdf ligand files converted from pdbqt/mol2 files, if the *formal charges* are preserved in the sdf files.
+-	All the missing ligands' hydrogens will be automatically added.
 
 
 ## Structural Interaction Fingerprints' (SIFs) types
@@ -517,7 +520,7 @@ An example:
 - Error: **non-ring atom ... marked aromatic**
   - Solution: please make sure that the mentioned molecule has a proper aromatic ring representation.
 - Error: **Explicit valence for atom # ..., is greater than permitted** (eg., *Explicit valence for atom # 18 O, 3, is greater than permitted*)
-  - Solution: please make sure that the indicated atom(s) have a proper valence number, i.e., they form a correct nuymber of bonds.
+  - Solution: please make sure that the indicated atom(s) have a proper valence number, i.e., they form a correct number of bonds.
 
 # Frequently Asked Questions
 
