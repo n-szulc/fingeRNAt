@@ -720,7 +720,7 @@ if __name__ == "__main__":
 
     required_arguments = parser.add_argument_group('Required arguments')
     required_arguments.add_argument('-r', help='pass RNA/DNA structure in pdb/mol2 format', required=True, metavar='RNA/DNA', default=argparse.SUPPRESS)
-    required_arguments.add_argument('-l', help='pass ligands file in pdb/mol2/sdf format', required=True, metavar='LIGANDS', default=argparse.SUPPRESS)
+    required_arguments.add_argument('-l', help='pass ligands file in sdf format', required=True, metavar='LIGANDS', default=argparse.SUPPRESS)
 
     optional_arguments = parser.add_argument_group('Optional arguments')
     optional_arguments.add_argument('-f', help='pass fingerprint type, available types are SIMPLE, PBS, FULL, XP', default='FULL', metavar='TYPE')
@@ -753,6 +753,12 @@ if __name__ == "__main__":
     visualization = args['vis']
     verbose = args['verbose']
     debug = args['debug']
+
+    if extension_structure not in ['pdb', 'mol2']:
+        raise Exception('RNA/DNA structure has to be in pdb or mol2 format!')
+
+    if extension_ligand != 'sdf':
+        raise Exception("Ligands' structures have to be in sdf format!")
 
     #########################
     #  FINGERPRINT CALLING  #
