@@ -68,10 +68,12 @@ fingeRNAt is a Python 3.7 script calculating Structural Interaction Fingerprints
 | RNA | small molecule ligand |
 | RNA | RNA  |
 | RNA | DNA  |
+| RNA | LNA  |
 | RNA | protein |
 | DNA | small molecule ligand |
 | DNA | DNA  |
 | DNA | RNA  |
+| DNA | LNA  |
 | DNA | protein |
 
 
@@ -88,8 +90,8 @@ The nucleic acid's detected properties are as follows:
 
 * Hydrogen Bonds Acceptors & Donors - detected with OpenBabel
 * Halogen Bonds Acceptors - detected with OpenBabel (same as Hydrogen Bonds Acceptors)
-* Negative charges - assigned to oxygens (OP1 & OP2) of each residue's phosphate group
-* Aromatic rings - detected with OpenBabel
+* Negative charges - assigned to *both* oxygens (OP1 & OP2) of each residue's phosphate group
+* Aromatic rings - - detected with OpenBabel
 
 ## Ligand properties
 
@@ -189,23 +191,6 @@ For Sandwich & Parallel - displaced:
 For T - shaped:
 - angle between the ring planes ~ 90&deg; &#177; 30&deg;
 
-## Warnings
-
-Please pay attention to the following types of errors: 
-
-Error: **Could not sanitize molecule ending on line ...**
-
-Error: **non-ring atom ... marked aromatic**
-
-e.g.
-
-```
-[08:46:45] non-ring atom 39 marked aromatic
-[08:46:45] ERROR: Could not sanitize molecule ending on line 168
-[08:46:45] ERROR: non-ring atom 39 marked aromatic
-```
-
-**Solution:** please make sure that the mentioned molecule has a proper aromatic ring representation.
 
 # Installation
 
@@ -626,6 +611,22 @@ Debugging mode may be used with each of four SIFt types and provides the followi
      **Usage example**
 
     `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -debug`
+
+## Warnings/Errors
+
+Please pay attention to the following types of errors: **Could not sanitize molecule ending on line ...**. This means that RDKit library used by the fingeRNAt can not properly reat the molecule.
+
+An example:
+
+```
+[08:46:45] non-ring atom 39 marked aromatic
+[08:46:45] ERROR: Could not sanitize molecule ending on line 168
+[08:46:45] ERROR: non-ring atom 39 marked aromatic
+```
+
+- Error: **non-ring atom ... marked aromatic**
+  - Solution: please make sure that the mentioned molecule has a proper aromatic ring representation.
+
 
 # Frequently Asked Questions
 

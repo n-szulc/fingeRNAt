@@ -1,11 +1,9 @@
 name: CI (conda)
 on:
   push:
-    paths-ignore:
-    - 'README.md'
-    - '.gitignore'
-    - 'docs/'
-
+    paths:
+    - '**.py'
+    - '.github/workflows/thefirst.yml'
 jobs:
   build:
     strategy:
