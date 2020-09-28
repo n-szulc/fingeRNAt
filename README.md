@@ -516,7 +516,8 @@ An example:
 
 - Error: **non-ring atom ... marked aromatic**
   - Solution: please make sure that the mentioned molecule has a proper aromatic ring representation.
-
+- Error: **Explicit valence for atom # ..., is greater than permitted** (eg., *Explicit valence for atom # 18 O, 3, is greater than permitted*)
+  - Solution: please make sure that the indicated atom(s) have a proper valence number, i.e., they form a correct nuymber of bonds.
 
 # Frequently Asked Questions
 
