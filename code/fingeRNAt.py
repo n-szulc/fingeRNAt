@@ -1032,10 +1032,10 @@ if __name__ == "__main__":
 
     # Print found interactions on screen
         if print_flag:
-            interact_names = {'HB': 'Hydrogen Bonds', 'HAL': 'Halogen Bonds', 'AC': 'Anion-Cation', 'Pi_Cation': 'Pi-Cation',
+            interact_names = {'HB': 'Hydrogen Bonds', 'HAL': 'Halogen Bonds', 'CA': 'Cation-Anion', 'Pi_Cation': 'Pi-Cation',
                               'Pi-Anion': 'Pi-Anion', 'Pi_Stacking':'Pi-Stacking', 'How_many_HB': 'Total Hydrogen Bonds',
                               'HB_Strong': 'No of strong Hydrogen Bonds', 'HB_Moderate': 'No of moderate Hydrogen Bonds',
-                              'HB_Weak': 'No of weak Hydrogen Bonds', 'How_many_HAL': 'Total Halogen Bonds', 'How_many_AC': 'Total Anion-Cation',
+                              'HB_Weak': 'No of weak Hydrogen Bonds', 'How_many_HAL': 'Total Halogen Bonds', 'How_many_CA': 'Total Cation-Anion',
                               'P':'Phosphate contact', 'B': 'Base contact', 'S':'Sugar contact', 'SIMPLE':'contact'}
             for index, row in ALL_FINGERPRINTS_DF.iterrows():
                 print('# {} - {} #'.format(filename_RNA.split('/')[-1], index))

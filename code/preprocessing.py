@@ -697,11 +697,14 @@ HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_i
     print(("# Number of ligand's aromatic rings #"))
     print(('#'*len("# Number of ligand's aromatic rings #")))
 
-    for key in arom_ring_ligands_info.keys():
+    for key in ligands_CA.keys():
         print()
         print('### {} ###'.format(key))
-        for el in arom_ring_ligands_info[key]:
-            print(el)
+        if key not in arom_ring_ligands_info.keys():
+            print('0')
+        else:
+            print(arom_ring_ligands_info[key])
+        print()
 
     print()
     print(('*** NUCLEIC ACID PROPERTIES ***').center(columns))
