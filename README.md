@@ -218,7 +218,7 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 <img src="docs/README_pics/SIFs_merging.png" width="500" />
 </p>
 
-**Fig. 1.** Example of SIFt calculated for six non-covalent interactions between HIV-2 Trans-activation response element (TAR) structure (PDB ID: 1AJU) and imatinib.
+Example of SIFt calculated for six non-covalent interactions between HIV-2 Trans-activation response element (TAR) structure (PDB ID: 1AJU) and imatinib.
 
 <br/>
 
@@ -243,9 +243,15 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
     Calculates the same six non-covalent interactions for each DNA/RNA residue as `FULL`, however it is of no binary type - it **calculates total number of each potential interactions occurrence** (exception: Pi - interactions) for each RNA/DNA  - ligand pair, therefore being an **extra precision hologram**.
 
-    > **_NOTE:_** It returns **total number of potential interactions** between given residue and ligand pair, e.g. if the residue has one hydrogen bond donor and the ligand has two hydrogen bond acceptors (both fulfilling hydrogen bonds geometrical rules), XP will return `2`, despite the fact that one hydrogen bond donor may interact with only one hydrogen bond acceptor.
+    > **_NOTE 1:_** It returns **total number of potential interactions** between given residue and ligand pair, e.g. if the residue has one hydrogen bond acceptor and the ligand has two hydrogen bond donors (both fulfilling hydrogen bonds geometrical rules), XP will return `2`, despite the fact that one hydrogen bond donor may interact with only one hydrogen bond acceptor. The same rule applies to halogen bonds and cation-anion interactions.
 
-    > **_NOTE:_** **It does not calculate total number of potential Pi - interactions** as  both purine's rings are considered separately. If total numbers of Pi - interactions were calculated, interaction between purine and ligand's aromatic ring would be calculated as two independent interactions, which would not be true.
+    <p align="center">
+    <img src="docs/README_pics/xp_explanatory_pic.png" width="600" />
+    </p>
+
+    Residue 22 from 1AJU (magenta) and ligand (cyan). `XP` will return 5 potential hydrogen bonds for this residue-ligand pair.
+
+    > **_NOTE 2:_** **It does not calculate total number of potential Pi - interactions** as  both purine's rings are considered separately. If total numbers of Pi - interactions were calculated, interaction between purine and ligand's aromatic ring would be calculated as two independent interactions, which would not be true.
 
     In case of hydrogen bonds, `XP` not only calculates total number of their potential occurrence in each DNA/RNA - ligand pair, but **also assigns each hydrogen bond to strong/moderate/weak type** and calculates total number of each of them.
 
