@@ -10,6 +10,7 @@ fingeRNAt is a software to calculate Structural Interaction Fingerprints in nucl
 
 <!-- TOC START min:1 max:6 link:true asterisk:false update:true -->
 - [Overview](#overview)
+	- [Why use Structural Interaction Fingerprints?](#why-use-structural-interaction-fingerprints)
 - [Installation](#installation)
 	- [Recommended method](#recommended-method)
 	- [Manual installation](#manual-installation)
@@ -81,6 +82,12 @@ fingeRNAt is a Python 3.8 script calculating Structural Interaction Fingerprints
 fingeRNAt calculates different non-covalent interactions between input RNA/DNA structure and ligand and returns long binary string describing if particular interaction occurred between given nucleic acid residue and ligand or not.
 
 fingeRNAt runs under Python 3.5 - 3.8 on Linux, Mac OS and Windows.
+
+## Why use Structural Interaction Fingerprints?
+
+Structural Interaction Fingerprints (SIFs) translate information about 3D interactions in a target-ligand complex into a string, where the respective bit in the fingerprint is e.g. set to 1 in case of detecting particular interaction, and to 0 otherwise. 
+
+By using (SIFs), **the interactions are represented in a unified fashion, thus allowing for easy computational analysis and comparison**, as they provide a full picture of all interactions within the complex. 
 
 # Installation
 
