@@ -17,7 +17,6 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 <!-- TOC START min:1 max:6 link:true asterisk:false update:true -->
 - [Overview](#overview)
 	- [Why use Structural Interaction Fingerprints?](#why-use-structural-interaction-fingerprints)
-- [Installation](#installation)
 	- [What are Structural Interaction Fingerprints applications?](#what-are-structural-interaction-fingerprints-applications)
 - [Installation](#installation)
 	- [Recommended method](#recommended-method)
