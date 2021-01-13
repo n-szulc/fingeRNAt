@@ -18,6 +18,8 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 - [Overview](#overview)
 	- [Why use Structural Interaction Fingerprints?](#why-use-structural-interaction-fingerprints)
 - [Installation](#installation)
+	- [What are Structural Interaction Fingerprints applications?](#what-are-structural-interaction-fingerprints-applications)
+- [Installation](#installation)
 	- [Recommended method](#recommended-method)
 	- [Manual installation](#manual-installation)
 - [Usage](#usage)
@@ -93,7 +95,13 @@ fingeRNAt runs under Python 3.5 - 3.8 on Linux, Mac OS and Windows.
 
 Structural Interaction Fingerprints (SIFs) translate information about 3D interactions in a target-ligand complex into a string, where the respective bit in the fingerprint is e.g. set to 1 in case of detecting particular interaction, and to 0 otherwise. 
 
-By using (SIFs), **the interactions are represented in a unified fashion, thus allowing for easy computational analysis and comparison**, as they provide a full picture of all interactions within the complex. 
+By using (SIFs), **the interactions are represented in a unified fashion, thus allowing for easy high throughput computational analysis**, as they provide a full picture of all interactions within the complex. 
+
+## What are Structural Interaction Fingerprints applications?
+
+* Machine Learning
+* Clustering
+* Comparison of interaction modes
 
 # Installation
 
