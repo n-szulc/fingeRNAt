@@ -82,8 +82,18 @@ def calculate_SIMPLE(residue, ligand_name, ligand_atoms, centroid_ligand):
                             print('### {} - {} first below cutoff dist: {} ###'.format(filename_RNA.split('/')[-1], ligand_name, np.round(np.linalg.norm(ligand_atom - rna_atom), 4)))
                             print('    between\t{}:{}:{}\t {} atom {}'.format(residue.GetChain(), residue.GetNum(), debug_dict_rna[(rna_atom[0], rna_atom[1], rna_atom[2])], debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])], ligand_name))
 
-                        flag=False
-                        break
+                        if detail:
+                            global detail_list
+                            detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'SIMPLE',
+                            debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])],
+                            ligand_atom[0], ligand_atom[1],  ligand_atom[2],
+                            residue.GetNum(), residue.GetChain(), debug_dict_rna[(rna_atom[0], rna_atom[1], rna_atom[2])],
+                            rna_atom[0], rna_atom[1], rna_atom[2],
+                            np.round(np.linalg.norm(ligand_atom - rna_atom), 4)])
+
+                        if not detail:
+                            flag=False
+                            break
         else:
             break
 
@@ -146,8 +156,18 @@ def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand):
                                     print('### {} - {} first below cutoff {} GROUP dist: {} ###'.format(filename_RNA.split('/')[-1], ligand_name, config.WHICH_GROUP[g], np.round(np.linalg.norm(ligand_atom - rna_atom_coords), 4)))
                                     print('    between\t{}:{}:{}\t {} atom {}'.format(residue.GetChain(), residue.GetNum(), debug_dict_rna[(rna_atom_coords[0], rna_atom_coords[1], rna_atom_coords[2])], debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])], ligand_name))
 
-                                flags[g]=False
-                                break
+                                if detail:
+                                    global detail_list
+                                    detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'PBS',
+                                    debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])],
+                                    ligand_atom[0], ligand_atom[1],  ligand_atom[2],
+                                    residue.GetNum(), residue.GetChain(), debug_dict_rna[(rna_atom_coords[0], rna_atom_coords[1], rna_atom_coords[2])],
+                                    rna_atom_coords[0], rna_atom_coords[1], rna_atom_coords[2],
+                                    np.round(np.linalg.norm(ligand_atom - rna_atom_coords), 4)])
+
+                                if not detail:
+                                    flags[g]=False
+                                    break
 
         if not atom_group_type:
             raise Exception('Unknown atom type %s' %rna_atom_name)
@@ -205,6 +225,9 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
     # Important for 'FULL' fingerprint as we are searching only for the first hydrogen bond
     searching_flag = True
 
+    if detail:
+        global detail_list
+
     for RNA_acceptor_set in acceptors_RNA:
 
         RNA_acc = RNA_acceptor_set[0] # We do not need coords of acceptor's neighbours
@@ -229,7 +252,15 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
                             HB_RNA_acc_info +=('{} acceptor - {} donor\ndist: {}; angle: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4), round(angle, 4)))
                             HB_RNA_acc_info +=('{}:{}:{}\t{} atom of {}\n'.format(RNA_acc.GetResidue().GetChain(), RNA_acc.GetResidue().GetNum(), RNA_acc.GetResidue().GetAtomID(RNA_acc).strip(), debug_dict_ligand[ligand_name][donor[0]], ligand_name))
 
-                        if precision == 'FULL':
+                        if detail:
+                            detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'HB',
+                            debug_dict_ligand[ligand_name][donor[0]],
+                            donor[0][0], donor[0][1],  donor[0][2],
+                            RNA_acc.GetResidue().GetNum(), RNA_acc.GetResidue().GetChain(), RNA_acc.GetResidue().GetAtomID(RNA_acc).strip(),
+                            RNA_acc_coords[0], RNA_acc_coords[1], RNA_acc_coords[2],
+                            dist])
+
+                        if precision == 'FULL' and not detail:
                             searching_flag = False
                             break
         else: break
@@ -237,7 +268,6 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
     if searching_flag:
 
         for RNA_don in donors_RNA:
-
             if searching_flag:
 
                 RNA_don_coords = np.array([RNA_don[0].GetX(), RNA_don[0].GetY(), RNA_don[0].GetZ()])
@@ -262,7 +292,15 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
                                 HB_RNA_donor_info += ('{} donor - {} acceptor\ndist: {}; angle: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4), round(angle, 4)))
                                 HB_RNA_donor_info += ('{}:{}:{}\t{} atom of {}\n'.format(RNA_don[0].GetResidue().GetNum(), RNA_don[0].GetResidue().GetChain(), RNA_don[0].GetResidue().GetAtomID(RNA_don[0]), debug_dict_ligand[ligand_name][acceptor], ligand_name))
 
-                            if precision == 'FULL':
+                            if detail:
+                                detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'HB',
+                                debug_dict_ligand[ligand_name][acceptor],
+                                acceptor[0], acceptor[1],  acceptor[2],
+                                RNA_don[0].GetResidue().GetNum(), RNA_don[0].GetResidue().GetChain(), RNA_don[0].GetResidue().GetAtomID(RNA_don[0]),
+                                RNA_don_coords[0], RNA_don_coords[1], RNA_don_coords[2],
+                                dist])
+
+                            if precision == 'FULL' and not detail:
                                 searching_flag = False
                                 break
 
@@ -319,6 +357,9 @@ def calculate_HB_no_dha(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_
     # Important for 'FULL' fingerprint as we are searching only for the first hydrogen bond
     searching_flag = True
 
+    if detail:
+        global detail_list
+
     for RNA_acceptor_set in acceptors_RNA:
 
         RNA_acc = RNA_acceptor_set[0] # We do not need coords of acceptor's neighbors
@@ -341,7 +382,15 @@ def calculate_HB_no_dha(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_
                         HB_RNA_acc_info += ('{} acceptor - {} donor\ndist: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4)))
                         HB_RNA_acc_info += ('{}:{}:{}\t{} atom of {}\n'.format(RNA_acc.GetResidue().GetChain(), RNA_acc.GetResidue().GetNum(), RNA_acc.GetResidue().GetAtomID(RNA_acc).strip(), debug_dict_ligand[ligand_name][donor[0]], ligand_name))
 
-                    if precision == 'FULL':
+                    if detail:
+                        detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'HB',
+                        debug_dict_ligand[ligand_name][donor[0]],
+                        donor[0][0], donor[0][1],  donor[0][2],
+                        RNA_acc.GetResidue().GetNum(), RNA_acc.GetResidue().GetChain(), RNA_acc.GetResidue().GetAtomID(RNA_acc).strip(),
+                        RNA_acc_coords[0], RNA_acc_coords[1], RNA_acc_coords[2],
+                        dist])
+
+                    if precision == 'FULL' and not detail:
                         searching_flag = False
                         break
         else: break
@@ -366,7 +415,15 @@ def calculate_HB_no_dha(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_
                             HB_RNA_donor_info +=('{} donor - {} acceptor\ndist: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4)))
                             HB_RNA_donor_info +=('{}:{}:{}\t{} atom of {}\n'.format(RNA_don[0].GetResidue().GetNum(), RNA_don[0].GetResidue().GetChain(), RNA_don[0].GetResidue().GetAtomID(RNA_don[0]), debug_dict_ligand[ligand_name][acceptor], ligand_name))
 
-                        if precision == 'FULL':
+                        if detail:
+                            detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'HB',
+                            debug_dict_ligand[ligand_name][acceptor],
+                            acceptor[0], acceptor[1],  acceptor[2],
+                            RNA_don[0].GetResidue().GetNum(), RNA_don[0].GetResidue().GetChain(), RNA_don[0].GetResidue().GetAtomID(RNA_don[0]),
+                            RNA_don_coords[0], RNA_don_coords[1], RNA_don_coords[2],
+                            dist])
+
+                        if precision == 'FULL' and not detail:
                             searching_flag = False
                             break
 
@@ -446,7 +503,8 @@ def calculate_HAL(residue, acceptors_RNA, ligand_name, ligand_donors_coords, pre
                                 if precision == 'XP':
                                     result[-1] += 1
                                 else:
-                                    searching_flag = False # Just found first halogen bond, no need to search further
+                                    if not detail:
+                                        searching_flag = False # Just found first halogen bond, no need to search further
                                     result[-1] = 1
 
                                 if debug:
@@ -454,6 +512,15 @@ def calculate_HAL(residue, acceptors_RNA, ligand_name, ligand_donors_coords, pre
                                     HAL_info += '***\n'
                                     HAL_info += ('{} acceptor - {} donor\ndist: {}; C-X-O angle: {}; X-O-Y angle: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4), round(angle_acc, 4), round(angle_don, 4)))
                                     HAL_info += ('{}:{}:{}\t{} atom of {}\n'.format(RNA_acceptor_set[0].GetResidue().GetChain(), RNA_acceptor_set[0].GetResidue().GetNum(), RNA_acceptor_set[0].GetResidue().GetAtomID(RNA_acceptor_set[0]).strip(), debug_dict_ligand[ligand_name][(donor[0][0], donor[0][1], donor[0][2])], ligand_name))
+
+                                if detail:
+                                    global detail_list
+                                    detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'HAL',
+                                    debug_dict_ligand[ligand_name][(donor[0][0], donor[0][1], donor[0][2])],
+                                    donor[0][0], donor[0][1],  donor[0][2],
+                                    RNA_acceptor_set[0].GetResidue().GetNum(), RNA_acceptor_set[0].GetResidue().GetChain(), RNA_acceptor_set[0].GetResidue().GetAtomID(RNA_acceptor_set[0]).strip(),
+                                    RNA_acc_coords[0], RNA_acc_coords[1], RNA_acc_coords[2],
+                                    dist])
 
                                 # If we found halogen bond for one O-Y pair, there is no need to check angles for another Y of the same O (if O has 2 neighbours)
                                 acc_bond_found = True
@@ -515,13 +582,23 @@ def calculate_CATION_ANION(residue, RNA_anions, ligand_name, ligand_cation_coord
                         Cation_Anion_info += ('{} - {}\ndist: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4)))
                         Cation_Anion_info += ('{}:{}:{}\t{} atom of {}\n'.format(anion.GetResidue().GetChain(), anion.GetResidue().GetNum(), anion.GetResidue().GetAtomID(anion).strip(), debug_dict_ligand[ligand_name][cation], ligand_name))
 
+                    if detail:
+                        global detail_list
+                        detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'CA',
+                        debug_dict_ligand[ligand_name][cation],
+                        cation[0], cation[1],  cation[2],
+                        anion.GetResidue().GetNum(), anion.GetResidue().GetChain(), anion.GetResidue().GetAtomID(anion).strip(),
+                        RNA_anion_coords[0], RNA_anion_coords[1], RNA_anion_coords[2],
+                        dist])
+
                     if precision == 'XP':
                         result[-1]+=1
 
                     else:
                         result[-1]=1
-                        searching_flag = False # Just found first cation-anion interaction, no need to search further
-                        break
+                        if not detail:
+                            searching_flag = False # Just found first cation-anion interaction, no need to search further
+                            break
         else:
             break
 
@@ -576,6 +653,9 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
 
     # There will be 3 results of Pi-interactions: : Pi-cation, Pi-anion, Pi-stacking
     RESULTS = [[],[],[]]
+
+    if detail:
+        global detail_list
 
     # Looping over nucleic acid rings
     for ring in RNA_rings: # Unlike in previous functions, iteration is over all nucleic acid rings
@@ -633,12 +713,23 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
                                     Pi_Anion_info +=("{} - {}\ndist: {}; ring's planar to Anion angle: {}\n".format(filename_RNA.split('/')[-1], ligand_name, round(measure_distance(ion, ring_center_RNA), 4), round(pi_ion_angle, 4)))
                                     Pi_Anion_info +=('{}:{}:{}\t{} atom {}\n'.format(residue.GetChain(), residue.GetNum(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]), debug_dict_ligand[ligand_name][ion], ligand_name))
 
+                            if detail:
+                                if j == 0:
+                                    detail_inter = 'Pi_Cation'
+                                else:
+                                    detail_inter = 'Pi_Anion'
+                                detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], detail_inter,
+                                debug_dict_ligand[ligand_name][ion],
+                                ion[0], ion[1],  ion[2],
+                                residue.GetNum(), residue.GetChain(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]),
+                                ring_center_RNA[0], ring_center_RNA[1], ring_center_RNA[2],
+                                measure_distance(ion, ring_center_RNA)])
+
         ########################################
         #  Calculate Pi-Stacking interactions  #
         ########################################
 
         for ligand_name in all_ligands_rings_dict.keys():
-            #print(ligand_name)
 
             results[2].append([ligand_name,  str(residue.GetNum()) + ':' + str(residue.GetChain()), 0])
 
@@ -675,6 +766,20 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
                             Sandwich_Displaced_info += '***\n'
                             Sandwich_Displaced_info += "{} - {}\nrings center dist: {}; rings offset: {}; rings planars angle: {}\n".format(filename_RNA.split('/')[-1], ligand_name, round(centroid_distance, 4), round(offset, 4), round(planar_angle, 4))
                             Sandwich_Displaced_info += '{}:{}:{}\t{} atoms of {}\n'.format(residue.GetChain(), residue.GetNum(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]), ring_atoms_ligand, ligand_name)
+
+                        if detail:
+                            debug_ligand = ''
+                            for i in range(len(ring_atoms_ligand)):
+                                debug_ligand += str(debug_dict_ligand[ligand_name][ring_atoms_ligand[i]])
+                                if i != len(ring_atoms_ligand)-1:
+                                    debug_ligand += ','
+
+                            detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'Pi_Stacking',
+                            debug_ligand,
+                            ring_center_ligand[0], ring_center_ligand[1],  ring_center_ligand[2],
+                            residue.GetNum(), residue.GetChain(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]),
+                            ring_center_RNA[0], ring_center_RNA[1], ring_center_RNA[2],
+                            centroid_distance])
 
                     elif abs(config.PLANAR_ANGLE_TSHAPED - planar_angle) < config.PLANAR_ANGLE_TSHAPED_DEV: # T-shaped Pi-stacking interaction
                         results[2][-1][-1] = 1
@@ -728,6 +833,7 @@ if __name__ == "__main__":
     optional_arguments.add_argument('-dha', help='consider Donor-Hydrogen-Acceptor angle in hydrogen bonds calculation', action='store_true')
     optional_arguments.add_argument('-wrapper', help='pass results wrapper types (multiple types possible at once, but have to be comma separated)', metavar='WRAPPER')
     optional_arguments.add_argument('-print', help='print found interactions on screen', action='store_true')
+    optional_arguments.add_argument('-detail', help='generate an additional file with detailed data on detected interactions (used for detail visualization)', action='store_true')
     optional_arguments.add_argument('-vis', help='make heatmap visualization', action='store_true')
     optional_arguments.add_argument('-verbose', help='provides additional details about calculations performed at the given moment', action='store_true')
     optional_arguments.add_argument('-debug', help='enter debug mode', action='store_true')
@@ -750,6 +856,7 @@ if __name__ == "__main__":
         wrapper = None
 
     print_flag = args['print']
+    detail = args['detail']
     visualization = args['vis']
     verbose = args['verbose']
     debug = args['debug']
@@ -801,16 +908,17 @@ if __name__ == "__main__":
 
         ############################ For debug mode #########################
 
-        if debug:
+        if debug or detail:
             # Create dicts with atoms' coords as keys and their indices as values
             debug_dict_rna = rna_coords_atom_index_dict(structure)
             debug_dict_ligand = ligands_coords_atom_index_dict(ligands_mols)
-
-            debug_mssg = '# Entering DEBUG MODE of {} #'.format(fingerprint)
-            print(('#'*len(debug_mssg)).center(columns))
-            print((debug_mssg).center(columns))
-            print(('#'*len(debug_mssg)).center(columns))
-            print()
+            detail_list = []
+            if debug:
+                debug_mssg = '# Entering DEBUG MODE of {} #'.format(fingerprint)
+                print(('#'*len(debug_mssg)).center(columns))
+                print((debug_mssg).center(columns))
+                print(('#'*len(debug_mssg)).center(columns))
+                print()
 
         ####################################################################
 
@@ -847,6 +955,37 @@ if __name__ == "__main__":
         for i in range(len(ligands_mols)):
             ligands_mols[i].OBMol.AddHydrogens()
 
+        ############################ For debug mode #########################
+
+        if debug or detail:
+
+            # Create dicts with atoms' coords as keys and their indices as values
+            debug_dict_rna = rna_coords_atom_index_dict(structure)
+            debug_dict_ligand = ligands_coords_atom_index_dict(ligands_mols)
+            detail_list = []
+
+            if debug:
+                debug_mssg = '# Entering DEBUG MODE of {} #'.format(fingerprint)
+                print(('#'*len(debug_mssg)).center(columns))
+                print((debug_mssg).center(columns))
+                print(('#'*len(debug_mssg)).center(columns))
+                print()
+
+                arom_ring_ligands_info = {}
+                RNA_HB_acc_don_info = {}
+                RNA_anion_info = {}
+                arom_RNA_ligands_info = {}
+                HB_RNA_acc_info = ''
+                HB_RNA_donor_info = ''
+                HAL_info = ''
+                Cation_Anion_info = ''
+                Pi_Cation_info = ''
+                Pi_Anion_info = ''
+                Sandwich_Displaced_info = ''
+                T_shaped_info = ''
+
+        ####################################################################
+
         # Create ligands' all atoms dictionary
         ligands_all_atoms = find_ligands_all_atoms(ligands_mols)
         # Create ligands acceptors' & donors' dictionary
@@ -857,35 +996,6 @@ if __name__ == "__main__":
         ligands_CA = find_ligands_CA(ligands_mols, verbose)
         # Find all RNA rings
         rings_RNA = find_RNA_rings(structure, extension_structure)
-
-        ############################ For debug mode #########################
-
-        if debug:
-
-            # Create dicts with atoms' coords as keys and their indices as values
-            debug_dict_rna = rna_coords_atom_index_dict(structure)
-            debug_dict_ligand = ligands_coords_atom_index_dict(ligands_mols)
-
-            debug_mssg = '# Entering DEBUG MODE of {} #'.format(fingerprint)
-            print(('#'*len(debug_mssg)).center(columns))
-            print((debug_mssg).center(columns))
-            print(('#'*len(debug_mssg)).center(columns))
-            print()
-
-            arom_ring_ligands_info = {}
-            RNA_HB_acc_don_info = {}
-            RNA_anion_info = {}
-            arom_RNA_ligands_info = {}
-            HB_RNA_acc_info = ''
-            HB_RNA_donor_info = ''
-            HAL_info = ''
-            Cation_Anion_info = ''
-            Pi_Cation_info = ''
-            Pi_Anion_info = ''
-            Sandwich_Displaced_info = ''
-            T_shaped_info = ''
-
-        ####################################################################
 
         # Fill the RESULTS dictionary of keys - ligand ids and values - lists of 0
         for ligand_name in ligands_hba_hbd.keys():
@@ -1012,6 +1122,13 @@ if __name__ == "__main__":
             for index in DF_INDEXES:
                 ALL_FINGERPRINTS_DF.loc[index] = WRAP_RESULTS[analysis][index]
 
+        if detail:
+            detail_columns = ['Ligand_name', 'Ligand_pose', 'Interaction', 'Ligand_Atom',
+                             'Ligand_X', 'Ligand_Y', 'Ligand_Z',
+                             'Receptor_Number', 'Receptor_Chain', 'Receptor_Atom',
+                             'Receptor_X', 'Receptor_Y', 'Receptor_Z', 'Distance']
+            detail_df = pd.DataFrame(detail_list, columns=detail_columns)
+
         # Save output as tsv
         if output:
             output_proper = output
@@ -1021,7 +1138,11 @@ if __name__ == "__main__":
             else:
                 if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
                     output_proper += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint + '_' + analysis
+
             ALL_FINGERPRINTS_DF.to_csv('%s.tsv' %output_proper, sep='\t')
+            if detail:
+                  detail_save = output + 'detail_' + filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint
+                  detail_df.to_csv('%s.tsv' %detail_save, sep='\t' )
 
         else:
             if not os.path.exists('outputs'): os.makedirs('outputs')
@@ -1029,6 +1150,10 @@ if __name__ == "__main__":
                 ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint), sep='\t')
             else:
                 ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), sep='\t')
+
+            if detail:
+                  detail_save = 'outputs/detail_%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint)
+                  detail_df.to_csv('%s.tsv' %detail_save, sep='\t' )
 
     # Print found interactions on screen
         if print_flag:
