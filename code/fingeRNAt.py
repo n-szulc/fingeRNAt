@@ -1141,7 +1141,7 @@ if __name__ == "__main__":
 
             ALL_FINGERPRINTS_DF.to_csv('%s.tsv' %output_proper, sep='\t')
             if detail:
-                  detail_save = output + 'detail_' + filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint
+                  detail_save = output + 'DETAILED_' + filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint
                   detail_df.to_csv('%s.tsv' %detail_save, sep='\t' )
 
         else:
@@ -1152,7 +1152,7 @@ if __name__ == "__main__":
                 ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), sep='\t')
 
             if detail:
-                  detail_save = 'outputs/detail_%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint)
+                  detail_save = 'outputs/DETAILED_%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint)
                   detail_df.to_csv('%s.tsv' %detail_save, sep='\t' )
 
     # Print found interactions on screen
