@@ -176,6 +176,9 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
 `[-print]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print detected interactions for each nucleic acid - ligand complex on screen
 
+`[-detail]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generate an additional file with detailed data on detected
+                    interactions (used for detail visualization)
+
 
 `[-vis]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional SIFs results heatmap visualization; see -> [Visualization](#Heatmap-visualization)
 
@@ -437,7 +440,11 @@ Heatmap for SIFt type `XP` with wrapper `Counter` obtained from running `python 
 
 `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -verbose -vis`
 
-- Calculate default SIFt `FULL` and save it's output and three wrapped outputs with the default filenames in the in the `outputs` directory.
+- Calculate default SIFt `FULL` and save it's output along with table containing details on each detected interaction with the default filenames in the `outputs` directory.
+
+`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -detail`
+
+- Calculate default SIFt `FULL` and save it's output and three wrapped outputs with the default filenames in the `outputs` directory.
 
 `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper ACUG,PuPy,Counter`
 
