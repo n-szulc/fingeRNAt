@@ -410,13 +410,18 @@ def findAromaticRingsWithRDKit(sdfFile):
     :rtype: dict
     """
 
-    suppl = Chem.SDMolSupplier(sdfFile)
+    suppl = Chem.SDMolSupplier(sdfFile, sanitize=False) # do not sanitize at the beginning, do it later
 
     aromaticRingsDict = {}
 
     # iterate over molecules
     for m in suppl:
         aromaticRingsAtomsCoords = []
+
+        # Ignore Explicit Valence Error - do only a partial sanitization here
+        m.UpdatePropertyCache(strict=False)
+        Chem.SanitizeMol(m,Chem.SanitizeFlags.SANITIZE_FINDRADICALS|Chem.SanitizeFlags.SANITIZE_KEKULIZE|Chem.SanitizeFlags.SANITIZE_SETAROMATICITY|Chem.SanitizeFlags.SANITIZE_SETCONJUGATION|Chem.SanitizeFlags.SANITIZE_SETHYBRIDIZATION|Chem.SanitizeFlags.SANITIZE_SYMMRINGS,catchErrors=True)
+
         if m is not None:
             # get rings
             ssr = Chem.GetSymmSSSR(m)
