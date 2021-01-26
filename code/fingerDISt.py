@@ -21,6 +21,7 @@ import pandas as pd
 import numpy as np
 import shutil
 import DistanceMetrics as DM
+from tqdm import tqdm
 
 np.set_printoptions(suppress=True)
 
@@ -106,7 +107,7 @@ if __name__ == "__main__":
                 raise Exception('Incorrect values for Tanimoto coefficient!')
 
         results = np.zeros((len(fingerprint_matrix),len(fingerprint_matrix)))
-        for i in range(len(fingerprint_matrix)):
+        for i in tqdm(range(len(fingerprint_matrix))):
             for j in range(len(fingerprint_matrix)):
                 cls, method = metric_name_to_function[m]
                 results[i][j] = getattr(cls(0.0001), method)(fingerprint_matrix[i], fingerprint_matrix[j])
