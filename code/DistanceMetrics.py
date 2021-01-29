@@ -83,6 +83,21 @@ class Similarity:
         return max(pq / (p_sum + q_sum - pq), self.e)
 
 
+    def soergel_distance(self, p_vec, q_vec):
+        """
+        This method implements the Soergel distance metric
+        See: https://jcheminf.biomedcentral.com/articles/10.1186/s13321-015-0069-3
+        and: https://chem.libretexts.org/Courses/Intercollegiate_Courses/Cheminformatics_OLCC_(2019)/6%3A_Molecular_Similarity/6.2%3A_Similarity_Coefficients
+        :param p_vec: vector one
+        :param q_vec: vector two
+        :return: the Soergel distance between vector one and two
+        """
+        pq = self.vector_operators.product(p_vec, q_vec)
+        p_sum = self.vector_operators.vec_sum(p_vec)
+        q_sum = self.vector_operators.vec_sum(q_vec)
+        return max( (p_sum + q_sum - 2*pq) / (p_sum + q_sum - pq), self.e)
+
+
     @staticmethod
     def get_key(p_vec, q_vec):
         """

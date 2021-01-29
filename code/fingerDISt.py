@@ -27,7 +27,8 @@ np.set_printoptions(suppress=True)
 
 metric_name_to_function = {'manhattan' : (DM.Similarity, 'manhattan_distance'), 'square_euclidean' : (DM.Similarity, 'square_euclidean_distance'), \
                            'euclidean' : (DM.Similarity, 'euclidean_distance'), 'half_square_euclidean' : (DM.Similarity, 'half_square_euclidean_distance'), \
-                           'cosine_similarity' : (DM.Similarity, 'cosine_similarity'), 'tanimoto' : (DM.Similarity, 'tanimoto_coefficient')}
+                           'cosine_similarity' : (DM.Similarity, 'cosine_similarity'), 'tanimoto' : (DM.Similarity, 'tanimoto_coefficient'), \
+                           'soergel_distance' : (DM.Similarity, 'soergel_distance')}
 
 if __name__ == "__main__":
 
@@ -51,7 +52,7 @@ if __name__ == "__main__":
 
     required_arguments = parser.add_argument_group('Required arguments')
     required_arguments.add_argument('-i', help='pass SIFs in tsv/csv format', required=True, metavar='SIFs', default=argparse.SUPPRESS)
-    required_arguments.add_argument('-m', help='pass types of desired Distance Metrics, available types are: tanimoto, cosine_similarity, manhattan, euclidean, square_euclidean, half_square_euclidean', required=True, metavar='METRICS', default=argparse.SUPPRESS)
+    required_arguments.add_argument('-m', help='pass types of desired Distance Metrics, available types are: tanimoto, cosine_similarity, manhattan, euclidean, square_euclidean, half_square_euclidean, soergel_distance', required=True, metavar='METRICS', default=argparse.SUPPRESS)
 
     optional_arguments = parser.add_argument_group('Optional arguments')
     optional_arguments.add_argument('-o', help='pass output path or name', metavar='NAME')
