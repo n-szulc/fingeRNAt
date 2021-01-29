@@ -80,12 +80,12 @@ def calculate_SIMPLE(residue, ligand_name, ligand_atoms, centroid_ligand):
 
                         if debug:
                             print('### {} - {} first below cutoff dist: {} ###'.format(filename_RNA.split('/')[-1], ligand_name, np.round(np.linalg.norm(ligand_atom - rna_atom), 4)))
-                            print('    between\t{}:{}:{}\t {} atom {}'.format(residue.GetChain(), residue.GetNum(), debug_dict_rna[(rna_atom[0], rna_atom[1], rna_atom[2])], debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])], ligand_name))
+                            print('    between\t{}:{}:{}\t {} atom {}'.format(residue.GetChain(), residue.GetNum(), debug_dict_rna[(rna_atom[0], rna_atom[1], rna_atom[2])], debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])][0], ligand_name))
 
                         if detail:
                             global detail_list
-                            detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'SIMPLE',
-                            debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])],
+                            detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])][1], 'SIMPLE',
+                            debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])][0],
                             ligand_atom[0], ligand_atom[1],  ligand_atom[2],
                             residue.GetNum(), residue.GetChain(), debug_dict_rna[(rna_atom[0], rna_atom[1], rna_atom[2])],
                             rna_atom[0], rna_atom[1], rna_atom[2],
@@ -154,12 +154,12 @@ def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand):
 
                                 if debug:
                                     print('### {} - {} first below cutoff {} GROUP dist: {} ###'.format(filename_RNA.split('/')[-1], ligand_name, config.WHICH_GROUP[g], np.round(np.linalg.norm(ligand_atom - rna_atom_coords), 4)))
-                                    print('    between\t{}:{}:{}\t {} atom {}'.format(residue.GetChain(), residue.GetNum(), debug_dict_rna[(rna_atom_coords[0], rna_atom_coords[1], rna_atom_coords[2])], debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])], ligand_name))
+                                    print('    between\t{}:{}:{}\t {} atom {}'.format(residue.GetChain(), residue.GetNum(), debug_dict_rna[(rna_atom_coords[0], rna_atom_coords[1], rna_atom_coords[2])], debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])][0], ligand_name))
 
                                 if detail:
                                     global detail_list
-                                    detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'PBS',
-                                    debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])],
+                                    detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])][1], 'PBS',
+                                    debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])][0],
                                     ligand_atom[0], ligand_atom[1],  ligand_atom[2],
                                     residue.GetNum(), residue.GetChain(), debug_dict_rna[(rna_atom_coords[0], rna_atom_coords[1], rna_atom_coords[2])],
                                     rna_atom_coords[0], rna_atom_coords[1], rna_atom_coords[2],
@@ -250,11 +250,11 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
                             global HB_RNA_acc_info
                             HB_RNA_acc_info += '***\n'
                             HB_RNA_acc_info +=('{} acceptor - {} donor\ndist: {}; angle: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4), round(angle, 4)))
-                            HB_RNA_acc_info +=('{}:{}:{}\t{} atom of {}\n'.format(RNA_acc.GetResidue().GetChain(), RNA_acc.GetResidue().GetNum(), RNA_acc.GetResidue().GetAtomID(RNA_acc).strip(), debug_dict_ligand[ligand_name][donor[0]], ligand_name))
+                            HB_RNA_acc_info +=('{}:{}:{}\t{} atom of {}\n'.format(RNA_acc.GetResidue().GetChain(), RNA_acc.GetResidue().GetNum(), RNA_acc.GetResidue().GetAtomID(RNA_acc).strip(), debug_dict_ligand[ligand_name][donor[0]][0], ligand_name))
 
                         if detail:
-                            detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'HB',
-                            debug_dict_ligand[ligand_name][donor[0]],
+                            detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][donor[0]][1], 'HB',
+                            debug_dict_ligand[ligand_name][donor[0]][0],
                             donor[0][0], donor[0][1],  donor[0][2],
                             RNA_acc.GetResidue().GetNum(), RNA_acc.GetResidue().GetChain(), RNA_acc.GetResidue().GetAtomID(RNA_acc).strip(),
                             RNA_acc_coords[0], RNA_acc_coords[1], RNA_acc_coords[2],
@@ -290,11 +290,11 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
                                 global HB_RNA_donor_info
                                 HB_RNA_donor_info += '***\n'
                                 HB_RNA_donor_info += ('{} donor - {} acceptor\ndist: {}; angle: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4), round(angle, 4)))
-                                HB_RNA_donor_info += ('{}:{}:{}\t{} atom of {}\n'.format(RNA_don[0].GetResidue().GetNum(), RNA_don[0].GetResidue().GetChain(), RNA_don[0].GetResidue().GetAtomID(RNA_don[0]), debug_dict_ligand[ligand_name][acceptor], ligand_name))
+                                HB_RNA_donor_info += ('{}:{}:{}\t{} atom of {}\n'.format(RNA_don[0].GetResidue().GetNum(), RNA_don[0].GetResidue().GetChain(), RNA_don[0].GetResidue().GetAtomID(RNA_don[0]), debug_dict_ligand[ligand_name][acceptor][0], ligand_name))
 
                             if detail:
-                                detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'HB',
-                                debug_dict_ligand[ligand_name][acceptor],
+                                detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][acceptor][1], 'HB',
+                                debug_dict_ligand[ligand_name][acceptor][0],
                                 acceptor[0], acceptor[1],  acceptor[2],
                                 RNA_don[0].GetResidue().GetNum(), RNA_don[0].GetResidue().GetChain(), RNA_don[0].GetResidue().GetAtomID(RNA_don[0]),
                                 RNA_don_coords[0], RNA_don_coords[1], RNA_don_coords[2],
@@ -380,11 +380,11 @@ def calculate_HB_no_dha(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_
                         global HB_RNA_acc_info
                         HB_RNA_acc_info += '***\n'
                         HB_RNA_acc_info += ('{} acceptor - {} donor\ndist: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4)))
-                        HB_RNA_acc_info += ('{}:{}:{}\t{} atom of {}\n'.format(RNA_acc.GetResidue().GetChain(), RNA_acc.GetResidue().GetNum(), RNA_acc.GetResidue().GetAtomID(RNA_acc).strip(), debug_dict_ligand[ligand_name][donor[0]], ligand_name))
+                        HB_RNA_acc_info += ('{}:{}:{}\t{} atom of {}\n'.format(RNA_acc.GetResidue().GetChain(), RNA_acc.GetResidue().GetNum(), RNA_acc.GetResidue().GetAtomID(RNA_acc).strip(), debug_dict_ligand[ligand_name][donor[0]][0], ligand_name))
 
                     if detail:
-                        detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'HB',
-                        debug_dict_ligand[ligand_name][donor[0]],
+                        detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][donor[0]][1], 'HB',
+                        debug_dict_ligand[ligand_name][donor[0]][0],
                         donor[0][0], donor[0][1],  donor[0][2],
                         RNA_acc.GetResidue().GetNum(), RNA_acc.GetResidue().GetChain(), RNA_acc.GetResidue().GetAtomID(RNA_acc).strip(),
                         RNA_acc_coords[0], RNA_acc_coords[1], RNA_acc_coords[2],
@@ -413,11 +413,11 @@ def calculate_HB_no_dha(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_
                             global HB_RNA_donor_info
                             HB_RNA_donor_info += '***\n'
                             HB_RNA_donor_info +=('{} donor - {} acceptor\ndist: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4)))
-                            HB_RNA_donor_info +=('{}:{}:{}\t{} atom of {}\n'.format(RNA_don[0].GetResidue().GetNum(), RNA_don[0].GetResidue().GetChain(), RNA_don[0].GetResidue().GetAtomID(RNA_don[0]), debug_dict_ligand[ligand_name][acceptor], ligand_name))
+                            HB_RNA_donor_info +=('{}:{}:{}\t{} atom of {}\n'.format(RNA_don[0].GetResidue().GetNum(), RNA_don[0].GetResidue().GetChain(), RNA_don[0].GetResidue().GetAtomID(RNA_don[0]), debug_dict_ligand[ligand_name][acceptor][0], ligand_name))
 
                         if detail:
-                            detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'HB',
-                            debug_dict_ligand[ligand_name][acceptor],
+                            detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][acceptor][1], 'HB',
+                            debug_dict_ligand[ligand_name][acceptor][0],
                             acceptor[0], acceptor[1],  acceptor[2],
                             RNA_don[0].GetResidue().GetNum(), RNA_don[0].GetResidue().GetChain(), RNA_don[0].GetResidue().GetAtomID(RNA_don[0]),
                             RNA_don_coords[0], RNA_don_coords[1], RNA_don_coords[2],
@@ -511,12 +511,12 @@ def calculate_HAL(residue, acceptors_RNA, ligand_name, ligand_donors_coords, pre
                                     global HAL_info
                                     HAL_info += '***\n'
                                     HAL_info += ('{} acceptor - {} donor\ndist: {}; C-X-O angle: {}; X-O-Y angle: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4), round(angle_acc, 4), round(angle_don, 4)))
-                                    HAL_info += ('{}:{}:{}\t{} atom of {}\n'.format(RNA_acceptor_set[0].GetResidue().GetChain(), RNA_acceptor_set[0].GetResidue().GetNum(), RNA_acceptor_set[0].GetResidue().GetAtomID(RNA_acceptor_set[0]).strip(), debug_dict_ligand[ligand_name][(donor[0][0], donor[0][1], donor[0][2])], ligand_name))
+                                    HAL_info += ('{}:{}:{}\t{} atom of {}\n'.format(RNA_acceptor_set[0].GetResidue().GetChain(), RNA_acceptor_set[0].GetResidue().GetNum(), RNA_acceptor_set[0].GetResidue().GetAtomID(RNA_acceptor_set[0]).strip(), debug_dict_ligand[ligand_name][(donor[0][0], donor[0][1], donor[0][2])][0], ligand_name))
 
                                 if detail:
                                     global detail_list
-                                    detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'HAL',
-                                    debug_dict_ligand[ligand_name][(donor[0][0], donor[0][1], donor[0][2])],
+                                    detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][(donor[0][0], donor[0][1], donor[0][2])][1], 'HAL',
+                                    debug_dict_ligand[ligand_name][(donor[0][0], donor[0][1], donor[0][2])][0],
                                     donor[0][0], donor[0][1],  donor[0][2],
                                     RNA_acceptor_set[0].GetResidue().GetNum(), RNA_acceptor_set[0].GetResidue().GetChain(), RNA_acceptor_set[0].GetResidue().GetAtomID(RNA_acceptor_set[0]).strip(),
                                     RNA_acc_coords[0], RNA_acc_coords[1], RNA_acc_coords[2],
@@ -580,12 +580,12 @@ def calculate_CATION_ANION(residue, RNA_anions, ligand_name, ligand_cation_coord
                         global Cation_Anion_info
                         Cation_Anion_info += '***\n'
                         Cation_Anion_info += ('{} - {}\ndist: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4)))
-                        Cation_Anion_info += ('{}:{}:{}\t{} atom of {}\n'.format(anion.GetResidue().GetChain(), anion.GetResidue().GetNum(), anion.GetResidue().GetAtomID(anion).strip(), debug_dict_ligand[ligand_name][cation], ligand_name))
+                        Cation_Anion_info += ('{}:{}:{}\t{} atom of {}\n'.format(anion.GetResidue().GetChain(), anion.GetResidue().GetNum(), anion.GetResidue().GetAtomID(anion).strip(), debug_dict_ligand[ligand_name][cation][0], ligand_name))
 
                     if detail:
                         global detail_list
-                        detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'CA',
-                        debug_dict_ligand[ligand_name][cation],
+                        detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][cation][1], 'CA',
+                        debug_dict_ligand[ligand_name][cation][0],
                         cation[0], cation[1],  cation[2],
                         anion.GetResidue().GetNum(), anion.GetResidue().GetChain(), anion.GetResidue().GetAtomID(anion).strip(),
                         RNA_anion_coords[0], RNA_anion_coords[1], RNA_anion_coords[2],
@@ -706,20 +706,20 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
                                     global Pi_Cation_info
                                     Pi_Cation_info += '***\n'
                                     Pi_Cation_info +=("{} - {}\ndist: {}; ring's planar to Cation angle: {}\n".format(filename_RNA.split('/')[-1], ligand_name, round(measure_distance(ion, ring_center_RNA), 4), round(pi_ion_angle, 4)))
-                                    Pi_Cation_info +=('{}:{}:{}\t{} atom of {}\n'.format(residue.GetChain(), residue.GetNum(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]), debug_dict_ligand[ligand_name][ion], ligand_name))
+                                    Pi_Cation_info +=('{}:{}:{}\t{} atom of {}\n'.format(residue.GetChain(), residue.GetNum(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]), debug_dict_ligand[ligand_name][ion][0], ligand_name))
                                 else:
                                     global Pi_Anion_info
                                     Pi_Anion_info += '***\n'
                                     Pi_Anion_info +=("{} - {}\ndist: {}; ring's planar to Anion angle: {}\n".format(filename_RNA.split('/')[-1], ligand_name, round(measure_distance(ion, ring_center_RNA), 4), round(pi_ion_angle, 4)))
-                                    Pi_Anion_info +=('{}:{}:{}\t{} atom {}\n'.format(residue.GetChain(), residue.GetNum(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]), debug_dict_ligand[ligand_name][ion], ligand_name))
+                                    Pi_Anion_info +=('{}:{}:{}\t{} atom {}\n'.format(residue.GetChain(), residue.GetNum(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]), debug_dict_ligand[ligand_name][ion][0], ligand_name))
 
                             if detail:
                                 if j == 0:
                                     detail_inter = 'Pi_Cation'
                                 else:
                                     detail_inter = 'Pi_Anion'
-                                detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], detail_inter,
-                                debug_dict_ligand[ligand_name][ion],
+                                detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][ion][1], detail_inter,
+                                debug_dict_ligand[ligand_name][ion][0],
                                 ion[0], ion[1],  ion[2],
                                 residue.GetNum(), residue.GetChain(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]),
                                 ring_center_RNA[0], ring_center_RNA[1], ring_center_RNA[2],
@@ -770,11 +770,11 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
                         if detail:
                             debug_ligand = ''
                             for i in range(len(ring_atoms_ligand)):
-                                debug_ligand += str(debug_dict_ligand[ligand_name][ring_atoms_ligand[i]])
+                                debug_ligand += str(debug_dict_ligand[ligand_name][ring_atoms_ligand[i]][0])
                                 if i != len(ring_atoms_ligand)-1:
                                     debug_ligand += ','
 
-                            detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], 'Pi_Stacking',
+                            detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][ring_atoms_ligand[i]][1], 'Pi_Stacking',
                             debug_ligand,
                             ring_center_ligand[0], ring_center_ligand[1],  ring_center_ligand[2],
                             residue.GetNum(), residue.GetChain(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]),
@@ -1123,7 +1123,8 @@ if __name__ == "__main__":
                 ALL_FINGERPRINTS_DF.loc[index] = WRAP_RESULTS[analysis][index]
 
         if detail:
-            detail_columns = ['Ligand_name', 'Ligand_pose', 'Interaction', 'Ligand_Atom',
+            detail_list.sort(key=lambda x: x[2])
+            detail_columns = ['Ligand_name', 'Ligand_pose', 'Ligand_occurrence_in_sdf', 'Interaction', 'Ligand_Atom',
                              'Ligand_X', 'Ligand_Y', 'Ligand_Z',
                              'Receptor_Number', 'Receptor_Chain', 'Receptor_Atom',
                              'Receptor_X', 'Receptor_Y', 'Receptor_Z', 'Distance']
