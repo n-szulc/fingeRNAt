@@ -560,14 +560,14 @@ def check_if_RNA(all_nucleotides):
         return True
     return False
 
-########################### FUNCTIONS FOR DEBUG MODE ###########################
+########################### FUNCTIONS FOR DEBUG/DETAIL MODE ###########################
 
 def ligands_coords_atom_index_dict(mols):
-    """For the debug mode only; creates a dictionary of dictionaries - each ligand's name and the dictionary of its coords with their atom indices as values
+    """For the debug/detail mode only; creates a dictionary of dictionaries - each ligand's name and the dictionary of its coords with their atom indices and number of ligand's occurrence in sdf file as values
 
     :param mols: list of Pybel-parsed ligands' objects
     :type mole: list
-    :return: dictionary indexed by ligand name, with the coords as subdictionary keys and their atom indices as values
+    :return: dictionary indexed by ligand name, with the coords as subdictionary keys and their atom indices and number of ligand's occurrence in sdf file as values
     :rtype: dict
     """
 
@@ -576,15 +576,15 @@ def ligands_coords_atom_index_dict(mols):
     for i in range(len(mols)):
 
         name = get_ligand_name_pose(dictionary, mols[i].title)
-        dictionary[name] = {} # {'prefix^pose':[[sublist of acceptors coords],[sublist of tuples donor-H coords]]}
+        dictionary[name] = {}
 
         for atom in mols[i]:
-            dictionary[name][atom.coords] = atom.idx
+            dictionary[name][atom.coords] = (atom.idx, i+1)
 
     return dictionary
 
 def rna_coords_atom_index_dict(structure):
-    """For the debug mode only; creates a dictionary or nucleic acid's atoms' coords with their atom ids as values
+    """For the debug/detail mode only; creates a dictionary or nucleic acid's atoms' coords with their atom ids as values
 
     :param structure: nucleic acid structure object
     :type structure: pybel.Molecule
