@@ -1142,8 +1142,22 @@ if __name__ == "__main__":
 
             ALL_FINGERPRINTS_DF.to_csv('%s.tsv' %output_proper, sep='\t')
             if detail:
-                  detail_save = output + 'DETAILED_' + filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint
-                  detail_df.to_csv('%s.tsv' %detail_save, sep='\t' )
+                sign=None
+                if '/' in output:
+                    detail_save = output_proper.split('/')
+                    sign = '/'
+                elif '\\' in output:
+                    detail_save = output_proper.split('\\')
+                    sign = '\\'
+                else:
+                    detail_save = output
+                    sign = ''
+                if sign != '':
+                    detail_save[-1] = 'DETAILED_' + detail_save[-1]
+                    detail_save = sign.join(detail_save)
+                else:
+                    detail_save = 'DETAILED_' + detail_save
+                detail_df.to_csv('%s.tsv' %detail_save, sep='\t' )
 
         else:
             if not os.path.exists('outputs'): os.makedirs('outputs')
