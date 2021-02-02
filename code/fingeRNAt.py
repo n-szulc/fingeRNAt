@@ -1141,6 +1141,7 @@ if __name__ == "__main__":
                     output_proper += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint + '_' + analysis
 
             ALL_FINGERPRINTS_DF.to_csv('%s.tsv' %output_proper, sep='\t')
+
             if detail:
                 sign=None
                 if '/' in output:
@@ -1152,6 +1153,7 @@ if __name__ == "__main__":
                 else:
                     detail_save = output
                     sign = ''
+                    
                 if sign != '':
                     detail_save[-1] = 'DETAILED_' + detail_save[-1]
                     detail_save = sign.join(detail_save)
