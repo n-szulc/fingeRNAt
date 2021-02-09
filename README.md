@@ -654,6 +654,7 @@ fingerDISt calculates the following Distance Metrics:
 * Euclidean
 * Square Euclidean
 * Half Square Euclidean
+* Soergel Distance
 
 The abovementioned Distance Metrics calculations were implemented based on code [github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py](github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py) under MIT license.
 
