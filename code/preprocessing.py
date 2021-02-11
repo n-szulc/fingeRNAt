@@ -402,6 +402,45 @@ def find_ligands_CA(mols, verbose):
 
      return dictionary
 
+def find_ligands_lipophilic(mols, verbose):
+    """Finds lipophilic fragments in all ligands
+
+    :param mols: list of Pybel-parsed ligands' objects
+    :type mole: list
+    :return: dictionary indexed by ligand name, with the coords od all ligand's lipophilic fragments
+    :rtype: dict
+    """
+
+    # SMARTS pattern:
+    # [CH0,CH1,CH2,#9,#17,#35,#53] - aliphatic C with 0,1 or 2 H (ie not CH3) or halogens
+    # ;+0   and only neutral (charge zero)
+    # ;!$(C~O);!$(C~N)  and not C=O, C=N with any bonds
+    # ;!$(*~[+1]);!$(*~[-1]) and not connected to a cation or anion
+    # ICM: [C&!$(C=O)&!$(C#N),S&^3,#17,#15,#35,#53]
+    # smarts = pybel.Smarts("[CH0,CH1,CH2,CH3,#9,#17,#35,#53,SX2;+0;!$(C~O);!$(C~N);!$(*~[+1]);!$(*~[-1])]")
+    smarts = pybel.Smarts("[C,#9,#17,#35,#53,SX2;+0;!$(C~O);!$(C~N);!$(*~[+1]);!$(*~[-1])]")
+
+    dictionary = {}
+
+    if verbose:
+        print("Looking for lipophilic fragments")
+
+    for i in tqdm(range(len(mols)), disable=(not verbose)): # for molecule in ligand file
+
+        name = get_ligand_name_pose(dictionary, mols[i].title)
+        dictionary[name] = [] # {'prefix^pose':[list of tuples (C,halogen)]}
+
+        atomSets = smarts.findall(mols[i]) # list of atoms fulfilling this pattern
+        atomsList = [ id[0] for id in atomSets ]
+
+
+        for atom in atomsList:
+            dictionary[name].append( mols[i].atoms[atom-1].coords )
+
+    return dictionary
+
+
+
 def findAromaticRingsWithRDKit(sdfFile):
     """Finds all aromatic rings coords in all ligands using RDKit
     :param sdfFile: path to a valid sdf file
