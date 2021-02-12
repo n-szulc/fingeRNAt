@@ -417,8 +417,9 @@ def find_ligands_lipophilic(mols, verbose):
     # ;!$(C~O);!$(C~N)  and not C=O, C=N with any bonds
     # ;!$(*~[+1]);!$(*~[-1]) and not connected to a cation or anion
     # ICM: [C&!$(C=O)&!$(C#N),S&^3,#17,#15,#35,#53]
-    # smarts = pybel.Smarts("[CH0,CH1,CH2,CH3,#9,#17,#35,#53,SX2;+0;!$(C~O);!$(C~N);!$(*~[+1]);!$(*~[-1])]")
-    smarts = pybel.Smarts("[C,#9,#17,#35,#53,SX2;+0;!$(C~O);!$(C~N);!$(*~[+1]);!$(*~[-1])]")
+
+    # modified ICM: also aromatic C and must be neutral.
+    smarts = pybel.Smarts("[c,C&!$(C=O)&!$(C#N),S&^3,#17,#15,#35,#53;+0]")
 
     dictionary = {}
 
