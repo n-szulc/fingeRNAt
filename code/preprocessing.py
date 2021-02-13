@@ -243,6 +243,10 @@ def assign_interactions_results(result, RESULTS, RNA_LENGTH, RNA_seq_index, FING
             for i in range(4):
                 RESULTS[ligand_id][(RNA_seq_index*FINGERPRINT_DESCRIPTORS_NO) + descriptor_index+i] = result[-4+i]
 
+        elif FINGERPRINT_DESCRIPTORS_NO == 10:
+            for i in range(4):
+                RESULTS[ligand_id][(RNA_seq_index*FINGERPRINT_DESCRIPTORS_NO) + descriptor_index+i] = result[-4+i]
+
         else: # PBS result
             for i in range(3):
                 RESULTS[ligand_id][(RNA_seq_index*FINGERPRINT_DESCRIPTORS_NO) + descriptor_index+i] = result[-3+i]
@@ -401,6 +405,106 @@ def find_ligands_CA(mols, verbose):
         dictionary[name].append(anions)
 
      return dictionary
+
+def find_ligands_ions(mols, ions_dict, verbose):
+     """Finds all ligands' anions in contact with positively charged ion
+
+    :param mols: list of Pybel-parsed ligands' objects
+    :param ions_dict: dict of names of positively charged ions with their coords as values
+    :type mols: list
+    :type ions_dict: dict
+    :return: dictionary indexed by ligand name, with the coords of all positively charged ions in contact with it
+    :rtype: dict
+    """
+
+     dictionary = {}
+
+     if verbose:
+         print("Looking for ligand's anion - ion interactions...")
+
+     for i in tqdm(range(len(mols)), disable=(not verbose)): # For molecule in ligand file
+
+        name = get_ligand_name_pose(dictionary, mols[i].title)
+        dictionary[name]=[] # {'prefix^pose':[list of positive ion names]}
+
+        for ion in ions_dict.keys():
+            for atom in mols[i]:
+                if atom.formalcharge <= 0:
+                    if measure_distance(atom.coords, ions_dict[ion]) < config.MAX_LIGAND_ION_DIST:
+                        dictionary[name].append(ion)
+                        break
+
+     return dictionary
+
+def find_ligands_water(mols, water_dict, verbose):
+     """Finds all ligands' anions in contact with positively charged ion
+
+    :param mols: list of Pybel-parsed ligands' objects
+    :param water_dict: dict of names of water molecules with their coords as values
+    :type mols: list
+    :type water_dict: dict
+    :return: dictionary indexed by ligand name, with the coords of water molecules in contact with it
+    :rtype: dict
+    """
+
+     dictionary = {}
+
+     if verbose:
+         print("Looking for ligand - water interactions...")
+
+     for i in tqdm(range(len(mols)), disable=(not verbose)): # For molecule in ligand file
+
+        name = get_ligand_name_pose(dictionary, mols[i].title)
+        dictionary[name]=[] # {'prefix^pose':[list of water molecule names]}
+
+        for water in water_dict.keys():
+            for atom in mols[i]:
+                if measure_distance(atom.coords, water_dict[water]) > config.RES_LIGAND_MAX_DIST:
+                    # if the ligand's atom - water distance is greater than threshold, there is no point in checking the rest of ligand's atoms
+                    break
+                if measure_distance(atom.coords, water_dict[water]) < config.MAX_LIGAND_WATER_DIST:
+                    dictionary[name].append(water)
+                    break
+
+     return dictionary
+
+def find_ligands_lipophilic(mols, verbose):
+    """Finds lipophilic fragments in all ligands
+
+    :param mols: list of Pybel-parsed ligands' objects
+    :type mole: list
+    :return: dictionary indexed by ligand name, with the coords od all ligand's lipophilic fragments
+    :rtype: dict
+
+    """
+
+    # SMARTS pattern:
+    # [CH0,CH1,CH2,#9,#17,#35,#53] - aliphatic C with 0,1 or 2 H (ie not CH3) or halogens
+    # ;+0   and only neutral (charge zero)
+    # ;!$(C~O);!$(C~N)  and not C=O, C=N with any bonds
+    # ;!$(*~[+1]);!$(*~[-1]) and not connected to a cation or anion
+    # ICM: [C&!$(C=O)&!$(C#N),S&^3,#17,#15,#35,#53]
+
+    # modified ICM: also aromatic C and must be neutral.
+    smarts = pybel.Smarts("[c,C&!$(C=O)&!$(C#N),S&^3,#17,#15,#35,#53;+0]")
+
+    dictionary = {}
+
+    if verbose:
+        print("Looking for lipophilic fragments...")
+
+    for i in tqdm(range(len(mols)), disable=(not verbose)): # for molecule in ligand file
+
+        name = get_ligand_name_pose(dictionary, mols[i].title)
+        dictionary[name] = [] # {'prefix^pose':[list of tuples (C,halogen)]}
+
+        atomSets = smarts.findall(mols[i]) # list of atoms fulfilling this pattern
+        atomsList = [ id[0] for id in atomSets ]
+
+        for atom in atomsList:
+            dictionary[name].append( mols[i].atoms[atom-1].coords )
+
+    return dictionary
 
 def findAromaticRingsWithRDKit(sdfFile):
     """Finds all aromatic rings coords in all ligands using RDKit
@@ -595,14 +699,15 @@ def rna_coords_atom_index_dict(structure):
     dictionary = {}
 
     for residue in openbabel.OBResidueIter(structure.OBMol):
-        for atom in openbabel.OBResidueAtomIter(residue):
-            dictionary[(atom.GetX(), atom.GetY(), atom.GetZ())] = atom.GetResidue().GetAtomID(atom).strip()
+        if residue.GetNumAtoms() > 3:
+            for atom in openbabel.OBResidueAtomIter(residue):
+                dictionary[(atom.GetX(), atom.GetY(), atom.GetZ())] = atom.GetResidue().GetAtomID(atom).strip()
 
     return dictionary
 
-def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, arom_ring_ligands_info, debug_dict_ligand,
+def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, ligands_water, ligand_lipophilic, arom_ring_ligands_info, debug_dict_ligand,
 RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info, HB_RNA_acc_info, HB_RNA_donor_info,
-HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_info, T_shaped_info, columns):
+HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_info, T_shaped_info, ion_mediated_info, water_mediated_info, lipophilic_info, columns):
     """Prints all collected information in debug mode of SIFt type FULL/XP about ligands/nucleic acid properties and detected interactions.
 
     :param ligands_hba_hbd: dictionary indexed by ligand name, with the coords od all ligand's hydrogen bonds acceptors & donors
@@ -711,6 +816,44 @@ HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_i
             print(arom_ring_ligands_info[key])
         print()
 
+    print(('#'*len("# Ions in electrostatic contact with ligand #")))
+    print(('#         5. INORGANIC IONS                 #'))
+    print(("# Ions in electrostatic contact with ligand #"))
+    print(('#'*len("# Ions in electrostatic contact with ligand #")))
+
+    for key in ligands_ions.keys():
+        print()
+        print('### {} ###'.format(key))
+        for c0 in ligands_ions[key]:
+            print(c0, end=" ")
+        print()
+
+    print()
+    print(('#'*len("# Water molecules in contact with ligand #")))
+    print(('#        6. WATER MOLECULES              #'))
+    print(("# Water molecules in contact with ligand #"))
+    print(('#'*len("# Water molecules in contact with ligand #")))
+
+    for key in ligands_water.keys():
+        print()
+        print('### {} ###'.format(key))
+        for c0 in ligands_water[key]:
+            print(c0, end=" ")
+        print()
+
+    print()
+    print(('#'*len("# Lipophilic atoms' coords #")))
+    print(('#  7. LIPOHILIC ATOMS      #'))
+    print(("# Lipophilic atoms' coords #"))
+    print(('#'*len("# Lipophilic atoms' coords #")))
+
+    for key in ligand_lipophilic.keys():
+        print()
+        print('### {} ###'.format(key))
+        for c0 in ligand_lipophilic[k]:
+            print(str(debug_dict_ligand[k][c0]), end=" ", sep=',')
+        print()
+
     print()
     print(('*** NUCLEIC ACID PROPERTIES ***').center(columns))
     print()
@@ -797,3 +940,15 @@ HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_i
     print(("# Pi-Stacking: T-shaped #"))
     print(('#'*len("# Pi-Stacking: T-shaped #")))
     print(T_shaped_info)
+    print(('#'*len("# Ion-mediated #")))
+    print(("# Ion-mediated #"))
+    print(('#'*len("# Ion-mediated #")))
+    print(ion_mediated_info)
+    print(('#'*len("# Water-mediated #")))
+    print(("# Water-mediated #"))
+    print(('#'*len("# Water-mediated #")))
+    print(water_mediated_info)
+    print(('#'*len("# Lipophilic #")))
+    print(("# Lipophilic #"))
+    print(('#'*len("# Lipophilic #")))
+    print(lipophilic_info)
