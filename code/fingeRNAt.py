@@ -1313,7 +1313,7 @@ if __name__ == "__main__":
     columns = {'SIMPLE': ['SIMPLE'],
                'PBS': ['P', 'B', 'S'],
                'FULL': ['HB', 'HAL', 'CA', 'Pi_Cation', 'Pi_Anion', 'Pi_Stacking',
-               'MG_mediated', 'K_mediated', 'Na_mediated', 'Other_mediated',
+               'Mg_mediated', 'K_mediated', 'Na_mediated', 'Other_mediated',
                'Water_mediated', 'Lipophilic']
               }
 
@@ -1411,7 +1411,7 @@ if __name__ == "__main__":
         interact_names = {'P':'Phosphate contact', 'B': 'Base contact', 'S' : 'Sugar contact', 'SIMPLE' : 'contact',
                           'HB': 'Hydrogen Bonds', 'HAL': 'Halogen Bonds', 'CA' : 'Cation-Anion', 'Pi_Cation' : 'Pi-Cation',
                           'Pi-Anion' : 'Pi-Anion', 'Pi_Stacking' : 'Pi-Stacking',
-                          'MG_mediated' : 'Magnesium ion-mediated', 'K_mediated' : 'Potassium ion-mediated', 'Na_mediated' : 'Sodium ion-mediated',
+                          'Mg_mediated' : 'Magnesium ion-mediated', 'K_mediated' : 'Potassium ion-mediated', 'Na_mediated' : 'Sodium ion-mediated',
                           'Other_mediated' : 'Other ion-mediated', 'Water_mediated' : 'Water-mediated', 'Lipophilic' : 'Lipophilic'}
 
         for index, row in ALL_FINGERPRINTS_DF.iterrows():
@@ -1486,20 +1486,26 @@ if __name__ == "__main__":
         if not consider_H2O:
             cbar.ax.set_yticklabels(['Not considered'] + [str(x) for x in range(0, max_value+1)])
 
+        plt.tight_layout()
+
         if output:
+
+            if not filename_ligand: filename_ligand='IONS'
+            output_proper = output
             if analysis in FUNCTIONS.keys():
-                plt.tight_layout()
-                plt.savefig('%s_%s.png' %(output, fingerprint), dpi = 300)
+                if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
+                    output_proper += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint
             else:
-                plt.tight_layout()
-                plt.savefig('%s_%s_%s.png' %(output, fingerprint, analysis), dpi = 300)
+                if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
+                    output_proper += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint + '_' + analysis
+
+            plt.savefig('%s.png' %(output_proper), dpi = 300)
+
         else:
             if not filename_ligand: filename_ligand = 'IONS'
             if analysis in FUNCTIONS.keys():
-                plt.tight_layout()
-                plt.savefig('outputs/%s_%s_%s.png' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1],fingerprint), dpi = 300)
+                plt.savefig('outputs/%s_%s_%s.png' %(filename_RNA.split('/')[-1], filename_ligand.split('/')[-1], fingerprint), dpi = 300)
             else:
-                plt.tight_layout()
-                plt.savefig('outputs/%s_%s_%s_%s.png' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), dpi = 300)
+                plt.savefig('outputs/%s_%s_%s_%s.png' %(filename_RNA.split('/')[-1], filename_ligand.split('/')[-1], fingerprint, analysis), dpi = 300)
 
     print('{} results saved successfully!'.format(analysis))
