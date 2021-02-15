@@ -297,7 +297,7 @@ Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/
 
 
 <p align="center">
-<img src="docs/README_pics/simple.png" width="800" />
+<img src="docs/README_pics/SIMPLE.png" width="400" />
 </p>
 
 Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE`
@@ -308,7 +308,7 @@ Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/
 ### `PBS`
 
 <p align="center">
-<img src="docs/README_pics/pbs.png" width="900" />
+<img src="docs/README_pics/PBS.png" width="900" />
 </p>
 
 Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS`
