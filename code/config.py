@@ -20,14 +20,19 @@ PI_ANGLE_DISPLACED = 30.0 # Maximum angle value for Pi-stacking parallel & displ
 PLANAR_ANGLE_TSHAPED = 90.0 # Preferred angle value for T-shaped Pi-stacking interaction
 PLANAR_ANGLE_TSHAPED_DEV = 30.0 # Maximum angle deviation for the T-shaped Pi-stacking inetraction
 MAX_LIGAND_ION_DIST = 4.0 # Maximum ligand's anion - positively charged ion distance in electrostatic interaction
+MAX_RESIDUE_ION_DIST = 4.0 # Maximum residue - ion distance
 MAX_LIGAND_WATER_DIST = 4.0 # Maximum ligand - water molecule distance
+MAX_RESIDUE_WATER_DIST = 4.0 # Maximum residue - water distance
+MAX_LIPOHILIC_DIST = 4.0 # Maximum ligand - residue lipophilic contact distance
 
 GROUPS = [["P","OP1","OP2","OP3"],\
           ["C2","C4","C5","C6","C8","N1","N2","N3","N4","N6","N7","N9","O2","O4","O6","C7"],\
           ["C1'","C2'","C3'","C4'","C5'","O2'","O3'","O4'","O5'"]]
 WHICH_GROUP = {0:'PHOSPHATE', 1:'BASE', 2:'SUGAR'}
 CANONICAL_RESIDUES = ['A','G','C','U','T']
-POS_CHARGED_IONS = ['MG', 'K', 'FE']
+POS_CHARGED_IONS = ["MG", "CA", "ZN", "NA", "K", "MN", "FE", "CO", "NI", "LI", "CU", "AL",
+                    "PT", "HG", "CD", "YB", "SR", "GD", "HO", "AU", "RB", "CS", "EU", "SM",
+                    "PB", "CE", "BA"]
 
 OXYGEN_NUM = 8 # Oxygen atomic number
 HYDROGEN_NUM = 1 # Hydrogen atomic number

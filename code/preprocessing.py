@@ -36,21 +36,6 @@ def measure_distance(v1, v2):
 
     return np.round(np.linalg.norm(v1 - v2), 5)
 
-def check_distance(v1, v2, cutoff):
-    """Checks if distance between 2 vectors is within cutoff range and return bool
-
-    :param v1: vector 1 coordinates
-    :param v2: vector 2 coordinate
-    :param cutoff: cutoff value
-    :type v1: numpy.ndarray
-    :type v2: numpy.ndarray
-    :type cutoff: float
-    :return: `True` if distance between 2 vectors is within cutoff range, `False` otherwise
-    :rtype: bool
-    """
-
-    return (np.all(np.linalg.norm(v1 - v2)  <= cutoff))
-
 def calculate_angle(v1, v2, deg = True):
     """Calculates angle between 2 vectors
 
@@ -70,34 +55,6 @@ def calculate_angle(v1, v2, deg = True):
     angle = np.arccos(round(dm/cm, 10))
 
     return np.degrees([angle, ])[0] if deg else angle
-
-def modify_HB_result_list(precision, result, dist):
-    """Modifies hydrogen bond output list according to it's presence and strength
-
-    :param precision: fingerprint type
-    :param result: list to modify
-    :param dist: hydrogen bond donor - hydrogen bond acceptor distance
-    :type precision: str
-    :type result: list
-    :type dist: numpy.float64
-    :return: modified hydrogen bond output list
-    :rtype: NoneType
-    """
-
-    if precision == 'FULL':
-        result[-1] = 1
-
-    else:
-        result[-4]+= 1
-
-        if dist <=  2.5 and dist >= 2.2: # Strong hydrogen bond
-            result[-3] += 1
-        elif dist <= 3.5 and dist > 2.5: # Moderate hydrogen bond
-            result[-2] += 1
-        elif dist > 3.5: # Weak hydrogen bond
-            result[-1] += 1
-        else:
-            print('Too short D-A distance: %s A' %str(dist))
 
 def calculate_planar(atoms_list):
     """Calculates planarity normal vector
@@ -228,25 +185,15 @@ def assign_interactions_results(result, RESULTS, RNA_LENGTH, RNA_seq_index, FING
     descriptor_index = desc_index
 
     if not multiple_results: # Most results have only one value to add
-
-        # XP fingerprint 3 additional HB strong/moderate/weak descriptors have to be taken into account
-        if FINGERPRINT_DESCRIPTORS_NO == 9:
-            # Change index in XP fingerprint for halogen bondings, cation-anion, Pi-interactions (XP hydrogen bonding is the first calculated interaction and it took 3 additional places in results list)
-            descriptor_index += 3
-
         RESULTS[ligand_id][(RNA_seq_index * FINGERPRINT_DESCRIPTORS_NO) + descriptor_index] = result[-1]
 
-    else: # In case of PBS and HB_XP results
+    else: # In case of ion-mediated interactions or PBS
 
-        if FINGERPRINT_DESCRIPTORS_NO == 9: # Hydrogen bondings XP result
+        if FINGERPRINT_DESCRIPTORS_NO == 10: # ion-mediated
             for i in range(4):
                 RESULTS[ligand_id][(RNA_seq_index*FINGERPRINT_DESCRIPTORS_NO) + descriptor_index+i] = result[-4+i]
 
-        elif FINGERPRINT_DESCRIPTORS_NO == 10:
-            for i in range(4):
-                RESULTS[ligand_id][(RNA_seq_index*FINGERPRINT_DESCRIPTORS_NO) + descriptor_index+i] = result[-4+i]
-
-        else: # PBS result
+        else: # PBS
             for i in range(3):
                 RESULTS[ligand_id][(RNA_seq_index*FINGERPRINT_DESCRIPTORS_NO) + descriptor_index+i] = result[-3+i]
 
@@ -278,7 +225,7 @@ def wrap_results(wrapper, RESULTS, RNA_nucleotides, fingerprint_length, wrapper_
 
         WRAP_RESULTS[key] = [0] * fingerprint_length * wrapper_length
 
-        i=0
+        i = 0
 
         while i < len(values):
             chunk = values[i:(i+fingerprint_length)]
@@ -293,11 +240,9 @@ def wrap_results(wrapper, RESULTS, RNA_nucleotides, fingerprint_length, wrapper_
                     continue
 
                 for el in range(len(chunk)):
-                    if fingerprint_length != 9: # if not XP, we overwrite 0 with 1
-                        if WRAP_RESULTS[key][fingerprint_length*nucleotide_index+el] < chunk[el]:
-                             WRAP_RESULTS[key][fingerprint_length*nucleotide_index+el] = chunk[el]
-                    else:
-                        WRAP_RESULTS[key][fingerprint_length*nucleotide_index+el] += chunk[el] # XP, we sum all interactions
+                    # Overwrite 0 with 1
+                    if WRAP_RESULTS[key][fingerprint_length*nucleotide_index+el] < chunk[el]:
+                         WRAP_RESULTS[key][fingerprint_length*nucleotide_index+el] = chunk[el]
 
             else: # wrapper Counter
                 for el in range(len(chunk)):
@@ -428,8 +373,8 @@ def find_ligands_ions(mols, ions_dict, verbose):
 
         for ion in ions_dict.keys():
             for atom in mols[i]:
-                if atom.formalcharge <= 0:
-                    if measure_distance(atom.coords, ions_dict[ion]) < config.MAX_LIGAND_ION_DIST:
+                if atom.formalcharge <= -1:
+                    if config.MIN_DIST < measure_distance(atom.coords, ions_dict[ion]) <= config.MAX_LIGAND_ION_DIST:
                         dictionary[name].append(ion)
                         break
 
@@ -461,7 +406,7 @@ def find_ligands_water(mols, water_dict, verbose):
                 if measure_distance(atom.coords, water_dict[water]) > config.RES_LIGAND_MAX_DIST:
                     # if the ligand's atom - water distance is greater than threshold, there is no point in checking the rest of ligand's atoms
                     break
-                if measure_distance(atom.coords, water_dict[water]) < config.MAX_LIGAND_WATER_DIST:
+                if config.MIN_DIST < measure_distance(atom.coords, water_dict[water]) <= config.MAX_LIGAND_WATER_DIST:
                     dictionary[name].append(water)
                     break
 
@@ -484,6 +429,7 @@ def find_ligands_lipophilic(mols, verbose):
     # ICM: [C&!$(C=O)&!$(C#N),S&^3,#17,#15,#35,#53]
 
     # modified ICM: also aromatic C and must be neutral.
+    
     smarts = pybel.Smarts("[c,C&!$(C=O)&!$(C#N),S&^3,#17,#15,#35,#53;+0]")
 
     dictionary = {}
@@ -710,7 +656,7 @@ def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, lig
                      arom_ring_ligands_info, debug_dict_ligand, RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info,
                      HB_RNA_acc_info, HB_RNA_donor_info, HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info,
                      Sandwich_Displaced_info, T_shaped_info, ion_mediated_info, water_mediated_info, lipophilic_info, columns):
-    """Prints all collected information in debug mode of SIFt type FULL/XP about ligands/nucleic acid properties and detected interactions.
+    """Prints all collected information in debug mode of SIFt type FULL about ligands/nucleic acid properties and detected interactions.
 
     :param ligands_hba_hbd: dictionary indexed by ligand name, with the coords of all ligand's hydrogen bonds acceptors & donors
     :type ligands_hba_hbd: dict
