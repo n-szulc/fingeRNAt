@@ -105,7 +105,6 @@ def calculate_SIMPLE(residue, ligand_name, ligand_atoms, centroid_ligand):
 
     return result
 
-
 def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand):
     """Calculates PBS interaction between residue - ligand pair:
             1. Divide nucleic acid's residue into 3 groups Phosphate/Base/Sugar (P/B/S)
@@ -147,7 +146,6 @@ def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand):
         atom_group_type = False
         rna_atom_name = residue.GetAtomID(rna_atom).strip()
         rna_atom_coords = np.array([rna_atom.GetX(), rna_atom.GetY(), rna_atom.GetZ()])
-
 
         for g in range(len(config.GROUPS)):
             # If atom present in the group
@@ -296,7 +294,6 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
                         ha = vector(acceptor, RNA_donH_coords)
                         angle = calculate_angle(dh, ha)
 
-
                         if config.MIN_HB_ANGLE < angle < config.MAX_HB_ANGLE:
                             modify_HB_result_list(precision, result, dist)
 
@@ -321,7 +318,6 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
             else: break
 
     return result
-
 
 def calculate_HB_no_dha(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_acceptors, precision):
     """Calculates hydrogen bond between residue - ligand pair.
@@ -444,7 +440,6 @@ def calculate_HB_no_dha(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_
             else: break
 
     return result
-
 
 def calculate_HAL(residue, acceptors_RNA, ligand_name, ligand_donors_coords, precision):
     """Calculates halogen bond between residue - ligand pair.
@@ -987,14 +982,27 @@ def calculate_WATER_MEDIATED(residue, residue_atoms, ligand_name, water_molecule
 
     return result
 
-def calculate_lipophilic_interactions(residue, ligand_name, ligand_lipophilic_coords, precision):
+def calculate_lipophilic_interactions(residue, residue_atoms, ligand_name, ligands_lipophilic_coords, precision):
+    """ Calculates lipohilic ligand-residue interaction.
+        1. Check nucleic acid residue (carbon atoms only) - ligand (detected lipohilic atoms) distance
+        2. Compare the distance to CUTOFF:
+            - write down 1 if the distance <= CUTOFF
+            - write down 0 if the distance > CUTOFF
 
-    # List of sublists of all hydrophobic atoms' coords of the residue
-    residue_atoms = []
+        :param residue: residue as OpenBabel object
+        :param residue_atoms: residue's carbon atoms coordinates
+        :param ligand_name: ligand_name^pose_number
+        :param ligands_lipophilic_coords: list of ligand's detected lipohilic atoms coords
+        :param precision: fingerprint type
+        :type residue: openbabel.OBResidue
+        :type residue_atoms: list
+        :type ligand_name: str
+        :type ligands_lipophilic_coords: list
+        :type precision: str
+        :return: calculated interaction for particular ligand - residue
+        :rtype: list
 
-    for atom in openbabel.OBResidueAtomIter(residue):
-        if atom.GetAtomicNum() == config.CARBON_NUM: # consider only carbons
-            residue_atoms.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
+    """
 
     result = [ligand_name, str(residue.GetNum())+ ':' + str(residue.GetChain()), 0]
 
@@ -1003,7 +1011,7 @@ def calculate_lipophilic_interactions(residue, ligand_name, ligand_lipophilic_co
 
     for rna_atom in residue_atoms:
         if flag:
-            for lipophilic in ligand_lipophilic_coords:
+            for lipophilic in ligands_lipophilic_coords:
                 if check_distance(lipophilic, rna_atom, config.CUT_OFF_SIMPLE):
                     result[-1] = 1
 
@@ -1047,7 +1055,7 @@ if __name__ == "__main__":
     #  ARGUMENTS PARSING  #
     #######################
 
-    parser = argparse.ArgumentParser(description = '''Script calculating Structural Interaction Fingerprints (SIFs) in RNA/DNA - ligand complexes.''',
+    parser = argparse.ArgumentParser(description = '''Script calculating Structural Interaction Fingerprint (SIFt) in RNA/DNA - ligand complexes.''',
                                      epilog = 'If no optional -o parameter was passed, script will create outputs/ directory in the current working directory and save there SIFs in tsv format.',
                                      add_help = False,
                                      formatter_class = argparse.ArgumentDefaultsHelpFormatter,
@@ -1102,7 +1110,6 @@ if __name__ == "__main__":
     verbose = args['verbose']
     debug = args['debug']
 
-
     #########################
     #  FINGERPRINT CALLING  #
     #########################
@@ -1146,7 +1153,6 @@ if __name__ == "__main__":
     RNA_residues = []
     # Create empty list of all nucleic acid's residues
     RNA_nucleotides = []
-
 
     if not filename_ligand:
 
@@ -1327,7 +1333,7 @@ if __name__ == "__main__":
             # Create dictionary of ligands in contacts with water molecules
             ligands_water = find_ligands_water(ligands_mols, Water_dict, verbose)
             # Create dictionary of hydrophobic regions of ligand
-            ligand_lipophilic = find_ligands_lipophilic(ligands_mols, verbose)
+            ligands_lipophilic = find_ligands_lipophilic(ligands_mols, verbose)
             # Find all RNA rings
             rings_RNA = find_RNA_rings(structure, extension_structure)
 
@@ -1360,9 +1366,12 @@ if __name__ == "__main__":
                         RNA_anion_info[residue.GetChain()][residue.GetNum()].append(debug_dict_rna[(an.GetX(), an.GetY(), an.GetZ())])
 
                 residue_atoms_coords = []
+                residue_carbon_atoms_coords = []
                 for atom in openbabel.OBResidueAtomIter(residue):
                     if atom.GetAtomicNum() != config.HYDROGEN_NUM:
                         residue_atoms_coords.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
+                    if atom.GetAtomicNum() == config.CARBON_NUM:
+                        residue_carbon_atoms_coords.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
 
                 for ligand_name_HB, ligand_values_HB in ligands_hba_hbd.items():
                     if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_HB])) > config.RES_LIGAND_MAX_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
@@ -1413,11 +1422,11 @@ if __name__ == "__main__":
                     if result[-1] != 0:
                         assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 10)
 
-                for ligand_name_lipophilic, ligand_values_lipophilic in ligand_lipophilic.items():
+                for ligand_name_lipophilic, ligand_values_lipophilic in ligands_lipophilic.items():
                     if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_lipophilic])) > config.RES_LIGAND_MAX_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
                         continue
 
-                    result = calculate_lipophilic_interactions(residue, ligand_name_lipophilic, ligand_values_lipophilic, fingerprint)
+                    result = calculate_lipophilic_interactions(residue, residue_carbon_atoms_coords, ligand_name_lipophilic, ligand_values_lipophilic, fingerprint)
                     if result[-1] != 0:
                         assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 11)
 
@@ -1431,7 +1440,7 @@ if __name__ == "__main__":
                         assign_interactions_results(res, RESULTS, RNA_LENGTH, RNA_residues.index(res[1]), FUNCTIONS[fingerprint], i+3)
 
         if debug:
-            print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, ligands_water, ligand_lipophilic, arom_ring_ligands_info, debug_dict_ligand,
+            print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, ligands_water, ligands_lipophilic, arom_ring_ligands_info, debug_dict_ligand,
             RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info, HB_RNA_acc_info, HB_RNA_donor_info,
             HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_info, T_shaped_info, ion_mediated_info, water_mediated_info, lipophilic_info, columns)
 
@@ -1531,8 +1540,6 @@ if __name__ == "__main__":
                   detail_df.to_csv('%s.tsv' %detail_save, sep='\t' )
         else:
             ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), sep='\t')
-
-
 
 # Print found interactions on screen
     if print_flag:

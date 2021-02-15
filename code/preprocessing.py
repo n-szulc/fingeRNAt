@@ -10,7 +10,6 @@ import collections
 # Own module
 import config
 
-
 def vector(p1, p2):
     """Calculates vector between 2 points
 
@@ -266,8 +265,8 @@ def wrap_results(wrapper, RESULTS, RNA_nucleotides, fingerprint_length, wrapper_
     :rtype wrapper_length: int
     :return: list of wrapped results
     :rtype: list
-
     """
+
     WRAP_RESULTS = {}
 
     if wrapper == 'ACUG':
@@ -475,7 +474,6 @@ def find_ligands_lipophilic(mols, verbose):
     :type mole: list
     :return: dictionary indexed by ligand name, with the coords od all ligand's lipophilic fragments
     :rtype: dict
-
     """
 
     # SMARTS pattern:
@@ -508,6 +506,7 @@ def find_ligands_lipophilic(mols, verbose):
 
 def findAromaticRingsWithRDKit(sdfFile):
     """Finds all aromatic rings coords in all ligands using RDKit
+
     :param sdfFile: path to a valid sdf file
     :type sdfFile: str
     :return: dictionary indexed by ligand name, with the coords of all ligand's aromatic rings
@@ -664,7 +663,7 @@ def check_if_RNA(all_nucleotides):
         return True
     return False
 
-########################### FUNCTIONS FOR DEBUG/DETAIL MODE ###########################
+########################################### FUNCTIONS FOR DEBUG/DETAIL MODE ###########################################
 
 def ligands_coords_atom_index_dict(mols):
     """For the debug/detail mode only; creates a dictionary of dictionaries - each ligand's name and the dictionary of its coords with their atom indices and number of ligand's occurrence in sdf file as values
@@ -705,17 +704,26 @@ def rna_coords_atom_index_dict(structure):
 
     return dictionary
 
-def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, ligands_water, ligand_lipophilic, arom_ring_ligands_info, debug_dict_ligand,
-RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info, HB_RNA_acc_info, HB_RNA_donor_info,
-HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_info, T_shaped_info, ion_mediated_info, water_mediated_info, lipophilic_info, columns):
+######################################################  DEBUG MODE ######################################################
+
+def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, ligands_water, ligands_lipophilic,
+                     arom_ring_ligands_info, debug_dict_ligand, RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info,
+                     HB_RNA_acc_info, HB_RNA_donor_info, HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info,
+                     Sandwich_Displaced_info, T_shaped_info, ion_mediated_info, water_mediated_info, lipophilic_info, columns):
     """Prints all collected information in debug mode of SIFt type FULL/XP about ligands/nucleic acid properties and detected interactions.
 
-    :param ligands_hba_hbd: dictionary indexed by ligand name, with the coords od all ligand's hydrogen bonds acceptors & donors
+    :param ligands_hba_hbd: dictionary indexed by ligand name, with the coords of all ligand's hydrogen bonds acceptors & donors
     :type ligands_hba_hbd: dict
-    :param ligands_HAL: dictionary indexed by ligand name, with the coords od all ligand's halogens & halogen bonds donors
+    :param ligands_HAL: dictionary indexed by ligand name, with the coords of all ligand's halogens & halogen bonds donors
     :type ligands_HAL: dict
-    :param ligands_CA: dictionary indexed by ligand name, with the coords od all ligand's cations & anions
+    :param ligands_CA: dictionary indexed by ligand name, with the coords of all ligand's cations & anions
     :type ligands_CA: dict
+    :param ligands_ions: dictionary indexed by ligand name, with the names of all ions in contact with it
+    :type ligands_ions: dict
+    :param ligands_water: dictionary indexed by ligand name, with the names of all water molecules in contact with it
+    :type ligands_water: dict
+    :param ligands_lipophilic: dictionary indexed by ligand name, with the the coords of all ligand's lipohilic atoms
+    :type ligands_lipophilic: dict
     :param arom_ring_ligands_info: dictionary indexed by ligand name, with set of indices of atoms building ligand's aromatic rings
     :type arom_ring_ligands_info: dict
     :param debug_dict_ligand: dictionary of dictionaries of ligand's atom's coords with their corresponding atom index - {ligand_name : {(x1,y1,z1) : 1, (x2,y2,z2) : 2}}
@@ -742,6 +750,12 @@ HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_i
     :type Sandwich_Displaced_info: str
     :param T_shaped_info: all found Pi-Stacking type T-shaped interactions
     :type T_shaped_info: str
+    :param ion_mediated_info: all found ion mediated ligand interactions
+    :type ion_mediated_info: str
+    :param water_mediated_info: all found water mediated ligand interactions
+    :type water_mediated_info: str
+    :param lipohilic_info: all found lipohilic interactions
+    :type lipophilic_info: str
     :param columns: width of terminal
     :type columns: int
     :return: prints debug info
@@ -847,10 +861,10 @@ HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_i
     print(("# Lipophilic atoms' coords #"))
     print(('#'*len("# Lipophilic atoms' coords #")))
 
-    for key in ligand_lipophilic.keys():
+    for key in ligands_lipophilic.keys():
         print()
         print('### {} ###'.format(key))
-        for c0 in ligand_lipophilic[k]:
+        for c0 in ligands_lipophilic[k]:
             print(str(debug_dict_ligand[k][c0]), end=" ", sep=',')
         print()
 
