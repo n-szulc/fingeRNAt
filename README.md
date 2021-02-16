@@ -252,7 +252,7 @@ fingeRNAt allows to calculate the following SIFt types:
 	* water-mediated (Water\_mediated); **only if `-hoh` parameter was passed**; otherwise this interaction is assigned as `None`
 	* lipophilic (lipophilic\_mediated)
 
- &#x1F536;Returns nine 0/1 values for each residue.
+	&#x1F536;Returns nine 0/1 values for each residue.
 
 - `SIMPLE`
 
@@ -305,7 +305,7 @@ Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/
 ### `SIMPLE`
 
 <p align="center">
-<img src="docs/README_pics/SIMPLE.png" width="400" />
+<img src="docs/README_pics/SIMPLE.png" width="900" />
 </p>
 
 Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE`
@@ -647,7 +647,7 @@ fingerDISt saves scores for each selected Distance Metric to separate tsv files 
 If fingerDISt was run without optional parameter `-o`, script will create `outputs/` directory in the working directory and save there the output in tsv format. Otherwise fingerDISt will save outputs in the user-specified location.
 
 <p align="center">
-<img src="docs/README_pics/tanimoto.png" width="900" />
+<img src="docs/README_pics/Tanimoto.png" width="900" />
 </p>
 
 Sample output of running `python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_FULL.tsv -m tanimoto`
@@ -714,7 +714,7 @@ The ligand's detected properties are as follows:
 
 fingeRNAt detects the following nine non-covalent interactions:
 
-<img src="docs/README_pics/interactions.png" width="900"/>
+<img src="docs/README_pics/Interactions.png" width="900"/>
 
 
 1. **Hydrogen bonds**
