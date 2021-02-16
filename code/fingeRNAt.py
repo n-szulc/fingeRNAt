@@ -5,15 +5,15 @@
 fingeRNAt is a software to calculate Structural Interaction Fingerprint (SIFt) in
 nucleic acids - ligands complexes.
 
-Authors:
-Natalia A. Szulc, nszulc@iimcb.gov.pl
+Authors:\n
+Natalia A. Szulc, nszulc@iimcb.gov.pl\n
 Filip Stefaniak, fstefaniak@genesilico.pl
 
-If you use this software, please cite:
-Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak
+If you use this software, please cite:\n
+Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak\n
 [in preparation]
 
-Requires Python 3.5 - 3.8
+fingeRNAt requires Python 3.5 - 3.8
 '''
 
 import argparse
@@ -42,7 +42,7 @@ from preprocessing import ligands_coords_atom_index_dict, print_debug_info
 ##################################################
 
 def calculate_SIMPLE(residue, ligand_name, ligand_atoms, centroid_ligand, CUTOFF):
-    """Calculates SIMPLE interaction between residue - ligand pair:
+    """Calculates SIMPLE interaction between residue - ligand pair:\n
             1. Check nucleic acid residue - ligand distance
             2. Compare the distance to CUTOFF:
                 - write down 1 if the distance <= CUTOFF
@@ -110,7 +110,7 @@ def calculate_SIMPLE(residue, ligand_name, ligand_atoms, centroid_ligand, CUTOFF
     return result
 
 def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand, CUTOFF):
-    """Calculates PBS interaction between residue - ligand pair:
+    """Calculates PBS interaction between residue - ligand pair:\n
             1. Divide nucleic acid's residue into 3 groups Phosphate/Base/Sugar (P/B/S)
             2. Check each group - ligand distance
             3. Compare the distance to CUTOFF:
@@ -174,7 +174,7 @@ def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand, CUTOFF):
                                         ligand_pose_detail = ligand_name.split('^')[1]
                                     else:
                                         ligand_name_detail = ligand_name
-                                        ligand_pose_detail = None
+                                        ligand_pose_detail = 0
 
                                     detail_list.append([ligand_name_detail, ligand_pose_detail, debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])][1], 'PBS',
                                     debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])][0],
@@ -193,22 +193,22 @@ def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand, CUTOFF):
     return result
 
 def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_acceptors, check_dha=False):
-    """Calculates hydrogen bond between residue - ligand pair.
+    """Calculates hydrogen bond between residue - ligand pair.\n
         Simplified graphical representation:\n
-        A \***** H --- D\n
-            where:
-            A  - hydrogen bond acceptor\n
-            H  - hydrogen\n
-            D  - hydrogen bond acceptor\n
-            \* - hydrogen bond\n
+        A \*\*\*\*\* H --- D\n
+            where:\n
+            - A  - hydrogen bond acceptor
+            - H  - hydrogen
+            - D  - hydrogen bond acceptor
+            - \*\*\*\*\* - hydrogen bond\n
         Geometric Rule is:
             1. D-A distance < 3.9 A\n
-            If check_dha is True only:
-            2. 100 < D-H-A angle < 260\n
+            - If check_dha is True:\n
+              2. 100 < D-H-A angle < 260\n
 
         :param residue: residue as OpenBabel object
-        :param acceptors_RNA: residue's hydrogen bond acceptors
-        :param donors_RNA: all tuples (D, H) of the residue
+        :param acceptors_RNA: residue's hydrogen bond acceptors (list of sublists [[acceptor,acceptor',acceptor'(if the 2nd one exists)]])
+        :param donors_RNA: list of tuples tuples (Donor, Hydrogen) of the residue
         :param ligand_name: ligand_name^pose_number
         :param ligand_donors_acceptors: [[sublist of acceptors coords], [sublist of tuples (D, H) coords]]
         :param check_dha: flag indictacting if D-H-A angle should also be considered
@@ -259,7 +259,7 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
                     if interaction_found and debug:
                         global HB_RNA_acc_info
                         HB_RNA_acc_info += '***\n'
-                        if not dha:
+                        if not check_dha:
                             HB_RNA_acc_info += ('{} acceptor - {} donor\ndist: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4)))
                         else:
                             HB_RNA_acc_info +=('{} acceptor - {} donor\ndist: {}; angle: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4), round(angle, 4)))
@@ -307,7 +307,7 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
                         if interaction_found and debug:
                             global HB_RNA_donor_info
                             HB_RNA_donor_info += '***\n'
-                            if not dha:
+                            if not check_dha:
                                 HB_RNA_donor_info +=('{} donor - {} acceptor\ndist: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4)))
                             else:
                                 HB_RNA_donor_info += ('{} donor - {} acceptor\ndist: {}; angle: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4), round(angle, 4)))
@@ -330,15 +330,15 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
     return result
 
 def calculate_HAL(residue, acceptors_RNA, ligand_name, ligand_donors_coords):
-    """Calculates halogen bond between residue - ligand pair.
+    """Calculates halogen bond between residue - ligand pair.\n
         Simplified graphical representation:\n
-        Y --- O \***** X --- C\n
+        Y --- O \*\*\*\*\* X --- C\n
             where:\n
-            Y  - acceptor'; atom covalently bond to the acceptor\n
-            O  - halogen bond acceptor\n
-            X  - halogen [F, Br, I, Cl]\n
-            C  - halogen donor: Carbon\n
-            \* - halogen bond\n
+            - Y  - acceptor'; atom covalently bond to the acceptor
+            - O  - halogen bond acceptor
+            - X  - halogen [F, Br, I, Cl]
+            - C  - halogen donor: Carbon
+            - \*\*\*\*\* - halogen bond\n
         .. note::
             There may be two Ys, if O is part of the ring. If so, we need to apply above rules to both Ys.\n
         Geometric Rules are:
@@ -347,7 +347,7 @@ def calculate_HAL(residue, acceptors_RNA, ligand_name, ligand_donors_coords):
             - X-O-Y angle ~ 120 +/- 30\n
 
         :param residue: residue as OpenBabel object
-        :param acceptors_RNA: residue's hydrogen bond acceptors
+        :param acceptors_RNA: residue's hydrogen bond acceptors (list of sublists [[acceptor,acceptor',acceptor'(if the 2nd one exists)]])
         :param ligand_name: ligand_name^pose_number
         :param ligand_donors_coords: [list of tuples (C, halogen)]
         :type residue: openbabel.OBResidue
@@ -418,12 +418,12 @@ def calculate_HAL(residue, acceptors_RNA, ligand_name, ligand_donors_coords):
     return result
 
 def calculate_CATION_ANION(residue, RNA_anions, ligand_name, ligand_cation_coords):
-    """ Calculates cation-anion interaction between residue - ligand pair.
+    """ Calculates cation-anion interaction between residue - ligand pair.\n
         Simplified graphical representation:\n
-        C ***** A\n
+        C \*\*\*\*\* A\n
             where:\n
-            C  - cation\n
-            A  - anion\n
+            - C  - cation
+            - A  - anion\n
         Geometric Rule is:
             - 0.5 A < cation-anion distance < 5.5 A\n
 
@@ -482,7 +482,7 @@ def calculate_CATION_ANION(residue, RNA_anions, ligand_name, ligand_cation_coord
 def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, filename_ligand, extension_ligand):
     """Calculates Pi-cation, Pi-anion & Pi-stacking interactions between all residues' aromatic rings - all ligands' pairs.\n
         .. note::
-            Important note: each ring of purines is considered separately.\n
+            Each ring of purines is considered separately.\n
         Pi-cation & Pi-anion Geometric Rules:
             - Cation/anion - aromatic ring's center distance < 6.0 A
             - Angle between aromatic ring's planar and cation/anion ~ 90 +/- 30\n
@@ -676,21 +676,21 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, fil
 
 
 def calculate_ION_MEDIATED(residue, residue_atoms, ligand_name, ions, ions_dict):
-    """ Calculates ion-mediated ligand-residue interaction.
+    """ Calculates ion-mediated ligand-residue interaction.\n
         Simplified graphical representation:\n
-        R ***** I ***** A\n
+        R \*\*\*\*\* I \*\*\*\*\* A\n
             where:\n
-            R  - nucleic acid residue\n
-            I  - inorganic ion\n
-            A  - ligand's anion\n
+            - R  - nucleic acid residue (nitrogen or oxygen atom)
+            - I  - inorganic ion
+            - A  - ligand (nitrogen, oxygen or sulphur atom)\n
         Default geometric rule is:
             - 0.5 A < ion-anion distance <= 4.0 A\n
             - 0.5 A < residue-ion distance <= 4.0 A\n
 
         :param residue: residue as OpenBabel object
-        :param residue_atoms: residue's coordinates
+        :param residue_atoms: residue's nitrogen or oxygen atoms' coordinates
         :param ligand_name: ligand_name^pose_number
-        :param ions: list of ions in electrostatic contact with ligand
+        :param ions: list of ions in contact with ligand's nitrogen, oxygen or sulphur atoms
         :param ions_dict: dictionary with ions' names and coordinates as values
         :type residue: openbabel.OBResidue
         :type residue_atoms: list
@@ -710,17 +710,19 @@ def calculate_ION_MEDIATED(residue, residue_atoms, ligand_name, ions, ions_dict)
         if flag:
             for ion in ions:
                 dist = measure_distance(ions_dict[ion], rna_atom)
-                if config.MIN_DIST < dist <= config.MAX_RESIDUE_ION_DIST:
+                if config.MIN_DIST < dist <= config.MAX_ION_DIST:
 
                         ion_name = ion.split(':')[0]
-                        if ion_name == 'MG':
+                        if ion_name == 'MG' and dist <= config.MAX_MAGNESIUM_DIST:
                             result[-4] = 1
-                        elif ion_name == 'K':
+                        elif ion_name == 'K'and dist <= config.MAX_POTASSIUM_DIST:
                             result[-3] = 1
-                        elif ion_name == 'NA':
+                        elif ion_name == 'NA' and dist <= config.MAX_SODIUM_DIST:
                             result[-2] = 1
-                        else:
+                        elif dist <= config.MAX_OTHER_ION_DIST:
                             result[-1] = 1
+                        else:
+                            continue
 
                         if debug or detail:
 
@@ -764,46 +766,48 @@ def calculate_ION_MEDIATED(residue, residue_atoms, ligand_name, ions, ions_dict)
 
     return result
 
-def calculate_WATER_MEDIATED(residue, residue_atoms, ligand_name, water_molecules, water_dict):
-    """ Calculates water-mediated ligand-residue interaction.
+def calculate_WATER_MEDIATED(residue, acceptors_RNA, donors_RNA, ligand_name, water_molecules, water_dict):
+    """ Calculates water-mediated ligand-residue interaction.\n
         Simplified graphical representation:\n
-        R ***** W ***** A\n
+        R \*\*\*\*\* W \*\*\*\*\* L\n
             where:\n
-            R  - nucleic acid residue\n
-            W  - water molecule\n
-            A  - ligand's anion\n
+            * R  - nucleic acid's hydrogen bond donor/acceptor
+            * W  - water molecule (oxygen)
+            * A  - ligand's hydrogen bond donor/acceptor\n
         Default geometric rule is:
-            - 0.5 A < water's oxygen-ligand distance <= 4.0 A\n
-            - 0.5 A < residue-water's oxygen distance <= 4.0 A\n
+            - 0.5 A < water - ligand distance <= 3.5 A
+            - 0.5 A < residue - water distance <= 3.5 A\n
 
         :param residue: residue as OpenBabel object
-        :param residue_atoms: residue's coordinates
+        :param acceptors_RNA: residue's hydrogen bond acceptors (list of sublists [[acceptor,acceptor',acceptor'(if the 2nd one exists)]])
+        :param donors_RNA: list of tuples tuples (Donor, Hydrogen) of the residue
         :param ligand_name: ligand_name^pose_number
         :param water_molecules: list of water molecules in contact with ligand
         :param water_dict: dictionary with water names and coordinates as values
         :type residue: openbabel.OBResidue
-        :type residue_atoms: list
+        :type acceptors_RNA: list
+        :type donors_RNA: list
         :type ligand_name: str
         :type water_molecules: list
         :type water_dict: dict
         :return: calculated interaction for particular ligand - residue
         :rtype: list
-
     """
+
     result = [ligand_name, str(residue.GetNum())+ ':' + str(residue.GetChain()), 0]
+    searching_flag = True
+    acceptors_donors_RNA = [item[0] for item in acceptors_RNA] + [item[0] for item in donors_RNA]
 
-    # Flag to iterate over residue's atoms as long as we do not find an atom within CUTOFF distance from ligand
-    flag = True
-
-    for rna_atom in residue_atoms:
-        if flag:
+    for rna_object in acceptors_donors_RNA:
+        if searching_flag:
+            rna_atom = np.array([rna_object.GetX(), rna_object.GetY(), rna_object.GetZ()])
             for water in water_molecules:
                 dist = measure_distance(water_dict[water], rna_atom)
-                if config.MIN_DIST < dist <= config.MAX_RESIDUE_WATER_DIST:
+
+                if config.MIN_DIST < dist <= config.MAX_WATER_DIST:
                         result[-1] = 1
 
                         if debug or detail:
-
                             shortest_ligand_water = 9999
                             ligand_atom = None
                             for atom in ligands_all_atoms[ligand_name]:
@@ -826,7 +830,7 @@ def calculate_WATER_MEDIATED(residue, residue_atoms, ligand_name, water_molecule
                                 detail_list.append([ligand_name_detail, ligand_pose_detail, debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])][1], 'Water-mediated',
                                 debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])][0],
                                 ligand_atom[0], ligand_atom[1],  ligand_atom[2],
-                                water.split(':')[0], water.split(':')[1], water.split(':')[2], water.split(':')[0],
+                                water.split(':')[0], water.split(':')[1], water.split(':')[2], "O",
                                 water_dict[water][0][0], water_dict[water][0][1], water_dict[water][0][2],
                                 shortest_ligand_water])
 
@@ -845,25 +849,22 @@ def calculate_WATER_MEDIATED(residue, residue_atoms, ligand_name, water_molecule
     return result
 
 def calculate_lipophilic_interactions(residue, residue_atoms, ligand_name, ligands_lipophilic_coords):
-    """ Calculates lipohilic ligand-residue interaction.
+    """ Calculates lipohilic ligand-residue interaction.\n
         1. Check nucleic acid residue (carbon atoms only) - ligand (detected lipohilic atoms) distance
-        2. Compare the distance to CUTOFF:
-            - write down 1 if the distance <= CUTOFF
-            - write down 0 if the distance > CUTOFF
+        2. Compare the distance to CUTOFF:\n
+            - write down 1 if the distance <= CUTOFF\n
+            - write down 0 if the distance > CUTOFF\n
 
         :param residue: residue as OpenBabel object
         :param residue_atoms: residue's carbon atoms coordinates
         :param ligand_name: ligand_name^pose_number
         :param ligands_lipophilic_coords: list of ligand's detected lipohilic atoms coords
-        :param precision: fingerprint type
         :type residue: openbabel.OBResidue
         :type residue_atoms: list
         :type ligand_name: str
         :type ligands_lipophilic_coords: list
-        :type precision: str
         :return: calculated interaction for particular ligand - residue
         :rtype: list
-
     """
 
     result = [ligand_name, str(residue.GetNum())+ ':' + str(residue.GetChain()), 0]
@@ -979,9 +980,11 @@ if __name__ == "__main__":
     #  FINGERPRINT CALLING  #
     #########################
 
-    FUNCTIONS = {'SIMPLE': 1, 'PBS': 3, 'FULL': 12}
-    WRAPPERS = {'ACUG': 4, 'PuPy':2, 'Counter': 1 }
+    FUNCTIONS = {'SIMPLE' : 1, 'PBS' : 3, 'FULL' : 12}
+    WRAPPERS = {'ACUG' : 4, 'PuPy' : 2, 'Counter' : 1 }
     ANALYSIS_NAME = []
+    IONS_DIST_CUTOFFS = {'MG' : config.MAX_MAGNESIUM_DIST, 'K' : config.MAX_POTASSIUM_DIST,
+                         'NA' : config.MAX_SODIUM_DIST}
 
     if fingerprint not in FUNCTIONS.keys(): raise Exception('Unknown fingerprint')
     if wrapper:
@@ -1064,13 +1067,18 @@ if __name__ == "__main__":
             RNA_nucleotides.append(str(residue.GetName()))
 
             for inorganic_ion in Inorganic_ions_dict.keys():
+                inorganic_ion_name = inorganic_ion.split(':')[0]
+                if inorganic_ion_name in IONS_DIST_CUTOFFS.keys():
+                    ion_cutoff = IONS_DIST_CUTOFFS[inorganic_ion_name]
+                else:
+                    ion_cutoff = config.MAX_OTHER_ION_DIST
 
                 if fingerprint == 'SIMPLE':
-                    result = calculate_SIMPLE(residue, inorganic_ion, Inorganic_ions_dict[inorganic_ion], Inorganic_ions_dict[inorganic_ion], config.MAX_RESIDUE_ION_DIST)
+                    result = calculate_SIMPLE(residue, inorganic_ion, Inorganic_ions_dict[inorganic_ion], Inorganic_ions_dict[inorganic_ion], ion_cutoff)
                     if result[-1] != 0:
                         assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 0)
                 else:
-                    result = calculate_PBS(residue, inorganic_ion, Inorganic_ions_dict[inorganic_ion], Inorganic_ions_dict[inorganic_ion], config.MAX_RESIDUE_ION_DIST)
+                    result = calculate_PBS(residue, inorganic_ion, Inorganic_ions_dict[inorganic_ion], Inorganic_ions_dict[inorganic_ion], ion_cutoff)
                     if sum(result[-3:]) != 0:
                         assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 0, True) # Assign each of 3 (P/B/S) residue-ligand interaction
     else:
@@ -1193,10 +1201,10 @@ if __name__ == "__main__":
             ligands_HAL = find_ligands_HAL_don(ligands_mols, verbose)
             # Create ligands cations' & anions' dictionary
             ligands_CA = find_ligands_CA(ligands_mols, verbose)
-            # Create dictionary of ligands in electrostatic contacts with ions
+            # Create dictionary of ligands in contacts with ions
             ligands_ions = find_ligands_ions(ligands_mols, Inorganic_ions_dict, verbose)
             # Create dictionary of ligands in contacts with water molecules
-            if consider_H2O: ligands_water = find_ligands_water(ligands_mols, Water_dict, verbose)
+            if consider_H2O: ligands_water = find_ligands_water(ligands_hba_hbd, Water_dict, verbose)
             # Create dictionary of hydrophobic regions of ligand
             ligands_lipophilic = find_ligands_lipophilic(ligands_mols, verbose)
             # Find all RNA rings
@@ -1231,11 +1239,14 @@ if __name__ == "__main__":
 
                 residue_atoms_coords = []
                 residue_carbon_atoms_coords = []
+                residue_oxygen_nitrogen_atoms_coords = []
                 for atom in openbabel.OBResidueAtomIter(residue):
                     if atom.GetAtomicNum() != config.HYDROGEN_NUM:
                         residue_atoms_coords.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
                     if atom.GetAtomicNum() == config.CARBON_NUM:
                         residue_carbon_atoms_coords.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
+                    if atom.GetAtomicNum() == config.OXYGEN_NUM or atom.GetAtomicNum() == config.NITROGEN_NUM:
+                        residue_oxygen_nitrogen_atoms_coords.append(np.array([atom.GetX(), atom.GetY(), atom.GetZ()]))
 
                 for ligand_name_HB, ligand_values_HB in ligands_hba_hbd.items():
                     if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name_HB])) > config.RES_LIGAND_MAX_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
@@ -1265,7 +1276,7 @@ if __name__ == "__main__":
                     if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name])) > config.RES_LIGAND_MAX_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
                         continue
 
-                    result = calculate_ION_MEDIATED(residue, residue_atoms_coords, ligand_name, ions, Inorganic_ions_dict)
+                    result = calculate_ION_MEDIATED(residue, residue_oxygen_nitrogen_atoms_coords, ligand_name, ions, Inorganic_ions_dict)
                     if sum(result[-4:]) != 0:
                         assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 6, True)
 
@@ -1274,7 +1285,7 @@ if __name__ == "__main__":
                         if measure_distance(centroid(residue_atoms_coords), centroid(ligands_all_atoms[ligand_name])) > config.RES_LIGAND_MAX_DIST: # nucleic acid residue centroid and ligand centroid are futher than declared threshold, no chance for any contact
                             continue
 
-                        result = calculate_WATER_MEDIATED(residue, residue_atoms_coords, ligand_name, water_molecules, Water_dict)
+                        result = calculate_WATER_MEDIATED(residue, acceptors_RNA, donors_RNA, ligand_name, water_molecules, Water_dict)
                         if result[-1] != 0:
                             assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 10)
 
@@ -1296,6 +1307,7 @@ if __name__ == "__main__":
                         assign_interactions_results(res, RESULTS, RNA_LENGTH, RNA_residues.index(res[1]), FUNCTIONS[fingerprint], i+3)
 
         if debug:
+            if not consider_H2O: ligands_water = None
             print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, ligands_water, ligands_lipophilic,
             arom_ring_ligands_info, debug_dict_ligand,RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info,
             HB_RNA_acc_info, HB_RNA_donor_info,HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info,
@@ -1357,139 +1369,14 @@ if __name__ == "__main__":
                               'Receptor_X', 'Receptor_Y', 'Receptor_Z', 'Distance']
             detail_df = pd.DataFrame(detail_list, columns=detail_columns)
 
-    if not consider_H2O:
-        all_columns = ALL_FINGERPRINTS_DF.columns
-        for col_name in all_columns:
-            if 'Water' in col_name:
-                ALL_FINGERPRINTS_DF[col_name] = None
-
-    # Save output as tsv
-    if output:
-        if not filename_ligand: filename_ligand='IONS'
-        output_proper = output
-        if analysis in FUNCTIONS.keys():
-            if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
-                output_proper += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint
-        else:
-            if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
-                output_proper += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint + '_' + analysis
-
-        ALL_FINGERPRINTS_DF.to_csv('%s.tsv' %output_proper, sep='\t')
-
-        if detail:
-            sign=None
-            if '/' in output:
-                detail_save = output_proper.split('/')
-                sign = '/'
-            elif '\\' in output:
-                detail_save = output_proper.split('\\')
-                sign = '\\'
-            else:
-                detail_save = output
-                sign = ''
-
-            if sign != '':
-                detail_save[-1] = 'DETAILED_' + detail_save[-1]
-                detail_save = sign.join(detail_save)
-            else:
-                detail_save = 'DETAILED_' + detail_save
-            detail_df.to_csv('%s.tsv' %detail_save, sep='\t' )
-
-    else:
-        if not filename_ligand: filename_ligand = 'IONS'
-        if not os.path.exists('outputs'): os.makedirs('outputs')
-        if analysis in FUNCTIONS.keys():
-            ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint), sep='\t')
-            if detail:
-                  detail_save = 'outputs/DETAILED_%s_%s_%s' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint)
-                  detail_df.to_csv('%s.tsv' %detail_save, sep='\t' )
-        else:
-            ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), sep='\t')
-
-# Print found interactions on screen
-    if print_flag:
-        interact_names = {'P':'Phosphate contact', 'B': 'Base contact', 'S' : 'Sugar contact', 'SIMPLE' : 'contact',
-                          'HB': 'Hydrogen Bonds', 'HAL': 'Halogen Bonds', 'CA' : 'Cation-Anion', 'Pi_Cation' : 'Pi-Cation',
-                          'Pi-Anion' : 'Pi-Anion', 'Pi_Stacking' : 'Pi-Stacking',
-                          'Mg_mediated' : 'Magnesium ion-mediated', 'K_mediated' : 'Potassium ion-mediated', 'Na_mediated' : 'Sodium ion-mediated',
-                          'Other_mediated' : 'Other ion-mediated', 'Water_mediated' : 'Water-mediated', 'Lipophilic' : 'Lipophilic'}
-
-        for index, row in ALL_FINGERPRINTS_DF.iterrows():
-            print('# {} - {} #'.format(filename_RNA.split('/')[-1], index))
-            print()
-            for el in range(len(row)):
-                if row[el] is not None and row[el] > 0:
-                    s = DF_COLUMNS[el].split('#')[1:]
-                    print('{}\t{}\t{}'.format(s[0],interact_names[s[1]], row[el]))
-            print()
-        print_flag = False
-
-# Visualize output as heatmap
-    if visualization:
-
-        fig = plt.figure()
-        height = len(DF_INDEXES)*3
-
-        width_multipliers = {'SIMPLE' : 1, 'PBS' : 1.5, 'FULL' : 3}
-
-        if analysis in FUNCTIONS.keys():
-            width = len(RNA_residues) * width_multipliers[fingerprint]
-        else:
-            if analysis == 'ACUG':
-                width = 18
-            elif analysis == 'PuPy':
-                width = 14
-            else:
-                width = 12
-
-        plt.figure(figsize=(width, height))
-        plt.axes(aspect='equal')
-
-        if analysis == 'Counter' :
-            if not consider_H2O:
-                cmap = colors.ListedColormap(['black', 'cornflowerblue','turquoise','bisque', 'orange', 'lightcoral', 'darkred'])
-                ALL_FINGERPRINTS_DF.fillna(value=-1, inplace=True)
-            else:
-                cmap = colors.ListedColormap(['cornflowerblue','turquoise','bisque', 'orange', 'lightcoral', 'darkred'])
-        else:
-            if fingerprint == 'FULL' and not consider_H2O:
-                cmap = colors.ListedColormap(['black', 'cornflowerblue','turquoise'])
-                ALL_FINGERPRINTS_DF.fillna(value=-1, inplace=True)
-            else:
-                cmap = colors.ListedColormap(['cornflowerblue','turquoise'])
-
-        max_value = ALL_FINGERPRINTS_DF.to_numpy().max()
-        min_value = ALL_FINGERPRINTS_DF.to_numpy().min()
-        bounds = np.arange(min_value - 0.5, max_value + 1, 1)
-        norm = colors.BoundaryNorm(bounds, cmap.N)
-
-        heatmap = plt.pcolormesh(ALL_FINGERPRINTS_DF, cmap=cmap, norm=norm, edgecolors='silver')
-
-        plt.yticks(np.arange(0.5, len(ALL_FINGERPRINTS_DF.index), 1), ALL_FINGERPRINTS_DF.index, fontsize = 14)
-
-        if analysis in FUNCTIONS.keys(): # no wrapper
-            x = list(res + '#' + fing_type for res in RNA_residues for fing_type in columns[fingerprint])
-            plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
-
-        else:
-            if analysis == 'PuPy':
-                x = list(res + '#' + fing_type for res in ['Purines','Pyrimidynes'] for fing_type in columns[fingerprint])
-                plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
-            elif analysis == 'Counter':
-                x = list(res + '#' + fing_type for res in ['Total'] for fing_type in columns[fingerprint])
-                plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
-            else:
-                x = list(res + '#' + fing_type for res in nucleotides_letters for fing_type in columns[fingerprint])
-                plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
-
-        cbar = plt.colorbar(heatmap, ticks = range(min_value, max_value+1), shrink = 0.2)
         if not consider_H2O:
-            cbar.ax.set_yticklabels(['Not considered'] + [str(x) for x in range(0, max_value+1)])
+            all_columns = ALL_FINGERPRINTS_DF.columns
+            for col_name in all_columns:
+                if 'Water' in col_name:
+                    ALL_FINGERPRINTS_DF[col_name] = None
 
-        plt.tight_layout()
-
+        # Save output as tsv
         if output:
-
             if not filename_ligand: filename_ligand='IONS'
             output_proper = output
             if analysis in FUNCTIONS.keys():
@@ -1499,13 +1386,139 @@ if __name__ == "__main__":
                 if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
                     output_proper += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint + '_' + analysis
 
-            plt.savefig('%s.png' %(output_proper), dpi = 300)
+            ALL_FINGERPRINTS_DF.to_csv('%s.tsv' %output_proper, sep='\t')
+
+            if detail:
+                sign=None
+                if '/' in output:
+                    detail_save = output_proper.split('/')
+                    sign = '/'
+                elif '\\' in output:
+                    detail_save = output_proper.split('\\')
+                    sign = '\\'
+                else:
+                    detail_save = output
+                    sign = ''
+
+                if sign != '':
+                    detail_save[-1] = 'DETAIL_' + detail_save[-1]
+                    detail_save = sign.join(detail_save)
+                else:
+                    detail_save = 'DETAIL_' + detail_save
+                detail_df.to_csv('%s.tsv' %detail_save, sep='\t' )
 
         else:
             if not filename_ligand: filename_ligand = 'IONS'
+            if not os.path.exists('outputs'): os.makedirs('outputs')
             if analysis in FUNCTIONS.keys():
-                plt.savefig('outputs/%s_%s_%s.png' %(filename_RNA.split('/')[-1], filename_ligand.split('/')[-1], fingerprint), dpi = 300)
+                ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint), sep='\t')
+                if detail:
+                      detail_save = 'outputs/DETAIL_%s_%s_%s' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint)
+                      detail_df.to_csv('%s.tsv' %detail_save, sep='\t' )
             else:
-                plt.savefig('outputs/%s_%s_%s_%s.png' %(filename_RNA.split('/')[-1], filename_ligand.split('/')[-1], fingerprint, analysis), dpi = 300)
+                ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), sep='\t')
 
-    print('{} results saved successfully!'.format(analysis))
+    # Print found interactions on screen
+        if print_flag:
+            interact_names = {'P':'Phosphate contact', 'B': 'Base contact', 'S' : 'Sugar contact', 'SIMPLE' : 'contact',
+                              'HB': 'Hydrogen Bonds', 'HAL': 'Halogen Bonds', 'CA' : 'Cation-Anion', 'Pi_Cation' : 'Pi-Cation',
+                              'Pi-Anion' : 'Pi-Anion', 'Pi_Stacking' : 'Pi-Stacking',
+                              'Mg_mediated' : 'Magnesium ion-mediated', 'K_mediated' : 'Potassium ion-mediated', 'Na_mediated' : 'Sodium ion-mediated',
+                              'Other_mediated' : 'Other ion-mediated', 'Water_mediated' : 'Water-mediated', 'Lipophilic' : 'Lipophilic'}
+
+            for index, row in ALL_FINGERPRINTS_DF.iterrows():
+                print('# {} - {} #'.format(filename_RNA.split('/')[-1], index))
+                print()
+                for el in range(len(row)):
+                    if row[el] is not None and row[el] > 0:
+                        s = DF_COLUMNS[el].split('#')[1:]
+                        print('{}\t{}\t{}'.format(s[0],interact_names[s[1]], row[el]))
+                print()
+            print_flag = False
+
+    # Visualize output as heatmap
+        if visualization:
+
+            fig = plt.figure()
+            height = len(DF_INDEXES)*3
+
+            width_multipliers = {'SIMPLE' : 1, 'PBS' : 1.5, 'FULL' : 3}
+
+            if analysis in FUNCTIONS.keys():
+                width = len(RNA_residues) * width_multipliers[fingerprint]
+            else:
+                if analysis == 'ACUG':
+                    width = 18
+                elif analysis == 'PuPy':
+                    width = 14
+                else:
+                    width = 12
+
+            plt.figure(figsize=(width, height))
+            plt.axes(aspect='equal')
+
+            if analysis == 'Counter' :
+                if not consider_H2O:
+                    cmap = colors.ListedColormap(['black', 'cornflowerblue','turquoise','bisque', 'orange', 'lightcoral', 'darkred'])
+                    ALL_FINGERPRINTS_DF.fillna(value=-1, inplace=True)
+                else:
+                    cmap = colors.ListedColormap(['cornflowerblue','turquoise','bisque', 'orange', 'lightcoral', 'darkred'])
+            else:
+                if fingerprint == 'FULL' and not consider_H2O:
+                    cmap = colors.ListedColormap(['black', 'cornflowerblue','turquoise'])
+                    ALL_FINGERPRINTS_DF.fillna(value=-1, inplace=True)
+                else:
+                    cmap = colors.ListedColormap(['cornflowerblue','turquoise'])
+
+            max_value = ALL_FINGERPRINTS_DF.to_numpy().max()
+            min_value = ALL_FINGERPRINTS_DF.to_numpy().min()
+            bounds = np.arange(min_value - 0.5, max_value + 1, 1)
+            norm = colors.BoundaryNorm(bounds, cmap.N)
+
+            heatmap = plt.pcolormesh(ALL_FINGERPRINTS_DF, cmap=cmap, norm=norm, edgecolors='silver')
+
+            plt.yticks(np.arange(0.5, len(ALL_FINGERPRINTS_DF.index), 1), ALL_FINGERPRINTS_DF.index, fontsize = 14)
+
+            if analysis in FUNCTIONS.keys(): # no wrapper
+                x = list(res + '#' + fing_type for res in RNA_residues for fing_type in columns[fingerprint])
+                plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
+
+            else:
+                if analysis == 'PuPy':
+                    x = list(res + '#' + fing_type for res in ['Purines','Pyrimidynes'] for fing_type in columns[fingerprint])
+                    plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
+                elif analysis == 'Counter':
+                    x = list(res + '#' + fing_type for res in ['Total'] for fing_type in columns[fingerprint])
+                    plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
+                else:
+                    x = list(res + '#' + fing_type for res in nucleotides_letters for fing_type in columns[fingerprint])
+                    plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
+
+            cbar = plt.colorbar(heatmap, ticks = range(min_value, max_value+1), shrink = 0.2)
+            if not consider_H2O:
+                cbar.ax.set_yticklabels(['Not considered'] + [str(x) for x in range(0, max_value+1)])
+
+            plt.gca().invert_yaxis()
+            plt.tight_layout()
+
+            if output:
+
+                if not filename_ligand: filename_ligand='IONS'
+                output_proper = output
+                if analysis in FUNCTIONS.keys():
+                    if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
+                        output_proper += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint
+                else:
+                    if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
+                        output_proper += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint + '_' + analysis
+
+                plt.savefig('%s.png' %(output_proper), dpi = 300)
+
+            else:
+                if not filename_ligand: filename_ligand = 'IONS'
+                if analysis in FUNCTIONS.keys():
+                    plt.savefig('outputs/%s_%s_%s.png' %(filename_RNA.split('/')[-1], filename_ligand.split('/')[-1], fingerprint), dpi = 300)
+                else:
+                    plt.savefig('outputs/%s_%s_%s_%s.png' %(filename_RNA.split('/')[-1], filename_ligand.split('/')[-1], fingerprint, analysis), dpi = 300)
+
+        print('{} results saved successfully!'.format(analysis))

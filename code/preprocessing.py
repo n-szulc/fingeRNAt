@@ -201,15 +201,15 @@ def wrap_results(wrapper, RESULTS, RNA_nucleotides, fingerprint_length, wrapper_
     """Wrap results from calculating fingerprint to the desired output
 
     :param wrapper: wrapper type
-    :rtype wrapper: str
     :param RESULTS: calculated fingerprint results
-    :rtype RESULTS: dict
     :param RNA_nucleotides: list of nucleic acid nucleotides names
-    :rtype RNA_nucleotides: list
     :param fingerprint_length: number of calculated molecular interactions
-    :rtype fingerprint: int
     :param wrapper_length: length of wrapper
-    :rtype wrapper_length: int
+    :type wrapper: str
+    :type RESULTS: dict
+    :type RNA_nucleotides: list
+    :type fingerprint: int
+    :type wrapper_length: int
     :return: list of wrapped results
     :rtype: list
     """
@@ -234,7 +234,6 @@ def wrap_results(wrapper, RESULTS, RNA_nucleotides, fingerprint_length, wrapper_
 
                 try:
                     nucleotide_index = letter_order[RNA_nucleotides[(int(i/fingerprint_length))]]
-
                 except KeyError: # non-canonical nucleotide
                     i += fingerprint_length
                     continue
@@ -351,7 +350,7 @@ def find_ligands_CA(mols, verbose):
      return dictionary
 
 def find_ligands_ions(mols, ions_dict, verbose):
-     """Finds all ligands' anions in contact with positively charged ion
+     """Finds all ligands' nitrogen/oxygen/sulphur atoms in contact with positively charged ion
 
     :param mols: list of Pybel-parsed ligands' objects
     :param ions_dict: dict of names of positively charged ions with their coords as values
@@ -373,19 +372,34 @@ def find_ligands_ions(mols, ions_dict, verbose):
 
         for ion in ions_dict.keys():
             for atom in mols[i]:
-                if atom.formalcharge <= -1:
-                    if config.MIN_DIST < measure_distance(atom.coords, ions_dict[ion]) <= config.MAX_LIGAND_ION_DIST:
-                        dictionary[name].append(ion)
-                        break
-
+                if atom.atomicnum in [config.OXYGEN_NUM, config.NITROGEN_NUM, config.SULPHUR_NUM]:
+                    dist = measure_distance(atom.coords, ions_dict[ion])
+                    if config.MIN_DIST < dist <= config.MAX_ION_DIST:
+                        ion_name = ion.split(':')[0]
+                        if ion_name =='MG':
+                            if dist <= config.MAX_MAGNESIUM_DIST:
+                                dictionary[name].append(ion)
+                                break
+                        elif ion_name =='K':
+                            if dist <= config.MAX_POTASSIUM_DIST:
+                                dictionary[name].append(ion)
+                                break
+                        elif ion_name == 'NA':
+                            if dist <= config.MAX_SODIUM_DIST:
+                                dictionary[name].append(ion)
+                                break
+                        else:
+                            if dist <= config.MAX_OTHER_ION_DIST:
+                                dictionary[name].append(ion)
+                                break
      return dictionary
 
-def find_ligands_water(mols, water_dict, verbose):
-     """Finds all ligands' anions in contact with positively charged ion
+def find_ligands_water(ligands_hba_hbd, water_dict, verbose):
+     """Finds all ligands' hydrogen bonds donors/acceptors in contact with water molecule (oxygen)
 
-    :param mols: list of Pybel-parsed ligands' objects
+    :param ligands_hba_hbd: dictionary indexed by ligand name, with the coords od all ligand's hydrogen bonds acceptors & donors
     :param water_dict: dict of names of water molecules with their coords as values
-    :type mols: list
+    :type ligands_hba_hbd: dict
     :type water_dict: dict
     :return: dictionary indexed by ligand name, with the coords of water molecules in contact with it
     :rtype: dict
@@ -396,20 +410,24 @@ def find_ligands_water(mols, water_dict, verbose):
      if verbose:
          print("Looking for ligand - water interactions...")
 
-     for i in tqdm(range(len(mols)), disable=(not verbose)): # For molecule in ligand file
+     for ligand_name in tqdm(ligands_hba_hbd.keys(), disable=(not verbose)): # For ligand in ligands' dict
 
-        name = get_ligand_name_pose(dictionary, mols[i].title)
-        dictionary[name]=[] # {'prefix^pose':[list of water molecule names]}
+        dictionary[ligand_name]=[] # {'prefix^pose':[list of water molecule names]}
 
         for water in water_dict.keys():
-            for atom in mols[i]:
-                if measure_distance(atom.coords, water_dict[water]) > config.RES_LIGAND_MAX_DIST:
-                    # if the ligand's atom - water distance is greater than threshold, there is no point in checking the rest of ligand's atoms
-                    break
-                if config.MIN_DIST < measure_distance(atom.coords, water_dict[water]) <= config.MAX_LIGAND_WATER_DIST:
-                    dictionary[name].append(water)
-                    break
-
+            for don_acc in ligands_hba_hbd[ligand_name]:
+                searching_flag = True
+                if searching_flag:
+                    for atom in don_acc:
+                        dist = measure_distance(atom[0], water_dict[water])
+                        if dist > config.RES_LIGAND_MAX_DIST:
+                            # if the ligand's atom - water distance is greater than threshold, there is no point in checking the rest of ligand's atoms
+                            searching_flag = False
+                            break
+                        if config.MIN_DIST < dist <= config.MAX_WATER_DIST:
+                            dictionary[ligand_name].append(water)
+                            searching_flag = False
+                            break
      return dictionary
 
 def find_ligands_lipophilic(mols, verbose):
@@ -429,7 +447,7 @@ def find_ligands_lipophilic(mols, verbose):
     # ICM: [C&!$(C=O)&!$(C#N),S&^3,#17,#15,#35,#53]
 
     # modified ICM: also aromatic C and must be neutral.
-    
+
     smarts = pybel.Smarts("[c,C&!$(C=O)&!$(C#N),S&^3,#17,#15,#35,#53;+0]")
 
     dictionary = {}
@@ -558,7 +576,7 @@ def find_RNA_HB_HAL_acc_don(residue):
         acceptors_RNA.append([atom])
         for neighbour in pybel.ob.OBAtomAtomIter(atom):
              if neighbour.GetAtomicNum() != 1: # If not hydrogen
-                 acceptors_RNA[-1].append(neighbour) # Append acceptors' - all Y
+                 acceptors_RNA[-1].append(neighbour) # Append acceptor'
 
     for atom in filter(lambda at: at.IsHbondDonor(), residue_atoms_list): # Find all donors with their hydrogens
         for neighbour in pybel.ob.OBAtomAtomIter(atom):
@@ -794,12 +812,16 @@ def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, lig
     print(("# Water molecules in contact with ligand #"))
     print(('#'*len("# Water molecules in contact with ligand #")))
 
-    for key in ligands_water.keys():
+    if ligands_water is None:
         print()
-        print('### {} ###'.format(key))
-        for c0 in ligands_water[key]:
-            print(c0, end=" ")
-        print()
+        print('Not considered')
+    else:
+        for key in ligands_water.keys():
+            print()
+            print('### {} ###'.format(key))
+            for c0 in ligands_water[key]:
+                print(c0, end=" ")
+            print()
 
     print()
     print(('#'*len("# Lipophilic atoms' coords #")))
