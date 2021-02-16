@@ -717,7 +717,7 @@ fingeRNAt detects the following nine non-covalent interactions:
 <img src="docs/README_pics/Interactions.png" width="900"/>
 
 
-1. **Hydrogen bonds**
+## 1. Hydrogen bonds
 
   Geometric rule:
   * |D - A| < 3.9 &#8491;
@@ -728,7 +728,7 @@ fingeRNAt detects the following nine non-covalent interactions:
   100&deg; <   D-H-A angle < 260&deg; <br/>
   Parameter `-dha` applies only to `FULL` SIFt type, as `SIMPLE` & `PBS` do not calculate hydrogen bonds.
 
-2. **Halogen bonds**
+## 2. Halogen bonds
 
   Geometric rules:
 	- |X - A| < 4.0 &#8491;
@@ -738,7 +738,7 @@ fingeRNAt detects the following nine non-covalent interactions:
 	- X-A-A' angle ~ 120&deg; &#177; 30&deg;
 	(*Auffinger et al.*, 2004)
 
-3. **Cation - anion interactions**
+## 3. Cation - anion interactions
 
   Geometric rule:
   - 0.5 &#8491; < |cation - anion| < 5.5 &#8491;
@@ -746,7 +746,7 @@ fingeRNAt detects the following nine non-covalent interactions:
 
   > **_NOTE:_** fingeRNAt considers both oxygens from phosphate group (OP1 and OP2) of RNA/DNA as negatively charged.
 
-4. **Pi - cation** & 5. **Pi - anion interactions**
+## 4. Pi - cation** & 5. Pi - anion interactions
 
   Geometric rules:
 
@@ -754,7 +754,7 @@ fingeRNAt detects the following nine non-covalent interactions:
 (*Gallivan and Dougherty*, 1999)
 - angle between the ring plane and the line between cation/anion - ring center ~ 90&deg; &#177; 30&deg;
 
-6. **Pi - stacking interactions**
+## 6. Pi - stacking interactions
 
   Geometric rules:
 
@@ -772,7 +772,7 @@ fingeRNAt detects the following nine non-covalent interactions:
 
 > **_NOTE:_** fingeRNAt considers all three abovementioned Pi - stacking interactions' types.
 
-7. **Ion-mediated interactions**
+##  7. Ion-mediated interactions
 
   Geometric rules:
 	* |ligand's nitrogen/oxygen/sulphur - ion| <= X
@@ -787,7 +787,7 @@ fingeRNAt detects the following nine non-covalent interactions:
 	  * X = 3.5 &#8491; for other ions
 		(*Zheng et al.*, 2008)
 
-8. **Water-mediated interactions**
+## 8. Water-mediated interactions
 
 > **_NOTE:_**  Only if fingeRNAt was called with `-h2o` parameter.
 
@@ -797,7 +797,7 @@ fingeRNAt detects the following nine non-covalent interactions:
   * |nucleic acid's hydrogen bond donor/acceptor - water (oxygen)| <= 3.5 &#8491;
 	(*Poornima & Dean*, 1995)
 
-9. **Lipophilic interactions**
+## 9. Lipophilic interactions
 
   Geometric rule:
   * |nucleic acid's carbon - ligand's lipophilic atom| <= 4.0 &#8491;
