@@ -57,7 +57,7 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 		- [1. Hydrogen bonds](#1-hydrogen-bonds)
 		- [2. Halogen bonds](#2-halogen-bonds)
 		- [3. Cation - anion interactions](#3-cation---anion-interactions)
-		- [4. Pi - cation & 5. Pi - anion interactions](#4-pi---cation-&-5-pi---anion-interactions)
+		- [4. Pi - cation & 5. Pi - anion interactions](#4-pi---cation-5-pi---anion-interactions)
 		- [6. Pi - stacking interactions](#6-pi---stacking-interactions)
 		- [7. Ion-mediated interactions](#7-ion-mediated-interactions)
 		- [8. Water-mediated interactions](#8-water-mediated-interactions)
