@@ -1,0 +1,11 @@
+Ligand_name	3d2v.mol2#Purines#HB	3d2v.mol2#Purines#HAL	3d2v.mol2#Purines#CA	3d2v.mol2#Purines#Pi_Cation	3d2v.mol2#Purines#Pi_Anion	3d2v.mol2#Purines#Pi_Stacking	3d2v.mol2#Purines#Mg_mediated	3d2v.mol2#Purines#K_mediated	3d2v.mol2#Purines#Na_mediated	3d2v.mol2#Purines#Other_mediated	3d2v.mol2#Purines#Water_mediated	3d2v.mol2#Purines#Lipophilic	3d2v.mol2#Pyrimidynes#HB	3d2v.mol2#Pyrimidynes#HAL	3d2v.mol2#Pyrimidynes#CA	3d2v.mol2#Pyrimidynes#Pi_Cation	3d2v.mol2#Pyrimidynes#Pi_Anion	3d2v.mol2#Pyrimidynes#Pi_Stacking	3d2v.mol2#Pyrimidynes#Mg_mediated	3d2v.mol2#Pyrimidynes#K_mediated	3d2v.mol2#Pyrimidynes#Na_mediated	3d2v.mol2#Pyrimidynes#Other_mediated	3d2v.mol2#Pyrimidynes#Water_mediated	3d2v.mol2#Pyrimidynes#Lipophilic
+3D2V-native-protonated^1	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	1
+3D2V-native-protonated^2	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	1
+3D2V-native-protonated^3	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	1
+3D2V-native-protonated^4	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	1
+3D2V-native-protonated^5	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	1
+3D2V-native-protonated^6	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	1
+3D2V-native-protonated^7	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	0
+3D2V-native-protonated^8	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	1
+3D2V-native-protonated^9	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	0
+3D2V-native-protonated^10	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	0

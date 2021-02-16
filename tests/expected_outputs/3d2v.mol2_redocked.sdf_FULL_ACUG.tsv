@@ -1,0 +1,11 @@
+Ligand_name	3d2v.mol2#A#HB	3d2v.mol2#A#HAL	3d2v.mol2#A#CA	3d2v.mol2#A#Pi_Cation	3d2v.mol2#A#Pi_Anion	3d2v.mol2#A#Pi_Stacking	3d2v.mol2#A#Mg_mediated	3d2v.mol2#A#K_mediated	3d2v.mol2#A#Na_mediated	3d2v.mol2#A#Other_mediated	3d2v.mol2#A#Water_mediated	3d2v.mol2#A#Lipophilic	3d2v.mol2#C#HB	3d2v.mol2#C#HAL	3d2v.mol2#C#CA	3d2v.mol2#C#Pi_Cation	3d2v.mol2#C#Pi_Anion	3d2v.mol2#C#Pi_Stacking	3d2v.mol2#C#Mg_mediated	3d2v.mol2#C#K_mediated	3d2v.mol2#C#Na_mediated	3d2v.mol2#C#Other_mediated	3d2v.mol2#C#Water_mediated	3d2v.mol2#C#Lipophilic	3d2v.mol2#U#HB	3d2v.mol2#U#HAL	3d2v.mol2#U#CA	3d2v.mol2#U#Pi_Cation	3d2v.mol2#U#Pi_Anion	3d2v.mol2#U#Pi_Stacking	3d2v.mol2#U#Mg_mediated	3d2v.mol2#U#K_mediated	3d2v.mol2#U#Na_mediated	3d2v.mol2#U#Other_mediated	3d2v.mol2#U#Water_mediated	3d2v.mol2#U#Lipophilic	3d2v.mol2#G#HB	3d2v.mol2#G#HAL	3d2v.mol2#G#CA	3d2v.mol2#G#Pi_Cation	3d2v.mol2#G#Pi_Anion	3d2v.mol2#G#Pi_Stacking	3d2v.mol2#G#Mg_mediated	3d2v.mol2#G#K_mediated	3d2v.mol2#G#Na_mediated	3d2v.mol2#G#Other_mediated	3d2v.mol2#G#Water_mediated	3d2v.mol2#G#Lipophilic
+3D2V-native-protonated^1	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	1	1
+3D2V-native-protonated^2	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	1	1	0	0	0	0	0	0	0	0	0	1	1
+3D2V-native-protonated^3	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	1
+3D2V-native-protonated^4	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	1	1	0	0	0	0	0	0	0	0	0	1	1
+3D2V-native-protonated^5	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	1	1	0	0	0	0	0	0	0	0	0	1	1
+3D2V-native-protonated^6	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	1	1
+3D2V-native-protonated^7	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	1	1
+3D2V-native-protonated^8	1	0	0	0	0	0	0	0	0	0	0	1	1	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	1	1
+3D2V-native-protonated^9	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	1	1
+3D2V-native-protonated^10	1	0	0	0	0	0	0	0	0	0	1	1	1	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	1	1

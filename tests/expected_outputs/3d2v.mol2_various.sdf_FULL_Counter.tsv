@@ -1,0 +1,9 @@
+Ligand_name	3d2v.mol2#HB	3d2v.mol2#HAL	3d2v.mol2#CA	3d2v.mol2#Pi_Cation	3d2v.mol2#Pi_Anion	3d2v.mol2#Pi_Stacking	3d2v.mol2#Mg_mediated	3d2v.mol2#K_mediated	3d2v.mol2#Na_mediated	3d2v.mol2#Other_mediated	3d2v.mol2#Water_mediated	3d2v.mol2#Lipophilic
+Ligand_1^1	0	0	0	0	0	0	0	0	0	0	3	1
+Ligand_2^1	2	0	1	0	0	0	0	0	0	0	3	2
+Ligand_3^1	0	0	0	0	0	0	0	0	0	0	0	1
+Ligand_4^1	0	2	0	0	0	0	0	0	0	0	0	2
+Ligand_5^1	2	0	0	0	0	0	0	0	0	0	0	2
+adenine^1	2	0	0	0	0	0	0	0	0	0	5	2
+ligand_6^1	3	0	0	0	0	0	0	0	0	0	10	0
+3D2V-native-protonated^1	5	0	2	0	0	0	0	0	0	0	12	6
