@@ -173,7 +173,7 @@ def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand, CUTOFF):
                                         ligand_name_detail = ligand_name.split('^')[0]
                                         ligand_pose_detail = ligand_name.split('^')[1]
                                     else:
-                                        ligand_name_detail = ligand_name
+                                        ligand_name_detail = ligand_name.split(':')[0]
                                         ligand_pose_detail = 0
 
                                     detail_list.append([ligand_name_detail, ligand_pose_detail, debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])][1], 'PBS',
