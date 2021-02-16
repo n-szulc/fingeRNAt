@@ -720,7 +720,7 @@ fingeRNAt detects the following nine non-covalent interactions:
 ## 1. Hydrogen bonds
 
   Geometric rule:
-  * |D - A| < 3.9 &#8491;
+  - |D - A| < 3.9 &#8491;
 	(*Torshin, Weber, & Harrison*, 2002)
 
 
@@ -731,16 +731,18 @@ fingeRNAt detects the following nine non-covalent interactions:
 ## 2. Halogen bonds
 
   Geometric rules:
-	- |X - A| < 4.0 &#8491;
-	(*Auffinger et al.*, 2004)
-	- C-X-A angle ~ 165&deg; &#177; 30&deg;
-	(*Auffinger et al.*, 2004)
-	- X-A-A' angle ~ 120&deg; &#177; 30&deg;
-	(*Auffinger et al.*, 2004)
+  
+  - |X - A| < 4.0 &#8491;
+  (*Auffinger et al.*, 2004)
+  - C-X-A angle ~ 165&deg; &#177; 30&deg;
+  (*Auffinger et al.*, 2004)
+  - X-A-A' angle ~ 120&deg; &#177; 30&deg;
+  (*Auffinger et al.*, 2004)
 
 ## 3. Cation - anion interactions
 
   Geometric rule:
+  
   - 0.5 &#8491; < |cation - anion| < 5.5 &#8491;
   (*Barlow and Thornton*, 1983)
 
@@ -750,9 +752,9 @@ fingeRNAt detects the following nine non-covalent interactions:
 
   Geometric rules:
 
-- |cation/anion - aromatic ring center| < 6.0 &#8491;
-(*Gallivan and Dougherty*, 1999)
-- angle between the ring plane and the line between cation/anion - ring center ~ 90&deg; &#177; 30&deg;
+  - |cation/anion - aromatic ring center| < 6.0 &#8491;
+  (*Gallivan and Dougherty*, 1999)
+  - angle between the ring plane and the line between cation/anion - ring center ~ 90&deg; &#177; 30&deg;
 
 ## 6. Pi - stacking interactions
 
@@ -761,7 +763,7 @@ fingeRNAt detects the following nine non-covalent interactions:
   * Common rules for all Pi - stacking interactions' types:
 
     * |rings' centroids| < 5.5 &#8491;
-		(*McGaughey*, 1998)
+    (*McGaughey*, 1998)
     * rings' outset < 2.0 &#8491;
 
   * For sandwich & parallel - displaced:
@@ -775,17 +777,13 @@ fingeRNAt detects the following nine non-covalent interactions:
 ##  7. Ion-mediated interactions
 
   Geometric rules:
-	* |ligand's nitrogen/oxygen/sulphur - ion| <= X
-	* |nucleic acid's nitrogen/oxygen - ion| <= X
-	where:
-	  * X = 3.2 &#8491; for magnesium ion
-	  (*Zheng et al.*, 2015)
-	  * X = 3.9 &#8491; for potassium ion
-		(*Zheng et al.*, 2008)
-		* X = 3.6 &#8491; for sodium ion
-		(*Zheng et al.*, 2008)
-	  * X = 3.5 &#8491; for other ions
-		(*Zheng et al.*, 2008)
+  
+  * |ligand's nitrogen/oxygen/sulphur - ion| <= X
+  * |nucleic acid's nitrogen/oxygen - ion| <= X, where:
+    * X = 3.2 &#8491; for magnesium ion (*Zheng et al.*, 2015)
+    * X = 3.9 &#8491; for potassium ion (*Zheng et al.*, 2008)
+    * X = 3.6 &#8491; for sodium ion (*Zheng et al.*, 2008)
+    * X = 3.5 &#8491; for other ions (*Zheng et al.*, 2008)
 
 ## 8. Water-mediated interactions
 
