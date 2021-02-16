@@ -746,7 +746,7 @@ fingeRNAt detects the following nine non-covalent interactions:
 
   > **_NOTE:_** fingeRNAt considers both oxygens from phosphate group (OP1 and OP2) of RNA/DNA as negatively charged.
 
-## 4. Pi - cation** & 5. Pi - anion interactions
+## 4. Pi - cation & 5. Pi - anion interactions
 
   Geometric rules:
 
