@@ -25,20 +25,20 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 	- [Quick start :zap:](#quick-start-zap)
 	- [Parameters description](#parameters-description)
 	- [Inputs](#inputs)
-	- [Structural Interaction Fingerprints' (SIFs) types](#structural-interaction-fingerprints-sifs-types)
+	- [Structural Interaction Fingerprint (SIFt) types](#structural-interaction-fingerprints-sifs-types)
+	- [Interactions with inorganic ions](#interactions-with-inorganic-ions)
 	- [User defined thresholds](#user-defined-thresholds)
 	- [Outputs](#outputs)
 		- [`FULL`](#full)
 		- [`SIMPLE`](#simple)
 		- [`PBS`](#pbs)
-		- [`XP`](#xp)
 	- [Wrappers](#wrappers)
-	- [Visualization](#visualization)
+	- [Heatmap plotting](#heatmap-plotting)
 	- [Usage examples](#usage-examples)
 	- [Graphical User Interface](#graphical-user-interface)
 	- [Debugging mode](#debugging-mode)
 	- [Warnings/Errors](#warningserrors)
-- [Frequently Asked Questions](#frequently-asked-questions)
+- [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
 - [fingerDISt :straight_ruler:](#fingerdist-straight_ruler)
 	- [Installation](#installation-1)
 	- [Usage](#usage-1)
@@ -54,11 +54,14 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 	- [Nucleic acid properties](#nucleic-acid-properties)
 	- [Ligand properties](#ligand-properties)
 	- [Molecular Interactions' Geometric Rules](#molecular-interactions-geometric-rules)
-		- [1. Hydrogen Bonds](#1-hydrogen-bonds)
-		- [2. Halogen Bonds](#2-halogen-bonds)
-		- [3. Cation - Anion](#3-cation---anion)
-		- [4. Pi - Cation and 5. Pi - Anion](#4-pi---cation-and-5-pi---anion)
-		- [6. Pi - Stacking](#6-pi---stacking)
+		- [1. Hydrogen bonds](#1-hydrogen-bonds)
+		- [2. Halogen bonds](#2-halogen-bonds)
+		- [3. Cation - anion interactions](#3-cation---anion-interactions)
+		- [4. Pi - cation & 5. Pi - anion interactions](#4-pi---cation-&-5-pi---anion-interactions)
+		- [6. Pi - stacking interactions](#6-pi---stacking-interactions)
+		- [7. Ion-mediated interactions](#7-ion-mediated-interactions)
+		- [8. Water-mediated interactions](#8-water-mediated-interactions)
+		- [9. Lipophilic interactions](#9-lipophilic-interactions)
 - [Contributors](#contributors)
 - [Feedback](#feedback)
 - [Acknowledgments](#acknowledgments)
@@ -75,7 +78,6 @@ It detects different non-covalent interactions in the input complex and returns 
 <p align="center">
 <img src="docs/README_pics/detected_interactions.png" width="900" />
 </p>
-
 
 fingeRNAt runs under Python 3.5 - 3.8 on Linux, Mac OS and Windows.
 
@@ -174,7 +176,7 @@ fingeRNAt accepts the following parameters:
 
 `[-o]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional path to save output
 
-`[-h2o]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional detection of water-mediated interactions; applies only to SIFt type `FULL`. If not passed, all columns containing information about water-mediated interactions are empty (applies also for wrappers)
+`[-h2o]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional detection of water-mediated interactions; applies only to SIFt type `FULL`. If not passed, all columns containing information about water-mediated interactions are empty (`None`) (applies also for wrappers)
 
 `[-dha]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional Donor-Hydrogen-Acceptor angle calculation when detecting hydrogen bonds;
 
@@ -186,7 +188,7 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 `[-detail]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generate an additional file with detailed data on detected interactions see -> [PyMOL visualization](#pymol-visualization)
 
 
-`[-vis]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional SIFt results heatmap visualization; see -> [Visualization](#Heatmap-visualization)
+`[-vis]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional SIFt results heatmap visualization; see -> [Heatmap plotting](#heatmap-plotting)
 
 `[-wrapper]` &nbsp;&nbsp;&nbsp;&nbsp; optional SIFt results wrapper, see -> [Wrappers](#Wrappers)
 
@@ -201,27 +203,26 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
 ## Inputs
 
-1. `-r `: path to receptor - DNA/RNA structure
+1. `-r `: path to receptor - RNA/DNA structure
     - supported file types: pdb, mol2
-    - **only 1 model** of DNA/RNA structure
+    - **only 1 model** of RNA/DNA structure
          - if there are more models, you have to choose only one (e.g. manually delete remaining models)
     - **no ligands**
     - may contain water & ions
 
    &#x1F534; **Hydrogens need to be added**
 
-2. `-l`: optional path to ligand - small molecule, DNA/RNA/LNA or protein
+2. `-l`: optional path to ligand - small molecule, RNA/DNA/LNA or protein
 	- **small molecule ligands**
          - supported file types: sdf
          - possible multiple poses of ligands in one file
     - **RNA/DNA structure**
     	- supported file types: sdf
-    	- possible multiple models of DNA/RNA structure
-    	- **only** DNA/RNA chains
+    	- possible multiple models of RNA/DNA structure
+    	- **only** RNA/DNA chains
         	- no water, ions, ligands
 
-   &#x1F535; if `[-l]` is not specified, fingeRNAt **will find all inorganic ions in the receptor file and treat them as ligands**, calculating SIFt for each receptor - ion pair.
-As the aforementioned interactions are detected based on residue - ion contact, **only SIFt type SIMPLE or PBS may be calculated** when fingeRNAt was called without `[-l]`.
+   &#x1F535; if `-l` is not specified, fingeRNAt **will find all inorganic ions in the receptor file and treat them as ligands**, see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions).
 
 **Additional notes:**
 - Input ligand molecules should have assigned desired protonation state and formal charges.
@@ -231,12 +232,11 @@ As the aforementioned interactions are detected based on residue - ion contact, 
 
 ## Structural Interaction Fingerprint (SIFt) types
 
-fingeRNAt allows to calculate the following SIFt types `[-f]`:
-
+fingeRNAt allows to calculate the following SIFt types:
 
 - `FULL`
 
-    Calculates **nine non-covalent interactions** for each DNA/RNA residue - ligand  pair:
+    Calculates **nine non-covalent interactions** for each RNA/DNA residue - ligand  pair:
 
 	* hydrogen bondings (HB)
 	* halogen bondings (HAL)
@@ -249,23 +249,34 @@ fingeRNAt allows to calculate the following SIFt types `[-f]`:
 		* Potassium-mediated (K\_mediated),
 		* Sodium-mediated (Na\_mediated),
 		* Other ion-mediated (Other\_mediated)
-	* water-mediated (Water\_mediated); **only if `-hoh` flag was passed**; otherwise this interaction is assigned as `None`
-	* lipophilic (lipophilic]_mediated)
+	* water-mediated (Water\_mediated); **only if `-hoh` parameter was passed**; otherwise this interaction is assigned as `None`
+	* lipophilic (lipophilic\_mediated)
 
  &#x1F536;Returns nine 0/1 values for each residue.
 
 - `SIMPLE`
 
-    **Calculates distances** between each DNA/RNA residue and the ligand; returns 1 if the distance does not exceed the declared threshold (default = 4.0 &#8491;), 0 otherwise. Does not take into account distances between hydrogens or hydrogen - heavy atom.
+    **Calculates distances** between each RNA/DNA residue and the ligand; returns 1 if the distance does not exceed the declared threshold (default = 4.0 &#8491;), 0 otherwise. Does not take into account distances between hydrogens or hydrogen - heavy atom.
 
 	&#x1F536;Returns one 0/1 value for each residue.
 
 - `PBS`
 
-    Divides each DNA/RNA residue into three groups: **Phosphate, Base, Sugar**. Then, **for each group separately**, calculates distance to the ligand; returns 1 if the distance does not exceed the declared threshold (default = 4.0 &#8491;), 0 otherwise. Does not take into account distances between hydrogens or hydrogen - heavy atom.
+    Divides each RNA/DNA residue into three groups: **Phosphate, Base, Sugar**. Then, **for each group separately**, calculates distance to the ligand; returns 1 if the distance does not exceed the declared threshold (default = 4.0 &#8491;), 0 otherwise. Does not take into account distances between hydrogens or hydrogen - heavy atom.
 
 	&#x1F536;Returns three 0/1 values for each residue.
-    > **_NOTE:_** Only for DNA/RNA with canonical residues.
+    > **_NOTE:_** Only for RNA/DNA with canonical residues.
+
+## Interactions with inorganic ions
+
+It is possible to calculate contacts for nucleic acid - ions from the same pdb/mol2 file.
+
+In such case, parameter `-l` should be ommited, which allows fingeRNAt to treat all inorganic ions as ligands and calculate SIFt for each residue - ion pair.
+
+As the aforementioned interactions are detected based on  contact, **only SIFt type SIMPLE or PBS may be calculated**.
+
+  **Usage example**
+	`python code/fingeRNAt.py -r example_inputs/3d2v.mol2 -f PBS`
 
 
 ## User defined thresholds
@@ -289,12 +300,9 @@ Example outputs for SIFt types and their wrappers are available from `fingeRNAt/
 
 Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -h2o`
 
-
-
+> **_NOTE:_** If fingeRNAt was called without `-h2o` parameter, all columns containing information about water-mediated interactions are empty (`None`) (applies also for wrappers; (see -> ['Parameters description'](#parameters-description))).
 
 ### `SIMPLE`
-
-
 
 <p align="center">
 <img src="docs/README_pics/SIMPLE.png" width="400" />
@@ -327,7 +335,7 @@ The following three types of wrappers are available:
 
 - `ACUG`
 
-	Wraps calculated results according to nucleotide. Provides information if particular kind of interaction between e.g. any adenine from DNA/RNA and ligand occurred.
+	Wraps calculated results according to nucleotide. Provides information if particular kind of interaction between e.g. any adenine from RNA/DNA and ligand occurred.
 
 	<p align="center">
 	<img src="docs/README_pics/PBS_ACUG.png" width="900" />
@@ -338,7 +346,7 @@ The following three types of wrappers are available:
 
 - `PuPy`
 
-	Wraps calculated results according to nucleobase type (purine or pyrimidyne). Provides information if particular kind of interaction between e.g. any purine from DNA/RNA and ligand occurred.
+	Wraps calculated results according to nucleobase type (purine or pyrimidyne). Provides information if particular kind of interaction between e.g. any purine from RNA/DNA and ligand occurred.
 
 	<p align="center">
 	<img src="docs/README_pics/FULL_PuPy.png" width="900" />
@@ -346,7 +354,7 @@ The following three types of wrappers are available:
 
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper PuPy`
 
-> **_NOTE:_**  As -h2o flag was not passed, the columns containing information about water-mediated interactions are empty (see -> ['Parameters description'](#parameters-description))
+> **_NOTE:_**  As `-h2o` parameter was not passed, the columns containing information about water-mediated interactions are empty (`None`) (see -> ['Parameters description'](#parameters-description)).
 
 - `Counter`
 
@@ -358,9 +366,9 @@ The following three types of wrappers are available:
 
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper Counter`
 
-> **_NOTE:_**  As -h2o flag was not passed, the columns containing information about water-mediated interactions are empty (see -> ['Parameters description'](#parameters-description))
+> **_NOTE:_**  As -h2o parameter was not passed, the columns containing information about water-mediated interactions are empty (`None`) (see -> ['Parameters description'](#parameters-description))
 
-## Visualization
+## Heatmap plotting
 
 All SIFt outputs can be visualized as heatmap and saved as png files with the same name as tsv output. For large SIFt, it may be necessary to manually change the figure size in fingeRNAt.py to generate the plot.
 
@@ -377,6 +385,10 @@ Heatmap for SIFt type `FULL` with wrapper `PuPy` obtained from running `python c
 </p>
 
 Heatmap for SIFt type `FULL` with wrapper `Counter` obtained from running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper Counter -h2o -vis`
+
+## PyMOL visualization
+
+Dedicated PyMOL plugin was created to visualize detected interactions based on `-detail` outputs (see -> [Detail mode](#detail-mode)).
 
 ## Usage examples
 
@@ -400,6 +412,9 @@ Heatmap for SIFt type `FULL` with wrapper `Counter` obtained from running `pytho
 
 `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -h2o -wrapper ACUG,PuPy,Counter`
 
+- Calculate SIFt for nucleic acid - inorganic ions from the same pdb/mol2 file (see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions))
+
+`python code/fingeRNAt.py -r example_inputs/3d2v.mol2 -f PBS`
 
 ## Graphical User Interface
 
@@ -413,82 +428,100 @@ GUI is user-friendly and has all aforementioned functionalities.
 <img src="docs/README_pics/gui.png" width="600" />
 </p>
 
+## Detail mode
+
+fingeRNAt has additional mode `-detail` which saves all detected interactions, for any SIFt type, to separate tsv file (with prefix `DETAIL_`).
+
+The interactions saved in `-detail` mode follow the same convention - **each row contains information about interaction between given ligand - receptor**, thus allowing for their easy, high-throughput processing.
+
+The abovementioned data serve also as input to dedicated Pymol plugin, created by us, to visualize all interactions detected by fingeRNAt (see -> [PyMOL visualization](#pymol-visualization)).
+
+> **_NOTE:_** In case of ion- and water-mediated interactions, two rows will correspond to one such interaction: (i) ligand - ion/water molecule and (ii) ion/water molecule - RNA/DNA. Therefore in case (i) ion/water molecule is treated as the receptor and in case (ii) as the ligand.
+
+> **_NOTE 2:_** We refer to ligands as structures from ligands' file `-l`, as water molecules and inorganic ions are supposed to be provided in the RNA/DNA pdb/mol2 file.
+
+The following data are saved in `-detail` mode:
+
+* **Ligand_name**
+  * for ligands from sdf file: ligand's name
+ * for inorganic ions: ion's name
+ * for water molecules: HOH
+* **Ligand_pose**
+ * for ligands from sdf file: ligand's pose number (indexed from 1)
+ * for inorganic ions/water molecules: 0
+* **Ligand_occurrence_in_sdf**
+ * if `-l` ligands' file was passed
+   * for ligands from sdf file: ligand's occurrence from the beginning of sdf file
+	* for inorganic ions/water molecules: ligand's occurrence (from the beginning of sdf file), for which they mediate the interaction with nucleic acid
+ * if `-l` ligands' file was not passed (see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions)): 0
+* **Interaction**: interaction type
+* **Ligand_Atom**
+  * for ligands from sdf file: ligand's atom index
+ * for inorganic ions/water molecules: residue number : chain
+* **Ligand_X/Ligand_Y/Ligand_Z**: coordinates of ligand's/ion's/water molecule's atom
+* **Receptor_Residue_Name/Receptor_Number/Receptor_Chain**:
+ * for interactions ligand/inorganic ions/water molecule - nucleic acid: receptor's nucleotide name/receptor's residue number/receptor's chain
+ * for interactions ligand - ion: ion's name/ion's residue number/ion's chain
+ * for interactions ligand - water molecule: HOH/water molecule's residue number/water molecule's chain
+* **Receptor_Atom**
+ * for interactions ligand/inorganic ions/water molecule - nucleic acid: receptor's atom ID
+ * for interactions ligand - ion: ion's name
+ * for interactions ligand - water molecule: O
+* **Receptor_X/Receptor_Y/Receptor_Z**: coordinates of ligand's/ion's/water molecule's atom
+* **Distance**: distance between ligand's and residue's atoms [&#8491;]
+
+**Sample output**
+see -> [DETAIL_3d2v.mol2_redocked.sdf_FULL.tsv](example_outputs/DETAIL_3d2v.mol2_redocked.sdf_FULL.tsv)
+
 ## Debugging mode
 
 fingeRNAt has debugging mode in which it prints on screen exhaustive information about detected interactions.
 
-Debugging mode may be used with each of three SIFt types and provides the following information:
+Debugging mode may be used with each SIFt type and provides the following information:
 
 - `FULL`
 
-     1. prints the following properties of each ligand:
-		* atom indices of hydrogen bonds acceptors & donors
-		* atom indices of halogen bonds donors
-		* atom indices of cations & anions
-		* atom indices of aromatic rings
+  Prints the following **properties of each ligand**:
+  1. atom indices of hydrogen bonds acceptors & donors
+  2. atom indices of halogen bonds donors
+  3. atom indices of cations & anions
+  4. number of ligand's aromatic rings
+  5. IDs of inorganic ions in electrostatic contact with ligand_name_detail
+  6. IDs of water molecules in contact with ligand
+  7. atom indices of lipophilic atoms
 
-     2. prints the following properties for each residue of nucleic acid:
-		* atom IDs of hydrogen bonds acceptors & donors
-		* atom IDs of anions
-		* atom IDs of aromatic rings
+  Prints the following **properties for each residue** of nucleic acid:
+  1. atom IDs of hydrogen bonds acceptors & donors
+  2. atom IDs of anions
+  3. atom IDs of aromatic rings
 
-     3. prints detected interactions for pair of each nucleic acid residue - ligand:
-		* atoms creating hydrogen bond with their distance and angle (if flag `-dha` was used), separately for cases when nucleic acid is hydrogen bond acceptor and hydrogen bond donor
-		* atoms creating halogen bond with their distance and angles
-		* atoms creating cation-anion interaction with their distance (note that nucleic acid's atoms are anions)
-		* atoms creating Pi-cation interaction with their distance and angle
-		* atoms creating Pi-anion interaction with their distance and angle (note that ligand's atoms are anions)
-		* atoms creating Pi-stacking interaction type Sandwich/Displaced with their distance, offset and angle
-		* atoms creating Pi-stacking interaction type T-shaped with their distance, offset and angle
-
-     > **_NOTE:_** It prints only the first detected interaction of given type between nucleic acid's residue - ligand , as `FULL` stops searching for more  once it detected one such interaction.
-
-
-     **Usage example**
-
-     `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -debug`
+  Prints **detected interactions** for pair of each nucleic acid residue - ligand:
+  1. atoms creating hydrogen bond with their distance and angle (if parameter `-dha` was passed), separately for cases when nucleic acid is hydrogen bond acceptor and hydrogen bond donor
+  2. atoms creating halogen bond with their distance and angles
+  3. atoms creating cation-anion interaction with their distance (note that nucleic acid's atoms are anions)
+  4. atoms creating Pi-cation interaction with their distance and angle
+  5. atoms creating Pi-anion interaction with their distance and angle (note that ligand's atoms are anions)
+  6. atoms creating Pi-stacking interaction type Sandwich/Displaced with their distance, offset and angle
+  7. atoms creating Pi-stacking interaction type T-shaped with their distance, offset and angle
+	8. atoms creating ion-mediated interaction with their distances (nucleic acid - ion & ion - ligand)
+	9. atoms creating water-mediated interaction with their distances (nucleic acid - water & water - ligand)
+	10. atoms creating lipophilic interaction with their distance
 
 - `SIMPLE`
 
-    for each detected contact of nucleic acid residue - ligand prints information about atoms IDs and the distance between them
-
-    e.g.
-
-    ```
-    ### 1aju_model1.pdb - molecule_00001^2 first below cutoff dist: 3.5578 ###
-	    between	A:22:P	 7 atom molecule_00001^2
-    ```
-
-    > **_NOTE:_** It prints only the first detected pair of atoms in contact, as `SIMPLE` stops searching for more contacts of particular nucleic acid's residue - ligand once it detected one contact.
-
-     **Usage example**
-
-    `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -debug`
+    For each detected contact of nucleic acid residue - ligand prints information about atoms IDs and the distance between them.
 
 - `PBS`
 
-    for each detected contact of nucleic acid residue's group - ligand prints information about atoms IDs and the distance between them
+    For each detected contact of nucleic acid residue's group - ligand prints information about atoms IDs and the distance between them.
 
-    e.g.
-
-    ```
-    ### 1aju_model1.pdb - molecule_00001^2 first below cutoff PHOSPHATE GROUP dist: 3.5578 ###
-        between	A:22:P	 7 atom molecule_00001^2
-    ### 1aju_model1.pdb - molecule_00001^2 first below cutoff SUGAR GROUP dist: 3.7453 ###
-        between	A:22:O5'	 1 atom molecule_00001^2
-    ```
-
-    > **_NOTE:_** It prints only the first detected pair of atoms in contact, as `PBS` stops searching for more contacts of particular nucleic acid's residue's group - ligand once it detected one contact.
-
-     **Usage example**
-
-    `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -debug`
+> **_NOTE:_** In all above cases, only the first detected interaction of given type is printed, as fingeRNAt stops searching for more once it detected one particular interaction.
 
 ## Warnings/Errors
 
 Please pay attention to the following types of errors: **Could not sanitize molecule ending on line ...**. This means that RDKit library used by the fingeRNAt cannot properly read the molecule.
 
-An example:
+e.g.
 
 ```
 [08:46:45] non-ring atom 39 marked aromatic
@@ -501,14 +534,14 @@ An example:
 - Error: **Explicit valence for atom # ..., is greater than permitted** (eg., *Explicit valence for atom # 18 O, 3, is greater than permitted*)
   - Solution: please make sure that the indicated atom(s) have a proper valence number, i.e., they form a correct number of bonds.
 
-# Frequently Asked Questions
+# Frequently Asked Questions (FAQ)
 
 **What happens when I have a non-canonical nucleotide in my nucleic acid?**
 
 * If you have a residue with **only** non-canonical name (all atom names are canonical), e.g. X
 
 |   | `FULL`  | `SIMPLE`  | `PBS`  |
-|:-:|:-:|:-:|:-:|:-:|
+|:-:|:-:|:-:|:-:|
 | No wrapper  |  OK |  OK  | OK   |
 | `ACUG`  | Omits interaction for residue with non-canonical name  | Omits interaction for residue with non-canonical name  |  Omits interaction for residue with non-canonical name |
 |  `PuPy` |  Omits interaction for residue with non-canonical name | Omits interaction for residue with non-canonical name  |  Omits interaction for residue with non-canonical name |
@@ -517,7 +550,7 @@ An example:
 * If you have a residue with a canonical name but with non-canonical atom name e.g. P9
 
 |   | `FULL`  | `SIMPLE`  | `PBS`  |
-|:-:|:-:|:-:|:-:|:-:|
+|:-:|:-:|:-:|:-:|
 | No wrapper  |  OK |  OK  | Does not work   |
 | `ACUG`  |  OK   | OK  |  Does not work|
 |  `PuPy` |   OK  | OK |  Does not work|
@@ -528,7 +561,7 @@ Please note, we consider both oxygens from phosphate group (OP1 and OP2) of nucl
 * If you have a residue with non-canonical name and non-canonical atom name e.g. P9
 
 |   | `FULL`  | `SIMPLE`  | `PBS`  |
-|:-:|:-:|:-:|:-:|:-:|
+|:-:|:-:|:-:|:-:|
 | No wrapper  |  OK |  OK  | Does not work   |
 | `ACUG`  |  Omits interaction for residue with non-canonical name | Omits interaction for residue with non-canonical name  |  Does not work |
 |  `PuPy` | Omits interaction for residue with non-canonical name  | Omits interaction for residue with non-canonical name  |  Does not work |
@@ -548,9 +581,9 @@ However in case of SIFt type `FULL`, there will be two columns with the same nam
 
 <img src="docs/README_pics/logo_fingerdist.png" width="300" class="center" />
 
-fingerDISt is an additional, standalone tool which calculates different Distance Metrics based on Structural Interaction Fingerprints (SIFs) - outputs of fingeRNAt.
+fingerDISt is an additional, standalone tool which calculates different Distance Metrics based on Structural Interaction Fingerprint (SIFt) - outputs of fingeRNAt.
 
-It calculates the selected Distance Metric for all SIFs vs. all SIFs from input file - creates a matrix of scores and saves it to tsv file.
+It calculates the selected Distance Metric for all SIFt vs. all SIFt from input file - creates a matrix of scores and saves it to tsv file.
 
 ## Installation
 
@@ -561,7 +594,6 @@ fingerDISt, similarly like fingeRNAt, requires Python 3.5 - 3.8, and may be run 
 ### Quick start :zap:
 
 ```bash
-
 cd fingeRNAt
 
 python code/fingerDISt.py -i example_outputs/FULL/1aju_model1.pdb_ligands.sdf_FULL.tsv -m tanimoto
@@ -571,7 +603,7 @@ python code/fingerDISt.py -i example_outputs/FULL/1aju_model1.pdb_ligands.sdf_FU
 
 fingerDISt accepts the following parameters:
 
-`-i` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; path to tsv/csv file with calculated SIFs; see -> [Inputs](#Inputs-1)
+`-i` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; path to tsv/csv file with calculated SIFt; see -> [Inputs](#Inputs-1)
 
 `-m` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; types of desired Distance Metrics; see -> [Distance Metrics](#distance-metrics)
 
@@ -585,9 +617,9 @@ fingerDISt accepts the following parameters:
 
 1. `-i `: path to tsv/csv file with calculated SIFs
 
-		**fingeRNAt outputs are fingerDISt inputs**
+  **fingeRNAt outputs are fingerDISt inputs**
 
-		Example inputs may be found in `fingeRNAt/tests/expected_outputs`.
+  Example inputs may be found in `fingeRNAt/tests/expected_outputs`.
 
 ### Distance Metrics
 
@@ -603,17 +635,19 @@ fingerDISt calculates the following Distance Metrics:
 
 The abovementioned Distance Metrics calculations were implemented based on code [github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py](github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py) under MIT license.
 
-  > **_NOTE:_** **Tanimoto coefficient works only for SIFs with binary values**, therefore it will  not work neither on input SIFs type XP (holograms) nor on any input SIFs wrapped with Counter wrapper.
+  > **_NOTE:_** **Tanimoto coefficient works only for SIFt with binary values**, therefore it may not work on input SIFt wrapped with `Counter` wrapper.
 
+
+> **_NOTE 2:_** It automatically replaces `None` with 0, meaning that Distance Metrics can be calculated for SIFt type `FULL`, which was called without `-h2o` parameter.
 
 ### Outputs
 
-fingerDISt saves scores for each selected Distance Metric to separate tsv files. This is a simple text format similar to csv, except for the data being tab-separated instead of comma-separated (as in csv).
+fingerDISt saves scores for each selected Distance Metric to separate tsv files - a simple text format similar to csv, except for the data being tab-separated instead of comma-separated.
 
 If fingerDISt was run without optional parameter `-o`, script will create `outputs/` directory in the working directory and save there the output in tsv format. Otherwise fingerDISt will save outputs in the user-specified location.
 
 <p align="center">
-<img src="docs/README_pics/tanimoto_full.png" width="900" />
+<img src="docs/README_pics/tanimoto.png" width="900" />
 </p>
 
 Sample output of running `python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_FULL.tsv -m tanimoto`
@@ -624,9 +658,9 @@ Sample output of running `python code/fingerDISt.py -i tests/expected_outputs/1a
 
 `python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_FULL.tsv -m manhattan,square_euclidean,euclidean,half_square_euclidean,cosine_similarity,tanimoto`
 
-- Calculate two Distance Metrics on SIFs inputs type `XP` wrapped with `ACUG` wrapper and save the output to user-specified location with the default filename.
+- Calculate two Distance Metrics on SIFs inputs type `PBS` wrapped with `ACUG` wrapper and save the output to user-specified location with the default filename.
 
-`python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_XP_ACUG.tsv -m manhattan,square_euclidean -o my_dir/`
+`python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_PBS_ACUG.tsv -m manhattan,square_euclidean -o my_dir/`
 
 - Calculate one Distance Metric on SIFs inputs type `SIMPLE`, print it on the screen and save the output to the user-specified location with the desired filename.
 
@@ -655,6 +689,8 @@ python fingeRNAt_test.py
 
 # Detection of interactions
 
+Inspired by [PLIP](https://github.com/pharmai/plip) implementation. Applies to SIFt type `FULL`.
+
 ## Nucleic acid properties
 
 The nucleic acid's detected properties are as follows:
@@ -662,7 +698,7 @@ The nucleic acid's detected properties are as follows:
 * Hydrogen Bonds Acceptors & Donors - detected with OpenBabel
 * Halogen Bonds Acceptors - detected with OpenBabel (same as Hydrogen Bonds Acceptors)
 * Negative charges - assigned to *both* oxygens (OP1 & OP2) of each residue's phosphate group
-* Aromatic rings - - detected with OpenBabel
+* Aromatic rings -  detected with OpenBabel
 
 ## Ligand properties
 
@@ -672,108 +708,110 @@ The ligand's detected properties are as follows:
 * Halogen Bonds Donors - detected with OpenBabel
 * Positive & Negative charges - detected with OpenBabel
 * Aromatic rings - detected with RDKit
+* Lipophilic atoms - detected with RDKit
 
 ## Molecular Interactions' Geometric Rules
 
-Inspired by [PLIP](https://github.com/pharmai/plip) implementation.
+fingeRNAt detects the following nine non-covalent interactions:
 
-### 1. Hydrogen Bonds
-
-<img src="docs/README_pics/hb.png" width="250" alt="Torshin, Weber, & Harrison, 2002" />
+<img src="docs/README_pics/interactions.png" width="900"/>
 
 
-**Geometric rules:**
+1. **Hydrogen bonds**
 
-- |D - A| < 3.9 &#8491;
+  Geometric rule:
+  * |D - A| < 3.9 &#8491;
+	(*Torshin, Weber, & Harrison*, 2002)
 
-> **_NOTE:_**
-If hydrogens are present in DNA/RNA structure and in ligand, fingeRNAt can be run with flag `-dha`, that additionaly calculates Donor-Hydrogen-Acceptor angle  used as supplementary criteria in hydrogen bonds detection:&nbsp;&nbsp;&nbsp;&nbsp;
+
+  > **_NOTE:_** If hydrogens are present in RNA/DNA structure, fingeRNAt can be run with parameter `-dha`, that additionaly calculates Donor-Hydrogen-Acceptor angle  used as supplementary criteria in hydrogen bonds detection:&nbsp;&nbsp;&nbsp;&nbsp;
   100&deg; <   D-H-A angle < 260&deg; <br/>
-  Applies only to `FULL`/`XP` SIFt type, as `SIMPLE` & `PBS` do not calculate hydrogen bonds.
+  Parameter `-dha` applies only to `FULL` SIFt type, as `SIMPLE` & `PBS` do not calculate hydrogen bonds.
 
+2. **Halogen bonds**
 
-(*Torshin, Weber, & Harrison*, 2002)
+  Geometric rules:
+	- |X - A| < 4.0 &#8491;
+	(*Auffinger et al.*, 2004)
+	- C-X-A angle ~ 165&deg; &#177; 30&deg;
+	(*Auffinger et al.*, 2004)
+	- X-A-A' angle ~ 120&deg; &#177; 30&deg;
+	(*Auffinger et al.*, 2004)
 
-In case of `XP` hologram, there is additional assignment of each hydrogen bond type. Depending on Donor - Acceptor distance, each hydrogen bond can be assigned as strong/moderate/weak.
+3. **Cation - anion interactions**
 
-- 2.2 &#8491; < |D - A| < 2.5 &#8491;: strong
-- 2.5 &#8491; < |D - A| < 3.5 &#8491;: moderate, mostly electrostatic
-- 3.5 &#8491; < |D - A| < 4.0 &#8491;: weak, electrostatic
+  Geometric rule:
+  - 0.5 &#8491; < |cation - anion| < 5.5 &#8491;
+  (*Barlow and Thornton*, 1983)
 
-(*Jeffrey*, 1997)
+  > **_NOTE:_** fingeRNAt considers both oxygens from phosphate group (OP1 and OP2) of RNA/DNA as negatively charged.
 
-### 2. Halogen Bonds
+4. **Pi - cation** & 5. **Pi - anion interactions**
 
-<img src="docs/README_pics/hal.png" width="300" alt="Auffinger et al., 2004" />
+  Geometric rules:
 
-
-**Geometric rules:**
-
-
-- |X - O| < 4.0 &#8491;
-- C-X-O angle ~ 165&deg; &#177; 30&deg;
-- X-O-Y angle ~ 120&deg; &#177; 30&deg;
-
-(*Auffinger et al.*, 2004)
-
-### 3. Cation - Anion
-
-<img src="docs/README_pics/ca.png" width="200" alt="Barlow and Thornton, 1983" />
-
-
-
-**Geometric rule:**
-
-- 0.5 &#8491; < |cation - anion| < 5.5 &#8491;
-
-(*Barlow and Thornton*, 1983)
-
-    > **_NOTE:_** We consider both oxygens from phosphate group (OP1 and OP2) of DNA/RNA as negatively charged.
-
-### 4. Pi - Cation and 5. Pi - Anion
-
-<img src="docs/README_pics/pi-ion.png" width="200" alt="Wikimedia Commons, modified" />
-
-
-
-**Geometric rules:**
-
-- |cation/anion - aromatic ring center| < 6.0 &#8491; (*Gallivan and Dougherty*, 1999)
+- |cation/anion - aromatic ring center| < 6.0 &#8491;
+(*Gallivan and Dougherty*, 1999)
 - angle between the ring plane and the line between cation/anion - ring center ~ 90&deg; &#177; 30&deg;
 
-### 6. Pi - Stacking
+6. **Pi - stacking interactions**
 
-<img src="docs/README_pics/pi-stacking.png" width="500" alt="Wikimedia Commons, modified" />
+  Geometric rules:
 
+  * Common rules for all Pi - stacking interactions' types:
 
+    * |rings' centroids| < 5.5 &#8491;
+		(*McGaughey*, 1998)
+    * rings' outset < 2.0 &#8491;
 
-> **_NOTE:_** All above interactions' types are considered by fingeRNAt.
+  * For sandwich & parallel - displaced:
+    * angle between the ring planes < 30&deg;
 
-**Geometric rules:**
+  * For T - shaped:
+    * angle between the ring planes ~ 90&deg; &#177; 30&deg;
 
-Common rules for all Pi - stacking interactions' types:
+> **_NOTE:_** fingeRNAt considers all three abovementioned Pi - stacking interactions' types.
 
-- |rings' centroids| < 5.5 &#8491; (*McGaughey*, 1998)
-- rings' outset < 2.0 &#8491;
+7. **Ion-mediated interactions**
 
-For Sandwich & Parallel - displaced:
-- angle between the ring planes < 30&deg;
+  Geometric rules:
+	* |ligand's nitrogen/oxygen/sulphur - ion| <= X
+	* |nucleic acid's nitrogen/oxygen - ion| <= X
+	where:
+	  * X = 3.2 &#8491; for magnesium ion
+	  (*Zheng et al.*, 2015)
+	  * X = 3.9 &#8491; for potassium ion
+		(*Zheng et al.*, 2008)
+		* X = 3.6 &#8491; for sodium ion
+		(*Zheng et al.*, 2008)
+	  * X = 3.5 &#8491; for other ions
+		(*Zheng et al.*, 2008)
 
-For T - shaped:
-- angle between the ring planes ~ 90&deg; &#177; 30&deg;
+8. **Water-mediated interactions**
 
+> **_NOTE:_**  Only if fingeRNAt was called with `-h2o` parameter.
+
+  Geometric rules:
+  * |ligand's hydrogen bond donor/acceptor - water (oxygen)| <= 3.5 &#8491;
+	(*Poornima & Dean*, 1995)
+  * |nucleic acid's hydrogen bond donor/acceptor - water (oxygen)| <= 3.5 &#8491;
+	(*Poornima & Dean*, 1995)
+
+9. **Lipophilic interactions**
+
+  Geometric rule:
+  * |nucleic acid's carbon - ligand's lipophilic atom| <= 4.0 &#8491;
+	(*Padroni et al.*, 2020)
 
 # Contributors
 
-
-Natalia A. Szulc, @n-szulc
-![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen)
+Natalia Szulc, @n-szulc ![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen)
 
 Filip Stefaniak, @filipsPL ![](https://img.shields.io/badge/fstefaniak-%40genesilico.pl-brightgreen)
 
 # Feedback
 
-We welcome any feedback, please send an email to Natalia Szulc @n-szulc ![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen)
+We welcome any feedback, please send an email to Natalia Szulc  ![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen)
 
 
 # Acknowledgments
@@ -789,11 +827,11 @@ Assistance provided by [Open Babel Community](http://openbabel.org) was greatly 
 
 If you use this software, please cite:
 
-*fingeRNAt - a software for analysis of nucleic acids-ligand complexes. Design and applications.*
+*fingeRNAt - a novel tool for high-throughput analysis of nucleic acid-ligand interactions*
 
 Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak
 [in preparation]
 
 # License
 
-fingeRNAt is licensed under the GNU General Public License v3.0
+fingeRNAt is licensed under the GNU General Public License v3.0.
