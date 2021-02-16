@@ -1,9 +1,9 @@
 import subprocess, os, sys, traceback
 
 
-RNA = ['1aju_model1.pdb']
-ligands = ['ligands.sdf']
-fingerprints = ['SIMPLE', 'PBS', 'FULL', 'XP']
+RNA = ['1aju_model1.pdb', '3d2v.mol2']
+ligands = [['ligands.sdf'], ['redocked.sdf', 'various.sdf']]
+fingerprints = ['SIMPLE', 'PBS', 'FULL']
 
 def run_test():
 
@@ -13,9 +13,10 @@ def run_test():
 
     for i in range(len(RNA)):
         for j in range(len(fingerprints)):
-            if subprocess.call('python ../code/fingeRNAt.py -r test_inputs/%s -l test_inputs/%s -f %s -wrapper ACUG,PuPy,Counter' %(RNA[i], ligands[i], fingerprints[j]), shell = True):
-                print ('fingeRNAt had problem running fingerprint %s on test_inputs/%s  and test_inputs/%s' % (fingerprints[j], RNA[i], ligands[i]))
-                OK = False
+            for l in range(len(ligands[i])):
+                if subprocess.call('python ../code/fingeRNAt.py -r test_inputs/%s -l test_inputs/%s -f %s -wrapper ACUG,PuPy,Counter -h2o' %(RNA[i], ligands[i][l], fingerprints[j]), shell = True):
+                    print ('fingeRNAt had problem running fingerprint %s on test_inputs/%s  and test_inputs/%s' % (fingerprints[j], RNA[i], ligands[i][l]))
+                    OK = False
 
     if OK:
         for root, dirs, files in os.walk('outputs/'):
@@ -35,7 +36,6 @@ def run_test():
 		                sys.exit(3)
 
     return OK
-
 
 OK = run_test()
 
