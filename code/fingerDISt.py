@@ -123,6 +123,7 @@ if __name__ == "__main__":
         # Save results to DataFrame
 
         df_results = pd.DataFrame(data=np.round(results, 4), index=ligands, columns=ligands)
+        df_results.index.name = 'Ligand_name'
 
         if output:
             if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
