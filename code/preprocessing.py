@@ -672,7 +672,7 @@ def rna_coords_atom_index_dict(structure):
 
 def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, ligands_water, ligands_lipophilic,
                      arom_ring_ligands_info, debug_dict_ligand, RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info,
-                     HB_RNA_acc_info, HB_RNA_donor_info, HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info,
+                     HB_RNA_acc_info, HB_RNA_donor_info, HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Anion_Pi_info,
                      Sandwich_Displaced_info, T_shaped_info, ion_mediated_info, water_mediated_info, lipophilic_info, columns):
     """Prints all collected information in debug mode of SIFt type FULL about ligands/nucleic acid properties and detected interactions.
 
@@ -710,6 +710,8 @@ def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, lig
     :type Pi_Cation_info: str
     :param Pi_Anion_info: all found Pi-Anion interactions
     :type Pi_Anion_info: str
+    :param Anion_Pi_info: all found Pi-Anion interactions
+    :type Anion_Pi_info: str
     :param Sandwich_Displaced_info: all found Pi-Stacking type Sandwich/Displaced interactions
     :type Sandwich_Displaced_info: str
     :param T_shaped_info: all found Pi-Stacking type T-shaped interactions
@@ -780,17 +782,15 @@ def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, lig
         print()
 
     print()
-    print(('#'*len("# Number of ligand's aromatic rings #")))
-    print(('#         4. AROMATIC RINGS          #'))
-    print(("# Number of ligand's aromatic rings #"))
-    print(('#'*len("# Number of ligand's aromatic rings #")))
+    print(('#'*len("# Aromatic rings atom indices #")))
+    print(('#      4. AROMATIC RINGS      #'))
+    print(("# Aromatic rings atom indices #"))
+    print(('#'*len("# Aromatic rings atom indices #")))
 
     for key in ligands_CA.keys():
         print()
         print('### {} ###'.format(key))
-        if key not in arom_ring_ligands_info.keys():
-            print('0')
-        else:
+        if key in arom_ring_ligands_info.keys():
             print(arom_ring_ligands_info[key])
         print()
 
@@ -914,6 +914,10 @@ def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, lig
     print(("# Pi-Anion #"))
     print(('#'*len("# Pi-Anion #")))
     print(Pi_Anion_info)
+    print(('#'*len("# Anion-Pi #")))
+    print(("# Anion-Pi #"))
+    print(('#'*len("# Anion-Pi #")))
+    print(Anion_Pi_info)
     print(('#'*len("# Pi-Stacking: Sandwich/Displaced #")))
     print(("# Pi-Stacking: Sandwich/Displaced #"))
     print(('#'*len("# Pi-Stacking: Sandwich/Displaced #")))
