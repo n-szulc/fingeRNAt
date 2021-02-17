@@ -715,7 +715,7 @@ The ligand's detected properties are as follows:
 
 fingeRNAt detects the following nine non-covalent interactions:
 
-<img src="docs/README_pics/interactions.png" width="900"/>
+<img src="docs/README_pics/interactions-explanation.png" width="900"/>
 
 
 ## 1. Hydrogen bonds
