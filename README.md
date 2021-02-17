@@ -485,7 +485,7 @@ Debugging mode may be used with each SIFt type and provides the following inform
   1. atom indices of hydrogen bonds acceptors & donors
   2. atom indices of halogen bonds donors
   3. atom indices of cations & anions
-  4. number of ligand's aromatic rings
+  4. atom indices of ligand's aromatic rings
   5. IDs of inorganic ions in electrostatic contact with ligand_name_detail
   6. IDs of water molecules in contact with ligand
   7. atom indices of lipophilic atoms
@@ -501,11 +501,12 @@ Debugging mode may be used with each SIFt type and provides the following inform
   3. atoms creating cation-anion interaction with their distance (note that nucleic acid's atoms are anions)
   4. atoms creating Pi-cation interaction with their distance and angle
   5. atoms creating Pi-anion interaction with their distance and angle (note that ligand's atoms are anions)
-  6. atoms creating Pi-stacking interaction type Sandwich/Displaced with their distance, offset and angle
-  7. atoms creating Pi-stacking interaction type T-shaped with their distance, offset and angle
-	8. atoms creating ion-mediated interaction with their distances (nucleic acid - ion & ion - ligand)
-	9. atoms creating water-mediated interaction with their distances (nucleic acid - water & water - ligand)
-	10. atoms creating lipophilic interaction with their distance
+	6. atoms creating anion-Pi interaction with their distance and angle (note that nucleic acid's atoms are anions)
+  7. atoms creating Pi-stacking interaction type Sandwich/Displaced with their distance, offset and angle
+  8. atoms creating Pi-stacking interaction type T-shaped with their distance, offset and angle
+	9. atoms creating ion-mediated interaction with their distances (nucleic acid - ion & ion - ligand)
+	10. atoms creating water-mediated interaction with their distances (nucleic acid - water & water - ligand)
+	11. atoms creating lipophilic interaction with their distance
 
 - `SIMPLE`
 
@@ -556,7 +557,7 @@ e.g.
 |  `PuPy` |   OK  | OK |  Does not work|
 | `Counter`  |  OK |  OK | Does not work  |
 
-Please note, we consider both oxygens from phosphate group (OP1 and OP2) of nucleic acid as negatively charged, therefore fingeRNAt will not consider differently named atoms as anions.
+> **_NOTE:_** We consider both oxygens from phosphate group (OP1 and OP2) of nucleic acid as negatively charged, therefore fingeRNAt will not consider differently named atoms as anions.
 
 * If you have a residue with non-canonical name and non-canonical atom name e.g. P9
 
@@ -567,7 +568,7 @@ Please note, we consider both oxygens from phosphate group (OP1 and OP2) of nucl
 |  `PuPy` | Omits interaction for residue with non-canonical name  | Omits interaction for residue with non-canonical name  |  Does not work |
 | `Counter`  |  OK |  OK | Does not work |
 
-Please note,  we consider both oxygens from phosphate group (OP1 and OP2) of nucleic acid as negatively charged, therefore fingeRNAt will not consider differently named atoms as anions.
+> **_NOTE:_** We consider both oxygens from phosphate group (OP1 and OP2) of nucleic acid as negatively charged, therefore fingeRNAt will not consider differently named atoms as anions.
 
 ---
 
@@ -714,7 +715,7 @@ The ligand's detected properties are as follows:
 
 fingeRNAt detects the following nine non-covalent interactions:
 
-<img src="docs/README_pics/Interactions.png" width="900"/>
+<img src="docs/README_pics/interactions.png" width="900"/>
 
 
 ## 1. Hydrogen bonds
@@ -731,7 +732,7 @@ fingeRNAt detects the following nine non-covalent interactions:
 ## 2. Halogen bonds
 
   Geometric rules:
-  
+
   - |X - A| < 4.0 &#8491;
   (*Auffinger et al.*, 2004)
   - C-X-A angle ~ 165&deg; &#177; 30&deg;
@@ -742,7 +743,7 @@ fingeRNAt detects the following nine non-covalent interactions:
 ## 3. Cation - anion interactions
 
   Geometric rule:
-  
+
   - 0.5 &#8491; < |cation - anion| < 5.5 &#8491;
   (*Barlow and Thornton*, 1983)
 
@@ -755,6 +756,8 @@ fingeRNAt detects the following nine non-covalent interactions:
   - |cation/anion - aromatic ring center| < 6.0 &#8491;
   (*Gallivan and Dougherty*, 1999)
   - angle between the ring plane and the line between cation/anion - ring center ~ 90&deg; &#177; 30&deg;
+
+ > **_NOTE:_** In case of Pi - cation interaction, aromatic ring is only from the nucleic acid side (as nucleic acids are negatively charged). However, Pi - anion interaction is considered both ways: (i) nucleic acid's aromatic ring - ligands's anion and (ii) nucleic acid's anion (from phosphate group; see above) - ligand's aromatic ring.
 
 ## 6. Pi - stacking interactions
 
@@ -777,7 +780,7 @@ fingeRNAt detects the following nine non-covalent interactions:
 ##  7. Ion-mediated interactions
 
   Geometric rules:
-  
+
   * |ligand's nitrogen/oxygen/sulphur - ion| <= X
   * |nucleic acid's nitrogen/oxygen - ion| <= X, where:
     * X = 3.2 &#8491; for magnesium ion (*Zheng et al.*, 2015)
