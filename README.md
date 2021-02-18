@@ -92,9 +92,9 @@ fingeRNAt runs under Python 3.5 - 3.8 on Linux, Mac OS and Windows.
 
 ## Why use Structural Interaction Fingerprints?
 
-Structural Interaction Fingerprints (SIFs) translate information about 3D interactions in a target-ligand complex into a string, where the respective bit in the fingerprint is e.g. set to 1 in case of detecting particular interaction, and to 0 otherwise. 
+Structural Interaction Fingerprints (SIFs) translate information about 3D interactions in a target-ligand complex into a string, where the respective bit in the fingerprint is e.g. set to 1 in case of detecting particular interaction, and to 0 otherwise.
 
-By using (SIFs), **the interactions are represented in a unified fashion, thus allowing for easy high throughput computational analysis**, as they provide a full picture of all interactions within the complex. 
+By using (SIFs), **the interactions are represented in a unified fashion, thus allowing for easy high throughput computational analysis**, as they provide a full picture of all interactions within the complex.
 
 ## What are Structural Interaction Fingerprints applications?
 
@@ -451,6 +451,11 @@ Heatmap for SIFt type `XP` with wrapper `Counter` obtained from running `python 
 - Calculate SIFt `XP` considering Donor-Hydrogen-Acceptor angle calculation (when detecting hydrogen bonds) and save the output, one wrapped output and two heatmaps in the user-declared location with the desired filename.
 
 `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f XP -dha -o /path/to/my_output/my_filename -vis -wrapper ACUG`
+
+- Bonus: an useful bash command to transpose resulting fingerprint file (rs program needed: `sudo apt install rs` for debian-like systems):
+
+`cat fingerprint_FULL.tsv | sed -e "s/\t/,/g" | rs -c, -C, -T|sed -e 's/.$//' -e "s/,/\t/g" > fingerprint_FULL-T.tsv`
+
 
 ## Graphical User Interface
 
