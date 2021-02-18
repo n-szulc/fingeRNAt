@@ -419,7 +419,7 @@ def find_ligands_lipophilic(mols, verbose):
     # ICM: [C&!$(C=O)&!$(C#N),S&^3,#17,#15,#35,#53]
 
     # modified ICM: also aromatic C and must be neutral.
-    smarts = pybel.Smarts("[c,C&!$(C=O)&!$(C#N),S&^3,#17,#15,#35,#53;+0]")
+    smarts = pybel.Smarts("[c,C&!$(C=O)&!$(C#N),S&^3,s,#17,#15,#35,#53;+0]")
 
     dictionary = {}
 
