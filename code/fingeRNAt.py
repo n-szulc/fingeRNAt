@@ -496,7 +496,7 @@ def calculate_ANION_PI(residue, RNA_anions, ligand_name, ligand_rings_coords):
         :type residue: openbabel.OBResidue
         :type RNA_anions: list
         :type ligand_name: str
-        :type ligand_rings_coords: dict
+        :type ligand_rings_coords: list
         :return: calculated interaction for particular ligand - residue
         :rtype: list
     """
@@ -542,7 +542,7 @@ def calculate_ANION_PI(residue, RNA_anions, ligand_name, ligand_rings_coords):
 
                             if detail:
                                 global detail_list
-                                detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][ring_atoms_ligand[i]][1], 'Anion_Pi',
+                                detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][ring_atoms_ligand[i]][1], 'Pi_Anion',
                                 debug_ligand,
                                 ring_center_ligand[0], ring_center_ligand[1],  ring_center_ligand[2],
                                 residue.GetName(), residue.GetNum(), residue.GetChain(), residue.GetAtomID(anion).strip(),
@@ -797,27 +797,29 @@ def calculate_ION_MEDIATED(residue, residue_atoms, ligand_name, ions, ions_dict)
     result = [ligand_name, str(residue.GetNum())+ ':' + str(residue.GetChain()), 0, 0, 0, 0]
 
     # Flag to iterate over residue's atoms as long as we do not find an atom within CUTOFF distance from ligand
-    flag = True
+    searching_flag = True
 
     for rna_atom in residue_atoms:
-        if flag:
+        if searching_flag:
             for ion in ions:
                 dist = measure_distance(ions_dict[ion], rna_atom)
                 if config.MIN_DIST < dist <= config.MAX_ION_DIST:
 
                         ion_name = ion.split(':')[0]
+                        found_interaction = True
                         if ion_name == 'MG' and dist <= config.MAX_MAGNESIUM_DIST:
                             result[-4] = 1
-                        elif ion_name == 'K'and dist <= config.MAX_POTASSIUM_DIST:
+
+                        elif ion_name == 'K' and dist <= config.MAX_POTASSIUM_DIST:
                             result[-3] = 1
                         elif ion_name == 'NA' and dist <= config.MAX_SODIUM_DIST:
                             result[-2] = 1
-                        elif dist <= config.MAX_OTHER_ION_DIST:
+                        elif ion_name not in ['MG', 'K', 'NA'] and dist <= config.MAX_OTHER_ION_DIST:
                             result[-1] = 1
                         else:
-                            continue
+                            found_interaction = False
 
-                        if debug or detail:
+                        if found_interaction and (debug or detail):
 
                             shortest_ligand_ion = 9999
                             ligand_atom = None
@@ -851,8 +853,8 @@ def calculate_ION_MEDIATED(residue, residue_atoms, ligand_name, ions, ions_dict)
                                 rna_atom[0], rna_atom[1], rna_atom[2],
                                 np.round(dist, 4)])
 
-                        if not detail:
-                            flag=False
+                        if found_interaction and not detail:
+                            searching_flag = False
                             break
         else:
             break
@@ -1526,7 +1528,7 @@ if __name__ == "__main__":
         if print_flag:
             interact_names = {'P':'Phosphate contact', 'B': 'Base contact', 'S' : 'Sugar contact', 'SIMPLE' : 'contact',
                               'HB': 'Hydrogen Bonds', 'HAL': 'Halogen Bonds', 'CA' : 'Cation-Anion', 'Pi_Cation' : 'Pi-Cation',
-                              'Pi-Anion' : 'Pi-Anion', 'Pi_Stacking' : 'Pi-Stacking',
+                              'Pi_Anion' : 'Pi-Anion', 'Pi_Stacking' : 'Pi-Stacking',
                               'Mg_mediated' : 'Magnesium ion-mediated', 'K_mediated' : 'Potassium ion-mediated', 'Na_mediated' : 'Sodium ion-mediated',
                               'Other_mediated' : 'Other ion-mediated', 'Water_mediated' : 'Water-mediated', 'Lipophilic' : 'Lipophilic'}
 

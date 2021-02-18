@@ -189,7 +189,7 @@ def assign_interactions_results(result, RESULTS, RNA_LENGTH, RNA_seq_index, FING
 
     else: # In case of ion-mediated interactions or PBS
 
-        if FINGERPRINT_DESCRIPTORS_NO == 10: # ion-mediated
+        if FINGERPRINT_DESCRIPTORS_NO == 12: # FULL ion-mediated
             for i in range(4):
                 RESULTS[ligand_id][(RNA_seq_index*FINGERPRINT_DESCRIPTORS_NO) + descriptor_index+i] = result[-4+i]
 
@@ -411,19 +411,23 @@ def find_ligands_water(ligands_hba_hbd, water_dict, verbose):
          print("Looking for ligand - water interactions...")
 
      for ligand_name in tqdm(ligands_hba_hbd.keys(), disable=(not verbose)): # For ligand in ligands' dict
-
         dictionary[ligand_name]=[] # {'prefix^pose':[list of water molecule names]}
-
+        if len(ligands_hba_hbd[ligand_name][0]) == 0 and len(ligands_hba_hbd[ligand_name][1]) == 0: # ligand has no HB acceptors/donors
+            continue
         for water in water_dict.keys():
+            if len(ligands_hba_hbd[ligand_name][0]) > 0:
+                dist = measure_distance(ligands_hba_hbd[ligand_name][0][0], water_dict[water])
+            else:
+                dist = measure_distance(ligands_hba_hbd[ligand_name][1][0], water_dict[water])
+
+            if dist > config.RES_LIGAND_MAX_DIST:
+                # if the ligand's first acceptor/donor atom - water distance is greater than threshold, there is no point in checking the rest of ligand's atoms
+                continue
+
             for don_acc in ligands_hba_hbd[ligand_name]:
                 searching_flag = True
                 if searching_flag:
                     for atom in don_acc:
-                        dist = measure_distance(atom[0], water_dict[water])
-                        if dist > config.RES_LIGAND_MAX_DIST:
-                            # if the ligand's atom - water distance is greater than threshold, there is no point in checking the rest of ligand's atoms
-                            searching_flag = False
-                            break
                         if config.MIN_DIST < dist <= config.MAX_WATER_DIST:
                             dictionary[ligand_name].append(water)
                             searching_flag = False
