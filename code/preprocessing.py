@@ -452,8 +452,7 @@ def find_ligands_lipophilic(mols, verbose):
 
     # modified ICM: also aromatic C and must be neutral.
 
-    smarts = pybel.Smarts("[c,C&!$(C=O)&!$(C#N),S&^3,#17,#15,#35,#53;+0]")
-
+    smarts = pybel.Smarts("[c,C&!$(C=O)&!$(C#N),S&^3,s,#17,#15,#35,#53;+0]")
     dictionary = {}
 
     if verbose:
@@ -547,12 +546,14 @@ def find_RNA_rings(structure, extension_structure):
                 raise Exception('Unknown nucleic acid structure format')
 
             if res_id in config.CANONICAL_RESIDUES:
+                print(res_id)
                 sugar = False
                 if len([atom for atom in ring_atoms if (atom.atomicnum == config.OXYGEN_NUM)]) > 0:
                     sugar = True
                 if not sugar:
                     rings.append(ring)
             else:
+                (print('not canon'))
                 if ring.IsAromatic():
                     rings.append(ring)
 
