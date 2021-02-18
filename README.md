@@ -394,27 +394,31 @@ Dedicated PyMOL plugin was created to visualize detected interactions based on `
 
 - Calculate SIFt `FULL`, print detected interactions on screen and save the output in the default location with the default filename.
 
-`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -print`
+ `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -print`
 
 - Calculate SIFt `SIMPLE` and save the output in the user-declared location with the default filename.
 
-`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o /path/to/my_output/`
+ `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o /path/to/my_output/`
 
 - Calculate SIFt `PBS`, see what is being calculated using verbose mode, and save the output with the default filename in the `outputs` directory together with heatmap.
 
-`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -verbose -vis`
+ `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -verbose -vis`
 
 - Calculate default SIFt `FULL` and save it's output along with table containing details on each detected interaction with the default filenames in the `outputs` directory.
 
-`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -detail`
+ `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -detail`
 
 - Calculate default SIFt `FULL`, consider water-mediated interactions, and save it's output and three wrapped outputs with the default filenames in the `outputs` directory.
 
-`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -h2o -wrapper ACUG,PuPy,Counter`
+ `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -h2o -wrapper ACUG,PuPy,Counter`
 
 - Calculate SIFt for nucleic acid - inorganic ions from the same pdb/mol2 file (see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions))
 
-`python code/fingeRNAt.py -r example_inputs/3d2v.mol2 -f PBS`
+ `python code/fingeRNAt.py -r example_inputs/3d2v.mol2 -f PBS`
+
+- **Bonus:** useful bash command to transpose resulting fingerprint file (rs program needed: `sudo apt install rs` for debian-like systems):
+
+ `cat fingerprint_FULL.tsv | sed -e "s/\t/,/g" | rs -c, -C, -T|sed -e 's/.$//' -e "s/,/\t/g" > fingerprint_FULL-T.tsv`
 
 ## Graphical User Interface
 
