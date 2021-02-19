@@ -183,6 +183,8 @@ fingeRNAt accepts the following parameters:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
+`[-noHlig]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; do not automatically add  hydrogens to ligand's structures
+
 `[-print]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print detected interactions for each nucleic acid - ligand complex on screen
 
 `[-detail]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generate an additional file with detailed data on detected interactions see -> [PyMOL visualization](#pymol-visualization)
@@ -228,7 +230,8 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 - Input ligand molecules should have assigned desired protonation state and formal charges.
 - In the receptor molecule, charges on the phosphate groups do not need to be assigned (fingeRNAt always treats OP1 and OP2 atoms as negatively charged anions).
 - Please pay attention to sdf ligand files converted from pdbqt/mol2 files, if the *formal charges* are preserved in the sdf files.
--	All the missing ligands' hydrogens will be automatically added.
+-	All the missing ligands' hydrogens will be automatically added, unless `-noHlig` is passed.
+- Ligands with added hydrogens will be saved to new sdf file with `_addedH` suffix, unless `-noHlig` is passed.
 
 ## Structural Interaction Fingerprint (SIFt) types
 
