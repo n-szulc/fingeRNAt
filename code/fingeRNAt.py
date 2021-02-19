@@ -1029,6 +1029,7 @@ if __name__ == "__main__":
     optional_arguments.add_argument('-o', help='pass output name', metavar='NAME')
     optional_arguments.add_argument('-h2o', help='consider water-mediated nucleic acid - ligand interactions', action='store_true')
     optional_arguments.add_argument('-dha', help='consider Donor-Hydrogen-Acceptor angle in hydrogen bonds calculation', action='store_true')
+    optional_arguments.add_argument('-noHlig', help="do not add hydrogens to ligands' structures", action='store_true')
     optional_arguments.add_argument('-wrapper', help='pass results wrapper types (multiple types possible at once, but have to be comma separated)', metavar='WRAPPER')
     optional_arguments.add_argument('-print', help='print found interactions on screen', action='store_true')
     optional_arguments.add_argument('-detail', help='generate an additional file with detailed data on detected interactions (used for detail visualization)', action='store_true')
@@ -1059,6 +1060,7 @@ if __name__ == "__main__":
     output = args['o']
     consider_dha = args['dha']
     consider_H2O = args['h2o']
+    noHligands = args['noHlig']
 
     try:
         wrapper = args['wrapper'].split(',')
@@ -1234,9 +1236,16 @@ if __name__ == "__main__":
             # Read all ligands
             ligands_mols = list(pybel.readfile(extension_ligand, filename_ligand))
 
-            # Add missing hydrogens to all ligands
-            for i in range(len(ligands_mols)):
-                ligands_mols[i].OBMol.AddHydrogens()
+            if not noHligands:
+                save_ligands_addedH = ''
+                # Add missing hydrogens to all ligands
+                for i in range(len(ligands_mols)):
+                    ligands_mols[i].OBMol.AddHydrogens()
+                    save_ligands_addedH += ligands_mols[i].write('sdf')
+
+                f=open(filename_ligand[:-4] + '_addedH.sdf', 'w')
+                f.write(save_ligands_addedH)
+                f.close()
 
             # Create dictionary of positively charged ions with their coords
             Inorganic_ions_dict = {}

@@ -541,19 +541,19 @@ def find_RNA_rings(structure, extension_structure):
             if extension_structure == 'pdb':
                 res_id = res.GetName()
             elif extension_structure == 'mol2':
-                res_id = res.GetName()[:-len(str(res.GetNum()))] # Need res.GetName() without last characters of its res number, because when nucleic acid is in mol2 format, res.GetName() gives for example U22 as residue name
+                res_id = res.GetName()[0] # Need res.GetName() without last characters of its res number, because when nucleic acid is in mol2 format, res.GetName() may have e.g. U22 as residue name
             else:
                 raise Exception('Unknown nucleic acid structure format')
-
+            print(res.GetName(), res.GetNum(), res.GetChain())
             if res_id in config.CANONICAL_RESIDUES:
-                print(res_id)
+                #print(res_id)
                 sugar = False
                 if len([atom for atom in ring_atoms if (atom.atomicnum == config.OXYGEN_NUM)]) > 0:
                     sugar = True
                 if not sugar:
                     rings.append(ring)
             else:
-                (print('not canon'))
+
                 if ring.IsAromatic():
                     rings.append(ring)
 
