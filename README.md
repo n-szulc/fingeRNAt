@@ -206,7 +206,7 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 ## Inputs
 
 1. `-r `: path to receptor - RNA/DNA structure
-    - supported file types: pdb, mol2
+    - supported file type: pdb
     - **only 1 model** of RNA/DNA structure
          - if there are more models, you have to choose only one (e.g. manually delete remaining models)
     - **no ligands**
@@ -219,7 +219,7 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
          - supported file types: sdf
          - possible multiple poses of ligands in one file
     - **RNA/DNA structure**
-    	- supported file types: sdf
+    	- supported file type: sdf
     	- possible multiple models of RNA/DNA structure
     	- **only** RNA/DNA chains
         	- no water, ions, ligands
@@ -272,14 +272,14 @@ fingeRNAt allows to calculate the following SIFt types:
 
 ## Interactions with inorganic ions
 
-It is possible to calculate contacts for nucleic acid - ions from the same pdb/mol2 file.
+It is possible to calculate contacts for nucleic acid - ions.
 
-In such case, parameter `-l` should be ommited, which allows fingeRNAt to treat all inorganic ions as ligands and calculate SIFt for each residue - ion pair.
+Ions have to be in the same input pdb file and parameter `-l` should be ommited. fingeRNAt will treat all inorganic ions as ligands and calculate SIFt for each residue - ion pair.
 
-As the aforementioned interactions are detected based on  contact, **only SIFt type SIMPLE or PBS may be calculated**.
+As the aforementioned interactions are detected based on contacts, **only SIFt type SIMPLE or PBS may be calculated**.
 
   **Usage example**
-	`python code/fingeRNAt.py -r example_inputs/3d2v.mol2 -f PBS`
+	`python code/fingeRNAt.py -r example_inputs/3d2v.pdb -f PBS`
 
 
 ## User defined thresholds
@@ -415,9 +415,9 @@ Dedicated PyMOL plugin was created to visualize detected interactions based on `
 
  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -h2o -wrapper ACUG,PuPy,Counter`
 
-- Calculate SIFt for nucleic acid - inorganic ions from the same pdb/mol2 file (see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions))
+- Calculate SIFt for nucleic acid - inorganic ions from the same pdb input file (see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions))
 
- `python code/fingeRNAt.py -r example_inputs/3d2v.mol2 -f PBS`
+ `python code/fingeRNAt.py -r example_inputs/3d2v.pdb -f PBS`
 
 - **Bonus:** useful bash command to transpose resulting fingerprint file (rs program needed: `sudo apt install rs` for debian-like systems):
 
@@ -445,7 +445,7 @@ The abovementioned data serve also as input to dedicated Pymol plugin, created b
 
 > **_NOTE:_** In case of ion- and water-mediated interactions, two rows will correspond to one such interaction: (i) ligand - ion/water molecule and (ii) ion/water molecule - RNA/DNA. Therefore in case (i) ion/water molecule is treated as the receptor and in case (ii) as the ligand.
 
-> **_NOTE 2:_** We refer to ligands as structures from ligands' file `-l`, as water molecules and inorganic ions are supposed to be provided in the RNA/DNA pdb/mol2 file.
+> **_NOTE 2:_** We refer to ligands as structures from ligands' file `-l`, as water molecules and inorganic ions are supposed to be provided in the RNA/DNA input pdb file.
 
 The following data are saved in `-detail` mode:
 
@@ -478,7 +478,7 @@ The following data are saved in `-detail` mode:
 * **Distance**: distance between ligand's and residue's atoms [&#8491;]
 
 **Sample output**
-see -> [DETAIL_3d2v.mol2_redocked.sdf_FULL.tsv](example_outputs/DETAIL_3d2v.mol2_redocked.sdf_FULL.tsv)
+see -> [DETAIL_3d2v.pdb_redocked.sdf_FULL.tsv](example_outputs/DETAIL_3d2v.pdb_redocked.sdf_FULL.tsv)
 
 ## Debugging mode
 
