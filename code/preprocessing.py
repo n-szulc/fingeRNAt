@@ -538,22 +538,13 @@ def find_RNA_rings(structure, extension_structure):
             ring_atoms = [a for a in all_atoms if ring.IsMember(a.OBAtom)]
             res = structure.OBMol.GetAtom(ring_atoms[0].idx).GetResidue() # Residue according to first ring's atom
 
-            if extension_structure == 'pdb':
-                res_id = res.GetName()
-            elif extension_structure == 'mol2':
-                res_id = res.GetName()[0] # Need res.GetName() without last characters of its res number, because when nucleic acid is in mol2 format, res.GetName() may have e.g. U22 as residue name
-            else:
-                raise Exception('Unknown nucleic acid structure format')
-            print(res.GetName(), res.GetNum(), res.GetChain())
-            if res_id in config.CANONICAL_RESIDUES:
-                #print(res_id)
+            if res.GetName() in config.CANONICAL_RESIDUES:
                 sugar = False
                 if len([atom for atom in ring_atoms if (atom.atomicnum == config.OXYGEN_NUM)]) > 0:
                     sugar = True
                 if not sugar:
                     rings.append(ring)
             else:
-
                 if ring.IsAromatic():
                     rings.append(ring)
 

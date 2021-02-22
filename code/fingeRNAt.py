@@ -1021,7 +1021,7 @@ if __name__ == "__main__":
                                      conflict_handler = 'resolve')
 
     required_arguments = parser.add_argument_group('Required arguments')
-    required_arguments.add_argument('-r', help='pass RNA/DNA structure in pdb/mol2 format', required=True, metavar='RNA/DNA', default=argparse.SUPPRESS)
+    required_arguments.add_argument('-r', help='pass RNA/DNA structure in pdb format', required=True, metavar='RNA/DNA', default=argparse.SUPPRESS)
 
     optional_arguments = parser.add_argument_group('Optional arguments')
     optional_arguments.add_argument('-l', help='pass ligands file in sdf format', metavar='LIGANDS')
@@ -1043,8 +1043,8 @@ if __name__ == "__main__":
 
     filename_RNA = args['r']
     extension_structure = ".".join(filename_RNA.split('/')[-1].split('.')[1:])
-    if extension_structure not in ['pdb', 'mol2']:
-        raise Exception('RNA/DNA structure has to be in pdb or mol2 format!')
+    if extension_structure != 'pdb':
+        raise Exception('RNA/DNA structure has to be in pdb format!')
 
     filename_ligand=args['l']
     if filename_ligand:
@@ -1131,6 +1131,7 @@ if __name__ == "__main__":
 
         for inorganic_ion in Ions_objects:
             ion_id = inorganic_ion.GetName() + ':' + str(inorganic_ion.GetNum()) + ':' + inorganic_ion.GetChain()
+            print(ion_id)
             # Fill the RESULTS dictionary of keys - ions ids and values - lists of 0
             RESULTS[ion_id] = [0] * RNA_LENGTH  * FUNCTIONS[fingerprint]
 
@@ -1162,6 +1163,7 @@ if __name__ == "__main__":
         for residue in RNA_residues_objects: # Loop over all nucleic acid residues
             RNA_residues.append(str(residue.GetNum())+ ':' + str(residue.GetChain()))
             RNA_nucleotides.append(str(residue.GetName()))
+            print(residue.GetName(), residue.GetNum(), residue.GetChain())
 
             for inorganic_ion in Inorganic_ions_dict.keys():
                 inorganic_ion_name = inorganic_ion.split(':')[0]
