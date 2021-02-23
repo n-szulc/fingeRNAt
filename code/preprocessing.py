@@ -623,6 +623,35 @@ def check_if_RNA(all_nucleotides):
         return True
     return False
 
+
+
+def addHwithRDKit(sdfFileIN, sdfFileOUT):
+    '''
+    adds hydrogens and coordinates to molecules deposited in SDF
+    sdfFileIN, sdfFileOUT - input and output sdf files
+    related documentation:
+    https://www.rdkit.org/docs/source/rdkit.Chem.rdmolops.html#rdkit.Chem.rdmolops.AddHs
+    '''
+
+    from rdkit import Chem
+    from rdkit.Chem import AllChem
+
+    suppl = Chem.SDMolSupplier(sdfFileIN, sanitize=False)
+
+    writer = Chem.SDWriter(sdfFileOUT)
+
+    for mol in suppl:
+        if mol is None: continue
+
+        Chem.SanitizeMol(mol,Chem.SanitizeFlags.SANITIZE_FINDRADICALS|Chem.SanitizeFlags.SANITIZE_KEKULIZE|Chem.SanitizeFlags.SANITIZE_SETAROMATICITY|Chem.SanitizeFlags.SANITIZE_SETCONJUGATION|Chem.SanitizeFlags.SANITIZE_SETHYBRIDIZATION|Chem.SanitizeFlags.SANITIZE_SYMMRINGS,catchErrors=True)
+
+        if mol is None: continue
+
+        mol = Chem.AddHs(mol, addCoords=True)
+        writer.write(mol)
+    writer.close()
+
+
 ########################################### FUNCTIONS FOR DEBUG/DETAIL MODE ###########################################
 
 def ligands_coords_atom_index_dict(mols):
