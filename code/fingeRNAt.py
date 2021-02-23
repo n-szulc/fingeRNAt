@@ -34,7 +34,7 @@ from preprocessing import get_ligand_name_pose, projection, find_ligands_all_ato
 from preprocessing import wrap_results, find_ligands_HBA_HBD, find_ligands_HAL_don, find_ligands_CA
 from preprocessing import find_ligands_ions, find_ligands_water, find_ligands_lipophilic, find_RNA_rings, find_RNA_HB_HAL_acc_don
 from preprocessing import find_RNA_anions, check_if_RNA, findAromaticRingsWithRDKit, rna_coords_atom_index_dict
-from preprocessing import ligands_coords_atom_index_dict, print_debug_info
+from preprocessing import addHwithRDKit, ligands_coords_atom_index_dict, print_debug_info
 
 
 ##################################################
@@ -1014,8 +1014,8 @@ if __name__ == "__main__":
     #  ARGUMENTS PARSING  #
     #######################
 
-    parser = argparse.ArgumentParser(description = '''Script calculating Structural Interaction Fingerprint (SIFt) in RNA/DNA - ligand complexes.''',
-                                     epilog = 'If no optional -o parameter was passed, script will create outputs/ directory in the current working directory and save there SIFs in tsv format.',
+    parser = argparse.ArgumentParser(description = '''Software calculating Structural Interaction Fingerprint (SIFt) in RNA/DNA-ligand complexes.''',
+                                     epilog = 'If parameter -o was not passed, fingeRNAt will create outputs/ directory in the working directory and save there SIFt in tsv format.',
                                      add_help = False,
                                      formatter_class = argparse.ArgumentDefaultsHelpFormatter,
                                      conflict_handler = 'resolve')
@@ -1026,13 +1026,13 @@ if __name__ == "__main__":
     optional_arguments = parser.add_argument_group('Optional arguments')
     optional_arguments.add_argument('-l', help='pass ligands file in sdf format', metavar='LIGANDS')
     optional_arguments.add_argument('-f', help='pass fingerprint type, available types are SIMPLE, PBS & FULL', default='FULL', metavar='TYPE')
+    optional_arguments.add_argument('-addH', help="pass module name to add hydrogens to ligands' structures, available modules are OpenBabel, RDKit, None", default='OpenBabel', metavar='MODULE')
+    optional_arguments.add_argument('-wrapper', help='pass results wrapper types (multiple types possible at once, but have to be comma separated)', metavar='WRAPPER')
     optional_arguments.add_argument('-o', help='pass output name', metavar='NAME')
     optional_arguments.add_argument('-h2o', help='consider water-mediated nucleic acid - ligand interactions', action='store_true')
     optional_arguments.add_argument('-dha', help='consider Donor-Hydrogen-Acceptor angle in hydrogen bonds calculation', action='store_true')
-    optional_arguments.add_argument('-noHlig', help="do not add hydrogens to ligands' structures", action='store_true')
-    optional_arguments.add_argument('-wrapper', help='pass results wrapper types (multiple types possible at once, but have to be comma separated)', metavar='WRAPPER')
     optional_arguments.add_argument('-print', help='print found interactions on screen', action='store_true')
-    optional_arguments.add_argument('-detail', help='generate an additional file with detailed data on detected interactions (used for detail visualization)', action='store_true')
+    optional_arguments.add_argument('-detail', help='generate an additional file with detailed data on detected interactions (used for PyMOL visualization)', action='store_true')
     optional_arguments.add_argument('-vis', help='make heatmap visualization', action='store_true')
     optional_arguments.add_argument('-verbose', help='provides additional details about calculations performed at the given moment', action='store_true')
     optional_arguments.add_argument('-debug', help='enter debug mode', action='store_true')
@@ -1060,7 +1060,8 @@ if __name__ == "__main__":
     output = args['o']
     consider_dha = args['dha']
     consider_H2O = args['h2o']
-    noHligands = args['noHlig']
+    how_addH = args['addH']
+    if how_addH not in ['OpenBabel', 'RDKit', 'None']: raise Exception('Unknown module to add hydrogens!')
 
     try:
         wrapper = args['wrapper'].split(',')
@@ -1131,7 +1132,7 @@ if __name__ == "__main__":
 
         for inorganic_ion in Ions_objects:
             ion_id = inorganic_ion.GetName() + ':' + str(inorganic_ion.GetNum()) + ':' + inorganic_ion.GetChain()
-            print(ion_id)
+            #print(ion_id)
             # Fill the RESULTS dictionary of keys - ions ids and values - lists of 0
             RESULTS[ion_id] = [0] * RNA_LENGTH  * FUNCTIONS[fingerprint]
 
@@ -1163,7 +1164,7 @@ if __name__ == "__main__":
         for residue in RNA_residues_objects: # Loop over all nucleic acid residues
             RNA_residues.append(str(residue.GetNum())+ ':' + str(residue.GetChain()))
             RNA_nucleotides.append(str(residue.GetName()))
-            print(residue.GetName(), residue.GetNum(), residue.GetChain())
+            #print(residue.GetName(), residue.GetNum(), residue.GetChain())
 
             for inorganic_ion in Inorganic_ions_dict.keys():
                 inorganic_ion_name = inorganic_ion.split(':')[0]
@@ -1235,19 +1236,27 @@ if __name__ == "__main__":
 
         else: # fingerprint == 'FULL'
 
-            # Read all ligands
-            ligands_mols = list(pybel.readfile(extension_ligand, filename_ligand))
+            # Add missing hydrogens according to -addH parameter
+            if how_addH == 'OpenBabel':
+                # Read all ligands
+                ligands_mols = list(pybel.readfile(extension_ligand, filename_ligand))
 
-            if not noHligands:
                 save_ligands_addedH = ''
-                # Add missing hydrogens to all ligands
                 for i in range(len(ligands_mols)):
                     ligands_mols[i].OBMol.AddHydrogens()
                     save_ligands_addedH += ligands_mols[i].write('sdf')
 
-                f=open(filename_ligand[:-4] + '_addedH.sdf', 'w')
+                f=open(filename_ligand[:-4] + '_OB_addedH.sdf', 'w')
                 f.write(save_ligands_addedH)
                 f.close()
+
+            elif how_addH == 'RDKit':
+                addHwithRDKit(filename_ligand, filename_ligand[:-4] + '_RDKit_addedH.sdf')
+                # Read all modified by RDKit ligands
+                ligands_mols = list(pybel.readfile(extension_ligand, filename_ligand[:-4] + '_RDKit_addedH.sdf'))
+            else:
+                # Read all ligands
+                ligands_mols = list(pybel.readfile(extension_ligand, filename_ligand))
 
             # Create dictionary of positively charged ions with their coords
             Inorganic_ions_dict = {}

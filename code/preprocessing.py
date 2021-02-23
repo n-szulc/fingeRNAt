@@ -520,7 +520,7 @@ def findAromaticRingsWithRDKit(sdfFile):
     return aromaticRingsDict
 
 def find_RNA_rings(structure, extension_structure):
-    """Finds all aromatic rings in whole nucleic acid
+    """Finds all aromatic rings in whole nucleic acid.
 
     :param structure: nucleic acid structure object
     :param extension_structure: extension of nucleic acid input file
@@ -551,7 +551,7 @@ def find_RNA_rings(structure, extension_structure):
     return rings
 
 def find_RNA_HB_HAL_acc_don(residue):
-    """Finds all hydrogen/halogen bonds acceptors with all of their neighbours and all hydrogen bonds donors together with hydrogens in nucleic acid residue
+    """Finds all hydrogen/halogen bonds acceptors with all of their neighbours and all hydrogen bonds donors together with hydrogens in nucleic acid residue.
 
     :param residue: nucleic acid residue object
     :type residue: openbabel.OBResidue
@@ -582,7 +582,7 @@ def find_RNA_HB_HAL_acc_don(residue):
     return acceptors_RNA, donors_RNA
 
 def find_RNA_anions(residue):
-    """Finds all nucleic acid's residue's anions
+    """Finds all nucleic acid's residue's anions.
 
     :param residue: nucleic acid's residue object
     :type residue: openbabel.OBResidue
@@ -609,7 +609,7 @@ def find_RNA_anions(residue):
     return anions_RNA
 
 def check_if_RNA(all_nucleotides):
-    """Check if input structure is RNA or DNA
+    """Checks if input structure is RNA or DNA.
 
     :param all_nucleotides: list of all structure nucleotides
     :type all_nucleotides: list
@@ -626,12 +626,16 @@ def check_if_RNA(all_nucleotides):
 
 
 def addHwithRDKit(sdfFileIN, sdfFileOUT):
-    '''
-    adds hydrogens and coordinates to molecules deposited in SDF
-    sdfFileIN, sdfFileOUT - input and output sdf files
-    related documentation:
-    https://www.rdkit.org/docs/source/rdkit.Chem.rdmolops.html#rdkit.Chem.rdmolops.AddHs
-    '''
+    """Adds hydrogens and coordinates to molecules deposited in SDF.\n
+    Related documentation: https://www.rdkit.org/docs/source/rdkit.Chem.rdmolops.html#rdkit.Chem.rdmolops.AddHs
+
+    :param sdfFileIN: path to input sdf file
+    :param sdfFileOUT: path to output sdf file
+    :type sdfFileIN: str
+    :type sdfFileOUT: str
+    :return: creates new sdf file with added hydrogens
+    :rtype: None
+    """
 
     from rdkit import Chem
     from rdkit.Chem import AllChem
