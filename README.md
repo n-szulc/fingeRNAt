@@ -174,6 +174,14 @@ fingeRNAt accepts the following parameters:
 
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; see -> [SIFt types](#structural-interaction-fingerprints-sift-types)
 
+`[-addH]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional module name to be used to add hydrogens to ligands' structures
+
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   available modules are: `OpenBabel` [default], &nbsp;&nbsp;`RDKit`, &nbsp;&nbsp;`None`  see -> [Additional notes](#Inputs)
+
+`[-wrapper]` &nbsp;&nbsp;&nbsp;&nbsp; optional SIFt results wrapper, see -> [Wrappers](#Wrappers)
+
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   available types are: `ACUG`, &nbsp;&nbsp;`PuPy`, &nbsp;&nbsp;`Counter`
+
 `[-o]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional path to save output
 
 `[-h2o]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional detection of water-mediated interactions; applies only to SIFt type `FULL`. If not passed, all columns containing information about water-mediated interactions are empty (`None`) (applies also for wrappers)
@@ -183,8 +191,6 @@ fingeRNAt accepts the following parameters:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
-`[-noHlig]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; do not automatically add  hydrogens to ligands' structures
-
 `[-print]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print detected interactions for each nucleic acid - ligand complex on screen
 
 `[-detail]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generate an additional file with detailed data on detected interactions see -> [PyMOL visualization](#pymol-visualization)
@@ -192,10 +198,6 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
 `[-vis]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional SIFt results heatmap visualization; see -> [Heatmap plotting](#heatmap-plotting)
 
-`[-wrapper]` &nbsp;&nbsp;&nbsp;&nbsp; optional SIFt results wrapper, see -> [Wrappers](#Wrappers)
-
-
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   available types are: `ACUG`, &nbsp;&nbsp;`PuPy`, &nbsp;&nbsp;`Counter`
 
  `[-verbose]` &nbsp;&nbsp;&nbsp;&nbsp; provides additional information about performed calculations at the given moment
 
@@ -230,8 +232,8 @@ see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 - Input ligand molecules should have assigned desired protonation state and formal charges.
 - In the receptor molecule, charges on the phosphate groups do not need to be assigned (fingeRNAt always treats OP1 and OP2 atoms as negatively charged anions).
 - Please pay attention to sdf ligand files converted from pdbqt/mol2 files, if the *formal charges* are preserved in the sdf files.
--	All the missing ligands' hydrogens will be automatically added, unless `-noHlig` is passed.
-- Ligands with added hydrogens will be saved to new sdf file with `_addedH` suffix, unless `-noHlig` is passed.
+-	All the missing ligands' hydrogens will be automatically added, unless `-addH None` is passed.
+- Ligands with added hydrogens will be saved to a new sdf file (to the same directory as input) with `_OB_addedH` or `_RDKit_addedH` suffix, depending on the selected module for `-addH`; for `-addH None` no new sdf file will be saved, as it does not add hydrogens.
 
 ## Structural Interaction Fingerprint (SIFt) types
 
