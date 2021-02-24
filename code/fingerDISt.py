@@ -126,15 +126,17 @@ if __name__ == "__main__":
         df_results.index.name = 'Ligand_name'
 
         if output:
+            output_proper = output
+            save_name = filename_SIFt.split('/')[-1] + '_' + m
             if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
-                output2 = output + filename_SIFt.split('/')[-1] + '_' + m
+                output_proper += save_name
             else:
-                output2 = output
-            df_results.to_csv('%s.%s' %(output2, extension_SIFt), sep=sep)
+                output_proper += '/' + save_name
+            df_results.to_csv('%s.%s' %(output_proper, extension_SIFt), sep=sep)
         else:
             if not os.path.exists('outputs'): os.makedirs('outputs')
-            output2 = filename_SIFt.split('/')[-1] + '_' + m
-            df_results.to_csv('outputs/%s.%s' %(output2, extension_SIFt), sep=sep)
+            output_proper = filename_SIFt.split('/')[-1] + '_' + m
+            df_results.to_csv('outputs/%s.%s' %(output_proper, extension_SIFt), sep=sep)
 
         print()
         print('{} scores saved successfully!'.format(m))

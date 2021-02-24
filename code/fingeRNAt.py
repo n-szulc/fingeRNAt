@@ -1028,7 +1028,7 @@ if __name__ == "__main__":
     optional_arguments.add_argument('-f', help='pass fingerprint type, available types are SIMPLE, PBS & FULL', default='FULL', metavar='TYPE')
     optional_arguments.add_argument('-addH', help="pass module name to add hydrogens to ligands' structures, available modules are OpenBabel, RDKit, None", default='OpenBabel', metavar='MODULE')
     optional_arguments.add_argument('-wrapper', help='pass results wrapper types (multiple types possible at once, but have to be comma separated)', metavar='WRAPPER')
-    optional_arguments.add_argument('-o', help='pass output name', metavar='NAME')
+    optional_arguments.add_argument('-o', help='pass output path', metavar='NAME')
     optional_arguments.add_argument('-h2o', help='consider water-mediated nucleic acid - ligand interactions', action='store_true')
     optional_arguments.add_argument('-dha', help='consider Donor-Hydrogen-Acceptor angle in hydrogen bonds calculation', action='store_true')
     optional_arguments.add_argument('-print', help='print found interactions on screen', action='store_true')
