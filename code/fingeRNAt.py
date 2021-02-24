@@ -1108,7 +1108,7 @@ if __name__ == "__main__":
             RNA_residues_objects.append(residue)
         elif residue.GetName() == 'HOH' and consider_H2O:
             HOH_objects.append(residue)
-        elif residue.GetNumAtoms() == 1:
+        elif residue.GetNumAtoms() == 1 and residue.GetName() != 'HOH':
             Ions_objects.append(residue)
         else:
             pass
@@ -1432,12 +1432,12 @@ if __name__ == "__main__":
                     if res[-1] != 0: # We assign only 1
                         assign_interactions_results(res, RESULTS, RNA_LENGTH, RNA_residues.index(res[1]), FUNCTIONS[fingerprint], i+3)
 
-        if debug:
-            if not consider_H2O: ligands_water = None
-            print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, ligands_water, ligands_lipophilic,
-            arom_ring_ligands_info, debug_dict_ligand,RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info,
-            HB_RNA_acc_info, HB_RNA_donor_info,HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Anion_Pi_info,
-            Sandwich_Displaced_info, T_shaped_info, ion_mediated_info, water_mediated_info, lipophilic_info, columns)
+            if debug:
+                if not consider_H2O: ligands_water = None
+                print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, ligands_water, ligands_lipophilic,
+                arom_ring_ligands_info, debug_dict_ligand,RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info,
+                HB_RNA_acc_info, HB_RNA_donor_info,HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Anion_Pi_info,
+                Sandwich_Displaced_info, T_shaped_info, ion_mediated_info, water_mediated_info, lipophilic_info, columns)
 
     # Wrap results if wrapper was passed
     if wrapper:
@@ -1463,6 +1463,9 @@ if __name__ == "__main__":
         nucleotides_letters = ['A','C','T','G']
 
     if verbose: print('Calculations completed, saving the results...')
+
+    if detail:
+        detail_already_saved = False #save DETAIL file only once as it is identical for fingerprint and all its wrappers
 
     for analysis in ANALYSIS_NAME:
 
@@ -1505,17 +1508,22 @@ if __name__ == "__main__":
         if output:
             if not filename_ligand: filename_ligand='IONS'
             output_proper = output
+            save_name = filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint
             if analysis in FUNCTIONS.keys():
-                if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
-                    output_proper += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint
+                if output[-1] == '/' or output[-1] == '\\':
+                    output_proper += save_name
+                else:
+                    output_proper += '/' + save_name
             else:
-                if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
-                    output_proper += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint + '_' + analysis
+                if output[-1] == '/' or output[-1] == '\\':
+                    output_proper += save_name + '_' + analysis
+                else:
+                    output_proper += '/' + save_name + '_' + analysis
 
             ALL_FINGERPRINTS_DF.to_csv('%s.tsv' %output_proper, sep='\t')
 
-            if detail:
-                sign=None
+            if detail and not detail_already_saved:
+                sign = None
                 if '/' in output:
                     detail_save = output_proper.split('/')
                     sign = '/'
@@ -1530,17 +1538,19 @@ if __name__ == "__main__":
                     detail_save[-1] = 'DETAIL_' + detail_save[-1]
                     detail_save = sign.join(detail_save)
                 else:
-                    detail_save = 'DETAIL_' + detail_save
-                detail_df.to_csv('%s.tsv' %detail_save, sep='\t' )
+                    detail_save = '%s/DETAIL_%s_%s_%s' %(detail_save, filename_RNA.split('/')[-1], filename_ligand.split('/')[-1], fingerprint)
+                detail_df.to_csv('%s.tsv' %detail_save, sep='\t')
+                detail_already_saved = True
 
         else:
             if not filename_ligand: filename_ligand = 'IONS'
             if not os.path.exists('outputs'): os.makedirs('outputs')
             if analysis in FUNCTIONS.keys():
                 ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint), sep='\t')
-                if detail:
+                if detail and not detail_already_saved:
                       detail_save = 'outputs/DETAIL_%s_%s_%s' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint)
                       detail_df.to_csv('%s.tsv' %detail_save, sep='\t' )
+                      detail_already_saved = True
             else:
                 ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), sep='\t')
 
@@ -1631,12 +1641,17 @@ if __name__ == "__main__":
 
                 if not filename_ligand: filename_ligand='IONS'
                 output_proper = output
+                save_name = filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint
                 if analysis in FUNCTIONS.keys():
-                    if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
-                        output_proper += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint
+                    if output[-1] == '/' or output[-1] == '\\' :
+                        output_proper += save_name
+                    else:
+                        output_proper += '/' + save_name
                 else:
-                    if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
-                        output_proper += filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint + '_' + analysis
+                    if output[-1] == '/' or output[-1] == '\\':
+                        output_proper += save_name + '_' + analysis
+                    else:
+                        output_proper += '/' + save_name
 
                 plt.savefig('%s.png' %(output_proper), dpi = 300)
 
