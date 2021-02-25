@@ -1,22 +1,29 @@
 import subprocess, os, sys, traceback
 
 
-RNA = ['1aju_model1.pdb', '3d2v.mol2']
+RNA = ['1aju_model1.pdb', '3d2v.pdb']
 ligands = [['ligands.sdf'], ['redocked.sdf', 'various.sdf']]
 fingerprints = ['SIMPLE', 'PBS', 'FULL']
 
 def run_test():
 
     os.system("rm -rf outputs/ > /dev/null 2>&1")
+    os.mkdir('outputs')
 
     OK = True
 
     for i in range(len(RNA)):
         for j in range(len(fingerprints)):
             for l in range(len(ligands[i])):
-                if subprocess.call('python ../code/fingeRNAt.py -r test_inputs/%s -l test_inputs/%s -f %s -wrapper ACUG,PuPy,Counter -h2o' %(RNA[i], ligands[i][l], fingerprints[j]), shell = True):
+                if subprocess.call('python ../code/fingeRNAt.py -r test_inputs/%s -l test_inputs/%s -f %s -wrapper ACUG,PuPy,Counter -h2o -o outputs -detail' %(RNA[i], ligands[i][l], fingerprints[j]), shell = True):
                     print ('fingeRNAt had problem running fingerprint %s on test_inputs/%s  and test_inputs/%s' % (fingerprints[j], RNA[i], ligands[i][l]))
                     OK = False
+
+    for k in ['SIMPLE', 'PBS']:
+        if subprocess.call('python ../code/fingeRNAt.py -r test_inputs/3d2v.pdb -f %s -wrapper ACUG,PuPy,Counter -o outputs/ -detail' %k, shell = True):
+            print ('fingeRNAt had problem running fingerprint %s on test_inputs/3d2v.pdb when treating ions as ligands' %k)
+            OK = False
+
 
     if OK:
         for root, dirs, files in os.walk('outputs/'):
