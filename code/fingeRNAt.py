@@ -83,7 +83,7 @@ def calculate_SIMPLE(residue, ligand_name, ligand_atoms, centroid_ligand, CUTOFF
                         result[-1]=1 # Condition met; write down 1
 
                         if debug:
-                            print('### {} - {} first below cutoff dist: {} ###'.format(filename_RNA.split('/')[-1], ligand_name, np.round(dist, 4)))
+                            print('### {} - {} first below cutoff dist: {} ###'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(dist, 4)))
                             print('    between\t{}:{}:{}\t {} atom {}'.format(residue.GetChain(), residue.GetNum(), debug_dict_rna[(rna_atom[0], rna_atom[1], rna_atom[2])], debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])][0], ligand_name))
 
                         if detail:
@@ -164,7 +164,7 @@ def calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand, CUTOFF):
                                 result[g-3]= 1 # Condition met; write down 1
 
                                 if debug:
-                                    print('### {} - {} first below cutoff {} GROUP dist: {} ###'.format(filename_RNA.split('/')[-1], ligand_name, config.WHICH_GROUP[g], np.round(dist, 4)))
+                                    print('### {} - {} first below cutoff {} GROUP dist: {} ###'.format(filename_RNA.split(sys_sep)[-1], ligand_name, config.WHICH_GROUP[g], np.round(dist, 4)))
                                     print('    between\t{}:{}:{}\t {} atom {}'.format(residue.GetChain(), residue.GetNum(), debug_dict_rna[(rna_atom_coords[0], rna_atom_coords[1], rna_atom_coords[2])], debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])][0], ligand_name))
 
                                 if detail:
@@ -260,9 +260,9 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
                         global HB_RNA_acc_info
                         HB_RNA_acc_info += '***\n'
                         if not check_dha:
-                            HB_RNA_acc_info += ('{} acceptor - {} donor\ndist: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4)))
+                            HB_RNA_acc_info += ('{} acceptor - {} donor\ndist: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, round(dist, 4)))
                         else:
-                            HB_RNA_acc_info +=('{} acceptor - {} donor\ndist: {}; angle: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4), round(angle, 4)))
+                            HB_RNA_acc_info +=('{} acceptor - {} donor\ndist: {}; angle: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, round(dist, 4), round(angle, 4)))
                         HB_RNA_acc_info += ('{}:{}:{}\t{} atom of {}\n'.format(residue.GetChain(), residue.GetNum(), residue.GetAtomID(RNA_acc).strip(), debug_dict_ligand[ligand_name][donor[0]][0], ligand_name))
 
                     if interaction_found and detail:
@@ -308,9 +308,9 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
                             global HB_RNA_donor_info
                             HB_RNA_donor_info += '***\n'
                             if not check_dha:
-                                HB_RNA_donor_info +=('{} donor - {} acceptor\ndist: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4)))
+                                HB_RNA_donor_info +=('{} donor - {} acceptor\ndist: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, round(dist, 4)))
                             else:
-                                HB_RNA_donor_info += ('{} donor - {} acceptor\ndist: {}; angle: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4), round(angle, 4)))
+                                HB_RNA_donor_info += ('{} donor - {} acceptor\ndist: {}; angle: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, round(dist, 4), round(angle, 4)))
                             HB_RNA_donor_info +=('{}:{}:{}\t{} atom of {}\n'.format(residue.GetNum(), residue.GetChain(), residue.GetAtomID(RNA_don[0]), debug_dict_ligand[ligand_name][acceptor][0], ligand_name))
 
                         if interaction_found and detail:
@@ -397,7 +397,7 @@ def calculate_HAL(residue, acceptors_RNA, ligand_name, ligand_donors_coords):
                                 if debug:
                                     global HAL_info
                                     HAL_info += '***\n'
-                                    HAL_info += ('{} acceptor - {} donor\ndist: {}; C-X-O angle: {}; X-O-Y angle: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4), round(angle_acc, 4), round(angle_don, 4)))
+                                    HAL_info += ('{} acceptor - {} donor\ndist: {}; C-X-O angle: {}; X-O-Y angle: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, round(dist, 4), round(angle_acc, 4), round(angle_don, 4)))
                                     HAL_info += ('{}:{}:{}\t{} atom of {}\n'.format(residue.GetChain(), residue.GetNum(), residue.GetAtomID(RNA_acceptor_set[0]).strip(), debug_dict_ligand[ligand_name][(donor[0][0], donor[0][1], donor[0][2])][0], ligand_name))
 
                                 if detail:
@@ -458,7 +458,7 @@ def calculate_CATION_ANION(residue, RNA_anions, ligand_name, ligand_cation_coord
                     if debug:
                         global Cation_Anion_info
                         Cation_Anion_info += '***\n'
-                        Cation_Anion_info += ('{} - {}\ndist: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4)))
+                        Cation_Anion_info += ('{} - {}\ndist: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, round(dist, 4)))
                         Cation_Anion_info += ('{}:{}:{}\t{} atom of {}\n'.format(residue.GetChain(), residue.GetNum(), residue.GetAtomID(anion).strip(), debug_dict_ligand[ligand_name][cation][0], ligand_name))
 
                     if detail:
@@ -537,7 +537,7 @@ def calculate_ANION_PI(residue, RNA_anions, ligand_name, ligand_rings_coords):
                             if debug:
                                 global Anion_Pi_info
                                 Anion_Pi_info += '***\n'
-                                Anion_Pi_info += ("{} - {}\ndist: {}; anion to ring's planar angle: {}\n".format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4), round(anion_pi_angle, 4)))
+                                Anion_Pi_info += ("{} - {}\ndist: {}; anion to ring's planar angle: {}\n".format(filename_RNA.split(sys_sep)[-1], ligand_name, round(dist, 4), round(anion_pi_angle, 4)))
                                 Anion_Pi_info += ('{}:{}:{}\t{} atoms of {}\n'.format(residue.GetChain(), residue.GetNum(), residue.GetAtomID(anion).strip(), debug_ligand, ligand_name))
 
                             if detail:
@@ -648,12 +648,12 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, all
                                 if j == 0:
                                     global Pi_Cation_info
                                     Pi_Cation_info += '***\n'
-                                    Pi_Cation_info +=("{} - {}\ndist: {}; ring's planar to Cation angle: {}\n".format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4), round(pi_ion_angle, 4)))
+                                    Pi_Cation_info +=("{} - {}\ndist: {}; ring's planar to Cation angle: {}\n".format(filename_RNA.split(sys_sep)[-1], ligand_name, round(dist, 4), round(pi_ion_angle, 4)))
                                     Pi_Cation_info +=('{}:{}:{}\t{} atom of {}\n'.format(residue.GetChain(), residue.GetNum(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]), debug_dict_ligand[ligand_name][ion][0], ligand_name))
                                 else:
                                     global Pi_Anion_info
                                     Pi_Anion_info += '***\n'
-                                    Pi_Anion_info +=("{} - {}\ndist: {}; ring's planar to Anion angle: {}\n".format(filename_RNA.split('/')[-1], ligand_name, round(dist, 4), round(pi_ion_angle, 4)))
+                                    Pi_Anion_info +=("{} - {}\ndist: {}; ring's planar to Anion angle: {}\n".format(filename_RNA.split(sys_sep)[-1], ligand_name, round(dist, 4), round(pi_ion_angle, 4)))
                                     Pi_Anion_info +=('{}:{}:{}\t{} atom {}\n'.format(residue.GetChain(), residue.GetNum(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]), debug_dict_ligand[ligand_name][ion][0], ligand_name))
 
                             if detail:
@@ -720,7 +720,7 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, all
                             if debug:
                                 global Sandwich_Displaced_info
                                 Sandwich_Displaced_info += '***\n'
-                                Sandwich_Displaced_info += "{} - {}\nrings center dist: {}; rings offset: {}; rings planars angle: {}\n".format(filename_RNA.split('/')[-1], ligand_name, round(centroid_distance, 4), round(offset, 4), round(planar_angle, 4))
+                                Sandwich_Displaced_info += "{} - {}\nrings center dist: {}; rings offset: {}; rings planars angle: {}\n".format(filename_RNA.split(sys_sep)[-1], ligand_name, round(centroid_distance, 4), round(offset, 4), round(planar_angle, 4))
                                 Sandwich_Displaced_info += '{}:{}:{}\t{} atoms of {}\n'.format(residue.GetChain(), residue.GetNum(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]), debug_ligand, ligand_name)
 
                             if detail:
@@ -744,7 +744,7 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, all
                             if debug:
                                 global T_shaped_info
                                 Sandwich_Displaced_info += '***\n'
-                                Sandwich_Displaced_info += "{} - {}\nrings center dist: {}; rings offset: {}; rings planars angle: {}\n".format(filename_RNA.split('/')[-1], ligand_name, round(centroid_distance, 4), round(offset, 4), round(planar_angle, 4))
+                                Sandwich_Displaced_info += "{} - {}\nrings center dist: {}; rings offset: {}; rings planars angle: {}\n".format(filename_RNA.split(sys_sep)[-1], ligand_name, round(centroid_distance, 4), round(offset, 4), round(planar_angle, 4))
                                 Sandwich_Displaced_info += '{}:{}:{}\t{} atoms of {}\n'.format(residue.GetChain(), residue.GetNum(), ','.join([debug_dict_rna[ring_atoms_RNA[i].coords] for i in range(len(ring_atoms_RNA))]), debug_ligand, ligand_name)
 
                             if detail:
@@ -832,7 +832,7 @@ def calculate_ION_MEDIATED(residue, residue_atoms, ligand_name, ions, ions_dict)
                             if debug:
                                 global ion_mediated_info
                                 ion_mediated_info += '***\n'
-                                ion_mediated_info += '{} - {} - {}\n shortest dist: {}\t{}\n'.format(filename_RNA.split('/')[-1],  ion, ligand_name, shortest_ligand_ion, np.round(dist, 4))
+                                ion_mediated_info += '{} - {} - {}\n shortest dist: {}\t{}\n'.format(filename_RNA.split(sys_sep)[-1],  ion, ligand_name, shortest_ligand_ion, np.round(dist, 4))
                                 ion_mediated_info += '{}:{}:{}\t ion {}\t{} atom {}\n'.format(residue.GetChain(), residue.GetNum(), debug_dict_rna[(rna_atom[0], rna_atom[1], rna_atom[2])], ion, debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])][0], ligand_name)
 
                             if detail:
@@ -914,7 +914,7 @@ def calculate_WATER_MEDIATED(residue, acceptors_RNA, donors_RNA, ligand_name, wa
                             if debug:
                                 global water_mediated_info
                                 water_mediated_info += '***\n'
-                                water_mediated_info += '{} - {} - {}\n shortest dist: {}\t{}\n'.format(filename_RNA.split('/')[-1],  water, ligand_name, shortest_ligand_water, np.round(dist, 4))
+                                water_mediated_info += '{} - {} - {}\n shortest dist: {}\t{}\n'.format(filename_RNA.split(sys_sep)[-1],  water, ligand_name, shortest_ligand_water, np.round(dist, 4))
                                 water_mediated_info += '{}:{}:{}\t ion {}\t{} atom {}\n'.format(residue.GetChain(), residue.GetNum(), debug_dict_rna[(rna_atom[0], rna_atom[1], rna_atom[2])], water, debug_dict_ligand[ligand_name][(ligand_atom[0],ligand_atom[1],ligand_atom[2])][0], ligand_name)
 
                             if detail:
@@ -977,7 +977,7 @@ def calculate_lipophilic_interactions(residue, residue_atoms, ligand_name, ligan
                     if debug:
                         global lipophilic_info
                         lipophilic_info += '***\n'
-                        lipophilic_info += '{} - {} \n dist: {}\n'.format(filename_RNA.split('/')[-1], ligand_name, np.round(np.linalg.norm(lipophilic - rna_atom), 4))
+                        lipophilic_info += '{} - {} \n dist: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(np.linalg.norm(lipophilic - rna_atom), 4))
                         lipophilic_info += '{}:{}:{}\t{} atom {}\n'.format(residue.GetChain(), residue.GetNum(), debug_dict_rna[(rna_atom[0], rna_atom[1], rna_atom[2])], debug_dict_ligand[ligand_name][lipophilic][0], ligand_name)
 
                     if detail:
@@ -1040,15 +1040,16 @@ if __name__ == "__main__":
     optional_arguments.add_argument('--help', '-h', action = 'help', help = 'show this help message and exit')
 
     args = vars(parser.parse_args())
+    sys_sep = os.sep
 
     filename_RNA = args['r']
-    extension_structure = ".".join(filename_RNA.split('/')[-1].split('.')[1:])
+    extension_structure = ".".join(filename_RNA.split(sys_sep)[-1].split('.')[1:])
     if extension_structure != 'pdb':
         raise Exception('RNA/DNA structure has to be in pdb format!')
 
     filename_ligand=args['l']
     if filename_ligand:
-        extension_ligand = ".".join(filename_ligand.split('/')[-1].split('.')[1:])
+        extension_ligand = ".".join(filename_ligand.split(sys_sep)[-1].split('.')[1:])
         if extension_ligand != 'sdf':
             raise Exception("Ligands' structures have to be in sdf format!")
 
@@ -1470,13 +1471,13 @@ if __name__ == "__main__":
     for analysis in ANALYSIS_NAME:
 
         if analysis == 'ACUG':
-            DF_COLUMNS = [filename_RNA.split('/')[-1] + '#' + res + '#' + fing_type for res in nucleotides_letters for fing_type in columns[fingerprint]]
+            DF_COLUMNS = [filename_RNA.split(sys_sep)[-1] + '#' + res + '#' + fing_type for res in nucleotides_letters for fing_type in columns[fingerprint]]
         elif analysis == 'PuPy':
-            DF_COLUMNS = [filename_RNA.split('/')[-1] + '#' + res + '#' + fing_type for res in ['Purines','Pyrimidynes'] for fing_type in columns[fingerprint]]
+            DF_COLUMNS = [filename_RNA.split(sys_sep)[-1] + '#' + res + '#' + fing_type for res in ['Purines','Pyrimidynes'] for fing_type in columns[fingerprint]]
         elif analysis == 'Counter':
-             DF_COLUMNS = [filename_RNA.split('/')[-1] + '#' + fing_type for fing_type in columns[fingerprint]]
+             DF_COLUMNS = [filename_RNA.split(sys_sep)[-1] + '#' + fing_type for fing_type in columns[fingerprint]]
         else:
-            DF_COLUMNS = [filename_RNA.split('/')[-1] + '#' + res + '#' + fing_type for res in RNA_residues for fing_type in columns[fingerprint]]
+            DF_COLUMNS = [filename_RNA.split(sys_sep)[-1] + '#' + res + '#' + fing_type for res in RNA_residues for fing_type in columns[fingerprint]]
 
         DF_INDEXES = list(RESULTS.keys())
         ALL_FINGERPRINTS_DF = pd.DataFrame(index = DF_INDEXES, columns = DF_COLUMNS)
@@ -1508,51 +1509,48 @@ if __name__ == "__main__":
         if output:
             if not filename_ligand: filename_ligand='IONS'
             output_proper = output
-            save_name = filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint
+            save_name = filename_RNA.split(sys_sep)[-1] + '_' + filename_ligand.split(sys_sep)[-1] + '_' + fingerprint
             if analysis in FUNCTIONS.keys():
-                if output[-1] == '/' or output[-1] == '\\':
+                if output[-1] == sys_sep:
                     output_proper += save_name
                 else:
-                    output_proper += '/' + save_name
+                    output_proper += sys_sep + save_name
             else:
-                if output[-1] == '/' or output[-1] == '\\':
+                if output[-1] == sys_sep:
                     output_proper += save_name + '_' + analysis
                 else:
-                    output_proper += '/' + save_name + '_' + analysis
+                    output_proper += sys_sep + save_name + '_' + analysis
 
             ALL_FINGERPRINTS_DF.to_csv('%s.tsv' %output_proper, sep='\t')
 
             if detail and not detail_already_saved:
-                sign = None
-                if '/' in output:
-                    detail_save = output_proper.split('/')
-                    sign = '/'
-                elif '\\' in output:
-                    detail_save = output_proper.split('\\')
-                    sign = '\\'
+                is_sep = True
+                if sys_sep in output:
+                    detail_save = output_proper.split(sys_sep)
                 else:
                     detail_save = output
-                    sign = ''
+                    is_sep = False
 
-                if sign != '':
+                if is_sep:
                     detail_save[-1] = 'DETAIL_' + detail_save[-1]
-                    detail_save = sign.join(detail_save)
+                    detail_save = sys_sep.join(detail_save)
                 else:
-                    detail_save = '%s/DETAIL_%s_%s_%s' %(detail_save, filename_RNA.split('/')[-1], filename_ligand.split('/')[-1], fingerprint)
+                    detail_save = '%s/DETAIL_%s_%s_%s' %(detail_save, filename_RNA.split(sys_sep)[-1], filename_ligand.split(sys_sep)[-1], fingerprint)
                 detail_df.to_csv('%s.tsv' %detail_save, sep='\t')
                 detail_already_saved = True
 
         else:
             if not filename_ligand: filename_ligand = 'IONS'
             if not os.path.exists('outputs'): os.makedirs('outputs')
+            save_name = filename_RNA.split(sys_sep)[-1] + '_' + filename_ligand.split(sys_sep)[-1] + '_' + fingerprint
             if analysis in FUNCTIONS.keys():
-                ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint), sep='\t')
+                ALL_FINGERPRINTS_DF.to_csv('outputs/%s.tsv' %(save_name), sep='\t')
                 if detail and not detail_already_saved:
-                      detail_save = 'outputs/DETAIL_%s_%s_%s' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint)
+                      detail_save = 'outputs/DETAIL_%s' %save_name
                       detail_df.to_csv('%s.tsv' %detail_save, sep='\t' )
                       detail_already_saved = True
             else:
-                ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s_%s_%s.tsv' %(filename_RNA.split('/')[-1],filename_ligand.split('/')[-1], fingerprint, analysis), sep='\t')
+                ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s.tsv' %(save_name, analysis), sep='\t')
 
     # Print found interactions on screen
         if print_flag:
@@ -1563,7 +1561,7 @@ if __name__ == "__main__":
                               'Other_mediated' : 'Other ion-mediated', 'Water_mediated' : 'Water-mediated', 'Lipophilic' : 'Lipophilic'}
 
             for index, row in ALL_FINGERPRINTS_DF.iterrows():
-                print('# {} - {} #'.format(filename_RNA.split('/')[-1], index))
+                print('# {} - {} #'.format(filename_RNA.split(sys_sep)[-1], index))
                 print()
                 for el in range(len(row)):
                     if row[el] is not None and row[el] > 0:
@@ -1606,7 +1604,10 @@ if __name__ == "__main__":
                 else:
                     cmap = colors.ListedColormap(['cornflowerblue','turquoise'])
 
-            max_value = ALL_FINGERPRINTS_DF.to_numpy().max()
+            try:
+                max_value = ALL_FINGERPRINTS_DF.to_numpy().max()
+            except ValueError:
+                raise Exception('Empty dataframe, no SIFt were calculated, check if any ligands/ions were present!')
             min_value = ALL_FINGERPRINTS_DF.to_numpy().min()
             bounds = np.arange(min_value - 0.5, max_value + 1, 1)
             norm = colors.BoundaryNorm(bounds, cmap.N)
@@ -1631,7 +1632,7 @@ if __name__ == "__main__":
                     plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
 
             cbar = plt.colorbar(heatmap, ticks = range(min_value, max_value+1), shrink = 0.2)
-            if not consider_H2O:
+            if not consider_H2O and fingerprint == 'FULL':
                 cbar.ax.set_yticklabels(['Not considered'] + [str(x) for x in range(0, max_value+1)])
 
             plt.gca().invert_yaxis()
@@ -1641,25 +1642,26 @@ if __name__ == "__main__":
 
                 if not filename_ligand: filename_ligand='IONS'
                 output_proper = output
-                save_name = filename_RNA.split('/')[-1] + '_' + filename_ligand.split('/')[-1] + '_' + fingerprint
+                save_name = filename_RNA.split(sys_sep)[-1] + '_' + filename_ligand.split(sys_sep)[-1] + '_' + fingerprint
                 if analysis in FUNCTIONS.keys():
-                    if output[-1] == '/' or output[-1] == '\\' :
+                    if output[-1] == sys_sep:
                         output_proper += save_name
                     else:
-                        output_proper += '/' + save_name
+                        output_proper += sys_sep + save_name
                 else:
-                    if output[-1] == '/' or output[-1] == '\\':
+                    if output[-1] == sys_sep:
                         output_proper += save_name + '_' + analysis
                     else:
-                        output_proper += '/' + save_name
+                        output_proper += sys_sep + save_name
 
                 plt.savefig('%s.png' %(output_proper), dpi = 300)
 
             else:
                 if not filename_ligand: filename_ligand = 'IONS'
+                save_name = filename_RNA.split(sys_sep)[-1] + '_' + filename_ligand.split(sys_sep)[-1] + '_' + fingerprint
                 if analysis in FUNCTIONS.keys():
-                    plt.savefig('outputs/%s_%s_%s.png' %(filename_RNA.split('/')[-1], filename_ligand.split('/')[-1], fingerprint), dpi = 300)
+                    plt.savefig('outputs/%s.png' %(save_name), dpi = 300)
                 else:
-                    plt.savefig('outputs/%s_%s_%s_%s.png' %(filename_RNA.split('/')[-1], filename_ligand.split('/')[-1], fingerprint, analysis), dpi = 300)
+                    plt.savefig('outputs/%s_%s.png' %(save_name, analysis), dpi = 300)
 
         print('{} results saved successfully!'.format(analysis))

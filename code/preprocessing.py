@@ -1,4 +1,5 @@
 import numpy as np
+import os
 
 from openbabel import openbabel
 from openbabel import pybel
@@ -9,6 +10,8 @@ import collections
 
 # Own module
 import config
+
+sys_sep = os.sep
 
 def vector(p1, p2):
     """Calculates vector between 2 points
@@ -97,7 +100,7 @@ def get_ligand_name_pose(dictionary, title):
     """
 
     dictionary_keys_only_ligand_names = [el.split('^')[0] for el in dictionary.keys()] # list of ligands names (prefixes; without pose no) that are so far present in the dictionary
-    title_cleaned = title.split('/')[-1]
+    title_cleaned = title.split(sys_sep)[-1]
 
     if title_cleaned == "":
         title_cleaned = "COMPOUND"

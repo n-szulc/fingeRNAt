@@ -170,7 +170,7 @@ choicebttn3_23.grid(row = 2, column = 1, sticky = tk.W)
 app3 = tk.Frame(root)
 app3.grid(row = 6, column = 0, pady = 10)
 
-lbl4 = tk.Label(app3, text = "Optional output file name")
+lbl4 = tk.Label(app3, text = "Optional output file path")
 lbl4.grid(row = 0, column = 0, columnspan = 2, sticky = tk.W + tk.E)
 entry = tk.Entry(app3,width=50)
 entry.grid(row = 1, column = 0, columnspan = 2, sticky = tk.W + tk.E)

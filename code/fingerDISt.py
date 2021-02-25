@@ -61,9 +61,11 @@ if __name__ == "__main__":
     optional_arguments.add_argument('--help', '-h', action = 'help', help = 'show this help message and exit')
 
     args = vars(parser.parse_args())
+    sys_sep = os.sep
+
     filename_SIFt = args['i']
     metrics=args['m'].split(',')
-    extension_SIFt= filename_SIFt.split('/')[-1].split('.')[-1]
+    extension_SIFt= filename_SIFt.split(sys_sep)[-1].split('.')[-1]
     output = args['o']
     verbose = args['verbose']
 
@@ -127,15 +129,15 @@ if __name__ == "__main__":
 
         if output:
             output_proper = output
-            save_name = filename_SIFt.split('/')[-1] + '_' + m
-            if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
+            save_name = filename_SIFt.split(sys_sep)[-1] + '_' + m
+            if output[-1] == sys_sep: # default output name, location specified
                 output_proper += save_name
             else:
-                output_proper += '/' + save_name
+                output_proper += sys_sep + save_name
             df_results.to_csv('%s.%s' %(output_proper, extension_SIFt), sep=sep)
         else:
             if not os.path.exists('outputs'): os.makedirs('outputs')
-            output_proper = filename_SIFt.split('/')[-1] + '_' + m
+            output_proper = filename_SIFt.split(sys_sep)[-1] + '_' + m
             df_results.to_csv('outputs/%s.%s' %(output_proper, extension_SIFt), sep=sep)
 
         print()
