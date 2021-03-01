@@ -27,19 +27,19 @@ def run_script():
     else:
         dha = "" if option2.get() == "No" else "-dha"
         wrapper = "" if option3.get() == "None" else "-wrapper %s" %option3.get()
-        vis = "" if option4.get() == "No" else "-vis"
+        addH = "" if option4.get() == "No" else "-addH %s" %option4.get()
         h2o = "" if optionwater.get() == "No" else "-h2o"
         detail = "" if optiondetail.get() == "No" else "-detail"
         out = "" if len(entry.get()) == 0 else "-o %s" %entry.get()
 
         if f2 is None:
-            subprocess.call('python fingeRNAt.py -r %s -f %s %s %s %s %s %s %s' % (f1, option.get(), dha, wrapper, vis, out, h2o, detail), shell = True)
+            subprocess.call('python fingeRNAt.py -r %s -f %s %s %s %s %s %s %s' % (f1, option.get(), dha, wrapper, addH, out, h2o, detail), shell = True)
         else:
-            subprocess.call('python fingeRNAt.py -r %s -l %s -f %s %s %s %s %s %s %s' % (f1, f2, option.get(), dha, wrapper, vis, out, h2o, detail), shell = True)
+            subprocess.call('python fingeRNAt.py -r %s -l %s -f %s %s %s %s %s %s %s' % (f1, f2, option.get(), dha, wrapper, addH, out, h2o, detail), shell = True)
 
 root = tk.Tk()
 root.title("fingeRNAt")
-root.geometry("575x850")
+root.geometry("575x880")
 root.resizable(width = False, height = False)
 
 # Intro
@@ -50,7 +50,7 @@ app_intro.grid(row = 0, column = 0)
 intro =  tk.Label(app_intro, text = "Welcome to fingeRNAt program!")
 intro.grid(row = 0, column = 0, sticky = tk.W + tk.E, pady = 5, columnspan = 2)
 
-intro2 = tk.Label(app_intro, text = "Choose your inputs and parametres to calculate Structural Interactions Fingerprint (SIFt)")
+intro2 = tk.Label(app_intro, text = "Choose your inputs and parametres to calculate Structural Interaction Fingerprint (SIFt)")
 intro2.grid(row = 1, column = 0, sticky = tk.W + tk.E, columnspan = 2)
 
 # Input files choice
@@ -97,10 +97,33 @@ choicebttn3 = tk.Radiobutton(app2, variable = option, text = "PBS", value = "PBS
 choicebttn3.config(indicatoron = 0, bd = 4, width = 10)
 choicebttn3.grid(row=2, column=1, sticky = tk.W)
 
-# Consider dha?
 
+# How to add hydrogens to ligands structures
+
+app4 = tk.Frame(root)
+app4.grid(row = 3, column = 0, pady = 10)
+
+lbl4 = tk.Label(app4, text = "Choose module to add hydrogens to ligands")
+lbl4.grid(row = 0, column = 0, columnspan = 2, sticky = tk.W + tk.E)
+
+option4 = tk.StringVar(None,"OpenBabel")
+
+choicebttn4_1 = tk.Radiobutton(app4, variable = option4, text="OpenBabel", value = 'OpenBabel')
+choicebttn4_1.config(indicatoron = 0, bd = 4, width =10)
+choicebttn4_1.grid(row = 1, column = 0, columnspan=20)
+
+choicebttn4_2 = tk.Radiobutton(app4, variable = option4, text="RDKit", value = 'RDKit')
+choicebttn4_2.config(indicatoron = 0, bd = 4, width = 10)
+choicebttn4_2.grid(row = 2, column = 0, sticky = tk.E)
+
+choicebttn4_2 = tk.Radiobutton(app4, variable = option4, text="None", value = 'None')
+choicebttn4_2.config(indicatoron = 0, bd = 4, width = 10)
+choicebttn4_2.grid(row = 2, column = 1, sticky = tk.W)
+
+
+# Consider dha?
 app3_1 = tk.Frame(root)
-app3_1.grid(row = 3, column = 0, pady = 10)
+app3_1.grid(row = 4, column = 0, pady = 10)
 
 lbl3_1 = tk.Label(app3_1, text = "Consider Donor - Hydrogen - Acceptor angle when detecting hydrogen bonds?")
 lbl3_1.grid(row = 0, column = 0, columnspan = 2, sticky = tk.W + tk.E)
@@ -118,10 +141,11 @@ choicebttn3_12 = tk.Radiobutton(app3_1, variable = option2, text="Yes", value = 
 choicebttn3_12.config(indicatoron = 0, bd = 4, width = 10)
 choicebttn3_12.grid(row = 2, column = 1, sticky = tk.W)
 
+
 # Consider H2O?
 
 app3_water = tk.Frame(root)
-app3_water.grid(row = 4, column = 0, pady = 10)
+app3_water.grid(row = 5, column = 0, pady = 10)
 
 lbl3_water = tk.Label(app3_water, text = "Consider water-mediated interactions?")
 lbl3_water.grid(row = 0, column = 0, columnspan = 2, sticky = tk.W + tk.E)
@@ -142,7 +166,7 @@ choicebttn_water_12.grid(row = 2, column = 1, sticky = tk.W)
 # Wrapper
 
 app3_2 = tk.Frame(root)
-app3_2.grid(row = 5, column = 0, pady = 10)
+app3_2.grid(row = 6, column = 0, pady = 10)
 
 lbl3_2 = tk.Label(app3_2, text = "Choose wrapper")
 lbl3_2.grid(row = 0, column = 0, columnspan = 2, sticky = tk.W + tk.E)
@@ -165,38 +189,11 @@ choicebttn3_23 = tk.Radiobutton(app3_2, variable = option3, text="Counter", valu
 choicebttn3_23.config(indicatoron = 0, bd = 4, width = 10)
 choicebttn3_23.grid(row = 2, column = 1, sticky = tk.W)
 
-# Optional filename
-
-app3 = tk.Frame(root)
-app3.grid(row = 6, column = 0, pady = 10)
-
-lbl4 = tk.Label(app3, text = "Optional output file path")
-lbl4.grid(row = 0, column = 0, columnspan = 2, sticky = tk.W + tk.E)
-entry = tk.Entry(app3,width=50)
-entry.grid(row = 1, column = 0, columnspan = 2, sticky = tk.W + tk.E)
-
-# Plot heatmap?
-
-app4 = tk.Frame(root)
-app4.grid(row = 7, column = 0, pady = 10)
-
-lbl4 = tk.Label(app4, text = "Plot SIFs heatmap visualization?")
-lbl4.grid(row = 0, column = 0, columnspan = 2, sticky = tk.W + tk.E)
-
-option4 = tk.StringVar(None,"No")
-
-choicebttn4_1 = tk.Radiobutton(app4, variable = option4, text="No", value = 'No')
-choicebttn4_1.config(indicatoron = 0, bd = 4, width =10)
-choicebttn4_1.grid(row = 1, column = 0, sticky = tk.E)
-
-choicebttn4_2 = tk.Radiobutton(app4, variable = option4, text="Yes", value = 'Yes')
-choicebttn4_2.config(indicatoron = 0, bd = 4, width = 10)
-choicebttn4_2.grid(row = 1, column = 1, sticky = tk.W)
 
 # Save -detail?
 
 app_detail = tk.Frame(root)
-app_detail.grid(row = 8, column = 0, pady = 10)
+app_detail.grid(row = 7, column = 0, pady = 10)
 
 lbl3_detail = tk.Label(app_detail, text = "Save details about interactions?")
 lbl3_detail.grid(row = 0, column = 0, columnspan = 2, sticky = tk.W + tk.E)
@@ -210,6 +207,18 @@ choicebttn_detail_1.grid(row = 2, column = 0, sticky = tk.E)
 choicebttn_detail_12 = tk.Radiobutton(app_detail, variable = optiondetail, text="Yes", value = 'Yes')
 choicebttn_detail_12.config(indicatoron = 0, bd = 4, width = 10)
 choicebttn_detail_12.grid(row = 2, column = 1, sticky = tk.W)
+
+# Optional filename
+
+app3 = tk.Frame(root)
+app3.grid(row = 8, column = 0, pady = 10)
+
+lbl4 = tk.Label(app3, text = "Optional output file path")
+lbl4.grid(row = 0, column = 0, columnspan = 2, sticky = tk.W + tk.E)
+entry = tk.Entry(app3,width=50)
+entry.grid(row = 1, column = 0, columnspan = 2, sticky = tk.W + tk.E)
+
+
 
 # Submit button
 
