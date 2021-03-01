@@ -366,7 +366,7 @@ def find_ligands_ions(mols, ions_dict, verbose):
      dictionary = {}
 
      if verbose:
-         print("Looking for ligand's anion - ion interactions...")
+         print("Looking for ligand - ion interactions...")
 
      for i in tqdm(range(len(mols)), disable=(not verbose)): # For molecule in ligand file
 

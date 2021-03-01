@@ -20,8 +20,9 @@ import argparse
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import colors
+from matplotlib import colors, cm
 import os
+import copy
 import shutil
 from openbabel import openbabel
 from openbabel import pybel
@@ -1033,7 +1034,6 @@ if __name__ == "__main__":
     optional_arguments.add_argument('-dha', help='consider Donor-Hydrogen-Acceptor angle in hydrogen bonds calculation', action='store_true')
     optional_arguments.add_argument('-print', help='print found interactions on screen', action='store_true')
     optional_arguments.add_argument('-detail', help='generate an additional file with detailed data on detected interactions (used for PyMOL visualization)', action='store_true')
-    optional_arguments.add_argument('-vis', help='make heatmap visualization', action='store_true')
     optional_arguments.add_argument('-verbose', help='provides additional details about calculations performed at the given moment', action='store_true')
     optional_arguments.add_argument('-debug', help='enter debug mode', action='store_true')
     optional_arguments.add_argument('-h', action = 'help', help = 'show this help message and exit')
@@ -1071,7 +1071,6 @@ if __name__ == "__main__":
 
     print_flag = args['print']
     detail = args['detail']
-    visualization = args['vis']
     verbose = args['verbose']
     debug = args['debug']
 
@@ -1569,99 +1568,5 @@ if __name__ == "__main__":
                         print('{}\t{}\t{}'.format(s[0],interact_names[s[1]], row[el]))
                 print()
             print_flag = False
-
-    # Visualize output as heatmap
-        if visualization:
-
-            fig = plt.figure()
-            height = len(DF_INDEXES)*3
-
-            width_multipliers = {'SIMPLE' : 1, 'PBS' : 1.5, 'FULL' : 3}
-
-            if analysis in FUNCTIONS.keys():
-                width = len(RNA_residues) * width_multipliers[fingerprint]
-            else:
-                if analysis == 'ACUG':
-                    width = 18
-                elif analysis == 'PuPy':
-                    width = 14
-                else:
-                    width = 12
-
-            plt.figure(figsize=(width, height))
-            plt.axes(aspect='equal')
-
-            if analysis == 'Counter' :
-                if not consider_H2O:
-                    cmap = colors.ListedColormap(['black', 'cornflowerblue','turquoise','bisque', 'orange', 'lightcoral', 'darkred'])
-                    ALL_FINGERPRINTS_DF.fillna(value=-1, inplace=True)
-                else:
-                    cmap = colors.ListedColormap(['cornflowerblue','turquoise','bisque', 'orange', 'lightcoral', 'darkred'])
-            else:
-                if fingerprint == 'FULL' and not consider_H2O:
-                    cmap = colors.ListedColormap(['black', 'cornflowerblue','turquoise'])
-                    ALL_FINGERPRINTS_DF.fillna(value=-1, inplace=True)
-                else:
-                    cmap = colors.ListedColormap(['cornflowerblue','turquoise'])
-
-            try:
-                max_value = ALL_FINGERPRINTS_DF.to_numpy().max()
-            except ValueError:
-                raise Exception('Empty dataframe, no SIFt were calculated, check if any ligands/ions were present!')
-            min_value = ALL_FINGERPRINTS_DF.to_numpy().min()
-            bounds = np.arange(min_value - 0.5, max_value + 1, 1)
-            norm = colors.BoundaryNorm(bounds, cmap.N)
-
-            heatmap = plt.pcolormesh(ALL_FINGERPRINTS_DF, cmap=cmap, norm=norm, edgecolors='silver')
-
-            plt.yticks(np.arange(0.5, len(ALL_FINGERPRINTS_DF.index), 1), ALL_FINGERPRINTS_DF.index, fontsize = 14)
-
-            if analysis in FUNCTIONS.keys(): # no wrapper
-                x = list(res + '#' + fing_type for res in RNA_residues for fing_type in columns[fingerprint])
-                plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
-
-            else:
-                if analysis == 'PuPy':
-                    x = list(res + '#' + fing_type for res in ['Purines','Pyrimidynes'] for fing_type in columns[fingerprint])
-                    plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
-                elif analysis == 'Counter':
-                    x = list(res + '#' + fing_type for res in ['Total'] for fing_type in columns[fingerprint])
-                    plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
-                else:
-                    x = list(res + '#' + fing_type for res in nucleotides_letters for fing_type in columns[fingerprint])
-                    plt.xticks(np.arange(0.5, len(x), 1), x, fontsize = 14, rotation = 90)
-
-            cbar = plt.colorbar(heatmap, ticks = range(min_value, max_value+1), shrink = 0.2)
-            if not consider_H2O and fingerprint == 'FULL':
-                cbar.ax.set_yticklabels(['Not considered'] + [str(x) for x in range(0, max_value+1)])
-
-            plt.gca().invert_yaxis()
-            plt.tight_layout()
-
-            if output:
-
-                if not filename_ligand: filename_ligand='IONS'
-                output_proper = output
-                save_name = filename_RNA.split(sys_sep)[-1] + '_' + filename_ligand.split(sys_sep)[-1] + '_' + fingerprint
-                if analysis in FUNCTIONS.keys():
-                    if output[-1] == sys_sep:
-                        output_proper += save_name
-                    else:
-                        output_proper += sys_sep + save_name
-                else:
-                    if output[-1] == sys_sep:
-                        output_proper += save_name + '_' + analysis
-                    else:
-                        output_proper += sys_sep + save_name
-
-                plt.savefig('%s.png' %(output_proper), dpi = 300)
-
-            else:
-                if not filename_ligand: filename_ligand = 'IONS'
-                save_name = filename_RNA.split(sys_sep)[-1] + '_' + filename_ligand.split(sys_sep)[-1] + '_' + fingerprint
-                if analysis in FUNCTIONS.keys():
-                    plt.savefig('outputs/%s.png' %(save_name), dpi = 300)
-                else:
-                    plt.savefig('outputs/%s_%s.png' %(save_name, analysis), dpi = 300)
 
         print('{} results saved successfully!'.format(analysis))
