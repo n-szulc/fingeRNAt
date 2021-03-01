@@ -33,7 +33,6 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 		- [`SIMPLE`](#simple)
 		- [`PBS`](#pbs)
 	- [Wrappers](#wrappers)
-	- [Heatmap plotting](#heatmap-plotting)
 	- [Usage examples](#usage-examples)
 	- [Graphical User Interface](#graphical-user-interface)
 	- [Debugging mode](#debugging-mode)
@@ -170,7 +169,7 @@ fingeRNAt accepts the following parameters:
 
 `[-f]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional Structural Interactions Fingerprint (SIFt) type; see -> [SIFt types](#structural-interaction-fingerprints-sift-types)
 
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   available types are: `FULL` [default], &nbsp;&nbsp;`SIMPLE`, &nbsp;&nbsp;`PBS` 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   available types are: `FULL` [default], &nbsp;&nbsp;`SIMPLE`, &nbsp;&nbsp;`PBS`
 
 `[-addH]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional module name to be used to add hydrogens to ligands' structures; see -> [Additional notes](#Inputs)
 
@@ -193,9 +192,6 @@ fingeRNAt accepts the following parameters:
 `[-print]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print detected interactions for each nucleic acid - ligand complex on screen
 
 `[-detail]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generate an additional file with detailed data on detected interactions see -> [PyMOL visualization](#pymol-visualization)
-
-
-`[-vis]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional SIFt results heatmap visualization; see -> [Heatmap plotting](#heatmap-plotting)
 
 
  `[-verbose]` &nbsp;&nbsp;&nbsp;&nbsp; provides additional information about performed calculations at the given moment
@@ -372,23 +368,6 @@ The following three types of wrappers are available:
 
 > **_NOTE:_**  As -h2o parameter was not passed, the columns containing information about water-mediated interactions are empty (`None`) (see -> ['Parameters description'](#parameters-description))
 
-## Heatmap plotting
-
-All SIFt outputs can be visualized as heatmap and saved as png files with the same name as tsv output. For large SIFt, it may be necessary to manually change the figure size in fingeRNAt.py to generate the plot.
-
-
-<p align="center">
-<img src="docs/README_pics/heatmap_PuPy.png" width="1000" />
-</p>
-
-Heatmap for SIFt type `FULL` with wrapper `PuPy` obtained from running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -vis -wrapper PuPy`
-
-
-<p align="center">
-<img src="docs/README_pics/heatmap_Counter.png" width="600" />
-</p>
-
-Heatmap for SIFt type `FULL` with wrapper `Counter` obtained from running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper Counter -h2o -vis`
 
 ## PyMOL visualization
 
@@ -404,9 +383,9 @@ Dedicated PyMOL plugin was created to visualize detected interactions based on `
 
  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o /path/to/my_output/`
 
-- Calculate SIFt `PBS`, see what is being calculated using verbose mode, and save the output with the default filename in the `outputs` directory together with heatmap.
+- Calculate SIFt `PBS`, see what is being calculated using verbose mode, and save the output with the default filename in the `outputs/` directory.
 
- `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -verbose -vis`
+ `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -verbose`
 
 - Calculate default SIFt `FULL` and save it's output along with table containing details on each detected interaction with the default filenames in the `outputs` directory.
 
