@@ -19,8 +19,6 @@ fingeRNAt requires Python 3.5 - 3.8
 import argparse
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib import colors, cm
 import os
 import copy
 import shutil
@@ -1534,7 +1532,7 @@ if __name__ == "__main__":
                     detail_save[-1] = 'DETAIL_' + detail_save[-1]
                     detail_save = sys_sep.join(detail_save)
                 else:
-                    detail_save = '%s/DETAIL_%s_%s_%s' %(detail_save, filename_RNA.split(sys_sep)[-1], filename_ligand.split(sys_sep)[-1], fingerprint)
+                    detail_save = os.path.join(detail_save, 'DETAIL_%s_%s_%s' %(filename_RNA.split(sys_sep)[-1], filename_ligand.split(sys_sep)[-1], fingerprint))
                 detail_df.to_csv('%s.tsv' %detail_save, sep='\t')
                 detail_already_saved = True
 
@@ -1543,13 +1541,13 @@ if __name__ == "__main__":
             if not os.path.exists('outputs'): os.makedirs('outputs')
             save_name = filename_RNA.split(sys_sep)[-1] + '_' + filename_ligand.split(sys_sep)[-1] + '_' + fingerprint
             if analysis in FUNCTIONS.keys():
-                ALL_FINGERPRINTS_DF.to_csv('outputs/%s.tsv' %(save_name), sep='\t')
+                ALL_FINGERPRINTS_DF.to_csv(os.path.join('outputs', '%s.tsv' %(save_name)), sep='\t')
                 if detail and not detail_already_saved:
-                      detail_save = 'outputs/DETAIL_%s' %save_name
+                      detail_save = os.path.join('outputs', 'DETAIL_%s' %save_name)
                       detail_df.to_csv('%s.tsv' %detail_save, sep='\t' )
                       detail_already_saved = True
             else:
-                ALL_FINGERPRINTS_DF.to_csv('outputs/%s_%s.tsv' %(save_name, analysis), sep='\t')
+                ALL_FINGERPRINTS_DF.to_csv(os.path.join('outputs', '%s_%s.tsv' %(save_name, analysis)), sep='\t')
 
     # Print found interactions on screen
         if print_flag:
