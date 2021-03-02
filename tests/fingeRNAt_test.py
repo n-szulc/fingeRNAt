@@ -20,7 +20,7 @@ def run_test():
                     OK = False
 
     for k in ['SIMPLE', 'PBS']:
-        if subprocess.call('python ../code/fingeRNAt.py -r test_inputs/3d2v.pdb -f %s -wrapper ACUG,PuPy,Counter -o outputs/ -detail' %k, shell = True):
+        if subprocess.call('python ../code/fingeRNAt.py -r test_inputs/3d2v.pdb -f %s -wrapper ACUG,PuPy,Counter -o outputs -detail' %k, shell = True):
             print ('fingeRNAt had problem running fingerprint %s on test_inputs/3d2v.pdb when treating ions as ligands' %k)
             OK = False
 
