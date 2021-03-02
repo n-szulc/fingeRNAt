@@ -140,7 +140,6 @@ Required dependencies are:
 - openbabel 3.1.1
 - numpy  
 - pandas
-- matplotlib
 - rdkit
 - tk
 - sphinx
