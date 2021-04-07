@@ -226,9 +226,10 @@ fingeRNAt accepts the following parameters:
    &#x1F535; if `-l` is not specified, fingeRNAt **will find all inorganic ions in the receptor file and treat them as ligands**, see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions).
 
 **Additional notes:**
-- Input ligand molecules should have assigned desired protonation state and formal charges.
+
 - In the receptor molecule, charges on the phosphate groups do not need to be assigned (fingeRNAt always treats OP1 and OP2 atoms as negatively charged anions).
-- Please pay attention to sdf ligand files converted from pdbqt/mol2 files, if the *formal charges* are preserved in the sdf files.
+- Receptor's residues with less than 4 atoms are not considered in calculations.
+- Input ligand molecules should have assigned desired protonation state and formal charges. Please pay attention to sdf ligand files converted from pdbqt/mol2 files, if the *formal charges* are preserved in the sdf files.
 -	All the missing ligands' hydrogens will be automatically added, unless `-addH None` is passed.
 - Ligands with added hydrogens will be saved to a new sdf file (to the same directory as input) with `_OB_addedH` or `_RDKit_addedH` suffix, depending on the selected module for `-addH`; for `-addH None` no new sdf file will be saved, as it does not add hydrogens.
 
