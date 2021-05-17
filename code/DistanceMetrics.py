@@ -1,7 +1,8 @@
 '''
 The following code is based on
 github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py
-(MIT license).
+(MIT license)
+with few additional metrics.
 '''
 
 
@@ -82,6 +83,20 @@ class Similarity:
         q_sum = self.vector_operators.vec_sum(q_vec)
         return max(pq / (p_sum + q_sum - pq), self.e)
 
+    def tversky(self, p_vec, q_vec):
+        """
+        Implemented based on https://docs.eyesopen.com/toolkits/python/graphsimtk/measure.html
+        Alpha, beta values taken from Leung et al.
+        "SuCOS is Better than RMSD for Evaluating Fragment Elaboration and Docking Poses'"
+        """
+
+        alpha=1
+        beta=0
+
+        pq = self.vector_operators.product(p_vec, q_vec)
+        p_sum = self.vector_operators.vec_sum(p_vec)
+        q_sum = self.vector_operators.vec_sum(q_vec)
+        return max(pq / (alpha*(p_sum-pq) + beta*(q_sum - pq) + pq), self.e)
 
     def soergel_distance(self, p_vec, q_vec):
         """
