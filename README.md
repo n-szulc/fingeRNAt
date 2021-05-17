@@ -81,7 +81,7 @@ It detects different non-covalent interactions in the input complex and returns 
 <img src="docs/README_pics/detected_interactions.png" width="900" />
 </p>
 
-fingeRNAt runs under Python 3.5 - 3.8 on Linux, Mac OS and Windows.
+fingeRNAt runs under Python 3.5 - 3.8 on Linux, macOS and Windows.
 
 ## What is the Structural Interaction Fingerprint (SIFt)?
 
@@ -622,7 +622,8 @@ fingerDISt calculates the following Distance Metrics:
 * Euclidean
 * Square Euclidean
 * Half Square Euclidean
-* Soergel Distance
+* Soergel
+* Tversky
 
 The abovementioned Distance Metrics calculations were implemented based on code [github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py](github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py) under MIT license.
 
