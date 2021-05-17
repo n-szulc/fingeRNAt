@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-fingerDIST is a software to calculate different Distance Metrics based on Structural Interaction Fingerprints (SIFs).
+fingerDIST is a software to calculate different Distance Metrics based on Structural Interaction Fingerprint (SIFt).
 
 Authors:
 Natalia A. Szulc, nszulc@iimcb.gov.pl
@@ -28,7 +28,7 @@ np.set_printoptions(suppress=True)
 metric_name_to_function = {'manhattan' : (DM.Similarity, 'manhattan_distance'), 'square_euclidean' : (DM.Similarity, 'square_euclidean_distance'), \
                            'euclidean' : (DM.Similarity, 'euclidean_distance'), 'half_square_euclidean' : (DM.Similarity, 'half_square_euclidean_distance'), \
                            'cosine_similarity' : (DM.Similarity, 'cosine_similarity'), 'tanimoto' : (DM.Similarity, 'tanimoto_coefficient'), \
-                           'soergel_distance' : (DM.Similarity, 'soergel_distance')}
+                           'soergel_distance' : (DM.Similarity, 'soergel_distance'), 'tversky' : (DM.Similarity, 'tversky')}
 
 if __name__ == "__main__":
 
@@ -44,15 +44,15 @@ if __name__ == "__main__":
     print(welcome_mssg.center(columns))
     print(('#'*len(welcome_mssg)).center(columns))
 
-    parser = argparse.ArgumentParser(description = '''Script calculating different Distance Metrics between Structural Interaction Fingerprints (SIFs).''',
+    parser = argparse.ArgumentParser(description = '''Script calculating different Distance Metrics between Structural Interaction Fingerprint (SIFt).''',
                                      epilog = 'If no optional -o parameter was passed, script will create outputs/ directory in the current working directory and save there calculated Distance Metrics in tsv format.',
                                      add_help = False,
                                      formatter_class = argparse.ArgumentDefaultsHelpFormatter,
                                      conflict_handler = 'resolve')
 
     required_arguments = parser.add_argument_group('Required arguments')
-    required_arguments.add_argument('-i', help='pass SIFs in tsv/csv format', required=True, metavar='SIFs', default=argparse.SUPPRESS)
-    required_arguments.add_argument('-m', help='pass types of desired Distance Metrics, available types are: tanimoto, cosine_similarity, manhattan, euclidean, square_euclidean, half_square_euclidean, soergel_distance', required=True, metavar='METRICS', default=argparse.SUPPRESS)
+    required_arguments.add_argument('-i', help='pass SIFt in tsv/csv format', required=True, metavar='SIFt', default=argparse.SUPPRESS)
+    required_arguments.add_argument('-m', help='pass types of desired Distance Metrics, available types are: tanimoto, cosine_similarity, manhattan, euclidean, square_euclidean, half_square_euclidean, soergel_distance, tversky', required=True, metavar='METRICS', default=argparse.SUPPRESS)
 
     optional_arguments = parser.add_argument_group('Optional arguments')
     optional_arguments.add_argument('-o', help='pass output path or name', metavar='NAME')
@@ -61,18 +61,20 @@ if __name__ == "__main__":
     optional_arguments.add_argument('--help', '-h', action = 'help', help = 'show this help message and exit')
 
     args = vars(parser.parse_args())
-    filename_SIFs = args['i']
+    sys_sep = os.sep
+
+    filename_SIFt = args['i']
     metrics=args['m'].split(',')
-    extension_SIFs= filename_SIFs.split('/')[-1].split('.')[-1]
+    extension_SIFt= filename_SIFt.split(sys_sep)[-1].split('.')[-1]
     output = args['o']
     verbose = args['verbose']
 
-    if extension_SIFs == 'csv':
+    if extension_SIFt == 'csv':
         sep = ','
-    elif extension_SIFs == 'tsv':
+    elif extension_SIFt == 'tsv':
         sep = '\t'
     else:
-        raise Exception('Unknown SIFs extension')
+        raise Exception('Unknown SIFt extension')
 
     for m in metrics:
         if m not in metric_name_to_function.keys():
@@ -83,7 +85,7 @@ if __name__ == "__main__":
     def check_binary_values(matrix):
         """Checks if given matrix has only binary values
 
-        :param matrix: matrix of SIFs
+        :param matrix: matrix of SIFt
         :type matrix: numpy.ndarray
         :return: True if matrix has only binary values, False otherwise
         :rtype: bool
@@ -92,9 +94,9 @@ if __name__ == "__main__":
         result = np.array_equal(matrix, matrix.astype(bool))
         return result
 
-    # Read file with SIFs and prepare it
-
-    df = pd.read_csv(filename_SIFs, sep=sep)
+    # Read file with SIFt and prepare it
+    df = pd.read_csv(filename_SIFt, sep=sep)
+    df.fillna(value=0, inplace=True)
     ligands = list(df['Ligand_name'])
     df = df.drop(['Ligand_name'], axis=1)
     fingerprint_matrix = df.to_numpy()
@@ -123,17 +125,20 @@ if __name__ == "__main__":
         # Save results to DataFrame
 
         df_results = pd.DataFrame(data=np.round(results, 4), index=ligands, columns=ligands)
+        df_results.index.name = 'Ligand_name'
 
         if output:
-            if output[-1] == '/' or output[-1] == '\\': # default output name, location specified
-                output2 = output + filename_SIFs.split('/')[-1] + '_' + m
+            output_proper = output
+            save_name = filename_SIFt.split(sys_sep)[-1] + '_' + m
+            if output[-1] == sys_sep: # default output name, location specified
+                output_proper += save_name
             else:
-                output2 = output
-            df_results.to_csv('%s.%s' %(output2, extension_SIFs), sep=sep)
+                output_proper += sys_sep + save_name
+            df_results.to_csv('%s.%s' %(output_proper, extension_SIFt), sep=sep)
         else:
             if not os.path.exists('outputs'): os.makedirs('outputs')
-            output2 = filename_SIFs.split('/')[-1] + '_' + m
-            df_results.to_csv('outputs/%s.%s' %(output2, extension_SIFs), sep=sep)
+            output_proper = filename_SIFt.split(sys_sep)[-1] + '_' + m
+            df_results.to_csv('outputs/%s.%s' %(output_proper, extension_SIFt), sep=sep)
 
         print()
         print('{} scores saved successfully!'.format(m))

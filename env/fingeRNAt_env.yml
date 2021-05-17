@@ -4,7 +4,6 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - matplotlib
   - numpy
   - openbabel=3.1.1
   - pandas

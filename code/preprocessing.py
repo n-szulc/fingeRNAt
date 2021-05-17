@@ -1,4 +1,5 @@
 import numpy as np
+import os
 
 from openbabel import openbabel
 from openbabel import pybel
@@ -10,6 +11,7 @@ import collections
 # Own module
 import config
 
+sys_sep = os.sep
 
 def vector(p1, p2):
     """Calculates vector between 2 points
@@ -37,21 +39,6 @@ def measure_distance(v1, v2):
 
     return np.round(np.linalg.norm(v1 - v2), 5)
 
-def check_distance(v1, v2, cutoff):
-    """Checks if distance between 2 vectors is within cutoff range and return bool
-
-    :param v1: vector 1 coordinates
-    :param v2: vector 2 coordinate
-    :param cutoff: cutoff value
-    :type v1: numpy.ndarray
-    :type v2: numpy.ndarray
-    :type cutoff: float
-    :return: `True` if distance between 2 vectors is within cutoff range, `False` otherwise
-    :rtype: bool
-    """
-
-    return (np.all(np.linalg.norm(v1 - v2)  <= cutoff))
-
 def calculate_angle(v1, v2, deg = True):
     """Calculates angle between 2 vectors
 
@@ -71,34 +58,6 @@ def calculate_angle(v1, v2, deg = True):
     angle = np.arccos(round(dm/cm, 10))
 
     return np.degrees([angle, ])[0] if deg else angle
-
-def modify_HB_result_list(precision, result, dist):
-    """Modifies hydrogen bond output list according to it's presence and strength
-
-    :param precision: fingerprint type
-    :param result: list to modify
-    :param dist: hydrogen bond donor - hydrogen bond acceptor distance
-    :type precision: str
-    :type result: list
-    :type dist: numpy.float64
-    :return: modified hydrogen bond output list
-    :rtype: NoneType
-    """
-
-    if precision == 'FULL':
-        result[-1] = 1
-
-    else:
-        result[-4]+= 1
-
-        if dist <=  2.5 and dist >= 2.2: # Strong hydrogen bond
-            result[-3] += 1
-        elif dist <= 3.5 and dist > 2.5: # Moderate hydrogen bond
-            result[-2] += 1
-        elif dist > 3.5: # Weak hydrogen bond
-            result[-1] += 1
-        else:
-            print('Too short D-A distance: %s A' %str(dist))
 
 def calculate_planar(atoms_list):
     """Calculates planarity normal vector
@@ -141,7 +100,7 @@ def get_ligand_name_pose(dictionary, title):
     """
 
     dictionary_keys_only_ligand_names = [el.split('^')[0] for el in dictionary.keys()] # list of ligands names (prefixes; without pose no) that are so far present in the dictionary
-    title_cleaned = title.split('/')[-1]
+    title_cleaned = title.split(sys_sep)[-1]
 
     if title_cleaned == "":
         title_cleaned = "COMPOUND"
@@ -229,21 +188,15 @@ def assign_interactions_results(result, RESULTS, RNA_LENGTH, RNA_seq_index, FING
     descriptor_index = desc_index
 
     if not multiple_results: # Most results have only one value to add
-
-        # XP fingerprint 3 additional HB strong/moderate/weak descriptors have to be taken into account
-        if FINGERPRINT_DESCRIPTORS_NO == 9:
-            # Change index in XP fingerprint for halogen bondings, cation-anion, Pi-interactions (XP hydrogen bonding is the first calculated interaction and it took 3 additional places in results list)
-            descriptor_index += 3
-
         RESULTS[ligand_id][(RNA_seq_index * FINGERPRINT_DESCRIPTORS_NO) + descriptor_index] = result[-1]
 
-    else: # In case of PBS and HB_XP results
+    else: # In case of ion-mediated interactions or PBS
 
-        if FINGERPRINT_DESCRIPTORS_NO == 9: # Hydrogen bondings XP result
+        if FINGERPRINT_DESCRIPTORS_NO == 12: # FULL ion-mediated
             for i in range(4):
                 RESULTS[ligand_id][(RNA_seq_index*FINGERPRINT_DESCRIPTORS_NO) + descriptor_index+i] = result[-4+i]
 
-        else: # PBS result
+        else: # PBS
             for i in range(3):
                 RESULTS[ligand_id][(RNA_seq_index*FINGERPRINT_DESCRIPTORS_NO) + descriptor_index+i] = result[-3+i]
 
@@ -251,19 +204,19 @@ def wrap_results(wrapper, RESULTS, RNA_nucleotides, fingerprint_length, wrapper_
     """Wrap results from calculating fingerprint to the desired output
 
     :param wrapper: wrapper type
-    :rtype wrapper: str
     :param RESULTS: calculated fingerprint results
-    :rtype RESULTS: dict
     :param RNA_nucleotides: list of nucleic acid nucleotides names
-    :rtype RNA_nucleotides: list
     :param fingerprint_length: number of calculated molecular interactions
-    :rtype fingerprint: int
     :param wrapper_length: length of wrapper
-    :rtype wrapper_length: int
+    :type wrapper: str
+    :type RESULTS: dict
+    :type RNA_nucleotides: list
+    :type fingerprint: int
+    :type wrapper_length: int
     :return: list of wrapped results
     :rtype: list
-
     """
+
     WRAP_RESULTS = {}
 
     if wrapper == 'ACUG':
@@ -275,7 +228,7 @@ def wrap_results(wrapper, RESULTS, RNA_nucleotides, fingerprint_length, wrapper_
 
         WRAP_RESULTS[key] = [0] * fingerprint_length * wrapper_length
 
-        i=0
+        i = 0
 
         while i < len(values):
             chunk = values[i:(i+fingerprint_length)]
@@ -284,17 +237,14 @@ def wrap_results(wrapper, RESULTS, RNA_nucleotides, fingerprint_length, wrapper_
 
                 try:
                     nucleotide_index = letter_order[RNA_nucleotides[(int(i/fingerprint_length))]]
-
                 except KeyError: # non-canonical nucleotide
                     i += fingerprint_length
                     continue
 
                 for el in range(len(chunk)):
-                    if fingerprint_length != 9: # if not XP, we overwrite 0 with 1
-                        if WRAP_RESULTS[key][fingerprint_length*nucleotide_index+el] < chunk[el]:
-                             WRAP_RESULTS[key][fingerprint_length*nucleotide_index+el] = chunk[el]
-                    else:
-                        WRAP_RESULTS[key][fingerprint_length*nucleotide_index+el] += chunk[el] # XP, we sum all interactions
+                    # Overwrite 0 with 1
+                    if WRAP_RESULTS[key][fingerprint_length*nucleotide_index+el] < chunk[el]:
+                         WRAP_RESULTS[key][fingerprint_length*nucleotide_index+el] = chunk[el]
 
             else: # wrapper Counter
                 for el in range(len(chunk)):
@@ -402,8 +352,131 @@ def find_ligands_CA(mols, verbose):
 
      return dictionary
 
+def find_ligands_ions(mols, ions_dict, verbose):
+     """Finds all ligands' nitrogen/oxygen/sulphur atoms in contact with positively charged ion
+
+    :param mols: list of Pybel-parsed ligands' objects
+    :param ions_dict: dict of names of positively charged ions with their coords as values
+    :type mols: list
+    :type ions_dict: dict
+    :return: dictionary indexed by ligand name, with the coords of all positively charged ions in contact with it
+    :rtype: dict
+    """
+
+     dictionary = {}
+
+     if verbose:
+         print("Looking for ligand - ion interactions...")
+
+     for i in tqdm(range(len(mols)), disable=(not verbose)): # For molecule in ligand file
+
+        name = get_ligand_name_pose(dictionary, mols[i].title)
+        dictionary[name]=[] # {'prefix^pose':[list of positive ion names]}
+
+        for ion in ions_dict.keys():
+            for atom in mols[i]:
+                if atom.atomicnum in [config.OXYGEN_NUM, config.NITROGEN_NUM, config.SULPHUR_NUM]:
+                    dist = measure_distance(atom.coords, ions_dict[ion])
+                    if config.MIN_DIST < dist <= config.MAX_ION_DIST:
+                        ion_name = ion.split(':')[0]
+                        if ion_name =='MG':
+                            if dist <= config.MAX_MAGNESIUM_DIST:
+                                dictionary[name].append(ion)
+                                break
+                        elif ion_name =='K':
+                            if dist <= config.MAX_POTASSIUM_DIST:
+                                dictionary[name].append(ion)
+                                break
+                        elif ion_name == 'NA':
+                            if dist <= config.MAX_SODIUM_DIST:
+                                dictionary[name].append(ion)
+                                break
+                        else:
+                            if dist <= config.MAX_OTHER_ION_DIST:
+                                dictionary[name].append(ion)
+                                break
+     return dictionary
+
+def find_ligands_water(ligands_hba_hbd, water_dict, verbose):
+     """Finds all ligands' hydrogen bonds donors/acceptors in contact with water molecule (oxygen)
+
+    :param ligands_hba_hbd: dictionary indexed by ligand name, with the coords od all ligand's hydrogen bonds acceptors & donors
+    :param water_dict: dict of names of water molecules with their coords as values
+    :type ligands_hba_hbd: dict
+    :type water_dict: dict
+    :return: dictionary indexed by ligand name, with the coords of water molecules in contact with it
+    :rtype: dict
+    """
+
+     dictionary = {}
+
+     if verbose:
+         print("Looking for ligand - water interactions...")
+
+     for ligand_name in tqdm(ligands_hba_hbd.keys(), disable=(not verbose)): # For ligand in ligands' dict
+        dictionary[ligand_name]=[] # {'prefix^pose':[list of water molecule names]}
+        if len(ligands_hba_hbd[ligand_name][0]) == 0 and len(ligands_hba_hbd[ligand_name][1]) == 0: # ligand has no HB acceptors/donors
+            continue
+        for water in water_dict.keys():
+            if len(ligands_hba_hbd[ligand_name][0]) > 0:
+                dist = measure_distance(ligands_hba_hbd[ligand_name][0][0], water_dict[water])
+            else:
+                dist = measure_distance(ligands_hba_hbd[ligand_name][1][0], water_dict[water])
+
+            if dist > config.RES_LIGAND_MAX_DIST:
+                # if the ligand's first acceptor/donor atom - water distance is greater than threshold, there is no point in checking the rest of ligand's atoms
+                continue
+
+            for don_acc in ligands_hba_hbd[ligand_name]:
+                searching_flag = True
+                if searching_flag:
+                    for atom in don_acc:
+                        if config.MIN_DIST < dist <= config.MAX_WATER_DIST:
+                            dictionary[ligand_name].append(water)
+                            searching_flag = False
+                            break
+     return dictionary
+
+def find_ligands_lipophilic(mols, verbose):
+    """Finds lipophilic fragments in all ligands
+
+    :param mols: list of Pybel-parsed ligands' objects
+    :type mole: list
+    :return: dictionary indexed by ligand name, with the coords od all ligand's lipophilic fragments
+    :rtype: dict
+    """
+
+    # SMARTS pattern:
+    # [CH0,CH1,CH2,#9,#17,#35,#53] - aliphatic C with 0,1 or 2 H (ie not CH3) or halogens
+    # ;+0   and only neutral (charge zero)
+    # ;!$(C~O);!$(C~N)  and not C=O, C=N with any bonds
+    # ;!$(*~[+1]);!$(*~[-1]) and not connected to a cation or anion
+    # ICM: [C&!$(C=O)&!$(C#N),S&^3,#17,#15,#35,#53]
+
+    # modified ICM: also aromatic C and must be neutral.
+
+    smarts = pybel.Smarts("[c,C&!$(C=O)&!$(C#N),S&^3,s,#17,#15,#35,#53;+0]")
+    dictionary = {}
+
+    if verbose:
+        print("Looking for lipophilic fragments...")
+
+    for i in tqdm(range(len(mols)), disable=(not verbose)): # for molecule in ligand file
+
+        name = get_ligand_name_pose(dictionary, mols[i].title)
+        dictionary[name] = [] # {'prefix^pose':[list of tuples (C,halogen)]}
+
+        atomSets = smarts.findall(mols[i]) # list of atoms fulfilling this pattern
+        atomsList = [ id[0] for id in atomSets ]
+
+        for atom in atomsList:
+            dictionary[name].append( mols[i].atoms[atom-1].coords )
+
+    return dictionary
+
 def findAromaticRingsWithRDKit(sdfFile):
     """Finds all aromatic rings coords in all ligands using RDKit
+
     :param sdfFile: path to a valid sdf file
     :type sdfFile: str
     :return: dictionary indexed by ligand name, with the coords of all ligand's aromatic rings
@@ -450,7 +523,7 @@ def findAromaticRingsWithRDKit(sdfFile):
     return aromaticRingsDict
 
 def find_RNA_rings(structure, extension_structure):
-    """Finds all aromatic rings in whole nucleic acid
+    """Finds all aromatic rings in whole nucleic acid.
 
     :param structure: nucleic acid structure object
     :param extension_structure: extension of nucleic acid input file
@@ -468,14 +541,7 @@ def find_RNA_rings(structure, extension_structure):
             ring_atoms = [a for a in all_atoms if ring.IsMember(a.OBAtom)]
             res = structure.OBMol.GetAtom(ring_atoms[0].idx).GetResidue() # Residue according to first ring's atom
 
-            if extension_structure == 'pdb':
-                res_id = res.GetName()
-            elif extension_structure == 'mol2':
-                res_id = res.GetName()[:-len(str(res.GetNum()))] # Need res.GetName() without last characters of its res number, because when nucleic acid is in mol2 format, res.GetName() gives for example U22 as residue name
-            else:
-                raise Exception('Unknown nucleic acid structure format')
-
-            if res_id in config.CANONICAL_RESIDUES:
+            if res.GetName() in config.CANONICAL_RESIDUES:
                 sugar = False
                 if len([atom for atom in ring_atoms if (atom.atomicnum == config.OXYGEN_NUM)]) > 0:
                     sugar = True
@@ -488,7 +554,7 @@ def find_RNA_rings(structure, extension_structure):
     return rings
 
 def find_RNA_HB_HAL_acc_don(residue):
-    """Finds all hydrogen/halogen bonds acceptors with all of their neighbours and all hydrogen bonds donors together with hydrogens in nucleic acid residue
+    """Finds all hydrogen/halogen bonds acceptors with all of their neighbours and all hydrogen bonds donors together with hydrogens in nucleic acid residue.
 
     :param residue: nucleic acid residue object
     :type residue: openbabel.OBResidue
@@ -509,7 +575,7 @@ def find_RNA_HB_HAL_acc_don(residue):
         acceptors_RNA.append([atom])
         for neighbour in pybel.ob.OBAtomAtomIter(atom):
              if neighbour.GetAtomicNum() != 1: # If not hydrogen
-                 acceptors_RNA[-1].append(neighbour) # Append acceptors' - all Y
+                 acceptors_RNA[-1].append(neighbour) # Append acceptor'
 
     for atom in filter(lambda at: at.IsHbondDonor(), residue_atoms_list): # Find all donors with their hydrogens
         for neighbour in pybel.ob.OBAtomAtomIter(atom):
@@ -519,7 +585,7 @@ def find_RNA_HB_HAL_acc_don(residue):
     return acceptors_RNA, donors_RNA
 
 def find_RNA_anions(residue):
-    """Finds all nucleic acid's residue's anions
+    """Finds all nucleic acid's residue's anions.
 
     :param residue: nucleic acid's residue object
     :type residue: openbabel.OBResidue
@@ -546,7 +612,7 @@ def find_RNA_anions(residue):
     return anions_RNA
 
 def check_if_RNA(all_nucleotides):
-    """Check if input structure is RNA or DNA
+    """Checks if input structure is RNA or DNA.
 
     :param all_nucleotides: list of all structure nucleotides
     :type all_nucleotides: list
@@ -560,7 +626,40 @@ def check_if_RNA(all_nucleotides):
         return True
     return False
 
-########################### FUNCTIONS FOR DEBUG/DETAIL MODE ###########################
+
+
+def addHwithRDKit(sdfFileIN, sdfFileOUT):
+    """Adds hydrogens and coordinates to molecules deposited in SDF.\n
+    Related documentation: https://www.rdkit.org/docs/source/rdkit.Chem.rdmolops.html#rdkit.Chem.rdmolops.AddHs
+
+    :param sdfFileIN: path to input sdf file
+    :param sdfFileOUT: path to output sdf file
+    :type sdfFileIN: str
+    :type sdfFileOUT: str
+    :return: creates new sdf file with added hydrogens
+    :rtype: None
+    """
+
+    from rdkit import Chem
+    from rdkit.Chem import AllChem
+
+    suppl = Chem.SDMolSupplier(sdfFileIN, sanitize=False)
+
+    writer = Chem.SDWriter(sdfFileOUT)
+
+    for mol in suppl:
+        if mol is None: continue
+
+        Chem.SanitizeMol(mol,Chem.SanitizeFlags.SANITIZE_FINDRADICALS|Chem.SanitizeFlags.SANITIZE_KEKULIZE|Chem.SanitizeFlags.SANITIZE_SETAROMATICITY|Chem.SanitizeFlags.SANITIZE_SETCONJUGATION|Chem.SanitizeFlags.SANITIZE_SETHYBRIDIZATION|Chem.SanitizeFlags.SANITIZE_SYMMRINGS,catchErrors=True)
+
+        if mol is None: continue
+
+        mol = Chem.AddHs(mol, addCoords=True)
+        writer.write(mol)
+    writer.close()
+
+
+########################################### FUNCTIONS FOR DEBUG/DETAIL MODE ###########################################
 
 def ligands_coords_atom_index_dict(mols):
     """For the debug/detail mode only; creates a dictionary of dictionaries - each ligand's name and the dictionary of its coords with their atom indices and number of ligand's occurrence in sdf file as values
@@ -595,22 +694,32 @@ def rna_coords_atom_index_dict(structure):
     dictionary = {}
 
     for residue in openbabel.OBResidueIter(structure.OBMol):
-        for atom in openbabel.OBResidueAtomIter(residue):
-            dictionary[(atom.GetX(), atom.GetY(), atom.GetZ())] = atom.GetResidue().GetAtomID(atom).strip()
+        if residue.GetNumAtoms() > 3:
+            for atom in openbabel.OBResidueAtomIter(residue):
+                dictionary[(atom.GetX(), atom.GetY(), atom.GetZ())] = atom.GetResidue().GetAtomID(atom).strip()
 
     return dictionary
 
-def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, arom_ring_ligands_info, debug_dict_ligand,
-RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info, HB_RNA_acc_info, HB_RNA_donor_info,
-HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_info, T_shaped_info, columns):
-    """Prints all collected information in debug mode of SIFt type FULL/XP about ligands/nucleic acid properties and detected interactions.
+######################################################  DEBUG MODE ######################################################
 
-    :param ligands_hba_hbd: dictionary indexed by ligand name, with the coords od all ligand's hydrogen bonds acceptors & donors
+def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, ligands_water, ligands_lipophilic,
+                     arom_ring_ligands_info, debug_dict_ligand, RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info,
+                     HB_RNA_acc_info, HB_RNA_donor_info, HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Anion_Pi_info,
+                     Sandwich_Displaced_info, T_shaped_info, ion_mediated_info, water_mediated_info, lipophilic_info, columns):
+    """Prints all collected information in debug mode of SIFt type FULL about ligands/nucleic acid properties and detected interactions.
+
+    :param ligands_hba_hbd: dictionary indexed by ligand name, with the coords of all ligand's hydrogen bonds acceptors & donors
     :type ligands_hba_hbd: dict
-    :param ligands_HAL: dictionary indexed by ligand name, with the coords od all ligand's halogens & halogen bonds donors
+    :param ligands_HAL: dictionary indexed by ligand name, with the coords of all ligand's halogens & halogen bonds donors
     :type ligands_HAL: dict
-    :param ligands_CA: dictionary indexed by ligand name, with the coords od all ligand's cations & anions
+    :param ligands_CA: dictionary indexed by ligand name, with the coords of all ligand's cations & anions
     :type ligands_CA: dict
+    :param ligands_ions: dictionary indexed by ligand name, with the names of all ions in contact with it
+    :type ligands_ions: dict
+    :param ligands_water: dictionary indexed by ligand name, with the names of all water molecules in contact with it
+    :type ligands_water: dict
+    :param ligands_lipophilic: dictionary indexed by ligand name, with the the coords of all ligand's lipohilic atoms
+    :type ligands_lipophilic: dict
     :param arom_ring_ligands_info: dictionary indexed by ligand name, with set of indices of atoms building ligand's aromatic rings
     :type arom_ring_ligands_info: dict
     :param debug_dict_ligand: dictionary of dictionaries of ligand's atom's coords with their corresponding atom index - {ligand_name : {(x1,y1,z1) : 1, (x2,y2,z2) : 2}}
@@ -633,10 +742,18 @@ HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_i
     :type Pi_Cation_info: str
     :param Pi_Anion_info: all found Pi-Anion interactions
     :type Pi_Anion_info: str
+    :param Anion_Pi_info: all found Pi-Anion interactions
+    :type Anion_Pi_info: str
     :param Sandwich_Displaced_info: all found Pi-Stacking type Sandwich/Displaced interactions
     :type Sandwich_Displaced_info: str
     :param T_shaped_info: all found Pi-Stacking type T-shaped interactions
     :type T_shaped_info: str
+    :param ion_mediated_info: all found ion mediated ligand interactions
+    :type ion_mediated_info: str
+    :param water_mediated_info: all found water mediated ligand interactions
+    :type water_mediated_info: str
+    :param lipohilic_info: all found lipohilic interactions
+    :type lipophilic_info: str
     :param columns: width of terminal
     :type columns: int
     :return: prints debug info
@@ -697,18 +814,58 @@ HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_i
         print()
 
     print()
-    print(('#'*len("# Number of ligand's aromatic rings #")))
-    print(('#         4. AROMATIC RINGS          #'))
-    print(("# Number of ligand's aromatic rings #"))
-    print(('#'*len("# Number of ligand's aromatic rings #")))
+    print(('#'*len("# Aromatic rings atom indices #")))
+    print(('#      4. AROMATIC RINGS      #'))
+    print(("# Aromatic rings atom indices #"))
+    print(('#'*len("# Aromatic rings atom indices #")))
 
     for key in ligands_CA.keys():
         print()
         print('### {} ###'.format(key))
-        if key not in arom_ring_ligands_info.keys():
-            print('0')
-        else:
+        if key in arom_ring_ligands_info.keys():
             print(arom_ring_ligands_info[key])
+        print()
+
+    print(('#'*len("# Ions in electrostatic contact with ligand #")))
+    print(('#         5. INORGANIC IONS                 #'))
+    print(("# Ions in electrostatic contact with ligand #"))
+    print(('#'*len("# Ions in electrostatic contact with ligand #")))
+
+    for key in ligands_ions.keys():
+        print()
+        print('### {} ###'.format(key))
+        for c0 in ligands_ions[key]:
+            print(c0, end=" ")
+        print()
+
+    print()
+    print(('#'*len("# Water molecules in contact with ligand #")))
+    print(('#        6. WATER MOLECULES              #'))
+    print(("# Water molecules in contact with ligand #"))
+    print(('#'*len("# Water molecules in contact with ligand #")))
+
+    if ligands_water is None:
+        print()
+        print('Not considered')
+    else:
+        for key in ligands_water.keys():
+            print()
+            print('### {} ###'.format(key))
+            for c0 in ligands_water[key]:
+                print(c0, end=" ")
+            print()
+
+    print()
+    print(('#'*len("# Lipophilic atoms' coords #")))
+    print(('#  7. LIPOHILIC ATOMS      #'))
+    print(("# Lipophilic atoms' coords #"))
+    print(('#'*len("# Lipophilic atoms' coords #")))
+
+    for key in ligands_lipophilic.keys():
+        print()
+        print('### {} ###'.format(key))
+        for c0 in ligands_lipophilic[k]:
+            print(str(debug_dict_ligand[k][c0]), end=" ", sep=',')
         print()
 
     print()
@@ -789,6 +946,10 @@ HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_i
     print(("# Pi-Anion #"))
     print(('#'*len("# Pi-Anion #")))
     print(Pi_Anion_info)
+    print(('#'*len("# Anion-Pi #")))
+    print(("# Anion-Pi #"))
+    print(('#'*len("# Anion-Pi #")))
+    print(Anion_Pi_info)
     print(('#'*len("# Pi-Stacking: Sandwich/Displaced #")))
     print(("# Pi-Stacking: Sandwich/Displaced #"))
     print(('#'*len("# Pi-Stacking: Sandwich/Displaced #")))
@@ -797,3 +958,15 @@ HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Sandwich_Displaced_i
     print(("# Pi-Stacking: T-shaped #"))
     print(('#'*len("# Pi-Stacking: T-shaped #")))
     print(T_shaped_info)
+    print(('#'*len("# Ion-mediated #")))
+    print(("# Ion-mediated #"))
+    print(('#'*len("# Ion-mediated #")))
+    print(ion_mediated_info)
+    print(('#'*len("# Water-mediated #")))
+    print(("# Water-mediated #"))
+    print(('#'*len("# Water-mediated #")))
+    print(water_mediated_info)
+    print(('#'*len("# Lipophilic #")))
+    print(("# Lipophilic #"))
+    print(('#'*len("# Lipophilic #")))
+    print(lipophilic_info)

@@ -1,0 +1,9 @@
+Ligand_name	3d2v.pdb#Purines#P	3d2v.pdb#Purines#B	3d2v.pdb#Purines#S	3d2v.pdb#Pyrimidynes#P	3d2v.pdb#Pyrimidynes#B	3d2v.pdb#Pyrimidynes#S
+Ligand_1^1	0	1	1	1	0	0
+Ligand_2^1	0	1	1	1	0	0
+Ligand_3^1	0	1	1	0	0	0
+Ligand_4^1	0	1	1	1	0	1
+Ligand_5^1	0	1	1	0	1	1
+adenine^1	0	1	1	1	0	0
+ligand_6^1	0	1	0	0	1	0
+3D2V-native-protonated^1	0	1	1	1	1	0

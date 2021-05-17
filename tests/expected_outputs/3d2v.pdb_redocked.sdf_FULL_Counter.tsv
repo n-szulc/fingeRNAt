@@ -1,0 +1,11 @@
+Ligand_name	3d2v.pdb#HB	3d2v.pdb#HAL	3d2v.pdb#CA	3d2v.pdb#Pi_Cation	3d2v.pdb#Pi_Anion	3d2v.pdb#Pi_Stacking	3d2v.pdb#Mg_mediated	3d2v.pdb#K_mediated	3d2v.pdb#Na_mediated	3d2v.pdb#Other_mediated	3d2v.pdb#Water_mediated	3d2v.pdb#Lipophilic
+3D2V-native-protonated^1	3	0	2	0	1	2	0	0	0	0	2	6
+3D2V-native-protonated^2	3	0	2	0	2	2	2	0	0	0	3	6
+3D2V-native-protonated^3	5	0	2	0	1	2	2	0	0	0	2	6
+3D2V-native-protonated^4	3	0	2	0	1	2	2	0	0	0	2	5
+3D2V-native-protonated^5	5	0	2	0	1	2	2	0	0	0	3	5
+3D2V-native-protonated^6	5	0	2	0	1	2	2	0	0	0	1	3
+3D2V-native-protonated^7	5	0	2	0	3	2	2	0	0	0	3	2
+3D2V-native-protonated^8	4	0	2	0	1	2	0	0	0	0	2	5
+3D2V-native-protonated^9	3	0	2	0	2	2	2	0	0	0	1	3
+3D2V-native-protonated^10	5	0	1	0	2	2	2	0	0	0	2	3
