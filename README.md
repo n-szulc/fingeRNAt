@@ -255,7 +255,7 @@ fingeRNAt allows to calculate the following SIFt types:
 	* water-mediated (Water\_mediated); **only if `-hoh` parameter was passed**; otherwise this interaction is assigned as `None`
 	* lipophilic (lipophilic\_mediated)
 
-	&#x1F536;Returns nine 0/1 values for each residue.
+	&#x1F536;Returns twelve 0/1 values for each residue.
 
 - `SIMPLE`
 
