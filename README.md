@@ -648,7 +648,7 @@ Sample output of running `python code/fingerDISt.py -i tests/expected_outputs/1a
 
 - Calculate all available Distance Metrics on SIFs inputs type `FULL` and save the output with the default filename in the `outputs` directory.
 
-`python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_FULL.tsv -m manhattan,square_euclidean,euclidean,half_square_euclidean,cosine_similarity,tanimoto`
+`python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_FULL.tsv -m manhattan,square_euclidean,euclidean,half_square_euclidean,cosine_similarity,tanimoto,soergel,tversky`
 
 - Calculate two Distance Metrics on SIFs inputs type `PBS` wrapped with `ACUG` wrapper and save the output to user-specified location with the default filename.
 
