@@ -36,6 +36,8 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 		- [`SIMPLE`](#simple)
 		- [`PBS`](#pbs)
 	- [Wrappers](#wrappers)
+	- [Detail mode](#detail-mode)
+	- [Pymol visualization](#pymol-visualization)
 	- [Usage examples](#usage-examples)
 	- [Graphical User Interface](#graphical-user-interface)
 	- [Debugging mode](#debugging-mode)
@@ -399,6 +401,50 @@ The following three types of wrappers are available:
 
 > **_NOTE:_**  As -h2o parameter was not passed, the columns containing information about water-mediated interactions are empty (`None`) (see -> ['Parameters description'](#parameters-description))
 
+## Detail mode
+
+fingeRNAt has additional mode `-detail` which saves all detected interactions, for any SIFt type, to separate tsv file (file with prefix `DETAIL_`).
+
+The interactions saved in `-detail` mode follow the same convention - **each row contains information about interaction between given ligand - receptor**, thus allowing for their easy, high-throughput processing.
+
+The abovementioned data serve also as input to dedicated Pymol plugin, created by us, to visualize all interactions detected by fingeRNAt (see -> [PyMOL visualization](#pymol-visualization)).
+
+> **_NOTE:_** In case of ion- and water-mediated interactions, two rows will correspond to one such interaction: (i) ligand - ion/water molecule and (ii) ion/water molecule - RNA/DNA. Therefore in case (i) ion/water molecule is treated as the receptor and in case (ii) as the ligand.
+
+> **_NOTE 2:_** We refer to ligands as structures from ligands' file `-l`, as water molecules and inorganic ions are supposed to be provided in the RNA/DNA input pdb file.
+
+The following data are saved in `-detail` mode:
+
+* **Ligand_name**
+  * for ligands from sdf file: ligand's name
+  * for inorganic ions: ion's name
+  * for water molecules: HOH
+* **Ligand_pose**
+  * for ligands from sdf file: ligand's pose number (indexed from 1)
+  * for inorganic ions/water molecules: 0
+* **Ligand_occurrence_in_sdf**
+  * if `-l` ligands' file was passed
+    * for ligands from sdf file: ligand's occurrence from the beginning of sdf file
+    * for inorganic ions/water molecules: ligand's occurrence (from the beginning of sdf file), for which they mediate the interaction with nucleic acid
+  * if `-l` ligands' file was not passed: 0 (see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions))
+* **Interaction**: interaction type
+* **Ligand_Atom**
+  * for ligands from sdf file: ligand's atom index
+  * for inorganic ions/water molecules: residue number : chain
+* **Ligand_X/Ligand_Y/Ligand_Z**: coordinates of ligand's/ion's/water molecule's atom
+* **Receptor_Residue_Name/Receptor_Number/Receptor_Chain**:
+  * for interactions ligand/inorganic ions/water molecule - nucleic acid: receptor's nucleotide name/receptor's residue number/receptor's chain
+  * for interactions ligand - ion: ion's name/ion's residue number/ion's chain
+  * for interactions ligand - water molecule: HOH/water molecule's residue number/water molecule's chain
+* **Receptor_Atom**
+  * for interactions ligand/inorganic ions/water molecule - nucleic acid: receptor's atom ID
+  * for interactions ligand - ion: ion's name
+  * for interactions ligand - water molecule: O
+* **Receptor_X/Receptor_Y/Receptor_Z**: coordinates of ligand's/ion's/water molecule's atom
+* **Distance**: distance between ligand's and residue's atoms [&#8491;]
+
+**Sample output**
+see -> [DETAIL_1aju_model1.pdb_ligands.sdf_FULL.tsv](example_outputs/DETAIL_1aju_model1.pdb_ligands.sdf_FULL.tsv)
 
 ## PyMOL visualization
 
@@ -445,51 +491,6 @@ GUI is user-friendly and has all aforementioned functionalities.
 <p align="center">
 <img src="docs/README_pics/gui.png" width="600" />
 </p>
-
-## Detail mode
-
-fingeRNAt has additional mode `-detail` which saves all detected interactions, for any SIFt type, to separate tsv file (file with prefix `DETAIL_`).
-
-The interactions saved in `-detail` mode follow the same convention - **each row contains information about interaction between given ligand - receptor**, thus allowing for their easy, high-throughput processing.
-
-The abovementioned data serve also as input to dedicated Pymol plugin, created by us, to visualize all interactions detected by fingeRNAt (see -> [PyMOL visualization](#pymol-visualization)).
-
-> **_NOTE:_** In case of ion- and water-mediated interactions, two rows will correspond to one such interaction: (i) ligand - ion/water molecule and (ii) ion/water molecule - RNA/DNA. Therefore in case (i) ion/water molecule is treated as the receptor and in case (ii) as the ligand.
-
-> **_NOTE 2:_** We refer to ligands as structures from ligands' file `-l`, as water molecules and inorganic ions are supposed to be provided in the RNA/DNA input pdb file.
-
-The following data are saved in `-detail` mode:
-
-* **Ligand_name**
-  * for ligands from sdf file: ligand's name
-  * for inorganic ions: ion's name
-  * for water molecules: HOH
-* **Ligand_pose**
-  * for ligands from sdf file: ligand's pose number (indexed from 1)
-  * for inorganic ions/water molecules: 0
-* **Ligand_occurrence_in_sdf**
-  * if `-l` ligands' file was passed
-    * for ligands from sdf file: ligand's occurrence from the beginning of sdf file
-    * for inorganic ions/water molecules: ligand's occurrence (from the beginning of sdf file), for which they mediate the interaction with nucleic acid
-  * if `-l` ligands' file was not passed: 0 (see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions))
-* **Interaction**: interaction type
-* **Ligand_Atom**
-  * for ligands from sdf file: ligand's atom index
-  * for inorganic ions/water molecules: residue number : chain
-* **Ligand_X/Ligand_Y/Ligand_Z**: coordinates of ligand's/ion's/water molecule's atom
-* **Receptor_Residue_Name/Receptor_Number/Receptor_Chain**:
-  * for interactions ligand/inorganic ions/water molecule - nucleic acid: receptor's nucleotide name/receptor's residue number/receptor's chain
-  * for interactions ligand - ion: ion's name/ion's residue number/ion's chain
-  * for interactions ligand - water molecule: HOH/water molecule's residue number/water molecule's chain
-* **Receptor_Atom**
-  * for interactions ligand/inorganic ions/water molecule - nucleic acid: receptor's atom ID
-  * for interactions ligand - ion: ion's name
-  * for interactions ligand - water molecule: O
-* **Receptor_X/Receptor_Y/Receptor_Z**: coordinates of ligand's/ion's/water molecule's atom
-* **Distance**: distance between ligand's and residue's atoms [&#8491;]
-
-**Sample output**
-see -> [DETAIL_1aju_model1.pdb_ligands.sdf_FULL.tsv](example_outputs/DETAIL_1aju_model1.pdb_ligands.sdf_FULL.tsv)
 
 ## Debugging mode
 
