@@ -278,8 +278,13 @@ Ions have to be in the same input pdb file and parameter `-l` should be ommited.
 
 As the aforementioned interactions are detected based on contacts, **only SIFt type SIMPLE or PBS may be calculated**.
 
-  **Usage example**
-	`python code/fingeRNAt.py -r example_inputs/3d2v.pdb -f PBS`
+**Usage example**
+
+`python code/fingeRNAt.py -r example_inputs/3d2v.pdb -f PBS`
+
+**Sample output**
+
+see -> [3d2v.pdb_IONS_SIMPLE.tsv](example_outputs/3d2v.pdb_IONS_SIMPLE.tsv)
 
 
 ## User defined thresholds
@@ -304,6 +309,7 @@ Example outputs for SIFt types and their wrappers are available from `fingeRNAt/
 Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -h2o`
 
 **Sample output**
+
 see -> [1aju_model1.pdb_ligands.sdf_FULL.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_FULL.tsv)
 
 > **_NOTE:_** If fingeRNAt was called without `-h2o` parameter, all columns containing information about water-mediated interactions are empty (`None`) (applies also for wrappers; (see -> ['Parameters description'](#parameters-description))).
@@ -320,6 +326,7 @@ Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/
 <br/>
 
 **Sample output**
+
 see -> [1aju_model1.pdb_ligands.sdf_SIMPLE.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_SIMPLE.tsv)
 
 ### `PBS`
@@ -333,6 +340,7 @@ Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/
 <br/>
 
 **Sample output**
+
 see -> [1aju_model1.pdb_ligands.sdf_PBS.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_PBS.tsv)
 
 ## Wrappers
@@ -355,6 +363,7 @@ The following three types of wrappers are available:
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -wrapper ACUG`
 	
 	**Sample output**
+	
 	see -> [1aju_model1.pdb_ligands.sdf_FULL_ACUG.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_FULL_ACUG.tsv)
 
 
@@ -369,6 +378,7 @@ The following three types of wrappers are available:
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper PuPy`
 	
 	**Sample output**
+	
 	see -> [1aju_model1.pdb_ligands.sdf_FULL_PuPy.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_FULL_PuPy.tsv)
 
 > **_NOTE:_**  As `-h2o` parameter was not passed, the columns containing information about water-mediated interactions are empty (`None`) (see -> ['Parameters description'](#parameters-description)).
@@ -384,6 +394,7 @@ The following three types of wrappers are available:
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper Counter`
 	
 	**Sample output**
+	
 	see -> [1aju_model1.pdb_ligands.sdf_FULL_Counter.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_FULL_Counter.tsv)
 
 > **_NOTE:_**  As -h2o parameter was not passed, the columns containing information about water-mediated interactions are empty (`None`) (see -> ['Parameters description'](#parameters-description))
