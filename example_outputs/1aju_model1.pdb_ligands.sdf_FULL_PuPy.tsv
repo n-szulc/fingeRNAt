@@ -1,0 +1,5 @@
+Ligand_name	1aju_model1.pdb#Purines#HB	1aju_model1.pdb#Purines#HAL	1aju_model1.pdb#Purines#CA	1aju_model1.pdb#Purines#Pi_Cation	1aju_model1.pdb#Purines#Pi_Anion	1aju_model1.pdb#Purines#Pi_Stacking	1aju_model1.pdb#Purines#Mg_mediated	1aju_model1.pdb#Purines#K_mediated	1aju_model1.pdb#Purines#Na_mediated	1aju_model1.pdb#Purines#Other_mediated	1aju_model1.pdb#Purines#Water_mediated	1aju_model1.pdb#Purines#Lipophilic	1aju_model1.pdb#Pyrimidynes#HB	1aju_model1.pdb#Pyrimidynes#HAL	1aju_model1.pdb#Pyrimidynes#CA	1aju_model1.pdb#Pyrimidynes#Pi_Cation	1aju_model1.pdb#Pyrimidynes#Pi_Anion	1aju_model1.pdb#Pyrimidynes#Pi_Stacking	1aju_model1.pdb#Pyrimidynes#Mg_mediated	1aju_model1.pdb#Pyrimidynes#K_mediated	1aju_model1.pdb#Pyrimidynes#Na_mediated	1aju_model1.pdb#Pyrimidynes#Other_mediated	1aju_model1.pdb#Pyrimidynes#Water_mediated	1aju_model1.pdb#Pyrimidynes#Lipophilic
+molecule_00001^1	0	0	1	0	0	0	0	0	0	0		1	0	0	0	0	0	0	0	0	0	0		1
+molecule_00001^2	0	0	1	0	0	1	0	0	0	0		1	0	0	1	0	0	0	0	0	0	0		1
+molecule_00002^1	1	0	0	1	0	1	0	0	0	0		1	1	0	0	0	0	0	0	0	0	0		1
+molecule_00006^1	0	0	0	0	0	1	0	0	0	0		1	0	0	0	0	0	0	0	0	0	0		1
