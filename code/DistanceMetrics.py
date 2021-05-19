@@ -98,7 +98,7 @@ class Similarity:
         q_sum = self.vector_operators.vec_sum(q_vec)
         return max(pq / (alpha*(p_sum-pq) + beta*(q_sum - pq) + pq), self.e)
 
-    def soergel_distance(self, p_vec, q_vec):
+    def soergel(self, p_vec, q_vec):
         """
         This method implements the Soergel distance metric
         See: https://jcheminf.biomedcentral.com/articles/10.1186/s13321-015-0069-3
