@@ -462,29 +462,29 @@ The following data are saved in `-detail` mode:
 
 * **Ligand_name**
   * for ligands from sdf file: ligand's name
- * for inorganic ions: ion's name
- * for water molecules: HOH
+  * for inorganic ions: ion's name
+  * for water molecules: HOH
 * **Ligand_pose**
- * for ligands from sdf file: ligand's pose number (indexed from 1)
- * for inorganic ions/water molecules: 0
+  * for ligands from sdf file: ligand's pose number (indexed from 1)
+  * for inorganic ions/water molecules: 0
 * **Ligand_occurrence_in_sdf**
- * if `-l` ligands' file was passed
-   * for ligands from sdf file: ligand's occurrence from the beginning of sdf file
-	* for inorganic ions/water molecules: ligand's occurrence (from the beginning of sdf file), for which they mediate the interaction with nucleic acid
- * if `-l` ligands' file was not passed (see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions)): 0
+  * if `-l` ligands' file was passed
+    * for ligands from sdf file: ligand's occurrence from the beginning of sdf file
+    * for inorganic ions/water molecules: ligand's occurrence (from the beginning of sdf file), for which they mediate the interaction with nucleic acid
+  * if `-l` ligands' file was not passed: 0 (see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions))
 * **Interaction**: interaction type
 * **Ligand_Atom**
   * for ligands from sdf file: ligand's atom index
- * for inorganic ions/water molecules: residue number : chain
+  * for inorganic ions/water molecules: residue number : chain
 * **Ligand_X/Ligand_Y/Ligand_Z**: coordinates of ligand's/ion's/water molecule's atom
 * **Receptor_Residue_Name/Receptor_Number/Receptor_Chain**:
- * for interactions ligand/inorganic ions/water molecule - nucleic acid: receptor's nucleotide name/receptor's residue number/receptor's chain
- * for interactions ligand - ion: ion's name/ion's residue number/ion's chain
- * for interactions ligand - water molecule: HOH/water molecule's residue number/water molecule's chain
+  * for interactions ligand/inorganic ions/water molecule - nucleic acid: receptor's nucleotide name/receptor's residue number/receptor's chain
+  * for interactions ligand - ion: ion's name/ion's residue number/ion's chain
+  * for interactions ligand - water molecule: HOH/water molecule's residue number/water molecule's chain
 * **Receptor_Atom**
- * for interactions ligand/inorganic ions/water molecule - nucleic acid: receptor's atom ID
- * for interactions ligand - ion: ion's name
- * for interactions ligand - water molecule: O
+  * for interactions ligand/inorganic ions/water molecule - nucleic acid: receptor's atom ID
+  * for interactions ligand - ion: ion's name
+  * for interactions ligand - water molecule: O
 * **Receptor_X/Receptor_Y/Receptor_Z**: coordinates of ligand's/ion's/water molecule's atom
 * **Distance**: distance between ligand's and residue's atoms [&#8491;]
 
