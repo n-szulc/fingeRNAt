@@ -90,13 +90,19 @@ class Similarity:
         "SuCOS is Better than RMSD for Evaluating Fragment Elaboration and Docking Poses'"
         """
 
-        alpha=1
-        beta=0
-
         pq = self.vector_operators.product(p_vec, q_vec)
-        p_sum = self.vector_operators.vec_sum(p_vec)
+        # p_sum = self.vector_operators.vec_sum(p_vec)
         q_sum = self.vector_operators.vec_sum(q_vec)
-        return max(pq / (alpha*(p_sum-pq) + beta*(q_sum - pq) + pq), self.e)
+
+        # use this formula if you want to manupulate alpha and beta
+        # alpha=1
+        # beta=0
+        # return max(pq / (alpha*(p_sum-pq) + beta*(q_sum - pq) + pq), self.e)
+
+        # default:
+        # faster formula for:         alpha=1                beta=0
+        # return max(pq / p_sum, self.e) # reference in rows
+        return max(pq / q_sum, self.e) # reference is in columns, compared molecule in rows
 
     def soergel(self, p_vec, q_vec):
         """
