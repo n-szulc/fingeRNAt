@@ -28,7 +28,7 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 	- [Quick start :zap:](#quick-start-zap)
 	- [Parameters description](#parameters-description)
 	- [Inputs](#inputs)
-	- [Structural Interaction Fingerprint (SIFt) types](#structural-interaction-fingerprints-sifs-types)
+	- [Structural Interaction Fingerprint (SIFt) types](#structural-interaction-fingerprint-sift-types)
 	- [Interactions with inorganic ions](#interactions-with-inorganic-ions)
 	- [User defined thresholds](#user-defined-thresholds)
 	- [Outputs](#outputs)
@@ -37,7 +37,7 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 		- [`PBS`](#pbs)
 	- [Wrappers](#wrappers)
 	- [Detail mode](#detail-mode)
-	- [Pymol visualization](#pymol-visualization)
+	- [PyMOL visualization](#pymol-visualization)
 	- [Usage examples](#usage-examples)
 	- [Graphical User Interface](#graphical-user-interface)
 	- [Debugging mode](#debugging-mode)
@@ -58,14 +58,14 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 	- [Nucleic acid properties](#nucleic-acid-properties)
 	- [Ligand properties](#ligand-properties)
 	- [Molecular Interactions' Geometric Rules](#molecular-interactions-geometric-rules)
-		- [1. Hydrogen bonds](#1-hydrogen-bonds)
-		- [2. Halogen bonds](#2-halogen-bonds)
-		- [3. Cation - anion interactions](#3-cation---anion-interactions)
-		- [4. Pi - cation & 5. Pi - anion interactions](#4-pi---cation--5-pi---anion-interactions)
-		- [6. Pi - stacking interactions](#6-pi---stacking-interactions)
-		- [7. Ion-mediated interactions](#7-ion-mediated-interactions)
-		- [8. Water-mediated interactions](#8-water-mediated-interactions)
-		- [9. Lipophilic interactions](#9-lipophilic-interactions)
+	- [1. Hydrogen bonds](#1-hydrogen-bonds)
+	- [2. Halogen bonds](#2-halogen-bonds)
+	- [3. Cation - anion interactions](#3-cation---anion-interactions)
+	- [4. Pi - cation & 5. Pi - anion interactions](#4-pi---cation--5-pi---anion-interactions)
+	- [6. Pi - stacking interactions](#6-pi---stacking-interactions)
+	- [7. Ion-mediated interactions](#7-ion-mediated-interactions)
+	- [8. Water-mediated interactions](#8-water-mediated-interactions)
+	- [9. Lipophilic interactions](#9-lipophilic-interactions)
 - [Contributors](#contributors)
 - [Feedback](#feedback)
 - [Acknowledgments](#acknowledgments)
@@ -363,9 +363,9 @@ The following three types of wrappers are available:
 	</p>
 
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -wrapper ACUG`
-	
+
 	**Sample output**
-	
+
 	see -> [1aju_model1.pdb_ligands.sdf_FULL_ACUG.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_FULL_ACUG.tsv)
 
 
@@ -378,9 +378,9 @@ The following three types of wrappers are available:
 	</p>
 
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper PuPy`
-	
+
 	**Sample output**
-	
+
 	see -> [1aju_model1.pdb_ligands.sdf_FULL_PuPy.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_FULL_PuPy.tsv)
 
 > **_NOTE:_**  As `-h2o` parameter was not passed, the columns containing information about water-mediated interactions are empty (`None`) (see -> ['Parameters description'](#parameters-description)).
@@ -394,9 +394,9 @@ The following three types of wrappers are available:
 	</p>
 
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper Counter`
-	
+
 	**Sample output**
-	
+
 	see -> [1aju_model1.pdb_ligands.sdf_FULL_Counter.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_FULL_Counter.tsv)
 
 > **_NOTE:_**  As -h2o parameter was not passed, the columns containing information about water-mediated interactions are empty (`None`) (see -> ['Parameters description'](#parameters-description))
@@ -654,12 +654,16 @@ fingerDISt calculates the following Distance Metrics:
 * Soergel
 * Tversky
 
-The abovementioned Distance Metrics calculations were implemented based on code [github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py](github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py) under MIT license.
+Some of a Distance Metrics calculations were implemented based on code [github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py](github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py) under MIT license.
 
-  > **_NOTE:_** **Tanimoto coefficient works only for SIFt with binary values**, therefore it may not work on input SIFt wrapped with `Counter` wrapper.
+> **_NOTE:_** **Tanimoto coefficient works only for SIFt with binary values**, therefore it may not work on input SIFt wrapped with `Counter` wrapper.
 
 
 > **_NOTE 2:_** It automatically replaces `None` with 0, meaning that Distance Metrics can be calculated for SIFt type `FULL`, which was called without `-h2o` parameter.
+
+> **_NOTE 3_**. **Tversky coefficient** is not symmetric. By default, in the resulting matrix, the reference molecules are in columns, while compared molecules in rows. Also it has a hard-coded α and β coefficients with a widely used values of α=1 and β=0 (eg., see: Leung et al. "SuCOS is Better than RMSD for Evaluating Fragment Elaboration and Docking Poses"). To modify this behaviour or coefficient values, please modify the function `tversky(self, p_vec, q_vec)` in the `code/DistanceMetrics.py` module.
+
+
 
 ### Outputs
 
