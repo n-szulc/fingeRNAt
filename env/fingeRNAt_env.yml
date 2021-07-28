@@ -9,6 +9,7 @@ dependencies:
   - pandas
   - python=3.8
   - rdkit
+  - pyyaml
   - tk
   - tqdm
   - sphinx
