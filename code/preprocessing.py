@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import yaml
 
 from openbabel import openbabel
 from openbabel import pybel
@@ -442,7 +443,7 @@ def find_ligands_lipophilic(mols, verbose):
 
     :param mols: list of Pybel-parsed ligands' objects
     :type mole: list
-    :return: dictionary indexed by ligand name, with the coords od all ligand's lipophilic fragments
+    :return: dictionary indexed by ligand name, with the coords of all ligand's lipophilic fragments
     :rtype: dict
     """
 
@@ -464,7 +465,7 @@ def find_ligands_lipophilic(mols, verbose):
     for i in tqdm(range(len(mols)), disable=(not verbose)): # for molecule in ligand file
 
         name = get_ligand_name_pose(dictionary, mols[i].title)
-        dictionary[name] = [] # {'prefix^pose':[list of tuples (C,halogen)]}
+        dictionary[name] = []
 
         atomSets = smarts.findall(mols[i]) # list of atoms fulfilling this pattern
         atomsList = [ id[0] for id in atomSets ]
@@ -522,13 +523,11 @@ def findAromaticRingsWithRDKit(sdfFile):
 
     return aromaticRingsDict
 
-def find_RNA_rings(structure, extension_structure):
+def find_RNA_rings(structure):
     """Finds all aromatic rings in whole nucleic acid.
 
     :param structure: nucleic acid structure object
-    :param extension_structure: extension of nucleic acid input file
     :type structure: pybel.Molecule
-    :type extension_structure: str
     :return: list of coords of all aromatic rings in nucleic acid found by OpenBabel
     :rtype: list
     """
@@ -627,7 +626,6 @@ def check_if_RNA(all_nucleotides):
     return False
 
 
-
 def addHwithRDKit(sdfFileIN, sdfFileOUT):
     """Adds hydrogens and coordinates to molecules deposited in SDF.\n
     Related documentation: https://www.rdkit.org/docs/source/rdkit.Chem.rdmolops.html#rdkit.Chem.rdmolops.AddHs
@@ -658,6 +656,67 @@ def addHwithRDKit(sdfFileIN, sdfFileOUT):
         writer.write(mol)
     writer.close()
 
+def parseYaml(input_yaml):
+    """Parses yaml file with user-defined interactions
+
+    :param input_yaml: path to yaml file
+    :type input_yaml: str
+    :return: parsed yaml file in a form of a dictionary
+    :rtype: dict
+    """
+
+    with open(input_yaml, 'r') as stream:
+        try:
+            return yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(exc)
+
+def find_atoms_from_SMARTS(structure, mols, interactions, dict_rna_coords_to_res_ids, verbose):
+    """Finds atoms fulfilling user-defined conditions based on SMARTS from the yaml file
+
+    :param structure: nucleic acid structure object
+    :type structure: pybel.Molecule
+    :param mols: list of Pybel-parsed ligands' objects
+    :type mole: list
+    :param interactions: dictionary with all user-defined interactions
+    :type interactions: dict
+    :param dict_rna_coords_to_res_ids: dictonary mapping receptor's atoms' coords to their OBabel residue object
+    :type dict_rna_coords_to_res_ids: dict
+    :return: dictionary indexed by ligand name, with the coords od all ligand's lipophilic fragments
+    :rtype: dict
+    """
+
+    dictionary = {}
+
+    if verbose:
+        print("Looking for user-defined receptor's and ligands' atoms...")
+
+    for k in tqdm(interactions.keys(), disable=(not verbose)):
+
+        dictionary[k] = {'Receptor':{}, 'Ligands':{}}
+
+        receptor_smarts = pybel.Smarts(interactions[k]['Receptor_SMARTS'])
+        receptor_atoms = [ id[0] for id in receptor_smarts.findall(structure) ] # list of atoms fulfilling this pattern
+        for r_atom in receptor_atoms:
+            residue = dict_rna_coords_to_res_ids[structure.atoms[r_atom-1].coords]
+            residue_id = "{}:{}".format(residue.GetNum(), residue.GetChain())
+            if residue_id not in dictionary[k]['Receptor'].keys():
+                 dictionary[k]['Receptor'][residue_id] = []
+            dictionary[k]['Receptor'][residue_id].append(structure.atoms[r_atom-1].coords)
+
+        ligand_smarts = pybel.Smarts(interactions[k]['Ligand_SMARTS'])
+        tmp = {}
+
+        for i in range(len(mols)):
+            name = get_ligand_name_pose(tmp, mols[i].title)
+            tmp[name] = []
+            atomSets = ligand_smarts.findall(mols[i]) # list of atoms fulfilling this pattern
+            atomsList = [ id[0] for id in atomSets ]
+            if len(atomsList) > 0:
+                dictionary[k]['Ligands'][name] = []
+                for l_atom in atomsList:
+                    dictionary[k]['Ligands'][name].append(mols[i].atoms[l_atom-1].coords)
+    return dictionary
 
 ########################################### FUNCTIONS FOR DEBUG/DETAIL MODE ###########################################
 
@@ -700,12 +759,31 @@ def rna_coords_atom_index_dict(structure):
 
     return dictionary
 
+def rna_coords_residue_index_dict(structure):
+    """For the debug/detail mode only; creates a dictionary or nucleic acid's atoms' coords with their residue ids as values
+
+    :param structure: nucleic acid structure object
+    :type structure: pybel.Molecule
+    :return: dictionary indexed by nucleic acid's atoms' coords, with their residue ids as values
+    :rtype: dict
+    """
+
+    dictionary = {}
+
+    for residue in openbabel.OBResidueIter(structure.OBMol):
+        if residue.GetNumAtoms() > 3:
+            for atom in openbabel.OBResidueAtomIter(residue):
+                dictionary[(atom.GetX(), atom.GetY(), atom.GetZ())] = atom.GetResidue()
+
+    return dictionary
+
+
 ######################################################  DEBUG MODE ######################################################
 
-def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, ligands_water, ligands_lipophilic,
-                     arom_ring_ligands_info, debug_dict_ligand, RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info,
+def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, ligands_water, ligands_lipophilic, arom_ring_ligands_info,
+                     user_def_ligands_atoms, debug_dict_ligand, RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info, user_def_receptor_atoms,
                      HB_RNA_acc_info, HB_RNA_donor_info, HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Anion_Pi_info,
-                     Sandwich_Displaced_info, T_shaped_info, ion_mediated_info, water_mediated_info, lipophilic_info, columns):
+                     Sandwich_Displaced_info, T_shaped_info, ion_mediated_info, water_mediated_info, lipophilic_info, new_interactions_info, columns):
     """Prints all collected information in debug mode of SIFt type FULL about ligands/nucleic acid properties and detected interactions.
 
     :param ligands_hba_hbd: dictionary indexed by ligand name, with the coords of all ligand's hydrogen bonds acceptors & donors
@@ -722,6 +800,8 @@ def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, lig
     :type ligands_lipophilic: dict
     :param arom_ring_ligands_info: dictionary indexed by ligand name, with set of indices of atoms building ligand's aromatic rings
     :type arom_ring_ligands_info: dict
+    :param user_def_ligands_atoms: dictionary indexed by new interaction name of dictionary of ligands' names with their corresponding atom index fulfilling the defined SMARTS
+    :type user_def_ligands_atoms: dict
     :param debug_dict_ligand: dictionary of dictionaries of ligand's atom's coords with their corresponding atom index - {ligand_name : {(x1,y1,z1) : 1, (x2,y2,z2) : 2}}
     :type debug_dict_ligand: dict
     :param RNA_HB_acc_don_info: dictionary of dictionaries of nucleic acid's residue's numbers and list of it's HB acceptors & HB donors {chain : {res_no : [[list of HB acceptors][list of HB donors]]}}
@@ -730,6 +810,8 @@ def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, lig
     :type RNA_anion_info: dict
     :param arom_RNA_ligands_info: dictionary of dictionaries of nucleic acid's residue's numbers and set of it's aromatic ring's atoms IDs {chain : {res_no : {set of aromatic ring's atoms IDs}}}
     :type arom_RNA_ligands_info: dict
+    :param user_def_receptor_atoms: dictionary indexed by new interaction name of dictionary of chain ids' of dictionary of residue numbers with their atom IDs fulfilling the defined SMARTS
+    :type user_def_receptor_atoms: dict
     :param HB_RNA_acc_info: all found Hydrogen Bonds where nucleic acid is HB acceptor
     :type HB_RNA_acc_info: str
     :param HB_RNA_donor_info: all found Hydrogen Bonds where nucleic acid is HB donor
@@ -864,11 +946,28 @@ def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, lig
     for key in ligands_lipophilic.keys():
         print()
         print('### {} ###'.format(key))
-        for c0 in ligands_lipophilic[k]:
-            print(str(debug_dict_ligand[k][c0]), end=" ", sep=',')
+        for c0 in ligands_lipophilic[key]:
+            print(str(debug_dict_ligand[key][c0]), end=" ", sep=',')
         print()
 
     print()
+    print(('#'*len("# SMARTS atoms' coords ligand#")))
+    print(('#      8. SMARTS ATOMS        #'))
+    print(("# SMARTS atoms' coords ligand #"))
+    print(('#'*len("# SMARTS atoms' coords ligand #")))
+
+    for key in user_def_ligands_atoms.keys():
+        print()
+        print('$$$ {} $$$'.format(key))
+        for lig_name in user_def_ligands_atoms[key]:
+            print()
+            print('### {} ###'.format(lig_name))
+            print()
+            for atom_id in user_def_ligands_atoms[key][lig_name]:
+                print(atom_id, end=" ", sep=',')
+            print()
+        print()
+
     print(('*** NUCLEIC ACID PROPERTIES ***').center(columns))
     print()
     print()
@@ -918,7 +1017,26 @@ def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, lig
                 print('{}'.format(el))
 
     print()
-    print()
+
+    print(('#'*len("# SMARTS atoms' coords receptor #")))
+    print(('#        4. SMARTS ATOMS        #'))
+    print(("# SMARTS atoms' coords receptor #"))
+    print(('#'*len("# SMARTS atoms' coords receptor #")))
+
+    for key in user_def_receptor_atoms.keys():
+        print()
+        print('$$$ {} $$$'.format(key))
+        for ch in user_def_receptor_atoms[key]:
+            print()
+            print('@@@ CHAIN {} @@@'.format(ch))
+            for res_id in user_def_receptor_atoms[key][ch]:
+                print()
+                print('### Res {} ###'.format(res_id))
+                for el in user_def_receptor_atoms[key][ch][res_id]:
+                    print('{}'.format(el), end=' ')
+                print()
+        print()
+
     print(('*** DETECTED INTERACTIONS ***').center(columns))
     print()
     print()
@@ -970,3 +1088,12 @@ def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, lig
     print(("# Lipophilic #"))
     print(('#'*len("# Lipophilic #")))
     print(lipophilic_info)
+    print(('#'*len("# User-defined interactions #")))
+    print(("# User-defined interactions #"))
+    print(('#'*len("# User-defined interactions #")))
+    for key in new_interactions_info:
+        print()
+        print('$$$ {} $$$'.format(key))
+        print()
+        for el in new_interactions_info[key]:
+            print(el)

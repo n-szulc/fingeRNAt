@@ -32,8 +32,8 @@ from preprocessing import measure_distance, vector, calculate_angle, calculate_p
 from preprocessing import get_ligand_name_pose, projection, find_ligands_all_atoms, assign_interactions_results
 from preprocessing import wrap_results, find_ligands_HBA_HBD, find_ligands_HAL_don, find_ligands_CA
 from preprocessing import find_ligands_ions, find_ligands_water, find_ligands_lipophilic, find_RNA_rings, find_RNA_HB_HAL_acc_don
-from preprocessing import find_RNA_anions, check_if_RNA, findAromaticRingsWithRDKit, rna_coords_atom_index_dict
-from preprocessing import addHwithRDKit, ligands_coords_atom_index_dict, print_debug_info
+from preprocessing import find_RNA_anions, check_if_RNA, findAromaticRingsWithRDKit, parseYaml, find_atoms_from_SMARTS
+from preprocessing import rna_coords_atom_index_dict, rna_coords_residue_index_dict, addHwithRDKit, ligands_coords_atom_index_dict, print_debug_info
 
 
 ##################################################
@@ -999,6 +999,61 @@ def calculate_lipophilic_interactions(residue, residue_atoms, ligand_name, ligan
 
     return result
 
+def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coords, interaction_type, *params):
+    """ Calculates lipohilic ligand-residue interaction.\n
+        1. Check nucleic acid residue (carbon atoms only) - ligand (detected lipohilic atoms) distance
+        2. Compare the distance to CUTOFF:\n
+            - write down 1 if the distance <= CUTOFF\n
+            - write down 0 if the distance > CUTOFF\n
+
+        :param residue: residue as OpenBabel object
+        :param residue_atoms: residue's carbon atoms coordinates
+        :param ligand_name: ligand_name^pose_number
+        :param ligands_lipophilic_coords: list of ligand's detected lipohilic atoms coords
+        :type residue: openbabel.OBResidue
+        :type residue_atoms: list
+        :type ligand_name: str
+        :type ligands_lipophilic_coords: list
+        :return: calculated interaction for particular ligand - residue
+        :rtype: list
+    """
+
+    dist_min = params[0]
+    dist_max = params[1]
+    angle = None
+    if len(params) == 3:
+        angle = params[2]
+
+    result = [ligand_name, res_name, 0]
+
+    # Flag to iterate over residue's atoms as long as we do not find an atom within CUTOFF distance from ligand
+    flag = True
+
+    if angle is None:
+        for rna_atom in residue_atoms:
+            if flag:
+                for ligand_atom in ligand_coords:
+                    dist = measure_distance(np.array(ligand_atom), np.array(rna_atom))
+                    if dist_min < dist <= dist_max:
+                        result[-1] = 1
+
+                        if debug:
+                            global new_interactions_info
+                            if interaction_type not in new_interactions_info.keys():
+                                new_interactions_info[interaction_type] = []
+                            new_interactions_info[interaction_type].append('{} - {} \n dist: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(np.linalg.norm(np.array(ligand_atom) - np.array(rna_atom)), 4))
+                            + '{}:{}:{}\t{} atom {}\n'.format(res_name.split(':')[1], res_name.split(':')[0], debug_dict_rna[(rna_atom[0], rna_atom[1], rna_atom[2])], debug_dict_ligand[ligand_name][ligand_atom][0], ligand_name))
+
+                        if not detail:
+                            flag = False
+                            break
+            else:
+                break
+
+        return result
+
+
+
 if __name__ == "__main__":
 
     welcome_mssg = '# Welcome to fingeRNAt! #'
@@ -1030,6 +1085,7 @@ if __name__ == "__main__":
     optional_arguments.add_argument('-o', help='pass output path', metavar='NAME')
     optional_arguments.add_argument('-h2o', help='consider water-mediated nucleic acid - ligand interactions', action='store_true')
     optional_arguments.add_argument('-dha', help='consider Donor-Hydrogen-Acceptor angle in hydrogen bonds calculation', action='store_true')
+    optional_arguments.add_argument('-new', help='add user-defined interactions in SMARTS format', metavar='YAML with SMARTS')
     optional_arguments.add_argument('-print', help='print found interactions on screen', action='store_true')
     optional_arguments.add_argument('-detail', help='generate an additional file with detailed data on detected interactions (used for PyMOL visualization)', action='store_true')
     optional_arguments.add_argument('-verbose', help='provides additional details about calculations performed at the given moment', action='store_true')
@@ -1060,6 +1116,11 @@ if __name__ == "__main__":
     consider_dha = args['dha']
     consider_H2O = args['h2o']
     how_addH = args['addH']
+    new_interactions = args['new']
+
+    if new_interactions and fingerprint != 'FULL':
+        raise Exception("User-defined interactions can only be calculated for fingerprint FULL!")
+
     if how_addH not in ['OpenBabel', 'RDKit', 'None']: raise Exception('Unknown module to add hydrogens!')
 
     try:
@@ -1295,6 +1356,8 @@ if __name__ == "__main__":
                     arom_RNA_ligands_info = {}
                     HB_RNA_acc_info = ''
                     HB_RNA_donor_info = ''
+                    user_def_receptor_atoms = {}
+                    user_def_ligands_atoms = {}
                     HAL_info = ''
                     Cation_Anion_info = ''
                     Anion_Pi_info = ''
@@ -1305,6 +1368,7 @@ if __name__ == "__main__":
                     ion_mediated_info = ''
                     water_mediated_info = ''
                     lipophilic_info = ''
+                    new_interactions_info = {}
 
             ####################################################################
             # Create ligands' all atoms dictionary
@@ -1324,15 +1388,46 @@ if __name__ == "__main__":
             # Find all ligands' rings
             ligands_aromatic_rings = findAromaticRingsWithRDKit(filename_ligand)
             # Find all RNA rings
-            rings_RNA = find_RNA_rings(structure, extension_structure)
+            rings_RNA = find_RNA_rings(structure)
+            # Get dictionary with atoms from user-defined interactions
+            if new_interactions:
+                additionalInteractions = parseYaml(new_interactions)
+                dict_rna_coords_to_res_ids = rna_coords_residue_index_dict(structure)
+                user_defined_all_atoms = find_atoms_from_SMARTS(structure, ligands_mols, additionalInteractions, dict_rna_coords_to_res_ids, verbose)
+
+                if debug:
+
+                    for k in user_defined_all_atoms.keys():
+                        user_def_receptor_atoms[k] = {}
+                        user_def_ligands_atoms[k] = {}
+
+                        for residue in user_defined_all_atoms[k]['Receptor'].keys():
+
+                            chain = residue.split(':')[1]
+                            if chain not in user_def_receptor_atoms[k].keys():
+                                user_def_receptor_atoms[k][chain] = {}
+                            res_no = residue.split(':')[0]
+                            user_def_receptor_atoms[k][chain][res_no] = []
+                            for el in user_defined_all_atoms[k]['Receptor'][residue]:
+                                user_def_receptor_atoms[k][chain][res_no].append(debug_dict_rna[el])
+
+                        for lig_name in user_defined_all_atoms[k]['Ligands'].keys():
+                            if lig_name not in user_def_ligands_atoms[k].keys():
+                                user_def_ligands_atoms[k][lig_name] = []
+                            for l_a in user_defined_all_atoms[k]['Ligands'][lig_name]:
+                                user_def_ligands_atoms[k][lig_name].append(debug_dict_ligand[lig_name][l_a])
 
             # Fill the RESULTS dictionary of keys - ligand ids and values - lists of 0
             for ligand_name in ligands_all_atoms.keys():
-                RESULTS[ligand_name] = [0] * RNA_LENGTH * FUNCTIONS[fingerprint]
+                if new_interactions:
+                    RESULTS[ligand_name] = [0] * RNA_LENGTH * (FUNCTIONS[fingerprint] + len(additionalInteractions.keys()))
+                else:
+                    RESULTS[ligand_name] = [0] * RNA_LENGTH * FUNCTIONS[fingerprint]
 
             for residue in RNA_residues_objects: # Loop over all nucleic acid residue to calculate hydrogen bondings, halogen bondings & cation-anion interactions
 
-                RNA_residues.append(str(residue.GetNum())+ ':' + str(residue.GetChain()))
+                res_name = str(residue.GetNum())+ ':' + str(residue.GetChain())
+                RNA_residues.append(res_name)
                 RNA_nucleotides.append(str(residue.GetName()))
                 acceptors_RNA, donors_RNA = find_RNA_HB_HAL_acc_don(residue)
                 anions_RNA = find_RNA_anions(residue)
@@ -1421,6 +1516,21 @@ if __name__ == "__main__":
                     if result[-1] != 0:
                         assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 11)
 
+                if new_interactions:
+                    c = 0
+                    for new_interaction_type in user_defined_all_atoms.keys():
+                        c += 1
+                        if res_name in user_defined_all_atoms[new_interaction_type]['Receptor'].keys() and user_defined_all_atoms[new_interaction_type]['Ligands'].keys():
+                            distance_min = additionalInteractions[new_interaction_type]['Distance']['min']
+                            distance_max = additionalInteractions[new_interaction_type]['Distance']['max']
+                            if 'Angle' not in additionalInteractions[new_interaction_type].keys():
+                                for ligand_name in user_defined_all_atoms[new_interaction_type]['Ligands'].keys():
+                                    result = detect_user_def_interaction(res_name, user_defined_all_atoms[new_interaction_type]['Receptor'][res_name], ligand_name, user_defined_all_atoms[new_interaction_type]['Ligands'][ligand_name], new_interaction_type, distance_min, distance_max)
+                                if result[-1] != 0:
+                                    assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 11+c)
+
+
+
             PI_INTERACTIONS = calculate_PI_INTERACTIONS(rings_RNA, structure.atoms, ligands_CA, ligands_aromatic_rings) # Calculate Pi-cation, Pi-anion & Pi-stacking interactions
 
             for i in range(3):
@@ -1432,10 +1542,10 @@ if __name__ == "__main__":
 
             if debug:
                 if not consider_H2O: ligands_water = None
-                print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, ligands_water, ligands_lipophilic,
-                arom_ring_ligands_info, debug_dict_ligand,RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info,
+                print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, ligands_water, ligands_lipophilic, arom_ring_ligands_info,
+                user_def_ligands_atoms, debug_dict_ligand, RNA_HB_acc_don_info, RNA_anion_info, arom_RNA_ligands_info, user_def_receptor_atoms,
                 HB_RNA_acc_info, HB_RNA_donor_info,HAL_info, Cation_Anion_info, Pi_Cation_info, Pi_Anion_info, Anion_Pi_info,
-                Sandwich_Displaced_info, T_shaped_info, ion_mediated_info, water_mediated_info, lipophilic_info, columns)
+                Sandwich_Displaced_info, T_shaped_info, ion_mediated_info, water_mediated_info, lipophilic_info, new_interactions_info, columns)
 
     # Wrap results if wrapper was passed
     if wrapper:
@@ -1443,7 +1553,10 @@ if __name__ == "__main__":
         WRAP_RESULTS = {}
         for w in wrapper:
             if verbose: print('Wrapping fingerprint type {} results to {} wrapper'.format(fingerprint, w))
-            WRAP_RESULTS[w] = wrap_results(w, RESULTS, RNA_nucleotides, FUNCTIONS[fingerprint], WRAPPERS[w])
+            if new_interactions:
+                WRAP_RESULTS[w] = wrap_results(w, RESULTS, RNA_nucleotides, FUNCTIONS[fingerprint] + len(additionalInteractions.keys()), WRAPPERS[w])
+            else:
+                WRAP_RESULTS[w] = wrap_results(w, RESULTS, RNA_nucleotides, FUNCTIONS[fingerprint], WRAPPERS[w])
 
     # Create dataframe
     columns = {'SIMPLE': ['SIMPLE'],
@@ -1452,6 +1565,9 @@ if __name__ == "__main__":
                'Mg_mediated', 'K_mediated', 'Na_mediated', 'Other_mediated',
                'Water_mediated', 'Lipophilic']
               }
+
+    if new_interactions:
+        columns['FULL'] = columns['FULL'] + [key for key in additionalInteractions.keys()]
 
     is_structure_RNA = check_if_RNA(RNA_nucleotides)
 
@@ -1474,7 +1590,7 @@ if __name__ == "__main__":
         elif analysis == 'Counter':
              DF_COLUMNS = [filename_RNA.split(sys_sep)[-1] + '#' + fing_type for fing_type in columns[fingerprint]]
         else:
-            DF_COLUMNS = [filename_RNA.split(sys_sep)[-1] + '#' + res + '#' + fing_type for res in RNA_residues for fing_type in columns[fingerprint]]
+             DF_COLUMNS = [filename_RNA.split(sys_sep)[-1] + '#' + res + '#' + fing_type for res in RNA_residues for fing_type in columns[fingerprint]]
 
         DF_INDEXES = list(RESULTS.keys())
         ALL_FINGERPRINTS_DF = pd.DataFrame(index = DF_INDEXES, columns = DF_COLUMNS)
@@ -1556,6 +1672,9 @@ if __name__ == "__main__":
                               'Pi_Anion' : 'Pi-Anion', 'Pi_Stacking' : 'Pi-Stacking',
                               'Mg_mediated' : 'Magnesium ion-mediated', 'K_mediated' : 'Potassium ion-mediated', 'Na_mediated' : 'Sodium ion-mediated',
                               'Other_mediated' : 'Other ion-mediated', 'Water_mediated' : 'Water-mediated', 'Lipophilic' : 'Lipophilic'}
+            if new_interactions:
+                for key in additionalInteractions.keys():
+                    interact_names[key] = key
 
             for index, row in ALL_FINGERPRINTS_DF.iterrows():
                 print('# {} - {} #'.format(filename_RNA.split(sys_sep)[-1], index))
