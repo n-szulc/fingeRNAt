@@ -4,6 +4,7 @@ sys_sep = os.sep
 RNA = ['1aju_model1.pdb', '3d2v.pdb']
 ligands = [['ligands.sdf'], ['redocked.sdf', 'various.sdf']]
 fingerprints = ['SIMPLE', 'PBS', 'FULL']
+yaml = 'custom-interactions.yaml'
 
 program_path = '..' + sys_sep + 'code' + sys_sep + 'fingeRNAt.py'
 test_inputs_path = 'test_inputs' + sys_sep
@@ -21,13 +22,17 @@ def run_test():
     for i in range(len(RNA)):
         for j in range(len(fingerprints)):
             for l in range(len(ligands[i])):
-                if subprocess.call('python %s -r %s -l %s -f %s -wrapper ACUG,PuPy,Counter -h2o -o outputs -detail' %(program_path, test_inputs_path + RNA[i], test_inputs_path + ligands[i][l], fingerprints[j]), shell = True):
-                    print ('fingeRNAt had problem running fingerprint %s on %s  and %s' % (fingerprints[j], test_inputs_path + RNA[i], test_inputs_path + ligands[i][l]))
+                if fingerprints[j] == 'FULL':
+                    command = 'python %s -r %s -l %s -f %s -wrapper ACUG,PuPy,Counter -h2o -o outputs -detail -custom %s' %(program_path, test_inputs_path + RNA[i], test_inputs_path + ligands[i][l], fingerprints[j], test_inputs_path + yaml)
+                else:
+                    command = 'python %s -r %s -l %s -f %s -wrapper ACUG,PuPy,Counter -h2o -o outputs -detail' %(program_path, test_inputs_path + RNA[i], test_inputs_path + ligands[i][l], fingerprints[j])
+                if subprocess.call(command, shell = True):
+                    print ('fingeRNAt had problem running %s on %s  and %s' % (fingerprints[j], test_inputs_path + RNA[i], test_inputs_path + ligands[i][l]))
                     OK = False
 
     for k in ['SIMPLE', 'PBS']:
         if subprocess.call('python %s -r test_inputs%s3d2v.pdb -f %s -wrapper ACUG,PuPy,Counter -o outputs -detail' %(program_path, sys_sep, k), shell = True):
-            print ('fingeRNAt had problem running fingerprint %s on test_inputs%s3d2v.pdb when treating ions as ligands' %(k, sys_sep))
+            print ('fingeRNAt had problem running %s on test_inputs%s3d2v.pdb when treating ions as ligands' %(k, sys_sep))
             OK = False
 
 
