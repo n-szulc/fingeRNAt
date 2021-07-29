@@ -1282,7 +1282,6 @@ if __name__ == "__main__":
         for residue in RNA_residues_objects: # Loop over all nucleic acid residues
             RNA_residues.append(str(residue.GetNum())+ ':' + str(residue.GetChain()))
             RNA_nucleotides.append(str(residue.GetName()))
-            #print(residue.GetName(), residue.GetNum(), residue.GetChain())
 
             for inorganic_ion in Inorganic_ions_dict.keys():
                 inorganic_ion_name = inorganic_ion.split(':')[0]
@@ -1430,6 +1429,7 @@ if __name__ == "__main__":
                     new_interactions_info = {}
 
             ####################################################################
+
             # Create ligands' all atoms dictionary
             ligands_all_atoms = find_ligands_all_atoms(ligands_mols)
             # Create ligands acceptors' & donors' dictionary
@@ -1455,19 +1455,16 @@ if __name__ == "__main__":
                 user_defined_all_atoms = find_atoms_from_SMARTS(structure, ligands_mols, additionalInteractions, dict_rna_coords_to_res_ids, verbose)
 
                 if debug:
-
                     for k in user_defined_all_atoms.keys():
                         user_def_receptor_atoms[k] = {}
                         user_def_ligands_atoms[k] = {}
 
                         for residue in user_defined_all_atoms[k]['Receptor'].keys():
-
                             chain = residue.split(':')[1]
                             if chain not in user_def_receptor_atoms[k].keys():
                                 user_def_receptor_atoms[k][chain] = {}
                             res_no = residue.split(':')[0]
                             user_def_receptor_atoms[k][chain][res_no] = []
-
                             for el in user_defined_all_atoms[k]['Receptor'][residue]:
                                 if el[1] is not None:
                                     user_def_receptor_atoms[k][chain][res_no].append((debug_dict_rna[el[0]], debug_dict_rna[el[1]]))
@@ -1476,11 +1473,8 @@ if __name__ == "__main__":
 
                         for lig_name in user_defined_all_atoms[k]['Ligands'].keys():
                             if lig_name not in user_def_ligands_atoms[k].keys():
-                                #print(user_def_ligands_atoms[k])
                                 user_def_ligands_atoms[k][lig_name] = []
-
                             for l_a in user_defined_all_atoms[k]['Ligands'][lig_name]:
-
                                 if l_a[0] is not None:
                                     user_def_ligands_atoms[k][lig_name].append((debug_dict_ligand[lig_name][l_a[1]], debug_dict_ligand[lig_name][l_a[0]]))
                                 else:
@@ -1493,7 +1487,8 @@ if __name__ == "__main__":
                 else:
                     RESULTS[ligand_name] = [0] * RNA_LENGTH * FUNCTIONS[fingerprint]
 
-            for residue in RNA_residues_objects: # Loop over all nucleic acid residue to calculate hydrogen bondings, halogen bondings & cation-anion interactions
+            # Loop over all nucleic acid residue to calculate all except Pi-interactions
+            for residue in RNA_residues_objects:
 
                 res_name = str(residue.GetNum())+ ':' + str(residue.GetChain())
                 RNA_residues.append(res_name)
@@ -1601,7 +1596,7 @@ if __name__ == "__main__":
                                 angle_min = additionalInteractions[new_interaction_type]['Angle']['min']
                                 angle_max = additionalInteractions[new_interaction_type]['Angle']['max']
                                 for ligand_name in user_defined_all_atoms[new_interaction_type]['Ligands'].keys():
-                                    result = detect_user_def_interaction(res_name, user_defined_all_atoms[new_interaction_type]['Receptor'][res_name], ligand_name, user_defined_all_atoms[new_interaction_type]['Ligands'][ligand_name], new_interaction_type, distance_min, distance_max, angle_min, angle_max)
+                                    result = detect_user_def_interaction(res_name + ':{}'.format(residue.GetName()), user_defined_all_atoms[new_interaction_type]['Receptor'][res_name], ligand_name, user_defined_all_atoms[new_interaction_type]['Ligands'][ligand_name], new_interaction_type, distance_min, distance_max, angle_min, angle_max)
                                     if result[-1] != 0:
                                         assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 11+c)
 

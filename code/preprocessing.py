@@ -671,6 +671,24 @@ def parseYaml(input_yaml):
         except yaml.YAMLError as exc:
             print(exc)
 
+def rna_coords_residue_index_dict(structure):
+    """Creates a dictionary or nucleic acid's atoms' coords with their residue ids as values
+
+    :param structure: nucleic acid structure object
+    :type structure: pybel.Molecule
+    :return: dictionary indexed by nucleic acid's atoms' coords, with their residue ids as values
+    :rtype: dict
+    """
+
+    dictionary = {}
+
+    for residue in openbabel.OBResidueIter(structure.OBMol):
+        if residue.GetNumAtoms() > 3:
+            for atom in openbabel.OBResidueAtomIter(residue):
+                dictionary[(atom.GetX(), atom.GetY(), atom.GetZ())] = atom.GetResidue()
+
+    return dictionary
+
 def find_atoms_from_SMARTS(structure, mols, interactions, dict_rna_coords_to_res_ids, verbose):
     """Finds atoms fulfilling user-defined conditions based on SMARTS from the yaml file
 
@@ -694,6 +712,7 @@ def find_atoms_from_SMARTS(structure, mols, interactions, dict_rna_coords_to_res
     for k in tqdm(interactions.keys(), disable=(not verbose)):
 
         dictionary[k] = {'Receptor':{}, 'Ligands':{}}
+        print(k)
 
         receptor_smarts = pybel.Smarts(interactions[k]['Receptor_SMARTS'][0])
         receptor_atoms = [ id[0] for id in receptor_smarts.findall(structure) ] # list of atoms fulfilling this pattern
@@ -799,25 +818,6 @@ def rna_coords_atom_index_dict(structure):
 
     return dictionary
 
-def rna_coords_residue_index_dict(structure):
-    """For the debug/detail mode only; creates a dictionary or nucleic acid's atoms' coords with their residue ids as values
-
-    :param structure: nucleic acid structure object
-    :type structure: pybel.Molecule
-    :return: dictionary indexed by nucleic acid's atoms' coords, with their residue ids as values
-    :rtype: dict
-    """
-
-    dictionary = {}
-
-    for residue in openbabel.OBResidueIter(structure.OBMol):
-        if residue.GetNumAtoms() > 3:
-            for atom in openbabel.OBResidueAtomIter(residue):
-                dictionary[(atom.GetX(), atom.GetY(), atom.GetZ())] = atom.GetResidue()
-
-    return dictionary
-
-
 ######################################################  DEBUG MODE ######################################################
 
 def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, ligands_water, ligands_lipophilic, arom_ring_ligands_info,
@@ -879,7 +879,7 @@ def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, lig
     :type water_mediated_info: str
     :type lipophilic_info: str
     :type new_interactions_info: dict
-    :type columns: int                    
+    :type columns: int
     :return: prints debug info
     :rtype: None
     """
