@@ -695,27 +695,69 @@ def find_atoms_from_SMARTS(structure, mols, interactions, dict_rna_coords_to_res
 
         dictionary[k] = {'Receptor':{}, 'Ligands':{}}
 
-        receptor_smarts = pybel.Smarts(interactions[k]['Receptor_SMARTS'])
+        receptor_smarts = pybel.Smarts(interactions[k]['Receptor_SMARTS'][0])
         receptor_atoms = [ id[0] for id in receptor_smarts.findall(structure) ] # list of atoms fulfilling this pattern
+
+        if len(interactions[k]['Receptor_SMARTS']) > 1: # more than 1 SMARTS for the receptor
+            receptor_smarts2 = pybel.Smarts(interactions[k]['Receptor_SMARTS'][1])
+            receptor_atoms2 = [ id[0] for id in receptor_smarts2.findall(structure) ]
+            receptor_atoms2_coords = []
+            for r_a2 in receptor_atoms2:
+                receptor_atoms2_coords.append((structure.atoms[r_a2-1].coords))
+
         for r_atom in receptor_atoms:
             residue = dict_rna_coords_to_res_ids[structure.atoms[r_atom-1].coords]
             residue_id = "{}:{}".format(residue.GetNum(), residue.GetChain())
-            if residue_id not in dictionary[k]['Receptor'].keys():
-                 dictionary[k]['Receptor'][residue_id] = []
-            dictionary[k]['Receptor'][residue_id].append(structure.atoms[r_atom-1].coords)
 
-        ligand_smarts = pybel.Smarts(interactions[k]['Ligand_SMARTS'])
+
+            if len(interactions[k]['Receptor_SMARTS']) > 1: # more than 1 SMARTS for the receptor
+                for neighbour in pybel.ob.OBAtomAtomIter((structure.atoms[r_atom-1].OBAtom)):
+                    neighbour_coords = (neighbour.GetX(),neighbour.GetY(),neighbour.GetZ())
+                    if neighbour_coords in receptor_atoms2_coords:
+                        if residue_id not in dictionary[k]['Receptor'].keys():
+                            dictionary[k]['Receptor'][residue_id] = []
+                        dictionary[k]['Receptor'][residue_id].append((structure.atoms[r_atom-1].coords, neighbour_coords))
+            else:
+                if residue_id not in dictionary[k]['Receptor'].keys():
+                    dictionary[k]['Receptor'][residue_id] = []
+                dictionary[k]['Receptor'][residue_id].append((structure.atoms[r_atom-1].coords, None))
+
+        ligand_smarts = pybel.Smarts(interactions[k]['Ligand_SMARTS'][0])
         tmp = {}
+
+        if len(interactions[k]['Ligand_SMARTS']) > 1:
+            ligand_smarts2 = pybel.Smarts(interactions[k]['Ligand_SMARTS'][1])
 
         for i in range(len(mols)):
             name = get_ligand_name_pose(tmp, mols[i].title)
             tmp[name] = []
             atomSets = ligand_smarts.findall(mols[i]) # list of atoms fulfilling this pattern
             atomsList = [ id[0] for id in atomSets ]
+
             if len(atomsList) > 0:
-                dictionary[k]['Ligands'][name] = []
-                for l_atom in atomsList:
-                    dictionary[k]['Ligands'][name].append(mols[i].atoms[l_atom-1].coords)
+
+                if len(interactions[k]['Ligand_SMARTS']) > 1:
+                    atomSets2 = ligand_smarts2.findall(mols[i]) # list of atoms fulfilling this pattern
+                    atomsList2 = [ id[0] for id in atomSets2 ]
+                    if len(atomsList2) > 0:
+                        atomsList2_coords = []
+                        for l_atom2 in atomsList2:
+                            atomsList2_coords.append((structure.atoms[l_atom2-1].coords))
+
+                        for l_atom in atomsList:
+                            for neighbour in pybel.ob.OBAtomAtomIter((structure.atoms[l_atom-1].OBAtom)):
+                                neighbour_coords = (neighbour.GetX(), neighbour.GetY(), neighbour.GetZ())
+                                if neighbour_coords in atomsList2_coords:
+                                    if name not in dictionary[k]['Ligands'].keys():
+                                        dictionary[k]['Ligands'][name] = []
+                                    dictionary[k]['Ligands'][name].append((neighbour_coords, mols[i].atoms[l_atom-1].coords))
+
+                else:
+                    if name not in dictionary[k]['Ligands'].keys():
+                        dictionary[k]['Ligands'][name] = []
+                    for l_atom in atomsList:
+                        dictionary[k]['Ligands'][name].append((None, mols[i].atoms[l_atom-1].coords))
+    #print(dictionary)
     return dictionary
 
 ########################################### FUNCTIONS FOR DEBUG/DETAIL MODE ###########################################
@@ -1094,6 +1136,7 @@ def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, lig
     for key in new_interactions_info:
         print()
         print('$$$ {} $$$'.format(key))
-        print()
         for el in new_interactions_info[key]:
+            print('***')
             print(el)
+    print()

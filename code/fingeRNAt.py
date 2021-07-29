@@ -1020,37 +1020,85 @@ def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coo
 
     dist_min = params[0]
     dist_max = params[1]
-    angle = None
-    if len(params) == 3:
-        angle = params[2]
+    angle_min = None
+    angle_max = None
+    if len(params) == 4:
+        angle_min = params[2]
+        angle_max = params[3]
 
     result = [ligand_name, res_name, 0]
+
+    # if detail:
+    #     global detail_list
+    #
+    # if debug:
+    #     global new_interactions_info
 
     # Flag to iterate over residue's atoms as long as we do not find an atom within CUTOFF distance from ligand
     flag = True
 
-    if angle is None:
-        for rna_atom in residue_atoms:
-            if flag:
-                for ligand_atom in ligand_coords:
-                    dist = measure_distance(np.array(ligand_atom), np.array(rna_atom))
-                    if dist_min < dist <= dist_max:
+    for rna_atom in residue_atoms:
+        if flag:
+            for ligand_atom in ligand_coords:
+
+                interaction_found = False
+
+                if angle_min is None:
+                    dist = measure_distance(np.array(ligand_atom[1]), np.array(rna_atom[0]))
+                elif rna_atom[1] is None:
+                    dist = measure_distance(np.array(ligand_atom[0]), np.array(rna_atom[0]))
+                else:
+                    if ligand_atom[0] is None:
+                        dist = measure_distance(np.array(ligand_atom[1]), np.array(rna_atom[1]))
+
+                if dist_min < dist <= dist_max:
+                    if angle_min is None:
                         result[-1] = 1
+                        interaction_found = True
+                    else:
+                        if rna_atom[1] is None:
+                            ll = vector(np.array(ligand_atom[0]), np.array(ligand_atom[1]))
+                            rl = vector(np.array(rna_atom[0]), np.array(ligand_atom[0]))
+                            angle = calculate_angle(ll, rl)
+                        else:
+                            if ligand_atom[0] is None:
+                                rr = vector(np.array(rna_atom[0]), np.array(rna_atom[1]))
+                                rl = vector(np.array(rna_atom[1]), np.array(ligand_atom[1]))
+                                angle = calculate_angle(rr, rl)
 
-                        if debug:
-                            global new_interactions_info
-                            if interaction_type not in new_interactions_info.keys():
-                                new_interactions_info[interaction_type] = []
-                            new_interactions_info[interaction_type].append('{} - {} \n dist: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(np.linalg.norm(np.array(ligand_atom) - np.array(rna_atom)), 4))
-                            + '{}:{}:{}\t{} atom {}\n'.format(res_name.split(':')[1], res_name.split(':')[0], debug_dict_rna[(rna_atom[0], rna_atom[1], rna_atom[2])], debug_dict_ligand[ligand_name][ligand_atom][0], ligand_name))
+                        if angle_min < angle < angle_max:
+                            result[-1] = 1
+                            interaction_found = True
 
-                        if not detail:
-                            flag = False
-                            break
-            else:
-                break
+                    if interaction_found and debug:
+                        global new_interactions_info
+                        if interaction_type not in new_interactions_info.keys():
+                            new_interactions_info[interaction_type] = []
+                        if angle_min is None:
+                            new_interactions_info[interaction_type].append('{} - {} \ndist: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(dist, 4))
+                            + '{}:{}:{}\t{} atom {}'.format(res_name.split(':')[1], res_name.split(':')[0], debug_dict_rna[(rna_atom[0][0], rna_atom[0][1], rna_atom[0][2])], debug_dict_ligand[ligand_name][ligand_atom[1]][0], ligand_name))
+                        else:
+                            new_interactions_info[interaction_type].append('{} - {} \ndist: {} angle: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(dist, 4), round(angle, 4))
+                            + '{}:{}:{}\t{} atom {}'.format(res_name.split(':')[1], res_name.split(':')[0], debug_dict_rna[(rna_atom[0][0], rna_atom[0][1], rna_atom[0][2])], debug_dict_ligand[ligand_name][ligand_atom[1]][0], ligand_name))
 
-        return result
+                    if interaction_found and detail:
+                        global detail_list
+                        ligand_name_detail = ligand_name.split('^')[0]
+                        ligand_pose_detail = ligand_name.split('^')[1]
+                        detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][ligand_atom[1]][1], interaction_type,
+                        debug_dict_ligand[ligand_name][ligand_atom[1]][0],
+                        round(ligand_atom[1][0], 4), round(ligand_atom[1][1], 4),  round(ligand_atom[1][2], 4),
+                        res_name.split(':')[2], res_name.split(':')[0], res_name.split(':')[1], debug_dict_rna[(rna_atom[0][0], rna_atom[0][1], rna_atom[0][2])],
+                        rna_atom[0][0], rna_atom[0][1], rna_atom[0][1],
+                        np.round(dist, 4)])
+
+                    if interaction_found and not detail:
+                        flag = False
+                        break
+        else:
+            break
+
+    return result
 
 
 
@@ -1085,7 +1133,7 @@ if __name__ == "__main__":
     optional_arguments.add_argument('-o', help='pass output path', metavar='NAME')
     optional_arguments.add_argument('-h2o', help='consider water-mediated nucleic acid - ligand interactions', action='store_true')
     optional_arguments.add_argument('-dha', help='consider Donor-Hydrogen-Acceptor angle in hydrogen bonds calculation', action='store_true')
-    optional_arguments.add_argument('-new', help='add user-defined interactions in SMARTS format', metavar='YAML with SMARTS')
+    optional_arguments.add_argument('-custom', help='add user-defined interactions in SMARTS format', metavar='YAML with SMARTS')
     optional_arguments.add_argument('-print', help='print found interactions on screen', action='store_true')
     optional_arguments.add_argument('-detail', help='generate an additional file with detailed data on detected interactions (used for PyMOL visualization)', action='store_true')
     optional_arguments.add_argument('-verbose', help='provides additional details about calculations performed at the given moment', action='store_true')
@@ -1116,7 +1164,7 @@ if __name__ == "__main__":
     consider_dha = args['dha']
     consider_H2O = args['h2o']
     how_addH = args['addH']
-    new_interactions = args['new']
+    new_interactions = args['custom']
 
     if new_interactions and fingerprint != 'FULL':
         raise Exception("User-defined interactions can only be calculated for fingerprint FULL!")
@@ -1408,14 +1456,24 @@ if __name__ == "__main__":
                                 user_def_receptor_atoms[k][chain] = {}
                             res_no = residue.split(':')[0]
                             user_def_receptor_atoms[k][chain][res_no] = []
+
                             for el in user_defined_all_atoms[k]['Receptor'][residue]:
-                                user_def_receptor_atoms[k][chain][res_no].append(debug_dict_rna[el])
+                                if el[1] is not None:
+                                    user_def_receptor_atoms[k][chain][res_no].append((debug_dict_rna[el[0]], debug_dict_rna[el[1]]))
+                                else:
+                                    user_def_receptor_atoms[k][chain][res_no].append(debug_dict_rna[el[0]])
 
                         for lig_name in user_defined_all_atoms[k]['Ligands'].keys():
                             if lig_name not in user_def_ligands_atoms[k].keys():
+                                #print(user_def_ligands_atoms[k])
                                 user_def_ligands_atoms[k][lig_name] = []
+
                             for l_a in user_defined_all_atoms[k]['Ligands'][lig_name]:
-                                user_def_ligands_atoms[k][lig_name].append(debug_dict_ligand[lig_name][l_a])
+
+                                if l_a[0] is not None:
+                                    user_def_ligands_atoms[k][lig_name].append((debug_dict_ligand[lig_name][l_a[1]], debug_dict_ligand[lig_name][l_a[0]]))
+                                else:
+                                    user_def_ligands_atoms[k][lig_name].append(debug_dict_ligand[lig_name][l_a[1]])
 
             # Fill the RESULTS dictionary of keys - ligand ids and values - lists of 0
             for ligand_name in ligands_all_atoms.keys():
@@ -1525,10 +1583,16 @@ if __name__ == "__main__":
                             distance_max = additionalInteractions[new_interaction_type]['Distance']['max']
                             if 'Angle' not in additionalInteractions[new_interaction_type].keys():
                                 for ligand_name in user_defined_all_atoms[new_interaction_type]['Ligands'].keys():
-                                    result = detect_user_def_interaction(res_name, user_defined_all_atoms[new_interaction_type]['Receptor'][res_name], ligand_name, user_defined_all_atoms[new_interaction_type]['Ligands'][ligand_name], new_interaction_type, distance_min, distance_max)
-                                if result[-1] != 0:
-                                    assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 11+c)
-
+                                    result = detect_user_def_interaction(res_name + ':{}'.format(residue.GetName()), user_defined_all_atoms[new_interaction_type]['Receptor'][res_name], ligand_name, user_defined_all_atoms[new_interaction_type]['Ligands'][ligand_name], new_interaction_type, distance_min, distance_max)
+                                    if result[-1] != 0:
+                                        assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 11+c)
+                            else:
+                                angle_min = additionalInteractions[new_interaction_type]['Angle']['min']
+                                angle_max = additionalInteractions[new_interaction_type]['Angle']['max']
+                                for ligand_name in user_defined_all_atoms[new_interaction_type]['Ligands'].keys():
+                                    result = detect_user_def_interaction(res_name, user_defined_all_atoms[new_interaction_type]['Receptor'][res_name], ligand_name, user_defined_all_atoms[new_interaction_type]['Ligands'][ligand_name], new_interaction_type, distance_min, distance_max, angle_min, angle_max)
+                                    if result[-1] != 0:
+                                        assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 11+c)
 
 
             PI_INTERACTIONS = calculate_PI_INTERACTIONS(rings_RNA, structure.atoms, ligands_CA, ligands_aromatic_rings) # Calculate Pi-cation, Pi-anion & Pi-stacking interactions
