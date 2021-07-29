@@ -200,7 +200,7 @@ def calculate_HB(residue, acceptors_RNA, donors_RNA, ligand_name, ligand_donors_
             - H  - hydrogen
             - D  - hydrogen bond acceptor
             - \*\*\*\*\* - hydrogen bond\n
-        Geometric Rule is:
+        Default geometric rule:
             1. D-A distance < 3.9 A\n
             - If check_dha is True:\n
               2. 100 < D-H-A angle < 260\n
@@ -340,7 +340,7 @@ def calculate_HAL(residue, acceptors_RNA, ligand_name, ligand_donors_coords):
             - \*\*\*\*\* - halogen bond\n
         .. note::
             There may be two Ys, if O is part of the ring. If so, we need to apply above rules to both Ys.\n
-        Geometric Rules are:
+        Default geometric rules:
             - X-O distance < 4.0 A
             - C-X-O angle ~ 165 +/- 30
             - X-O-Y angle ~ 120 +/- 30\n
@@ -423,7 +423,7 @@ def calculate_CATION_ANION(residue, RNA_anions, ligand_name, ligand_cation_coord
             where:\n
             - C  - cation
             - A  - anion\n
-        Geometric Rule is:
+        Default geometric rule:
             - 0.5 A < cation-anion distance < 5.5 A\n
 
         :param residue: residue as OpenBabel object
@@ -484,7 +484,7 @@ def calculate_ANION_PI(residue, RNA_anions, ligand_name, ligand_rings_coords):
             where:\n
             - A  - nucleic acids's anion
             - R  - ligand's aromatic ring\n
-        Geometric Rule is:
+        Default geometric rule:
             - Anion - aromatic ring's center distance < 6.0 A
             - Angle between anion and aromatic ring's planar ~ 90 +/- 30\n
 
@@ -561,14 +561,14 @@ def calculate_PI_INTERACTIONS(RNA_rings, RNA_all_atoms, all_ligands_CA_dict, all
     """Calculates Pi-cation, Pi-anion & Pi-stacking interactions between all residues' aromatic rings - all ligands' pairs.\n
         .. note::
             Each ring of purines is considered separately.\n
-        Pi-cation & Pi-anion Geometric Rules:
+        Pi-cation & Pi-anion default geometric rules:
             - Cation/anion - aromatic ring's center distance < 6.0 A
             - Angle between aromatic ring's planar and cation/anion ~ 90 +/- 30\n
         Three types of Pi-stacking interactions:
             - Sandwich
             - Parallel Displaced
             - T-shaped\n
-        Pi-stacking Geometric Rules:
+        Pi-stacking default geometric rules:
             - All types' common rules:
                 - Aromatic ring center - aromatic ring center distance < 5.5 A
                 - Aromatic rings' offset < 2.0 A\n
@@ -775,7 +775,7 @@ def calculate_ION_MEDIATED(residue, residue_atoms, ligand_name, ions, ions_dict)
             - R  - nucleic acid residue (nitrogen or oxygen atom)
             - I  - inorganic ion
             - A  - ligand (nitrogen, oxygen or sulphur atom)\n
-        Default geometric rule is:
+        Default geometric rule:
             - 0.5 A < ion-anion distance <= 4.0 A\n
             - 0.5 A < residue-ion distance <= 4.0 A\n
 
@@ -868,7 +868,7 @@ def calculate_WATER_MEDIATED(residue, acceptors_RNA, donors_RNA, ligand_name, wa
             * R  - nucleic acid's hydrogen bond donor/acceptor
             * W  - water molecule (oxygen)
             * A  - ligand's hydrogen bond donor/acceptor\n
-        Default geometric rule is:
+        Default geometric rule:
             - 0.5 A < water - ligand distance <= 3.5 A
             - 0.5 A < residue - water distance <= 3.5 A\n
 
@@ -976,7 +976,7 @@ def calculate_lipophilic_interactions(residue, residue_atoms, ligand_name, ligan
                     if debug:
                         global lipophilic_info
                         lipophilic_info += '***\n'
-                        lipophilic_info += '{} - {} \n dist: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(np.linalg.norm(lipophilic - rna_atom), 4))
+                        lipophilic_info += '{} - {} \n dist: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(dist, 4))
                         lipophilic_info += '{}:{}:{}\t{} atom {}\n'.format(residue.GetChain(), residue.GetNum(), debug_dict_rna[(rna_atom[0], rna_atom[1], rna_atom[2])], debug_dict_ligand[ligand_name][lipophilic][0], ligand_name)
 
                     if detail:
@@ -989,7 +989,7 @@ def calculate_lipophilic_interactions(residue, residue_atoms, ligand_name, ligan
                         lipophilic[0], lipophilic[1],  lipophilic[2],
                         residue.GetName(), residue.GetNum(), residue.GetChain(), debug_dict_rna[(rna_atom[0], rna_atom[1], rna_atom[2])],
                         rna_atom[0], rna_atom[1], rna_atom[2],
-                        np.round(np.linalg.norm(lipophilic - rna_atom), 4)])
+                        np.round(dist, 4)])
 
                     if not detail:
                         flag = False
@@ -999,42 +999,53 @@ def calculate_lipophilic_interactions(residue, residue_atoms, ligand_name, ligan
 
     return result
 
-def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coords, interaction_type, *params):
-    """ Calculates lipohilic ligand-residue interaction.\n
-        1. Check nucleic acid residue (carbon atoms only) - ligand (detected lipohilic atoms) distance
-        2. Compare the distance to CUTOFF:\n
-            - write down 1 if the distance <= CUTOFF\n
-            - write down 0 if the distance > CUTOFF\n
+def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coords, interaction_type, dist_min, dist_max, angle1_min=None, angle1_max=None):
+    """ Calculates user-defined interaction for the SMARTS-defined atoms.\n
+        1. If only 2 SMARTS (one for the receptor and one for the ligand) are given:
+            - Check nucleic acid SMARTS-defined atom - ligand's SMARTS-defined atom distance
+            - Compare the distance to user-defined range:\n
+                - write down 1 if the distance within user-defined range\n
+                - write down 0 if the distance exceeds user-defined range \n
+        2. If 3 SMARTS: two for the receptor and one for the ligand are given:
+            - Check nucleic acid SMARTS 2-defined atom - ligand's SMARTS-defined atom distance
+            - Compare the distance to user-defined range:\n
+                - if the distance within user-defined range: check nucleic acid SMARTS 1-defined atom - nucleic acid SMARTS 2-defined atom - ligand's SMARTS-defined atom angle\n
+                    - write down 1 if the angle within user-defined range \n
+                    - write down 0 if the angle exceeds user-defined range \n
+                - write down 0 if the distance exceeds user-defined range \n
+        3. If 3 SMARTS: one for the receptor and two for the ligand are given:
+            - Check nucleic acid SMARTS-defined atom - ligand's SMARTS 1-defined atom distance
+            - Compare the distance to user-defined range:\n
+                - if the distance within user-defined range: check nucleic acid SMARTS-defined atom - ligand's SMARTS 1-defined atom - ligand's SMARTS 2-defined atom angle\n
+                    - write down 1 if the angle within user-defined range \n
+                    - write down 0 if the angle exceeds user-defined range \n
+                - write down 0 if the distance exceeds user-defined range \n
 
-        :param residue: residue as OpenBabel object
-        :param residue_atoms: residue's carbon atoms coordinates
+        :param res_name: residue name as chain_no:residue_no:residue_name
+        :param residue_atoms: residue's SMARTS-defined atoms coordinates as list of tuples
         :param ligand_name: ligand_name^pose_number
-        :param ligands_lipophilic_coords: list of ligand's detected lipohilic atoms coords
-        :type residue: openbabel.OBResidue
+        :param ligand_coords: ligand's SMARTS-defined atoms coordinates as list of tuples
+        :param interaction_type: name of calculated interaction
+        :param dist_min: minimum distance between atoms
+        :param dist_max: maximum distance between atoms
+        :param angle1_min: minimum angle between atoms
+        :param angle1_max: maximum angle between atoms
+        :type res_name: str
         :type residue_atoms: list
         :type ligand_name: str
-        :type ligands_lipophilic_coords: list
+        :type ligand_coords: list
+        :type interaction_type: str
+        :type dist_min: float
+        :type dist_max: float
+        :type angle1_min: float
+        :type angle1_max: float
         :return: calculated interaction for particular ligand - residue
         :rtype: list
     """
 
-    dist_min = params[0]
-    dist_max = params[1]
-    angle_min = None
-    angle_max = None
-    if len(params) == 4:
-        angle_min = params[2]
-        angle_max = params[3]
-
     result = [ligand_name, res_name, 0]
 
-    # if detail:
-    #     global detail_list
-    #
-    # if debug:
-    #     global new_interactions_info
-
-    # Flag to iterate over residue's atoms as long as we do not find an atom within CUTOFF distance from ligand
+    # Flag to iterate over residue's atoms as long as we do not find an atom within user-defined distance/angle from ligand
     flag = True
 
     for rna_atom in residue_atoms:
@@ -1043,7 +1054,7 @@ def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coo
 
                 interaction_found = False
 
-                if angle_min is None:
+                if angle1_min is None:
                     dist = measure_distance(np.array(ligand_atom[1]), np.array(rna_atom[0]))
                 elif rna_atom[1] is None:
                     dist = measure_distance(np.array(ligand_atom[0]), np.array(rna_atom[0]))
@@ -1052,7 +1063,7 @@ def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coo
                         dist = measure_distance(np.array(ligand_atom[1]), np.array(rna_atom[1]))
 
                 if dist_min < dist <= dist_max:
-                    if angle_min is None:
+                    if angle1_min is None:
                         result[-1] = 1
                         interaction_found = True
                     else:
@@ -1066,7 +1077,7 @@ def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coo
                                 rl = vector(np.array(rna_atom[1]), np.array(ligand_atom[1]))
                                 angle = calculate_angle(rr, rl)
 
-                        if angle_min < angle < angle_max:
+                        if angle1_min < angle < angle1_max:
                             result[-1] = 1
                             interaction_found = True
 
@@ -1074,7 +1085,7 @@ def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coo
                         global new_interactions_info
                         if interaction_type not in new_interactions_info.keys():
                             new_interactions_info[interaction_type] = []
-                        if angle_min is None:
+                        if angle1_min is None:
                             new_interactions_info[interaction_type].append('{} - {} \ndist: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(dist, 4))
                             + '{}:{}:{}\t{} atom {}'.format(res_name.split(':')[1], res_name.split(':')[0], debug_dict_rna[(rna_atom[0][0], rna_atom[0][1], rna_atom[0][2])], debug_dict_ligand[ligand_name][ligand_atom[1]][0], ligand_name))
                         else:
@@ -1100,7 +1111,7 @@ def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coo
 
     return result
 
-
+###################################################################################### MAIN ######################################################################################
 
 if __name__ == "__main__":
 

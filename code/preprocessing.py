@@ -675,14 +675,14 @@ def find_atoms_from_SMARTS(structure, mols, interactions, dict_rna_coords_to_res
     """Finds atoms fulfilling user-defined conditions based on SMARTS from the yaml file
 
     :param structure: nucleic acid structure object
-    :type structure: pybel.Molecule
     :param mols: list of Pybel-parsed ligands' objects
-    :type mole: list
     :param interactions: dictionary with all user-defined interactions
-    :type interactions: dict
     :param dict_rna_coords_to_res_ids: dictonary mapping receptor's atoms' coords to their OBabel residue object
+    :type structure: pybel.Molecule
+    :type mole: list
+    :type interactions: dict
     :type dict_rna_coords_to_res_ids: dict
-    :return: dictionary indexed by ligand name, with the coords od all ligand's lipophilic fragments
+    :return: dictionary indexed by interaction type of dictionary indexed for the receptor and ligands with list of tuples of atoms fulfilling corresponding SMARTS
     :rtype: dict
     """
 
@@ -698,7 +698,7 @@ def find_atoms_from_SMARTS(structure, mols, interactions, dict_rna_coords_to_res
         receptor_smarts = pybel.Smarts(interactions[k]['Receptor_SMARTS'][0])
         receptor_atoms = [ id[0] for id in receptor_smarts.findall(structure) ] # list of atoms fulfilling this pattern
 
-        if len(interactions[k]['Receptor_SMARTS']) > 1: # more than 1 SMARTS for the receptor
+        if len(interactions[k]['Receptor_SMARTS']) == 2: # 2 SMARTS for the receptor
             receptor_smarts2 = pybel.Smarts(interactions[k]['Receptor_SMARTS'][1])
             receptor_atoms2 = [ id[0] for id in receptor_smarts2.findall(structure) ]
             receptor_atoms2_coords = []
@@ -709,23 +709,22 @@ def find_atoms_from_SMARTS(structure, mols, interactions, dict_rna_coords_to_res
             residue = dict_rna_coords_to_res_ids[structure.atoms[r_atom-1].coords]
             residue_id = "{}:{}".format(residue.GetNum(), residue.GetChain())
 
-
-            if len(interactions[k]['Receptor_SMARTS']) > 1: # more than 1 SMARTS for the receptor
+            if len(interactions[k]['Receptor_SMARTS']) == 2: # 2 SMARTS for the receptor
                 for neighbour in pybel.ob.OBAtomAtomIter((structure.atoms[r_atom-1].OBAtom)):
                     neighbour_coords = (neighbour.GetX(),neighbour.GetY(),neighbour.GetZ())
                     if neighbour_coords in receptor_atoms2_coords:
                         if residue_id not in dictionary[k]['Receptor'].keys():
                             dictionary[k]['Receptor'][residue_id] = []
-                        dictionary[k]['Receptor'][residue_id].append((structure.atoms[r_atom-1].coords, neighbour_coords))
+                        dictionary[k]['Receptor'][residue_id].append((structure.atoms[r_atom-1].coords, neighbour_coords)) # [(SMARTS1 coords, SMARTS2 coords)]
             else:
                 if residue_id not in dictionary[k]['Receptor'].keys():
                     dictionary[k]['Receptor'][residue_id] = []
-                dictionary[k]['Receptor'][residue_id].append((structure.atoms[r_atom-1].coords, None))
+                dictionary[k]['Receptor'][residue_id].append((structure.atoms[r_atom-1].coords, None)) # only 1 SMARTS for the receptor; [(SMARTS1 coords, None)]
 
         ligand_smarts = pybel.Smarts(interactions[k]['Ligand_SMARTS'][0])
         tmp = {}
 
-        if len(interactions[k]['Ligand_SMARTS']) > 1:
+        if len(interactions[k]['Ligand_SMARTS']) == 2:
             ligand_smarts2 = pybel.Smarts(interactions[k]['Ligand_SMARTS'][1])
 
         for i in range(len(mols)):
@@ -736,7 +735,7 @@ def find_atoms_from_SMARTS(structure, mols, interactions, dict_rna_coords_to_res
 
             if len(atomsList) > 0:
 
-                if len(interactions[k]['Ligand_SMARTS']) > 1:
+                if len(interactions[k]['Ligand_SMARTS']) == 2: # 2 SMARTS for the ligand
                     atomSets2 = ligand_smarts2.findall(mols[i]) # list of atoms fulfilling this pattern
                     atomsList2 = [ id[0] for id in atomSets2 ]
                     if len(atomsList2) > 0:
@@ -750,14 +749,13 @@ def find_atoms_from_SMARTS(structure, mols, interactions, dict_rna_coords_to_res
                                 if neighbour_coords in atomsList2_coords:
                                     if name not in dictionary[k]['Ligands'].keys():
                                         dictionary[k]['Ligands'][name] = []
-                                    dictionary[k]['Ligands'][name].append((neighbour_coords, mols[i].atoms[l_atom-1].coords))
+                                    dictionary[k]['Ligands'][name].append((neighbour_coords, mols[i].atoms[l_atom-1].coords)) # [(SMARTS3 coords, SMARTS2 coords)]  (if receptor had 1 SMARTS) or [(SMARTS4 coords, SMARTS3 coords)] (if receptor had 2 SMARTS)
 
                 else:
                     if name not in dictionary[k]['Ligands'].keys():
                         dictionary[k]['Ligands'][name] = []
                     for l_atom in atomsList:
-                        dictionary[k]['Ligands'][name].append((None, mols[i].atoms[l_atom-1].coords))
-    #print(dictionary)
+                        dictionary[k]['Ligands'][name].append((None, mols[i].atoms[l_atom-1].coords)) # only 1 SMARTS for the ligand; [(None, SMARTS2 coords)] (if receptor had 1 SMARTS) or [(None, SMARTS3 coords)] (if receptor had 2 SMARTS)
     return dictionary
 
 ########################################### FUNCTIONS FOR DEBUG/DETAIL MODE ###########################################
@@ -829,57 +827,59 @@ def print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, lig
     """Prints all collected information in debug mode of SIFt type FULL about ligands/nucleic acid properties and detected interactions.
 
     :param ligands_hba_hbd: dictionary indexed by ligand name, with the coords of all ligand's hydrogen bonds acceptors & donors
-    :type ligands_hba_hbd: dict
     :param ligands_HAL: dictionary indexed by ligand name, with the coords of all ligand's halogens & halogen bonds donors
-    :type ligands_HAL: dict
     :param ligands_CA: dictionary indexed by ligand name, with the coords of all ligand's cations & anions
-    :type ligands_CA: dict
     :param ligands_ions: dictionary indexed by ligand name, with the names of all ions in contact with it
-    :type ligands_ions: dict
     :param ligands_water: dictionary indexed by ligand name, with the names of all water molecules in contact with it
-    :type ligands_water: dict
     :param ligands_lipophilic: dictionary indexed by ligand name, with the the coords of all ligand's lipohilic atoms
-    :type ligands_lipophilic: dict
     :param arom_ring_ligands_info: dictionary indexed by ligand name, with set of indices of atoms building ligand's aromatic rings
-    :type arom_ring_ligands_info: dict
-    :param user_def_ligands_atoms: dictionary indexed by new interaction name of dictionary of ligands' names with their corresponding atom index fulfilling the defined SMARTS
-    :type user_def_ligands_atoms: dict
+    :param user_def_ligands_atoms: dictionary indexed by new interaction name of dictionary of ligands' names with their corresponding atom indices fulfilling the defined SMARTS
     :param debug_dict_ligand: dictionary of dictionaries of ligand's atom's coords with their corresponding atom index - {ligand_name : {(x1,y1,z1) : 1, (x2,y2,z2) : 2}}
-    :type debug_dict_ligand: dict
     :param RNA_HB_acc_don_info: dictionary of dictionaries of nucleic acid's residue's numbers and list of it's HB acceptors & HB donors {chain : {res_no : [[list of HB acceptors][list of HB donors]]}}
-    :type RNA_HB_acc_don_info: dict
     :param RNA_anion_info: dictionary of dictionaries of nucleic acid's residue's numbers and list of it's Anions {chain : {res_no : [list of Anions]}}
-    :type RNA_anion_info: dict
     :param arom_RNA_ligands_info: dictionary of dictionaries of nucleic acid's residue's numbers and set of it's aromatic ring's atoms IDs {chain : {res_no : {set of aromatic ring's atoms IDs}}}
-    :type arom_RNA_ligands_info: dict
     :param user_def_receptor_atoms: dictionary indexed by new interaction name of dictionary of chain ids' of dictionary of residue numbers with their atom IDs fulfilling the defined SMARTS
-    :type user_def_receptor_atoms: dict
     :param HB_RNA_acc_info: all found Hydrogen Bonds where nucleic acid is HB acceptor
-    :type HB_RNA_acc_info: str
     :param HB_RNA_donor_info: all found Hydrogen Bonds where nucleic acid is HB donor
-    :type HB_RNA_donor_info: str
     :param HAL_info: all found Halogen Bonds
-    :type HAL_info: str
     :param Cation_Anion_info: all found Cation-Anion interactions
-    :type Cation_Anion_info: str
     :param Pi_Cation_info: all found Pi-Cation interactions
-    :type Pi_Cation_info: str
     :param Pi_Anion_info: all found Pi-Anion interactions
-    :type Pi_Anion_info: str
     :param Anion_Pi_info: all found Pi-Anion interactions
-    :type Anion_Pi_info: str
     :param Sandwich_Displaced_info: all found Pi-Stacking type Sandwich/Displaced interactions
-    :type Sandwich_Displaced_info: str
     :param T_shaped_info: all found Pi-Stacking type T-shaped interactions
-    :type T_shaped_info: str
     :param ion_mediated_info: all found ion mediated ligand interactions
-    :type ion_mediated_info: str
     :param water_mediated_info: all found water mediated ligand interactions
-    :type water_mediated_info: str
     :param lipohilic_info: all found lipohilic interactions
-    :type lipophilic_info: str
+    :param new_interactions_info: all found user-defined interactions
     :param columns: width of terminal
-    :type columns: int
+    :type ligands_hba_hbd: dict
+    :type ligands_HAL: dict
+    :type ligands_CA: dict
+    :type ligands_ions: dict
+    :type ligands_water: dict
+    :type ligands_lipophilic: dict
+    :type arom_ring_ligands_info: dict
+    :type user_def_ligands_atoms: dict
+    :type debug_dict_ligand: dict
+    :type RNA_HB_acc_don_info: dict
+    :type RNA_anion_info: dict
+    :type arom_RNA_ligands_info: dict
+    :type user_def_receptor_atoms: dict
+    :type HB_RNA_acc_info: str
+    :type HB_RNA_donor_info: str
+    :type HAL_info: str
+    :type Cation_Anion_info: str
+    :type Pi_Cation_info: str
+    :type Pi_Anion_info: str
+    :type Anion_Pi_info: str
+    :type Sandwich_Displaced_info: str
+    :type T_shaped_info: str
+    :type ion_mediated_info: str
+    :type water_mediated_info: str
+    :type lipophilic_info: str
+    :type new_interactions_info: dict
+    :type columns: int                    
     :return: prints debug info
     :rtype: None
     """
