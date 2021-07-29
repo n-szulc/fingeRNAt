@@ -14,12 +14,31 @@
 
 ### DISTANCE AND ANGLE INTERACTIONS
 ### provide three SMARTS patterns defining three atoms
-### and min and max distance between them
-### and min and max angle
-###   the angle is calculated between receptor and ligand atoms
-###   in the order of atoms specified in this file
+### Either smarts1···smarts2-smarts3
+### or     smarts1-smarts2···smarts3
+### the angle is calculated for smarts1-smarts2-smarts3
+### the distance is calculated for the last smarts of receptor and the first of ligand
+### i.e., smarts1···smarts2 or smarts2···smarts3
 
-# the angle will be calculated between atoms smarts1-smarts2-smarts3
+#### examples/templates:
+
+### the angle is calculated for smarts1-smarts2-smarts3
+### the distance is calculated for smarts2···smarts3
+
+# name_of_the_interaction:
+#   Receptor_SMARTS:
+#       - 'smarts1'               # SMARTS for the first atom in the receptor
+#       - 'smarts2'               # SMARTS for the second atom in the receptor
+#   Ligand_SMARTS: 'smarts3'      # SMARTS pattern for the atom in ligand
+#   Distance:
+#     min: 0.5                    # minimum distance cutoff, Å
+#     max: 3.5                    # maximum distance cutoff, Å
+#   Angle:
+#     min: 140                    # minimum angle, degrees
+#     max: 180                    # maximum angle, degrees
+
+# the angle is calculated for smarts1-smarts2-smarts3
+# the distance is calculated for smarts1···smarts2
 # name_of_the_interaction:
 #   Receptor_SMARTS:  'smarts1'   # SMARTS pattern for the atom in receptor
 #   Ligand_SMARTS:
@@ -31,8 +50,6 @@
 #   Angle:
 #     min: 140                    # minimum angle, degrees
 #     max: 180                    # maximum angle, degrees
-
-
 
 
 ### -------------------------------------------------------------------------------- ###
