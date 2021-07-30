@@ -468,10 +468,10 @@ def find_ligands_lipophilic(mols, verbose):
         dictionary[name] = []
 
         atomSets = smarts.findall(mols[i]) # list of atoms fulfilling this pattern
-        atomsList = [ id[0] for id in atomSets ]
+        atomsList = [id[0] for id in atomSets]
 
         for atom in atomsList:
-            dictionary[name].append( mols[i].atoms[atom-1].coords )
+            dictionary[name].append(mols[i].atoms[atom-1].coords)
 
     return dictionary
 
@@ -714,11 +714,11 @@ def find_atoms_from_SMARTS(structure, mols, interactions, dict_rna_coords_to_res
         dictionary[k] = {'Receptor':{}, 'Ligands':{}}
 
         receptor_smarts = pybel.Smarts(interactions[k]['Receptor_SMARTS'][0])
-        receptor_atoms = [ id[0] for id in receptor_smarts.findall(structure) ] # list of atoms fulfilling this pattern
+        receptor_atoms = [id[0] for id in receptor_smarts.findall(structure)] # list of atoms fulfilling this pattern
 
         if len(interactions[k]['Receptor_SMARTS']) == 2: # 2 SMARTS for the receptor
             receptor_smarts2 = pybel.Smarts(interactions[k]['Receptor_SMARTS'][1])
-            receptor_atoms2 = [ id[0] for id in receptor_smarts2.findall(structure) ]
+            receptor_atoms2 = [id[0] for id in receptor_smarts2.findall(structure)]
             receptor_atoms2_coords = []
             for r_a2 in receptor_atoms2:
                 receptor_atoms2_coords.append((structure.atoms[r_a2-1].coords))
@@ -751,27 +751,22 @@ def find_atoms_from_SMARTS(structure, mols, interactions, dict_rna_coords_to_res
         for i in range(len(mols)):
             name = get_ligand_name_pose(tmp, mols[i].title)
             tmp[name] = []
-            atomSets = ligand_smarts.findall(mols[i]) # list of atoms fulfilling this pattern
-            atomsList = [ id[0] for id in atomSets ]
+            atomsList = [id[0] for id in ligand_smarts.findall(mols[i])] # list of atoms fulfilling this pattern
 
             if len(atomsList) > 0:
-
                 if len(interactions[k]['Ligand_SMARTS']) == 2: # 2 SMARTS for the ligand
-                    atomSets2 = ligand_smarts2.findall(mols[i]) # list of atoms fulfilling this pattern
-                    atomsList2 = [ id[0] for id in atomSets2 ]
+                    atomsList2 = [ id[0] for id in ligand_smarts2.findall(mols[i]) ] # list of atoms fulfilling this pattern
                     if len(atomsList2) > 0:
                         atomsList2_coords = []
                         for l_atom2 in atomsList2:
                             atomsList2_coords.append((structure.atoms[l_atom2-1].coords))
-
                         for l_atom in atomsList:
-                            for neighbour in pybel.ob.OBAtomAtomIter((structure.atoms[l_atom-1].OBAtom)):
+                            for neighbour in pybel.ob.OBAtomAtomIter((mols[i].atoms[l_atom-1].OBAtom)):
                                 neighbour_coords = (neighbour.GetX(), neighbour.GetY(), neighbour.GetZ())
                                 if neighbour_coords in atomsList2_coords:
                                     if name not in dictionary[k]['Ligands'].keys():
                                         dictionary[k]['Ligands'][name] = []
-                                    dictionary[k]['Ligands'][name].append((neighbour_coords, mols[i].atoms[l_atom-1].coords)) # [(SMARTS3 coords, SMARTS2 coords)]  (if receptor had 1 SMARTS) or [(SMARTS4 coords, SMARTS3 coords)] (if receptor had 2 SMARTS)
-
+                                    dictionary[k]['Ligands'][name].append((mols[i].atoms[l_atom-1].coords, neighbour_coords)) # [(SMARTS2 coords, SMARTS3 coords)]  (if receptor had 1 SMARTS) or [(SMARTS3 coords, SMARTS4 coords)] (if receptor had 2 SMARTS)
                 else:
                     if name not in dictionary[k]['Ligands'].keys():
                         dictionary[k]['Ligands'][name] = []
@@ -799,7 +794,6 @@ def ligands_coords_atom_index_dict(mols):
 
         for atom in mols[i]:
             dictionary[name][atom.coords] = (atom.idx, i+1)
-
     return dictionary
 
 def rna_coords_atom_index_dict(structure):

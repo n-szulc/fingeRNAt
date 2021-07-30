@@ -1397,7 +1397,6 @@ if __name__ == "__main__":
                 f=open(filename_ligand[:-4] + '_OB_addedH.sdf', 'w')
                 f.write(save_ligands_addedH)
                 f.close()
-
             elif how_addH == 'RDKit':
                 addHwithRDKit(filename_ligand, filename_ligand[:-4] + '_RDKit_addedH.sdf')
                 # Read all modified by RDKit ligands
@@ -1637,7 +1636,6 @@ if __name__ == "__main__":
                 for res in result:
                     if res[-1] != 0: # We assign only 1
                         assign_interactions_results(res, RESULTS, RNA_LENGTH, RNA_residues.index(res[1]), FUNCTIONS[fingerprint], i+3)
-
             if debug:
                 if not consider_H2O: ligands_water = None
                 print_debug_info(ligands_hba_hbd, ligands_HAL, ligands_CA, ligands_ions, ligands_water, ligands_lipophilic, arom_ring_ligands_info,
