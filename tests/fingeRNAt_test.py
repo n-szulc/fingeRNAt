@@ -11,7 +11,6 @@ test_inputs_path = 'test_inputs' + sys_sep
 test_ouptuts_path = 'outputs' + sys_sep
 test_ex_outputs_path = 'expected_outputs' + sys_sep
 
-
 def run_test():
 
     shutil.rmtree('outputs', ignore_errors=True)
