@@ -164,7 +164,7 @@ def projection(pnormal1, ppoint, tpoint):
 
     return [c1 + c2 for c1, c2 in zip(tpoint, [sb * pn for pn in pnormal])]
 
-def assign_interactions_results(result, RESULTS, RNA_LENGTH, RNA_seq_index, FINGERPRINT_DESCRIPTORS_NO, desc_index, multiple_results = False):
+def assign_interactions_results(result, RESULTS, RNA_LENGTH, RNA_seq_index, FINGERPRINT_DESCRIPTORS_NO, desc_index, multiple_results = None):
     """Adds interaction from residue - ligand pair into fingerprint held in a dictionary indexed by ligand ID
 
     :param result: result obtained from calling one of functions that calculate molecular interaction between residue-ligand
@@ -188,12 +188,12 @@ def assign_interactions_results(result, RESULTS, RNA_LENGTH, RNA_seq_index, FING
     ligand_id = result[0]
     descriptor_index = desc_index
 
-    if not multiple_results: # Most results have only one value to add
+    if multiple_results is None: # Most results have only one value to add
         RESULTS[ligand_id][(RNA_seq_index * FINGERPRINT_DESCRIPTORS_NO) + descriptor_index] = result[-1]
 
     else: # In case of ion-mediated interactions or PBS
 
-        if FINGERPRINT_DESCRIPTORS_NO == 12: # FULL ion-mediated
+        if multiple_results == 'FULL': # FULL ion-mediated
             for i in range(4):
                 RESULTS[ligand_id][(RNA_seq_index*FINGERPRINT_DESCRIPTORS_NO) + descriptor_index+i] = result[-4+i]
 
@@ -712,7 +712,6 @@ def find_atoms_from_SMARTS(structure, mols, interactions, dict_rna_coords_to_res
     for k in tqdm(interactions.keys(), disable=(not verbose)):
 
         dictionary[k] = {'Receptor':{}, 'Ligands':{}}
-        print(k)
 
         receptor_smarts = pybel.Smarts(interactions[k]['Receptor_SMARTS'][0])
         receptor_atoms = [ id[0] for id in receptor_smarts.findall(structure) ] # list of atoms fulfilling this pattern
@@ -725,7 +724,10 @@ def find_atoms_from_SMARTS(structure, mols, interactions, dict_rna_coords_to_res
                 receptor_atoms2_coords.append((structure.atoms[r_a2-1].coords))
 
         for r_atom in receptor_atoms:
-            residue = dict_rna_coords_to_res_ids[structure.atoms[r_atom-1].coords]
+            try:
+                residue = dict_rna_coords_to_res_ids[structure.atoms[r_atom-1].coords]
+            except KeyError: # receptor's SMARTS atom either does not belong to receptor (ion, water) or belongs to receptor's residue with < 3 atoms
+                continue
             residue_id = "{}:{}".format(residue.GetNum(), residue.GetChain())
 
             if len(interactions[k]['Receptor_SMARTS']) == 2: # 2 SMARTS for the receptor

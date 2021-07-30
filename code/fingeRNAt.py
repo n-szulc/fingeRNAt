@@ -999,7 +999,7 @@ def calculate_lipophilic_interactions(residue, residue_atoms, ligand_name, ligan
 
     return result
 
-def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coords, interaction_type, dist_min, dist_max, angle1_min=None, angle1_max=None):
+def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coords, interaction_type, dist_min, dist_max, angle1_min=None, angle1_max=None, angle2_min=None, angle2_max=None):
     """ Calculates user-defined interaction for the SMARTS-defined atoms.\n
         1. If only 2 SMARTS (one for the receptor and one for the ligand) are given:
             - Check nucleic acid SMARTS-defined atom - ligand's SMARTS-defined atom distance
@@ -1009,16 +1009,25 @@ def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coo
         2. If 3 SMARTS: two for the receptor and one for the ligand are given:
             - Check nucleic acid SMARTS 2-defined atom - ligand's SMARTS-defined atom distance
             - Compare the distance to user-defined range:\n
-                - if the distance within user-defined range: check nucleic acid SMARTS 1-defined atom - nucleic acid SMARTS 2-defined atom - ligand's SMARTS-defined atom angle\n
+                - if the distance within user-defined range: check nucleic acid SMARTS 1-defined atom - nucleic acid SMARTS 2-defined atom - ligand's SMARTS-defined atom angle \n
                     - write down 1 if the angle within user-defined range \n
                     - write down 0 if the angle exceeds user-defined range \n
                 - write down 0 if the distance exceeds user-defined range \n
         3. If 3 SMARTS: one for the receptor and two for the ligand are given:
             - Check nucleic acid SMARTS-defined atom - ligand's SMARTS 1-defined atom distance
             - Compare the distance to user-defined range:\n
-                - if the distance within user-defined range: check nucleic acid SMARTS-defined atom - ligand's SMARTS 1-defined atom - ligand's SMARTS 2-defined atom angle\n
+                - if the distance within user-defined range: check nucleic acid SMARTS-defined atom - ligand's SMARTS 1-defined atom - ligand's SMARTS 2-defined atom angle \n
                     - write down 1 if the angle within user-defined range \n
                     - write down 0 if the angle exceeds user-defined range \n
+                - write down 0 if the distance exceeds user-defined range \n
+        4. If 4 SMARTS: two for the receptor and two for the ligand are given:
+            - Check nucleic acid SMARTS 2-defined atom - ligand's SMARTS 1-defined atom distance
+            - Compare the distance to user-defined range:\n
+                - if the distance within user-defined range: check nucleic acid SMARTS 1-defined atom - nucleic acid SMARTS 2-defined atom - ligand's SMARTS 1-defined atom angle \n
+                    - if the first angle within first user-defined range: check nucleic acid SMARTS 2-defined atom - ligand's SMARTS 1-defined atom - ligand's SMARTS 2-defined atom angle \n
+                        - write down 1 if the second angle within second user-defined range \n
+                        - write down 0 if the second angle exceeds second user-defined range \n
+                    - write down 0 if the first angle exceeds first user-defined range \n
                 - write down 0 if the distance exceeds user-defined range \n
 
         :param res_name: residue name as chain_no:residue_no:residue_name
@@ -1028,8 +1037,10 @@ def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coo
         :param interaction_type: name of calculated interaction
         :param dist_min: minimum distance between atoms
         :param dist_max: maximum distance between atoms
-        :param angle1_min: minimum angle between atoms
-        :param angle1_max: maximum angle between atoms
+        :param angle1_min: minimum first (or only) angle between atoms
+        :param angle1_max: maximum first (or only) angle between atoms
+        :param angle2_min: minimum second angle between atoms
+        :param angle2_max: maximum second angle between atoms
         :type res_name: str
         :type residue_atoms: list
         :type ligand_name: str
@@ -1039,12 +1050,13 @@ def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coo
         :type dist_max: float
         :type angle1_min: float
         :type angle1_max: float
+        :type angle2_min: float
+        :type angle2_max: float
         :return: calculated interaction for particular ligand - residue
         :rtype: list
     """
 
     result = [ligand_name, res_name, 0]
-
     # Flag to iterate over residue's atoms as long as we do not find an atom within user-defined distance/angle from ligand
     flag = True
 
@@ -1056,30 +1068,43 @@ def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coo
 
                 if angle1_min is None:
                     dist = measure_distance(np.array(ligand_atom[1]), np.array(rna_atom[0]))
-                elif rna_atom[1] is None:
+                elif rna_atom[1] is None: # 3 SMARTS; 1 for receptor & 2 for ligands
                     dist = measure_distance(np.array(ligand_atom[0]), np.array(rna_atom[0]))
                 else:
-                    if ligand_atom[0] is None:
+                    if ligand_atom[0] is None: # 3 SMARTS; 2 for receptor & 1 for ligands
                         dist = measure_distance(np.array(ligand_atom[1]), np.array(rna_atom[1]))
+                    else: # 4 SMARTS; 2 for receptor & 2 for ligands
+                        dist = measure_distance(np.array(ligand_atom[0]), np.array(rna_atom[1]))
 
                 if dist_min < dist <= dist_max:
                     if angle1_min is None:
                         result[-1] = 1
                         interaction_found = True
                     else:
-                        if rna_atom[1] is None:
-                            ll = vector(np.array(ligand_atom[0]), np.array(ligand_atom[1]))
-                            rl = vector(np.array(rna_atom[0]), np.array(ligand_atom[0]))
-                            angle = calculate_angle(ll, rl)
-                        else:
-                            if ligand_atom[0] is None:
-                                rr = vector(np.array(rna_atom[0]), np.array(rna_atom[1]))
-                                rl = vector(np.array(rna_atom[1]), np.array(ligand_atom[1]))
-                                angle = calculate_angle(rr, rl)
 
-                        if angle1_min < angle < angle1_max:
-                            result[-1] = 1
-                            interaction_found = True
+                        if rna_atom[1] is None:
+                            ll = vector(np.array(ligand_atom[1]), np.array(ligand_atom[0]))
+                            rl = vector(np.array(rna_atom[0]), np.array(ligand_atom[0]))
+                            angle1 = calculate_angle(ll, rl)
+                        else:
+                            rr = vector(np.array(rna_atom[0]), np.array(rna_atom[1]))
+                            if ligand_atom[0] is None:
+                                rl = vector(np.array(ligand_atom[1]), np.array(rna_atom[1]))
+                            else:
+                                rl = vector(np.array(ligand_atom[0]), np.array(rna_atom[1]))
+                            angle1 = calculate_angle(rr, rl)
+
+                        if angle1_min < angle1 < angle1_max:
+                            if angle2_min is None:
+                                result[-1] = 1
+                                interaction_found = True
+                            else:
+                                lr = vector(np.array(rna_atom[1]), np.array(ligand_atom[1]))
+                                ll = vector(np.array(ligand_atom[0]), np.array(ligand_atom[1]))
+                                angle2 = calculate_angle(lr, ll)
+                                if angle2_min < angle2 < angle2_max:
+                                    result[-1] = 1
+                                    interaction_found = True
 
                     if interaction_found and debug:
                         global new_interactions_info
@@ -1089,8 +1114,12 @@ def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coo
                             new_interactions_info[interaction_type].append('{} - {} \ndist: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(dist, 4))
                             + '{}:{}:{}\t{} atom {}'.format(res_name.split(':')[1], res_name.split(':')[0], debug_dict_rna[(rna_atom[0][0], rna_atom[0][1], rna_atom[0][2])], debug_dict_ligand[ligand_name][ligand_atom[1]][0], ligand_name))
                         else:
-                            new_interactions_info[interaction_type].append('{} - {} \ndist: {} angle: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(dist, 4), round(angle, 4))
-                            + '{}:{}:{}\t{} atom {}'.format(res_name.split(':')[1], res_name.split(':')[0], debug_dict_rna[(rna_atom[0][0], rna_atom[0][1], rna_atom[0][2])], debug_dict_ligand[ligand_name][ligand_atom[1]][0], ligand_name))
+                            if angle2_min is None:
+                                new_interactions_info[interaction_type].append('{} - {} \ndist: {} angle: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(dist, 4), round(angle1, 4))
+                                + '{}:{}:{}\t{} atom {}'.format(res_name.split(':')[1], res_name.split(':')[0], debug_dict_rna[(rna_atom[0][0], rna_atom[0][1], rna_atom[0][2])], debug_dict_ligand[ligand_name][ligand_atom[1]][0], ligand_name))
+                            else:
+                                new_interactions_info[interaction_type].append('{} - {} \ndist: {} angle1: {} angle2: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(dist, 4), round(angle1, 4), round(angle2, 4))
+                                + '{}:{}:{}\t{} atom {}'.format(res_name.split(':')[1], res_name.split(':')[0], debug_dict_rna[(rna_atom[0][0], rna_atom[0][1], rna_atom[0][2])], debug_dict_ligand[ligand_name][ligand_atom[1]][0], ligand_name))
 
                     if interaction_found and detail:
                         global detail_list
@@ -1145,6 +1174,7 @@ if __name__ == "__main__":
     optional_arguments.add_argument('-h2o', help='consider water-mediated nucleic acid - ligand interactions', action='store_true')
     optional_arguments.add_argument('-dha', help='consider Donor-Hydrogen-Acceptor angle in hydrogen bonds calculation', action='store_true')
     optional_arguments.add_argument('-custom', help='add user-defined interactions in SMARTS format', metavar='YAML with SMARTS')
+    optional_arguments.add_argument('-fingerDISt', help='run directly fingerDISt on the obtained SIFts output', metavar='METRICS')
     optional_arguments.add_argument('-print', help='print found interactions on screen', action='store_true')
     optional_arguments.add_argument('-detail', help='generate an additional file with detailed data on detected interactions (used for PyMOL visualization)', action='store_true')
     optional_arguments.add_argument('-verbose', help='provides additional details about calculations performed at the given moment', action='store_true')
@@ -1176,6 +1206,7 @@ if __name__ == "__main__":
     consider_H2O = args['h2o']
     how_addH = args['addH']
     new_interactions = args['custom']
+    run_fingerDISt = args['fingerDISt']
 
     if new_interactions and fingerprint != 'FULL':
         raise Exception("User-defined interactions can only be calculated for fingerprint FULL!")
@@ -1250,7 +1281,7 @@ if __name__ == "__main__":
 
         for inorganic_ion in Ions_objects:
             ion_id = inorganic_ion.GetName() + ':' + str(inorganic_ion.GetNum()) + ':' + inorganic_ion.GetChain()
-            #print(ion_id)
+
             # Fill the RESULTS dictionary of keys - ions ids and values - lists of 0
             RESULTS[ion_id] = [0] * RNA_LENGTH  * FUNCTIONS[fingerprint]
 
@@ -1297,7 +1328,7 @@ if __name__ == "__main__":
                 else:
                     result = calculate_PBS(residue, inorganic_ion, Inorganic_ions_dict[inorganic_ion], Inorganic_ions_dict[inorganic_ion], ion_cutoff)
                     if sum(result[-3:]) != 0:
-                        assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 0, True) # Assign each of 3 (P/B/S) residue-ligand interaction
+                        assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 0, 'PBS') # Assign each of 3 (P/B/S) residue-ligand interaction
     else:
 
         if verbose:
@@ -1349,7 +1380,7 @@ if __name__ == "__main__":
                     else:
                         result = calculate_PBS(residue, ligand_name, ligand_atoms, centroid_ligand, config.CUT_OFF_SIMPLE)
                         if sum(result[-3:]) != 0:
-                            assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 0, True) # Assign each of 3 (P/B/S) residue-ligand interaction
+                            assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 0, 'PBS') # Assign each of 3 (P/B/S) residue-ligand interaction
 
         else: # fingerprint == 'FULL'
 
@@ -1451,6 +1482,7 @@ if __name__ == "__main__":
             # Get dictionary with atoms from user-defined interactions
             if new_interactions:
                 additionalInteractions = parseYaml(new_interactions)
+                FUNCTIONS[fingerprint] += len(additionalInteractions.keys())
                 dict_rna_coords_to_res_ids = rna_coords_residue_index_dict(structure)
                 user_defined_all_atoms = find_atoms_from_SMARTS(structure, ligands_mols, additionalInteractions, dict_rna_coords_to_res_ids, verbose)
 
@@ -1482,10 +1514,7 @@ if __name__ == "__main__":
 
             # Fill the RESULTS dictionary of keys - ligand ids and values - lists of 0
             for ligand_name in ligands_all_atoms.keys():
-                if new_interactions:
-                    RESULTS[ligand_name] = [0] * RNA_LENGTH * (FUNCTIONS[fingerprint] + len(additionalInteractions.keys()))
-                else:
-                    RESULTS[ligand_name] = [0] * RNA_LENGTH * FUNCTIONS[fingerprint]
+                RESULTS[ligand_name] = [0] * RNA_LENGTH * FUNCTIONS[fingerprint]
 
             # Loop over all nucleic acid residue to calculate all except Pi-interactions
             for residue in RNA_residues_objects:
@@ -1561,7 +1590,7 @@ if __name__ == "__main__":
 
                     result = calculate_ION_MEDIATED(residue, residue_oxygen_nitrogen_atoms_coords, ligand_name, ions, Inorganic_ions_dict)
                     if sum(result[-4:]) != 0:
-                        assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 6, True)
+                        assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 6, 'FULL')
 
                 if consider_H2O:
                     for ligand_name, water_molecules in ligands_water.items():
@@ -1593,13 +1622,12 @@ if __name__ == "__main__":
                                     if result[-1] != 0:
                                         assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 11+c)
                             else:
-                                angle_min = additionalInteractions[new_interaction_type]['Angle']['min']
-                                angle_max = additionalInteractions[new_interaction_type]['Angle']['max']
+                                angle1_min = additionalInteractions[new_interaction_type]['Angle']['min']
+                                angle1_max = additionalInteractions[new_interaction_type]['Angle']['max']
                                 for ligand_name in user_defined_all_atoms[new_interaction_type]['Ligands'].keys():
-                                    result = detect_user_def_interaction(res_name + ':{}'.format(residue.GetName()), user_defined_all_atoms[new_interaction_type]['Receptor'][res_name], ligand_name, user_defined_all_atoms[new_interaction_type]['Ligands'][ligand_name], new_interaction_type, distance_min, distance_max, angle_min, angle_max)
+                                    result = detect_user_def_interaction(res_name + ':{}'.format(residue.GetName()), user_defined_all_atoms[new_interaction_type]['Receptor'][res_name], ligand_name, user_defined_all_atoms[new_interaction_type]['Ligands'][ligand_name], new_interaction_type, distance_min, distance_max, angle1_min, angle1_max)
                                     if result[-1] != 0:
                                         assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 11+c)
-
 
             PI_INTERACTIONS = calculate_PI_INTERACTIONS(rings_RNA, structure.atoms, ligands_CA, ligands_aromatic_rings) # Calculate Pi-cation, Pi-anion & Pi-stacking interactions
 
@@ -1623,10 +1651,7 @@ if __name__ == "__main__":
         WRAP_RESULTS = {}
         for w in wrapper:
             if verbose: print('Wrapping fingerprint type {} results to {} wrapper'.format(fingerprint, w))
-            if new_interactions:
-                WRAP_RESULTS[w] = wrap_results(w, RESULTS, RNA_nucleotides, FUNCTIONS[fingerprint] + len(additionalInteractions.keys()), WRAPPERS[w])
-            else:
-                WRAP_RESULTS[w] = wrap_results(w, RESULTS, RNA_nucleotides, FUNCTIONS[fingerprint], WRAPPERS[w])
+            WRAP_RESULTS[w] = wrap_results(w, RESULTS, RNA_nucleotides, FUNCTIONS[fingerprint], WRAPPERS[w])
 
     # Create dataframe
     columns = {'SIMPLE': ['SIMPLE'],
@@ -1756,4 +1781,24 @@ if __name__ == "__main__":
                 print()
             print_flag = False
 
+        if run_fingerDISt:
+            if output:
+                saved_output_fingerprint = output
+                if output[-1] == sys_sep:
+                    saved_output_fingerprint += save_name + '.tsv'
+                else:
+                    saved_output_fingerprint += sys_sep + save_name + '.tsv'
+            else:
+                saved_output_fingerprint = os.path.join('outputs', '%s.tsv' %(save_name))
+
+            if output:
+                command = 'python %s/fingerDISt.py -i %s -m %s -o %s' %(os.path.dirname(os.path.realpath(__file__)), saved_output_fingerprint, run_fingerDISt, output)
+            else:
+                command = 'python %s/fingerDISt.py -i %s -m %s' %(os.path.dirname(os.path.realpath(__file__)), saved_output_fingerprint, run_fingerDISt)
+
         print('{} results saved successfully!'.format(analysis))
+
+        if run_fingerDISt:
+            import subprocess
+            if subprocess.call(command, shell = True):
+                print('fingerDISt result saved successfully!')
