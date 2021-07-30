@@ -31,7 +31,7 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 	- [Structural Interaction Fingerprint (SIFt) types](#structural-interaction-fingerprint-sift-types)
 	- [Interactions with inorganic ions](#interactions-with-inorganic-ions)
 	- [User-defined interactions](#user---defined-interactions)
-		- [Interactions types](#interaction-types)
+		- [Interaction types](#interaction-types)
 		- [YAML template](#yaml-template)
 	- [User-defined thresholds](#user---defined-thresholds)
 	- [Outputs](#outputs)
@@ -310,7 +310,7 @@ The interactions will be added as new columns to the standard SIFts outputs (wor
 
 > **_NOTE:_** Additional interactions can be calculated only for the fingerprint type `FULL`. 
 
-### Interactions types
+### Interaction types
 
 **1. Contact between defined atoms**
 
