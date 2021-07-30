@@ -199,16 +199,15 @@ fingeRNAt accepts the following parameters:
 
 `[-dha]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional Donor-Hydrogen-Acceptor angle calculation when detecting hydrogen bonds; see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
-`[-custom]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; path to yaml file with information about additional interactions to be calculated; see -> [User-defined interactions](#User---defined-interactions)
+`[-custom]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; path to yaml file with information about additional interactions to be calculated; see -> [User-defined interactions](#User-defined-interactions)
 
-`[-fingerDISt]` &nbsp;&nbsp;fingerDISt metrics to be calculated; if passed fingerDISt will be directly run on the output file; 
+`[-fingerDISt]` &nbsp;&nbsp;fingerDISt Distance Metrics to be calculated (fingerDISt will be directly run on the SIFts output file); 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  see -> [Usage example][Usage-examples-1]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  see -> [Usage examples](#usage-examples-1)
 
 `[-print]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print detected interactions for each nucleic acid - ligand complex on screen
 
-`[-detail]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generate an additional file with detailed data on detected interactions see -> [PyMOL visualization](#pymol-visualization)
-
+`[-detail]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generate an additional file with detailed data on detected interactions; see -> [PyMOL visualization](#pymol-visualization)
 
  `[-verbose]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; provides additional information about performed calculations at the given moment
 
@@ -323,10 +322,10 @@ The interactions will be added as new columns to the standard SIFts outputs (wor
    Detects atoms fulfilling SMARTS conditions for the receptor and all ligands, checks if distance between each pair of such atoms is within the provided distance range. If so, the interaction is detected.
 
 **2. Contact between defined atoms and angle**
-
-   Given:
     
    *Variant 1*
+   
+   Given:
    
    - 1 SMARTS for the receptor
    - 2 SMARTS for the ligand
@@ -339,6 +338,8 @@ The interactions will be added as new columns to the standard SIFts outputs (wor
     
   *Variant 2*
    
+   Given:
+      
    - 2 SMARTS for the receptor
    - 1 SMARTS for the ligand
    - minimum and maximum distance
@@ -371,6 +372,8 @@ The interactions will be added as new columns to the standard SIFts outputs (wor
 ### YAML template
 
 Each interaction title will be used as interaction name in the proper column of SIFt outputs or as *Interaction* in `-detail` output.
+
+See example YAML file -> [custom-interactions.yaml](example_inputs/custom-interactions.yaml)
 
 ## User-defined thresholds
 
@@ -561,7 +564,7 @@ Dedicated PyMOL plugin was created to visualize detected interactions based on `
 
  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -h2o -wrapper ACUG,PuPy,Counter`
 
-- Calculate SIFt for nucleic acid - inorganic ions from the same pdb input file (see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions))
+- Calculate SIFt for nucleic acid - inorganic ions from the same pdb input file (see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions)).
 
  `python code/fingeRNAt.py -r example_inputs/3d2v.pdb -f PBS`
 
