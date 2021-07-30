@@ -237,7 +237,7 @@ fingeRNAt accepts the following parameters:
     	- **only** RNA/DNA chains
         	- no water, ions, ligands
 
-   &#x1F535; if `-l` is not specified, fingeRNAt **will find all inorganic ions in the receptor file and treat them as ligands**, see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions).
+   &#x1F535; if `-l` is not specified, fingeRNAt **will find all inorganic ions in the receptor file and treat them as ligands**; see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions).
 
 **Additional notes:**
 
@@ -271,7 +271,7 @@ fingeRNAt allows to calculate the following SIFt types:
 
 	&#x1F536;Returns twelve 0/1 values for each residue.
 	
-> **_NOTE:_** It is possible to calculate more interactions specified by the user; see -> [User-defined interactions](#User---defined-interactions)
+> **_NOTE:_** It is possible to calculate more interactions specified by the user; see -> [User-defined interactions](#User-defined-interactions)
 
 - `SIMPLE`
 
