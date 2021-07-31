@@ -4,7 +4,7 @@
 Welcome to fingeRNAt's README
 ===================
 
-fingeRNAt is a software to calculate Structural Interaction Fingerprint (SIFt) in nucleic acids - ligands complexes.
+fingeRNAt is a software tool for detecting non-covalent interactions formed within complexes of nucleic acids with ligands.
 
 
 [![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-360/)
@@ -30,7 +30,10 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 	- [Inputs](#inputs)
 	- [Structural Interaction Fingerprint (SIFt) types](#structural-interaction-fingerprint-sift-types)
 	- [Interactions with inorganic ions](#interactions-with-inorganic-ions)
-	- [User defined thresholds](#user-defined-thresholds)
+	- [User-defined interactions](#user-defined-interactions)
+		- [Interaction types](#interaction-types)
+		- [YAML template](#yaml-template)
+	- [User-defined thresholds](#user-defined-thresholds)
 	- [Outputs](#outputs)
 		- [`FULL`](#full)
 		- [`SIMPLE`](#simple)
@@ -75,9 +78,11 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 
 # Overview
 
-fingeRNAt is a Python 3.8 script calculating Structural Interaction Fingerprint (**SIFt**) in nucleic acid - ligand complexes.
+fingeRNAt is a a Python 3.8  software tool for detecting non-covalent interactions formed within complexes of nucleic acids with ligands. 
 
-It detects different non-covalent interactions in the input complex and returns long binary string - **SIFt**, describing if particular interaction between each nucleic acid residue and ligand occurred or not. **SIFt** can be calculated for the following complexes:
+Interactions are encoded and saved i.e. in the form of bioinformatic-friendly **Structural Interaction Fingerprint (SIFt)** - a binary string, where the respective bit in the fingerprint is set to 1 in case of a presence of a particular interaction and to 0 otherwise. This enables **high-throughput analysis** of the interaction data using data analysis techniques.
+
+Interactions can be calculated for the following complexes:
 
 <p align="center">
 <img src="docs/README_pics/detected_interactions.png" width="900" />
@@ -87,7 +92,7 @@ fingeRNAt runs under Python 3.5 - 3.8 on Linux, macOS and Windows.
 
 ## What is the Structural Interaction Fingerprint (SIFt)?
 
-Structural Interaction Fingerprint (**SIFt**) is a binary string, describing existence (1/0) of specified molecular interactions between all target's residues and the ligand (*Deng et al.*, 2004).
+Structural Interaction Fingerprint (**SIFt**) is a binary string, describing existence (1/0) of specified molecular interactions between all receptor's residues and the ligand (*Deng et al.*, 2004).
 
 <p align="center">
 <img src="docs/README_pics/SIFs.png" width="800" />
@@ -102,9 +107,9 @@ Structural Interaction Fingerprint (**SIFt**) is a binary string, describing exi
 
 <br/>
 
-**SIFt** translate information about 3D interactions in the target-ligand complex into a string, where the respective bit in the fingerprint is set to 1 in case of detecting particular interaction, and to 0 otherwise.
+**SIFt** translates information about 3D interactions in the receptor-ligand complex into a string, where the respective bit in the fingerprint is set to 1 in case of detecting particular interaction, and to 0 otherwise.
 
-Therefore, **the interactions are represented in a unified fashion, thus allowing for easy high throughput computational analysis**, as they provide a full picture of all interactions within the complex.
+Therefore, **the interactions are represented in a unified fashion, thus allowing for easy high-throughput computational analysis**, as they provide a full picture of all interactions within the complex.
 
 ## What are the Structural Interaction Fingerprint (SIFt) applications?
 
@@ -141,12 +146,14 @@ Recommended fingeRNAt usage is in conda environment.
 
 Required dependencies are:
 
-- Python 3.8
+- python 3.8
 - openbabel 3.1.1
 - numpy  
 - pandas
 - rdkit
+- pyyaml
 - tk
+- tqdm
 - sphinx
 
 # Usage
@@ -167,42 +174,46 @@ python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/lig
 
 fingeRNAt accepts the following parameters:
 
-`-r` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; path to RNA/DNA structure; see -> [Inputs](#Inputs)
+`-r` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; path to RNA/DNA structure; see -> [Inputs](#Inputs)
 
-`[-l]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path to ligands file; see -> [Inputs](#Inputs)
+`[-l]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path to ligands file; see -> [Inputs](#Inputs)
 
-`[-f]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional Structural Interactions Fingerprint (SIFt) type; see -> [SIFt types](#structural-interaction-fingerprints-sift-types)
+`[-f]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional Structural Interactions Fingerprint (SIFt) type; see -> [SIFt types](#structural-interaction-fingerprints-sift-types)
 
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   available types are: `FULL` [default], &nbsp;&nbsp;`SIMPLE`, &nbsp;&nbsp;`PBS`
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; available types are: `FULL` [default], &nbsp;&nbsp;`SIMPLE`, &nbsp;&nbsp;`PBS`
 
-`[-addH]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional module name to be used to add hydrogens to ligands' structures; see -> [Additional notes](#Inputs)
+`[-addH]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional module name to be used to add hydrogens to ligands' structures; see -> [Additional notes](#Inputs)
 
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  available modules are: `OpenBabel` [default], &nbsp;&nbsp;`RDKit`, &nbsp;&nbsp;`None`  
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  available modules are: `OpenBabel` [default], &nbsp;&nbsp;`RDKit`, &nbsp;&nbsp;`None`  
 
-`[-wrapper]` &nbsp;&nbsp;&nbsp;&nbsp; optional SIFt results wrapper; see -> [Wrappers](#Wrappers)
+`[-wrapper]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional SIFt results wrapper; see -> [Wrappers](#Wrappers)
 
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   available types are: `ACUG`, &nbsp;&nbsp;`PuPy`, &nbsp;&nbsp;`Counter`
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   available types are: `ACUG`, &nbsp;&nbsp;`PuPy`, &nbsp;&nbsp;`Counter`
 
-`[-o]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional path to save output
+`[-o]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional path to save output
 
-`[-h2o]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional detection of water-mediated interactions; applies only to SIFt type `FULL` and its wrappers
-
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   if not passed, all columns containing information about water-mediated interactions are empty (`None`)
-
-`[-dha]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional Donor-Hydrogen-Acceptor angle calculation when detecting hydrogen bonds; see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
+`[-h2o]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional detection of water-mediated interactions; applies only to SIFt type `FULL` and its wrappers
 
 
-`[-print]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print detected interactions for each nucleic acid - ligand complex on screen
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   if not passed, all columns containing information about water-mediated interactions are empty (`None`)
 
-`[-detail]`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generate an additional file with detailed data on detected interactions see -> [PyMOL visualization](#pymol-visualization)
+`[-dha]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional Donor-Hydrogen-Acceptor angle calculation when detecting hydrogen bonds; see -> [1. Hydrogen Bonds](#1-hydrogen-bonds)
 
+`[-custom]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; path to yaml file with information about additional interactions to be calculated; see -> [User-defined interactions](#User-defined-interactions)
 
- `[-verbose]` &nbsp;&nbsp;&nbsp;&nbsp; provides additional information about performed calculations at the given moment
+`[-fingerDISt]` &nbsp;&nbsp;fingerDISt Distance Metrics to be calculated (fingerDISt will be directly run on the SIFts output file); 
 
- `[-debug]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; enters debug mode, see -> [Debbuging mode](#debugging-mode)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  see -> [Usage examples](#usage-examples-1)
 
- `[-h]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; show help message
+`[-print]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print detected interactions for each nucleic acid - ligand complex on screen
+
+`[-detail]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generate an additional file with detailed data on detected interactions; see -> [PyMOL visualization](#pymol-visualization)
+
+ `[-verbose]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; provides additional information about performed calculations at the given moment
+
+ `[-debug]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; enters debug mode, see -> [Debbuging mode](#debugging-mode)
+
+ `[-h]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; show help message
 
 ## Inputs
 
@@ -225,14 +236,14 @@ fingeRNAt accepts the following parameters:
     	- **only** RNA/DNA chains
         	- no water, ions, ligands
 
-   &#x1F535; if `-l` is not specified, fingeRNAt **will find all inorganic ions in the receptor file and treat them as ligands**, see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions).
+   &#x1F535; if `-l` is not specified, fingeRNAt **will find all inorganic ions in the receptor file and treat them as ligands**; see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions).
 
 **Additional notes:**
 
 - In the receptor molecule, charges on the phosphate groups do not need to be assigned (fingeRNAt always treats OP1 and OP2 atoms as negatively charged anions).
 - Receptor's residues with less than 4 atoms are not considered in calculations.
 - Input ligand molecules should have assigned desired protonation state and formal charges. Please pay attention to sdf ligand files converted from pdbqt/mol2 files, if the *formal charges* are preserved in the sdf files.
--	All the missing ligands' hydrogens will be automatically added, unless `-addH None` is passed.
+- All the missing ligands' hydrogens will be automatically added, unless `-addH None` is passed.
 - Ligands with added hydrogens will be saved to a new sdf file (to the same directory as input) with `_OB_addedH` or `_RDKit_addedH` suffix, depending on the selected module for `-addH`; for `-addH None` no new sdf file will be saved, as it does not add hydrogens.
 
 ## Structural Interaction Fingerprint (SIFt) types
@@ -258,6 +269,8 @@ fingeRNAt allows to calculate the following SIFt types:
 	* lipophilic (lipophilic\_mediated)
 
 	&#x1F536;Returns twelve 0/1 values for each residue.
+	
+> **_NOTE:_** It is possible to calculate more interactions specified by the user; see -> [User-defined interactions](#User-defined-interactions)
 
 - `SIMPLE`
 
@@ -288,18 +301,91 @@ As the aforementioned interactions are detected based on contacts, **only SIFt t
 
 see -> [3d2v.pdb_IONS_SIMPLE.tsv](example_outputs/3d2v.pdb_IONS_SIMPLE.tsv)
 
+## User-defined interactions
 
-## User defined thresholds
+The user may provide additional multiple interactions to be calculated in the form of up to 2 SMARTS ([SMILES arbitrary target specification](https://en.wikipedia.org/wiki/SMILES_arbitrary_target_specification)) for both receptor and ligand, passed in the YAML file (see -> [YAML template](#yaml-template)). 
+
+The interactions will be added as new columns to the standard SIFts outputs (works also with all the wrappers) or as new rows to `-detail` outputs.
+
+> **_NOTE:_** Additional interactions can be calculated only for the fingerprint type `FULL`. 
+
+### Interaction types
+
+**1. Contact between defined atoms**
+
+   Given:
+
+   - 1 SMARTS for the receptor
+   - 1 SMARTS for the ligand
+   - minimum and maximum distance
+
+   Detects atoms fulfilling SMARTS conditions for the receptor and all ligands, checks if distance between each pair of such atoms is within the provided distance range. If so, the interaction is detected.
+
+**2. Contact between defined atoms and angle**
+    
+   *Variant 1*
+   
+   Given:
+   
+   - 1 SMARTS for the receptor
+   - 2 SMARTS for the ligand
+   - minimum and maximum distance
+   - minimum and maximum angle
+   
+   Detects atoms fulfilling SMARTS conditions for the receptor and all ligands. 
+   
+   Checks if distance between atoms fulfilling receptor's SMARTS and first ligand's SMARTS is within the provided distance range. If so, the angle between the three atoms is calculated. If it's value is within the provided angle range, the interaction is detected.
+    
+  *Variant 2*
+   
+   Given:
+      
+   - 2 SMARTS for the receptor
+   - 1 SMARTS for the ligand
+   - minimum and maximum distance
+   - minimum and maximum angle
+   
+   Detects atoms fulfilling SMARTS conditions for the receptor and all ligands. 
+   
+   Checks if distance between atoms fulfilling receptor's second SMARTS and ligand's SMARTS is within the provided distance range. If so, the angle between the three atoms is calculated. If it's value is within the provided angle range, the interaction is detected.
+   
+**3. Contact between defined atoms and two angles**
+
+   Given:
+   
+   - 2 SMARTS for the receptor
+   - 2 SMARTS for the ligand
+   - minimum and maximum distance
+   - minimum and maximum angle no 1
+   - minimum and maximum angle no 2
+
+   Detects atoms fulfilling SMARTS conditions for the receptor and all ligands. 
+   
+   Checks if distance between atoms fulfilling receptor's second SMARTS and first ligand's SMARTS is within the provided distance range. If so, the angle between the receptor's atom 1 - receptor's atom 2 - ligand's atom 1 is calculated. 
+   
+   If it's value is within the provided angle no 1 range, the angle between the receptor's atom 2 - ligand's atom 1 - ligand's atom 2 is calculated. If it's value is within the provided angle no 2 range, the interaction is detected.
+
+> **_NOTE:_** If atoms that do not belong to the receptor (e.g. ions/water present in the structure) will be found for any of the receptor's SMARTS, or atoms belonging to receptor's residue with < 4 atoms, they will not be considered. 
+
+> **_NOTE 2:_** In case two SMARTS are given for the receptor/ligand, receptor's atom 1 and receptor's atom 2 (and/or ligand's atom 1 and ligand's atom 2) will be considered only if bound (this will be detected by the fingeRNAt).
+
+### YAML template
+
+Each interaction title will be used as interaction name in the proper column of SIFt outputs or as *Interaction* in `-detail` output.
+
+See example YAML file -> [custom-interactions.yaml](example_inputs/custom-interactions.yaml)
+
+## User-defined thresholds
 
 All the default thresholds can be changed in `code/config.py`
 
 ## Outputs
 
-Calculated SIFt are saved to tsv files - a simple text format similar to csv, except for the data being tab-separated instead of comma-separated.
+Outputs are saved to tsv files. Tsv is a simple text format similar to csv, except for the data being tab-separated instead of comma-separated.
 
 If fingeRNAT was run without optional parameter `-o`, script will create `outputs/` directory in the working directory and save there the output in tsv format. Otherwise fingeRNAt will save outputs in the user-specified location.
 
-Example outputs for SIFt types and their wrappers are available from `fingeRNAt/example_outputs`.
+Example outputs for different SIFt types, their wrappers and `-detail` are available from `fingeRNAt/example_outputs`.
 
 ### `FULL`
 <br/>
@@ -315,6 +401,8 @@ Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/
 see -> [1aju_model1.pdb_ligands.sdf_FULL.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_FULL.tsv)
 
 > **_NOTE:_** If fingeRNAt was called without `-h2o` parameter, all columns containing information about water-mediated interactions are empty (`None`) (applies also for wrappers; (see -> ['Parameters description'](#parameters-description))).
+
+with user-defined interactions see ->  
 
 ### `SIMPLE`
 
@@ -456,6 +544,10 @@ Dedicated PyMOL plugin was created to visualize detected interactions based on `
 
  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -print`
 
+- Calculate SIFt `FULL` with user-defined interactions and table containing details on each detected interaction with the default filenames in the `outputs` directory.
+
+ `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -custom example_inputs/custom-interactions.yaml -detail`
+
 - Calculate SIFt `SIMPLE` and save the output in the user-declared location with the default filename.
 
  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE -o /path/to/my_output/`
@@ -472,7 +564,7 @@ Dedicated PyMOL plugin was created to visualize detected interactions based on `
 
  `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -h2o -wrapper ACUG,PuPy,Counter`
 
-- Calculate SIFt for nucleic acid - inorganic ions from the same pdb input file (see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions))
+- Calculate SIFt for nucleic acid - inorganic ions from the same pdb input file (see -> [Interactions with inorganic ions](#interactions-with-inorganic-ions)).
 
  `python code/fingeRNAt.py -r example_inputs/3d2v.pdb -f PBS`
 
@@ -508,11 +600,13 @@ Debugging mode may be used with each SIFt type and provides the following inform
   5. IDs of inorganic ions in electrostatic contact with ligand_name_detail
   6. IDs of water molecules in contact with ligand
   7. atom indices of lipophilic atoms
+  8. atom indices for each user defined-interactions (single atoms if 1 SMARTS for ligand and tuples if 2 SMARTS for ligand were passed)
 
   Prints the following **properties for each residue** of nucleic acid:
   1. atom IDs of hydrogen bonds acceptors & donors
   2. atom IDs of anions
   3. atom IDs of aromatic rings
+  4. atom IDs for each user defined-interactions (single atoms if 1 SMARTS for receptor and tuples if 2 SMARTS for receptor were passed)
 
   Prints **detected interactions** for pair of each nucleic acid residue - ligand:
   1. atoms creating hydrogen bond with their distance and angle (if parameter `-dha` was passed), separately for cases when nucleic acid is hydrogen bond acceptor and hydrogen bond donor
@@ -520,12 +614,13 @@ Debugging mode may be used with each SIFt type and provides the following inform
   3. atoms creating cation-anion interaction with their distance (note that nucleic acid's atoms are anions)
   4. atoms creating Pi-cation interaction with their distance and angle
   5. atoms creating Pi-anion interaction with their distance and angle (note that ligand's atoms are anions)
-	6. atoms creating anion-Pi interaction with their distance and angle (note that nucleic acid's atoms are anions)
+  6. atoms creating anion-Pi interaction with their distance and angle (note that nucleic acid's atoms are anions)
   7. atoms creating Pi-stacking interaction type Sandwich/Displaced with their distance, offset and angle
   8. atoms creating Pi-stacking interaction type T-shaped with their distance, offset and angle
-	9. atoms creating ion-mediated interaction with their distances (nucleic acid - ion & ion - ligand)
-	10. atoms creating water-mediated interaction with their distances (nucleic acid - water & water - ligand)
-	11. atoms creating lipophilic interaction with their distance
+  9. atoms creating ion-mediated interaction with their distances (nucleic acid - ion & ion - ligand)
+  10. atoms creating water-mediated interaction with their distances (nucleic acid - water & water - ligand)
+  11. atoms creating lipophilic interaction with their distance
+  12. atoms creating each user-defined interaction with their distance and/or angle(s)
 
 - `SIMPLE`
 
@@ -661,9 +756,7 @@ Some of a Distance Metrics calculations were implemented based on code [github.c
 
 > **_NOTE 2:_** It automatically replaces `None` with 0, meaning that Distance Metrics can be calculated for SIFt type `FULL`, which was called without `-h2o` parameter.
 
-> **_NOTE 3_**. **Tversky coefficient** is not symmetric. By default, in the resulting matrix, the reference molecules are in columns, while compared molecules in rows. Also it has a hard-coded α and β coefficients with a widely used values of α=1 and β=0 (eg., see: Leung et al. "SuCOS is Better than RMSD for Evaluating Fragment Elaboration and Docking Poses"). To modify this behaviour or coefficient values, please modify the function `tversky(self, p_vec, q_vec)` in the `code/DistanceMetrics.py` module.
-
-
+> **_NOTE 3:_**. **Tversky coefficient** is not symmetric. By default, in the resulting matrix, the reference molecules are in columns, while compared molecules in rows. Also it has a hard-coded α and β coefficients with a widely used values of α=1 and β=0 (eg., see: Leung et al. "SuCOS is Better than RMSD for Evaluating Fragment Elaboration and Docking Poses"). To modify this behaviour or coefficient values, please modify the function `tversky(self, p_vec, q_vec)` in the `code/DistanceMetrics.py` module.
 
 ### Outputs
 
@@ -679,18 +772,21 @@ Sample output of running `python code/fingerDISt.py -i tests/expected_outputs/1a
 
 ### Usage examples
 
-- Calculate all available Distance Metrics on SIFs inputs type `FULL` and save the output with the default filename in the `outputs` directory.
+- Calculate all available Distance Metrics on SIFts inputs type `FULL` and save the output with the default filename in the `outputs` directory.
 
 `python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_FULL.tsv -m manhattan,square_euclidean,euclidean,half_square_euclidean,cosine_similarity,tanimoto,soergel,tversky`
 
-- Calculate two Distance Metrics on SIFs inputs type `PBS` wrapped with `ACUG` wrapper and save the output to user-specified location with the default filename.
+- Calculate two Distance Metrics on SIFts inputs type `PBS` wrapped with `ACUG` wrapper and save the output to user-specified location with the default filename.
 
 `python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_PBS_ACUG.tsv -m manhattan,square_euclidean -o my_dir/`
 
-- Calculate one Distance Metric on SIFs inputs type `SIMPLE`, print it on the screen and save the output to the user-specified location.
+- Calculate one Distance Metric on SIFts inputs type `SIMPLE`, print it on the screen and save the output to the user-specified location.
 
 `python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_SIMPLE.tsv -m tanimoto -verbose -o my_dir/my_filename/`
 
+- Call fingerDISt directly from the fingeRNAt (will calculate the passed Distance Metrics on the calculated SIFts output (however not any wrapped one) and save the result in the same location).
+
+`python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -fingerDISt tanimoto,tversky`
 
 # Documentation
 
