@@ -388,7 +388,6 @@ If fingeRNAT was run without optional parameter `-o`, script will create `output
 Example outputs for different SIFt types, their wrappers and `-detail` are available from `fingeRNAt/example_outputs`.
 
 ### `FULL`
-<br/>
 
 <p align="center">
 <img src="docs/README_pics/full.png" width="900" />
@@ -412,9 +411,6 @@ with user-defined interactions see ->
 
 Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f SIMPLE`
 
-
-<br/>
-
 **Sample output**
 
 see -> [1aju_model1.pdb_ligands.sdf_SIMPLE.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_SIMPLE.tsv)
@@ -427,7 +423,6 @@ see -> [1aju_model1.pdb_ligands.sdf_SIMPLE.tsv](example_outputs/1aju_model1.pdb_
 
 Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS`
 
-<br/>
 
 **Sample output**
 
