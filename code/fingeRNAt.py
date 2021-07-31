@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 
 '''
-fingeRNAt is a software to calculate Structural Interaction Fingerprint (SIFt) in
-nucleic acids - ligands complexes.
+fingeRNAt is a software tool for detecting non-covalent interactions formed within complexes of nucleic acids with ligands.
+
+Interactions are encoded and saved i.e. in the form of bioinformatic-friendly Structural Interaction Fingerprint (SIFt) - a binary string, where the respective bit in the fingerprint is set to 1 in case of a presence of a particular interaction and to 0 otherwise.
+This enables high-throughput analysis of the interaction data using data analysis techniques.
 
 Authors:\n
 Natalia A. Szulc, nszulc@iimcb.gov.pl\n
