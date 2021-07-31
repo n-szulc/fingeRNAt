@@ -78,7 +78,7 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 
 # Overview
 
-fingeRNAt is a a Python 3.8  software tool for detecting non-covalent interactions formed within complexes of nucleic acids with ligands. 
+fingeRNAt is a a Python 3.8  software tool for detecting non-covalent interactions formed within complexes of nucleic acids with ligands.
 
 Interactions are encoded and saved i.e. in the form of bioinformatic-friendly **Structural Interaction Fingerprint (SIFt)** - a binary string, where the respective bit in the fingerprint is set to 1 in case of a presence of a particular interaction and to 0 otherwise. This enables **high-throughput analysis** of the interaction data using data analysis techniques.
 
@@ -201,7 +201,7 @@ fingeRNAt accepts the following parameters:
 
 `[-custom]` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; path to yaml file with information about additional interactions to be calculated; see -> [User-defined interactions](#User-defined-interactions)
 
-`[-fingerDISt]` &nbsp;&nbsp;fingerDISt Distance Metrics to be calculated (fingerDISt will be directly run on the SIFts output file); 
+`[-fingerDISt]` &nbsp;&nbsp;fingerDISt Distance Metrics to be calculated (fingerDISt will be directly run on the SIFts output file);
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  see -> [Usage examples](#usage-examples-1)
 
@@ -269,7 +269,7 @@ fingeRNAt allows to calculate the following SIFt types:
 	* lipophilic (lipophilic\_mediated)
 
 	&#x1F536;Returns twelve 0/1 values for each residue.
-	
+
 > **_NOTE:_** It is possible to calculate more interactions specified by the user; see -> [User-defined interactions](#User-defined-interactions)
 
 - `SIMPLE`
@@ -303,11 +303,11 @@ see -> [3d2v.pdb_IONS_SIMPLE.tsv](example_outputs/3d2v.pdb_IONS_SIMPLE.tsv)
 
 ## User-defined interactions
 
-The user may provide additional multiple interactions to be calculated in the form of up to 2 SMARTS ([SMILES arbitrary target specification](https://en.wikipedia.org/wiki/SMILES_arbitrary_target_specification)) for both receptor and ligand, passed in the YAML file (see -> [YAML template](#yaml-template)). 
+The user may provide additional multiple interactions to be calculated in the form of up to 2 SMARTS ([SMILES arbitrary target specification](https://en.wikipedia.org/wiki/SMILES_arbitrary_target_specification)) for both receptor and ligand, passed in the YAML file (see -> [YAML template](#yaml-template)).
 
 The interactions will be added as new columns to the standard SIFts outputs (works also with all the wrappers) or as new rows to `-detail` outputs.
 
-> **_NOTE:_** Additional interactions can be calculated only for the fingerprint type `FULL`. 
+> **_NOTE:_** Additional interactions can be calculated only for the fingerprint type `FULL`.
 
 ### Interaction types
 
@@ -322,50 +322,50 @@ The interactions will be added as new columns to the standard SIFts outputs (wor
    Detects atoms fulfilling SMARTS conditions for the receptor and all ligands, checks if distance between each pair of such atoms is within the provided distance range. If so, the interaction is detected.
 
 **2. Contact between defined atoms and angle**
-    
+
    *Variant 1*
-   
+
    Given:
-   
+
    - 1 SMARTS for the receptor
    - 2 SMARTS for the ligand
    - minimum and maximum distance
    - minimum and maximum angle
-   
-   Detects atoms fulfilling SMARTS conditions for the receptor and all ligands. 
-   
+
+   Detects atoms fulfilling SMARTS conditions for the receptor and all ligands.
+
    Checks if distance between atoms fulfilling receptor's SMARTS and first ligand's SMARTS is within the provided distance range. If so, the angle between the three atoms is calculated. If it's value is within the provided angle range, the interaction is detected.
-    
+
   *Variant 2*
-   
+
    Given:
-      
+
    - 2 SMARTS for the receptor
    - 1 SMARTS for the ligand
    - minimum and maximum distance
    - minimum and maximum angle
-   
-   Detects atoms fulfilling SMARTS conditions for the receptor and all ligands. 
-   
+
+   Detects atoms fulfilling SMARTS conditions for the receptor and all ligands.
+
    Checks if distance between atoms fulfilling receptor's second SMARTS and ligand's SMARTS is within the provided distance range. If so, the angle between the three atoms is calculated. If it's value is within the provided angle range, the interaction is detected.
-   
+
 **3. Contact between defined atoms and two angles**
 
    Given:
-   
+
    - 2 SMARTS for the receptor
    - 2 SMARTS for the ligand
    - minimum and maximum distance
    - minimum and maximum angle no 1
    - minimum and maximum angle no 2
 
-   Detects atoms fulfilling SMARTS conditions for the receptor and all ligands. 
-   
-   Checks if distance between atoms fulfilling receptor's second SMARTS and first ligand's SMARTS is within the provided distance range. If so, the angle between the receptor's atom 1 - receptor's atom 2 - ligand's atom 1 is calculated. 
-   
+   Detects atoms fulfilling SMARTS conditions for the receptor and all ligands.
+
+   Checks if distance between atoms fulfilling receptor's second SMARTS and first ligand's SMARTS is within the provided distance range. If so, the angle between the receptor's atom 1 - receptor's atom 2 - ligand's atom 1 is calculated.
+
    If it's value is within the provided angle no 1 range, the angle between the receptor's atom 2 - ligand's atom 1 - ligand's atom 2 is calculated. If it's value is within the provided angle no 2 range, the interaction is detected.
 
-> **_NOTE:_** If atoms that do not belong to the receptor (e.g. ions/water present in the structure) will be found for any of the receptor's SMARTS, or atoms belonging to receptor's residue with < 4 atoms, they will not be considered. 
+> **_NOTE:_** If atoms that do not belong to the receptor (e.g. ions/water present in the structure) will be found for any of the receptor's SMARTS, or atoms belonging to receptor's residue with < 4 atoms, they will not be considered.
 
 > **_NOTE 2:_** In case two SMARTS are given for the receptor/ligand, receptor's atom 1 and receptor's atom 2 (and/or ligand's atom 1 and ligand's atom 2) will be considered only if bound (this will be detected by the fingeRNAt).
 
@@ -391,7 +391,7 @@ Example outputs for different SIFt types, their wrappers and `-detail` are avail
 <br/>
 
 <p align="center">
-<img src="docs/README_pics/full.png" width="900" />
+<img src="docs/README_pics/FULL.png" width="900" />
 </p>
 
 Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -h2o`
