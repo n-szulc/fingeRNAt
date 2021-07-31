@@ -446,9 +446,9 @@ The following three types of wrappers are available:
 
 	Wraps calculated results according to nucleotide. Provides information if particular kind of interaction between e.g. any adenine from RNA/DNA and ligand occurred.
 
-	<p align="center">
-	<img src="docs/README_pics/PBS_ACUG.png" width="900" />
-	</p>
+<p align="center">
+<img src="docs/README_pics/PBS_ACUG.png" width="900" />
+</p>
 
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -wrapper ACUG`
 
@@ -461,9 +461,9 @@ The following three types of wrappers are available:
 
 	Wraps calculated results according to nucleobase type (purine or pyrimidyne). Provides information if particular kind of interaction between e.g. any purine from RNA/DNA and ligand occurred.
 
-	<p align="center">
-	<img src="docs/README_pics/FULL_PuPy.png" width="900" />
-	</p>
+<p align="center">
+<img src="docs/README_pics/FULL_PuPy.png" width="900" />
+</p>
 
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper PuPy`
 
@@ -477,9 +477,9 @@ The following three types of wrappers are available:
 
 	Counts total number of given interaction type.
 
-	<p align="center">
-	<img src="docs/README_pics/FULL_Counter.png" width="900" />
-	</p>
+<p align="center">
+<img src="docs/README_pics/FULL_Counter.png" width="900" />
+</p>
 
 	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper Counter`
 
