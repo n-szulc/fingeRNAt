@@ -442,50 +442,50 @@ Multiple wrappers may be passed at once (comma-separated; see -> ['Usage example
 
 The following three types of wrappers are available:
 
-- `ACUG`
+### `ACUG`
 
-	Wraps calculated results according to nucleotide. Provides information if particular kind of interaction between e.g. any adenine from RNA/DNA and ligand occurred.
+Wraps calculated results according to nucleotide. Provides information if particular kind of interaction between e.g. any adenine from RNA/DNA and ligand occurred.
 
-	<p align="center">
-	<img src="docs/README_pics/PBS_ACUG.png" width="900" />
-	</p>
+<p align="center">
+<img src="docs/README_pics/PBS_ACUG.png" width="900" />
+</p>
 
-	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -wrapper ACUG`
+Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -f PBS -wrapper ACUG`
 
-	**Sample output**
+**Sample output**
 
-	see -> [1aju_model1.pdb_ligands.sdf_FULL_ACUG.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_FULL_ACUG.tsv)
+see -> [1aju_model1.pdb_ligands.sdf_FULL_ACUG.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_FULL_ACUG.tsv)
 
 
-- `PuPy`
+### `PuPy`
 
-	Wraps calculated results according to nucleobase type (purine or pyrimidyne). Provides information if particular kind of interaction between e.g. any purine from RNA/DNA and ligand occurred.
+Wraps calculated results according to nucleobase type (purine or pyrimidyne). Provides information if particular kind of interaction between e.g. any purine from RNA/DNA and ligand occurred.
 
-	<p align="center">
-	<img src="docs/README_pics/FULL_PuPy.png" width="900" />
-	</p>
+<p align="center">
+<img src="docs/README_pics/FULL_PuPy.png" width="900" />
+</p>
 
-	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper PuPy`
+Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper PuPy`
 
-	**Sample output**
+**Sample output**
 
-	see -> [1aju_model1.pdb_ligands.sdf_FULL_PuPy.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_FULL_PuPy.tsv)
+see -> [1aju_model1.pdb_ligands.sdf_FULL_PuPy.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_FULL_PuPy.tsv)
 
 > **_NOTE:_**  As `-h2o` parameter was not passed, the columns containing information about water-mediated interactions are empty (`None`) (see -> ['Parameters description'](#parameters-description)).
 
-- `Counter`
+### `Counter`
 
-	Counts total number of given interaction type.
+Counts total number of given interaction type.
 
-	<p align="center">
-	<img src="docs/README_pics/FULL_Counter.png" width="900" />
-	</p>
+<p align="center">
+<img src="docs/README_pics/FULL_Counter.png" width="900" />
+</p>
 
-	Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper Counter`
+Sample extract of output of running `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -wrapper Counter`
 
-	**Sample output**
+**Sample output**
 
-	see -> [1aju_model1.pdb_ligands.sdf_FULL_Counter.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_FULL_Counter.tsv)
+see -> [1aju_model1.pdb_ligands.sdf_FULL_Counter.tsv](example_outputs/1aju_model1.pdb_ligands.sdf_FULL_Counter.tsv)
 
 > **_NOTE:_**  As -h2o parameter was not passed, the columns containing information about water-mediated interactions are empty (`None`) (see -> ['Parameters description'](#parameters-description))
 
