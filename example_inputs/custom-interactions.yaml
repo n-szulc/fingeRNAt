@@ -1,5 +1,9 @@
 ### Template for the new interaction:
 
+### The theory of SMARTS:
+### https://www.daylight.com/dayhtml/doc/theory/theory.smarts.html
+### https://www.daylight.com/dayhtml_tutorials/languages/smarts/smarts_examples.html
+
 
 ### DISTANCE ONLY INTERACTIONS
 ### provide two SMARTS patterns defining two atoms
@@ -57,6 +61,41 @@
 
 
 ### -------------------------------------------------------------------------------- ###
+
+
+# any contact between NA and ligand (finds all atoms but hydrogens)
+any_contact:
+  Receptor_SMARTS:
+    - '[!#1]'
+  Ligand_SMARTS:
+    - '[!#1]'
+  Distance:
+    min: 0.5
+    max: 3.5
+
+
+# cation - anion interactions
+# (for debugging, comment out later)
+cation-anion_debug:
+  Receptor_SMARTS:
+    - '[-]'
+  Ligand_SMARTS:
+    - '[+]'
+  Distance:
+    min: 0.5
+    max: 5.5
+
+
+# Nucleic acid - amino-acid
+# any contact between any nucleic acid atom and amino acid war-head moiety as a ligand
+NA-AA:
+  Receptor_SMARTS:
+    - '[!#1]'
+  Ligand_SMARTS:
+    - '[NX3,NX4+][CX4H]([*])[CX3](=[OX1])[O,N]'
+  Distance:
+    min: 0.5
+    max: 3.5
 
 
 # polar interactions, i.e., hydrogen bonds without angle restraints
