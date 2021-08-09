@@ -193,3 +193,29 @@ weak_hbond_D:Lig_A:NA:
   Angle:
     min: 140
     max: 180
+
+
+
+
+
+# Halogen bond, for debugging
+# C-X...A-A'
+
+halogen_bond:
+  Receptor_SMARTS:
+    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # A - HBA
+    - '[!#1]'                                                           # A' - any atom but hydrogen
+  Ligand_SMARTS:
+    - '[Cl,Br,I;X1;$([Cl,Br,I]-[#6])]'                                  # X
+    - '[#6]'                                                            # any C
+  Distance:
+    min: 0.5
+    max: 4
+  Angle:
+    min:
+    max:
+
+# MAX_HAL_DIST = 4.0
+# HALOGEN_ACC_ANGLE = 165.0  # Preffered Donor-Halogen-Acceptor angle in Halogen Bond (Auffinger et al., 2004)
+# HALOGEN_DON_ANGLE = 120.0 # Preffered Halogen-Acceptor-Acceptor' angle in Halogen Bond (Auffinger et al., 2004)
+# HALOGEN_ANGLE_DEV = 30.0 # Tolerated halogen angles deviation
