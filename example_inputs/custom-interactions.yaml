@@ -40,7 +40,7 @@
 #   Distance:
 #     min: 0.5                    # minimum distance cutoff, Å
 #     max: 3.5                    # maximum distance cutoff, Å
-#   Angle:
+#   Angle1:
 #     min: 140                    # minimum angle, degrees
 #     max: 180                    # maximum angle, degrees
 
@@ -55,151 +55,151 @@
 #   Distance:
 #     min: 0.5                    # minimum distance cutoff, Å
 #     max: 3.5                    # maximum distance cutoff, Å
-#   Angle:
+#   Angle1:
 #     min: 140                    # minimum angle, degrees
 #     max: 180                    # maximum angle, degrees
 
 
 ### -------------------------------------------------------------------------------- ###
 
-
-# any contact between NA and ligand (finds all atoms but hydrogens)
-any_contact:
-  Receptor_SMARTS:
-    - '[!#1]'
-  Ligand_SMARTS:
-    - '[!#1]'
-  Distance:
-    min: 0.5
-    max: 3.5
-
-
-# cation - anion interactions
-# (for debugging, comment out later)
-cation-anion_debug:
-  Receptor_SMARTS:
-    - '[-]'
-  Ligand_SMARTS:
-    - '[+]'
-  Distance:
-    min: 0.5
-    max: 5.5
+#
+# # any contact between NA and ligand (finds all atoms but hydrogens)
+# any_contact:
+#   Receptor_SMARTS:
+#     - '[!#1]'
+#   Ligand_SMARTS:
+#     - '[!#1]'
+#   Distance:
+#     min: 0.5
+#     max: 3.5
 
 
-# Nucleic acid - amino-acid
-# any contact between any nucleic acid atom and amino acid war-head moiety as a ligand
-NA-AA:
-  Receptor_SMARTS:
-    - '[!#1]'
-  Ligand_SMARTS:
-    - '[NX3,NX4+][CX4H]([*])[CX3](=[OX1])[O,N]'
-  Distance:
-    min: 0.5
-    max: 3.5
-
-
-# polar interactions, i.e., hydrogen bonds without angle restraints
-polar_D:Lig_A:NA:
-  Receptor_SMARTS:
-    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
-  Ligand_SMARTS:
-    - '[N!H0v3,N!H0+v4,OH+0,SH+0,nH+0]'
-  Distance:
-    min: 0.5
-    max: 3.5
-
-# polar interactions, i.e., hydrogen bonds without angle restraints
-polar_D:NA_A:Lig:
-  Receptor_SMARTS:
-    - '[N!H0v3,N!H0+v4,OH+0,SH+0,nH+0]'
-  Ligand_SMARTS:
-    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
-  Distance:
-    min: 0.5
-    max: 3.5
-
-# weak polar interactions, i.e., weak hydrogen bonds without angle restraints
-# C–H···O interaction
-weak_polar_D:Lig_A:NA:
-  Receptor_SMARTS:
-    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
-  Ligand_SMARTS:
-    - '[#6!H0]'
-  Distance:
-    min: 0.5
-    max: 3.5
-
-# weak polar interactions, i.e., weak hydrogen bonds without angle restraints
-# C–H···O interaction
-weak_polar_D:NA_A:Lig:
-  Receptor_SMARTS:
-    - '[#6!H0]'
-  Ligand_SMARTS:
-    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
-  Distance:
-    min: 0.5
-    max: 3.5
-
-
-# carbonyl-carbonyl
-# Acta Cryst. (1998). B54, 320-329 doi: 10.1107/S0108768198001463
-# J Mol Biol. 2017 Feb 3; 429(3): 365–371. doi: 10.1016/j.jmb.2016.12.004
-# n→π* Interactions Are Competitive with Hydrogen Bonds.
-#     DOI:10.1021/acs.orglett.6b01655Corpus ID: 45227553
-
-carbonyl_interaction:
-  Receptor_SMARTS:
-    - '[$([OH0]=[CX3,c]);!$([OH0]=[CX3,c]-[OH,O-])]'   # carbonyl oxygen
-  Ligand_SMARTS:
-    - '[$([CX3,c]=[OH0]);!$([CX3,c](=[OH0])-[OH,O-])]' # carbonyl carbon
-  Distance:
-    min: 0.5              # minimum distance cutoff, Å
-    max: 3.6              # maximum distance cutoff, Å
-
-
-
-### -------------------------------------------------------------------------------- ###
-
-# Distance and angle
-
-# weak hydrogen bonds (C–H···O interaction) with an angle term
-# J. Am. Chem. Soc. 1999, 121, 9411-9422
-# Nucleic acid as donor, ligand as acceptor
-weak_hbond_D:NA_A:Lig:
-  Receptor_SMARTS:
-    - '[!H0;#7,#8,#9]'            # heavy atoms in hydrogen bond donors
-    - '[$([#1][!H0;#7,#8,#9])]'   # hydrogens in hydrogen bond donors
-  Ligand_SMARTS:
-    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
-  Distance:
-    min: 0.5
-    max: 3.5
-  Angle:
-    min: 140
-    max: 180
-
-# weak hydrogen bonds (C–H···O interaction) with an angle term
-# J. Am. Chem. Soc. 1999, 121, 9411-9422
-# Nucleic acid as acceptor, ligand as donor
-weak_hbond_D:Lig_A:NA:
-  Receptor_SMARTS:
-    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
-  Ligand_SMARTS:
-    - '[$([#1][!H0;#7,#8,#9])]'   # hydrogens in hydrogen bond donors
-    - '[!H0;#7,#8,#9]'            # heavy atoms in hydrogen bond donors
-  Distance:
-    min: 0.5
-    max: 3.5
-  Angle:
-    min: 140
-    max: 180
-
-
-
-
-
-# Halogen bond, for debugging
-# C-X...A-A'
+# # cation - anion interactions
+# # (for debugging, comment out later)
+# cation-anion_debug:
+#   Receptor_SMARTS:
+#     - '[-]'
+#   Ligand_SMARTS:
+#     - '[+]'
+#   Distance:
+#     min: 0.5
+#     max: 5.5
+#
+#
+# # Nucleic acid - amino-acid
+# # any contact between any nucleic acid atom and amino acid war-head moiety as a ligand
+# NA-AA:
+#   Receptor_SMARTS:
+#     - '[!#1]'
+#   Ligand_SMARTS:
+#     - '[NX3,NX4+][CX4H]([*])[CX3](=[OX1])[O,N]'
+#   Distance:
+#     min: 0.5
+#     max: 3.5
+#
+#
+# # polar interactions, i.e., hydrogen bonds without angle restraints
+# polar_D:Lig_A:NA:
+#   Receptor_SMARTS:
+#     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
+#   Ligand_SMARTS:
+#     - '[N!H0v3,N!H0+v4,OH+0,SH+0,nH+0]'
+#   Distance:
+#     min: 0.5
+#     max: 3.5
+#
+# # polar interactions, i.e., hydrogen bonds without angle restraints
+# polar_D:NA_A:Lig:
+#   Receptor_SMARTS:
+#     - '[N!H0v3,N!H0+v4,OH+0,SH+0,nH+0]'
+#   Ligand_SMARTS:
+#     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
+#   Distance:
+#     min: 0.5
+#     max: 3.5
+#
+# # weak polar interactions, i.e., weak hydrogen bonds without angle restraints
+# # C–H···O interaction
+# weak_polar_D:Lig_A:NA:
+#   Receptor_SMARTS:
+#     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
+#   Ligand_SMARTS:
+#     - '[#6!H0]'
+#   Distance:
+#     min: 0.5
+#     max: 3.5
+#
+# # weak polar interactions, i.e., weak hydrogen bonds without angle restraints
+# # C–H···O interaction
+# weak_polar_D:NA_A:Lig:
+#   Receptor_SMARTS:
+#     - '[#6!H0]'
+#   Ligand_SMARTS:
+#     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
+#   Distance:
+#     min: 0.5
+#     max: 3.5
+#
+#
+# # carbonyl-carbonyl
+# # Acta Cryst. (1998). B54, 320-329 doi: 10.1107/S0108768198001463
+# # J Mol Biol. 2017 Feb 3; 429(3): 365–371. doi: 10.1016/j.jmb.2016.12.004
+# # n→π* Interactions Are Competitive with Hydrogen Bonds.
+# #     DOI:10.1021/acs.orglett.6b01655Corpus ID: 45227553
+#
+# carbonyl_interaction:
+#   Receptor_SMARTS:
+#     - '[$([OH0]=[CX3,c]);!$([OH0]=[CX3,c]-[OH,O-])]'   # carbonyl oxygen
+#   Ligand_SMARTS:
+#     - '[$([CX3,c]=[OH0]);!$([CX3,c](=[OH0])-[OH,O-])]' # carbonyl carbon
+#   Distance:
+#     min: 0.5              # minimum distance cutoff, Å
+#     max: 3.6              # maximum distance cutoff, Å
+#
+#
+#
+# ### -------------------------------------------------------------------------------- ###
+#
+# # Distance and angle
+#
+# # weak hydrogen bonds (C–H···O interaction) with an angle term
+# # J. Am. Chem. Soc. 1999, 121, 9411-9422
+# # Nucleic acid as donor, ligand as acceptor
+# weak_hbond_D:NA_A:Lig:
+#   Receptor_SMARTS:
+#     - '[!H0;#7,#8,#9]'            # heavy atoms in hydrogen bond donors
+#     - '[$([#1][!H0;#7,#8,#9])]'   # hydrogens in hydrogen bond donors
+#   Ligand_SMARTS:
+#     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
+#   Distance:
+#     min: 0.5
+#     max: 3.5
+#   Angle1:
+#     min: 140
+#     max: 180
+#
+# # weak hydrogen bonds (C–H···O interaction) with an angle term
+# # J. Am. Chem. Soc. 1999, 121, 9411-9422
+# # Nucleic acid as acceptor, ligand as donor
+# weak_hbond_D:Lig_A:NA:
+#   Receptor_SMARTS:
+#     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
+#   Ligand_SMARTS:
+#     - '[$([#1][!H0;#7,#8,#9])]'   # hydrogens in hydrogen bond donors
+#     - '[!H0;#7,#8,#9]'            # heavy atoms in hydrogen bond donors
+#   Distance:
+#     min: 0.5
+#     max: 3.5
+#   Angle1:
+#     min: 140
+#     max: 180
+#
+#
+#
+#
+#
+# # Halogen bond, for debugging
+# # C-X...A-A'
 
 halogen_bond:
   Receptor_SMARTS:
@@ -211,9 +211,12 @@ halogen_bond:
   Distance:
     min: 0.5
     max: 4
-  Angle:
-    min:
-    max:
+  Angle1:
+    min: 135
+    max: 195
+  Angle2:
+    min: 90
+    max: 150
 
 # MAX_HAL_DIST = 4.0
 # HALOGEN_ACC_ANGLE = 165.0  # Preffered Donor-Halogen-Acceptor angle in Halogen Bond (Auffinger et al., 2004)
