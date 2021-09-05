@@ -1483,10 +1483,15 @@ if __name__ == "__main__":
             # Get dictionary with atoms from user-defined interactions
             if new_interactions:
                 additionalInteractions = parseYaml(new_interactions)
+                for add_int in additionalInteractions: # Check if there are two SMARTS for both receptor & ligand when Angle2 is defined
+                    if 'Angle2' in additionalInteractions[add_int].keys():
+                        if len(additionalInteractions[add_int]['Receptor_SMARTS']) != 2 or len(additionalInteractions[add_int]['Ligand_SMARTS']) != 2:
+                            raise Exception('Improperly defined {} in the yaml file!'.format(add_int))
+
                 FUNCTIONS[fingerprint] += len(additionalInteractions.keys())
                 dict_rna_coords_to_res_ids = rna_coords_residue_index_dict(structure)
                 user_defined_all_atoms = find_atoms_from_SMARTS(structure, ligands_mols, additionalInteractions, dict_rna_coords_to_res_ids, verbose)
-
+                print(user_defined_all_atoms)
                 if debug:
                     for k in user_defined_all_atoms.keys():
                         user_def_receptor_atoms[k] = {}
@@ -1617,16 +1622,24 @@ if __name__ == "__main__":
                         if res_name in user_defined_all_atoms[new_interaction_type]['Receptor'].keys() and user_defined_all_atoms[new_interaction_type]['Ligands'].keys():
                             distance_min = additionalInteractions[new_interaction_type]['Distance']['min']
                             distance_max = additionalInteractions[new_interaction_type]['Distance']['max']
-                            if 'Angle' not in additionalInteractions[new_interaction_type].keys():
+                            if 'Angle1' not in additionalInteractions[new_interaction_type].keys():
                                 for ligand_name in user_defined_all_atoms[new_interaction_type]['Ligands'].keys():
                                     result = detect_user_def_interaction(res_name + ':{}'.format(residue.GetName()), user_defined_all_atoms[new_interaction_type]['Receptor'][res_name], ligand_name, user_defined_all_atoms[new_interaction_type]['Ligands'][ligand_name], new_interaction_type, distance_min, distance_max)
                                     if result[-1] != 0:
                                         assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 11+c)
                             else:
-                                angle1_min = additionalInteractions[new_interaction_type]['Angle']['min']
-                                angle1_max = additionalInteractions[new_interaction_type]['Angle']['max']
+                                angle1_min = additionalInteractions[new_interaction_type]['Angle1']['min']
+                                angle1_max = additionalInteractions[new_interaction_type]['Angle1']['max']
+
+                                if 'Angle2' in additionalInteractions[new_interaction_type].keys():
+                                    angle2_min = additionalInteractions[new_interaction_type]['Angle2']['min']
+                                    angle2_max = additionalInteractions[new_interaction_type]['Angle2']['max']
+                                else:
+                                    angle2_min = None
+                                    angle2_max = None
+
                                 for ligand_name in user_defined_all_atoms[new_interaction_type]['Ligands'].keys():
-                                    result = detect_user_def_interaction(res_name + ':{}'.format(residue.GetName()), user_defined_all_atoms[new_interaction_type]['Receptor'][res_name], ligand_name, user_defined_all_atoms[new_interaction_type]['Ligands'][ligand_name], new_interaction_type, distance_min, distance_max, angle1_min, angle1_max)
+                                    result = detect_user_def_interaction(res_name + ':{}'.format(residue.GetName()), user_defined_all_atoms[new_interaction_type]['Receptor'][res_name], ligand_name, user_defined_all_atoms[new_interaction_type]['Ligands'][ligand_name], new_interaction_type, distance_min, distance_max, angle1_min, angle1_max, angle2_min, angle2_max)
                                     if result[-1] != 0:
                                         assign_interactions_results(result, RESULTS, RNA_LENGTH, len(RNA_residues)-1, FUNCTIONS[fingerprint], 11+c)
 

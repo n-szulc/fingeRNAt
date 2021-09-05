@@ -721,6 +721,10 @@ def find_atoms_from_SMARTS(structure, mols, interactions, dict_rna_coords_to_res
             receptor_atoms2 = [id[0] for id in receptor_smarts2.findall(structure)]
             receptor_atoms2_coords = []
             for r_a2 in receptor_atoms2:
+                try:
+                    residue_alt = dict_rna_coords_to_res_ids[structure.atoms[r_a2-1].coords]
+                except KeyError: # receptor's SMARTS atom either does not belong to receptor (ion, water) or belongs to receptor's residue with < 3 atoms
+                    continue
                 receptor_atoms2_coords.append((structure.atoms[r_a2-1].coords))
 
         for r_atom in receptor_atoms:
@@ -759,7 +763,7 @@ def find_atoms_from_SMARTS(structure, mols, interactions, dict_rna_coords_to_res
                     if len(atomsList2) > 0:
                         atomsList2_coords = []
                         for l_atom2 in atomsList2:
-                            atomsList2_coords.append((structure.atoms[l_atom2-1].coords))
+                            atomsList2_coords.append((mols[i].atoms[l_atom2-1].coords))
                         for l_atom in atomsList:
                             for neighbour in pybel.ob.OBAtomAtomIter((mols[i].atoms[l_atom-1].OBAtom)):
                                 neighbour_coords = (neighbour.GetX(), neighbour.GetY(), neighbour.GetZ())
