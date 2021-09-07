@@ -669,7 +669,7 @@ def parseYaml(input_yaml):
         try:
             return yaml.safe_load(stream)
         except yaml.YAMLError as exc:
-            print(exc)
+            print("Error in the yaml file. Please check the yaml syntax.")
 
 def rna_coords_residue_index_dict(structure):
     """Creates a dictionary or nucleic acid's atoms' coords with their residue ids as values
