@@ -29,6 +29,7 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 	- [Manual installation](#manual-installation)
 - [Usage](#usage)
 	- [Quick start :zap:](#quick-start-zap)
+	- [fingeRNAt in action](#fingernat-in-action)
 	- [Parameters description](#parameters-description)
 	- [Inputs](#inputs)
 	- [Structural Interaction Fingerprint (SIFt) types](#structural-interaction-fingerprint-sift-types)
@@ -211,6 +212,13 @@ cd fingeRNAt
 
 python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf
 ```
+
+
+## fingeRNAt in action
+
+See the basic usage of the fingeRNAt
+
+[![asciicast](https://asciinema.org/a/RuGO9cWdhqJxW7DiCqW5SuD9w.svg)](https://asciinema.org/a/RuGO9cWdhqJxW7DiCqW5SuD9w?speed=1.1)
 
 ## Parameters description
 
