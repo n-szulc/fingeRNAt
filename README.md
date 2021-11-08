@@ -61,6 +61,8 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 		- [Distance Metrics](#distance-metrics)
 		- [Outputs](#outputs-1)
 		- [Usage examples](#usage-examples-1)
+- [Singularity image](#singularity-image-1)
+- [Running fingeRNAt in parallel](#running-fingernat-in-parallel)
 - [Documentation](#documentation)
 - [Unit test](#unit-test)
 - [Detection of interactions](#detection-of-interactions)
@@ -822,6 +824,42 @@ Sample output of running `python code/fingerDISt.py -i tests/expected_outputs/1a
 - Call fingerDISt directly from the fingeRNAt (will calculate the passed Distance Metrics on the calculated SIFts output (however not any wrapped one) and save the result in the same location).
 
 `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -fingerDISt tanimoto,tversky`
+
+# Singularity image
+
+fingeRNAt is also provided as a [singularity image](https://sylabs.io/singularity/). It contains two main command-line programs: `fingeRNAt.py` and `fingerDISt.py` and also (as a bonus) the openbabel tool-box.
+
+```
+# get information and the overwiew of the available commands:
+./singularity-fingernat.img
+
+# exec the fingernat:
+singularity exec ./singularity-fingernat.img fingeRNAt.py
+
+# perform some calculations:
+singularity exec ./singularity-fingernat.img fingeRNAt.py -r tests/1aju_model1.pdb -l tests/ligands.sdf -detail -verbose
+
+# use openbabel to convert ligands:
+singularity exec ./singularity-fingernat.img obabel tests/ligands.sdf -O tests/ligands.pdbqt -f 1 -l 1
+```
+
+Tested at the [Interdisciplinary Centre for Mathematical and Computational Modelling UW](https://icm.edu.pl/en/about-icm/) and [LUMI Supercomputer](https://www.lumi-supercomputer.eu/).
+
+# Running fingeRNAt in parallel
+
+One can easily parallelize fingeRNAt e.g., for parallel processing of multiple ligands/liagnd sets:
+
+```
+# calculate fingerprints for all sdf ligands from firectory ligands
+# and rna.pdb
+
+find ligands/ -type f -name "*.sdf" | parallel --progress  "fingeRNAt.py -r rna.pdb -l {}"
+
+# the same, but using a singularity image:
+find ligands/ -type f -name "*.sdf" | parallel --progress  "singularity exec ./singularity-fingernat.img fingeRNAt.py -r rna.pdb -l {}"
+```
+
+See [GNU Parallel](https://www.gnu.org/software/parallel/) for a full documentation.
 
 # Documentation
 
