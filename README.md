@@ -22,7 +22,9 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 	- [What is the Structural Interaction Fingerprint (SIFt)?](#what-is-the-structural-interaction-fingerprint-sift)
 	- [What are the Structural Interaction Fingerprint (SIFt) applications?](#what-are-the-structural-interaction-fingerprint-sift-applications)
 - [Installation](#installation)
-	- [Recommended method](#recommended-method)
+	- [Conda environment (the recommended method)](#conda-environment-the-recommended-method)
+	- [Using pip and apt](#using-pip-and-apt)
+	- [Singularity image](#singularity-image)
 	- [Manual installation](#manual-installation)
 - [Usage](#usage)
 	- [Quick start :zap:](#quick-start-zap)
@@ -39,6 +41,9 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 		- [`SIMPLE`](#simple)
 		- [`PBS`](#pbs)
 	- [Wrappers](#wrappers)
+		- [`ACUG`](#acug)
+		- [`PuPy`](#pupy)
+		- [`Counter`](#counter)
 	- [Detail mode](#detail-mode)
 	- [PyMOL visualization](#pymol-visualization)
 	- [Usage examples](#usage-examples)
@@ -121,7 +126,7 @@ Therefore, **the interactions are represented in a unified fashion, thus allowin
 
 Recommended fingeRNAt usage is in conda environment.
 
-## Recommended method
+## Conda environment (the recommended method)
 
 1. Install conda
 
@@ -141,6 +146,26 @@ Recommended fingeRNAt usage is in conda environment.
 3. Restore conda environment
 
       `conda env create -f fingeRNAt/env/fingeRNAt_env.yml`
+
+
+## Using pip and apt
+
+To install fingernat at Debian and Debian-like systems:
+
+```
+# install a minimal python and openbabel tool box:
+apt-get update && apt-get --no-install-recommends -y install openbabel python3.9-minimal python3-openbabel python3-pip python-is-python3
+
+# install python packages:
+pip install -r env/fingeRNAt_pip.txt
+
+# clone the fingeRNAt repository:
+git clone --depth=1 https://github.com/n-szulc/fingernat.git
+```
+
+## Singularity image
+
+Singularity image with the fineRNAt suite is available in [the current releases](https://github.com/n-szulc/fingeRNAt/releases) page.
 
 ## Manual installation
 
