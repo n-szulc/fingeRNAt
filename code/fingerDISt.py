@@ -6,7 +6,7 @@ fingerDIST is a software to calculate different Distance Metrics based on Struct
 
 Authors:
 Natalia A. Szulc, nszulc@iimcb.gov.pl
-Filip Stefaniak, fstefaniak@genesilico.pl
+Filip Stefaniak, fstefaniak@iimcb.gov.pl
 
 If you use this software, please cite:
 Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak

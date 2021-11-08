@@ -9,7 +9,7 @@ This enables high-throughput analysis of the interaction data using data analysi
 
 Authors:\n
 Natalia A. Szulc, nszulc@iimcb.gov.pl\n
-Filip Stefaniak, fstefaniak@genesilico.pl
+Filip Stefaniak, fstefaniak@iimcb.gov.pl
 
 If you use this software, please cite:\n
 Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak\n
