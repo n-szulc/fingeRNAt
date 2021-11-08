@@ -23,7 +23,8 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 	- [What are the Structural Interaction Fingerprint (SIFt) applications?](#what-are-the-structural-interaction-fingerprint-sift-applications)
 - [Installation](#installation)
 	- [Conda environment (the recommended method)](#conda-environment-the-recommended-method)
-	- [Using pip and apt](#using-pip-and-apt)
+	- [Using apt-get](#using-apt-get)
+	- [Using pip and apt-get](#using-pip-and-apt-get)
 	- [Singularity image](#singularity-image)
 	- [Manual installation](#manual-installation)
 - [Usage](#usage)
@@ -148,9 +149,22 @@ Recommended fingeRNAt usage is in conda environment.
       `conda env create -f fingeRNAt/env/fingeRNAt_env.yml`
 
 
-## Using pip and apt
+## Using apt-get
 
-To install fingernat at Debian and Debian-like systems:
+To install fingernat at Debian and Debian-like systems using repository packages (tested under Debian stable).
+
+```
+# install packages
+apt-get update && apt-get --no-install-recommends -y install openbabel python3.9-minimal python3-openbabel python3-pip python-is-python3 \
+		python3-pandas python3-numpy python3-rdkit python3-tqdm
+
+# clone the fingeRNAt repository:
+git clone --depth=1 https://github.com/n-szulc/fingernat.git
+```
+
+## Using pip and apt-get
+
+To install fingernat at Debian and Debian-like systems using repository packages and pip-installed packages (tested under Debian stable).
 
 ```
 # install a minimal python and openbabel tool box:
@@ -162,6 +176,7 @@ pip install -r env/fingeRNAt_pip.txt
 # clone the fingeRNAt repository:
 git clone --depth=1 https://github.com/n-szulc/fingernat.git
 ```
+
 
 ## Singularity image
 
