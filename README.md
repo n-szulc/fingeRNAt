@@ -837,13 +837,19 @@ fingeRNAt is also provided as a [singularity image](https://sylabs.io/singularit
 singularity exec ./singularity-fingernat.img fingeRNAt.py
 
 # perform some calculations:
-singularity exec ./singularity-fingernat.img fingeRNAt.py -r tests/1aju_model1.pdb -l tests/ligands.sdf -detail -verbose
+singularity exec ./singularity-fingernat.img
+fingeRNAt.py -r tests/1aju_model1.pdb -l tests/ligands.sdf -detail -verbose
 
 # use openbabel to convert ligands:
 singularity exec ./singularity-fingernat.img obabel tests/ligands.sdf -O tests/ligands.pdbqt -f 1 -l 1
 ```
 
 Tested at the [Interdisciplinary Centre for Mathematical and Computational Modelling UW](https://icm.edu.pl/en/about-icm/) and [LUMI Supercomputer](https://www.lumi-supercomputer.eu/).
+
+See the singularity image in action:
+
+[![asciicast](https://asciinema.org/a/B3VcSQ6Rl77lWDoRGaXot0pA1.svg)](https://asciinema.org/a/B3VcSQ6Rl77lWDoRGaXot0pA1?speed=1.2)
+
 
 # Running fingeRNAt in parallel
 
