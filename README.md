@@ -180,10 +180,9 @@ pip install -r env/fingeRNAt_pip.txt
 git clone --depth=1 https://github.com/n-szulc/fingernat.git
 ```
 
-
 ## Singularity image
 
-Singularity image with the fineRNAt suite is available in [the current releases](https://github.com/n-szulc/fingeRNAt/releases) page.
+Singularity image with the fineRNAt suite is available in [the current releases](https://github.com/n-szulc/fingeRNAt/releases) page as well as [cloud.sylabs.io](https://cloud.sylabs.io/library/filips/default/fingernat).
 
 ## Manual installation
 
