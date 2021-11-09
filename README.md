@@ -182,7 +182,11 @@ git clone --depth=1 https://github.com/n-szulc/fingernat.git
 
 ## Singularity image
 
-Singularity image with the fineRNAt suite is available in [the current releases](https://github.com/n-szulc/fingeRNAt/releases) page as well as [cloud.sylabs.io](https://cloud.sylabs.io/library/filips/default/fingernat).
+Singularity image with the fineRNAt suite is available in [the current releases](https://github.com/n-szulc/fingeRNAt/releases) page and in [cloud.sylabs.io](https://cloud.sylabs.io/library/filips/default/fingernat). To fetch the latest image directly from the cloud:
+
+```
+singularity pull library://filips/default/fingernat:latest
+```
 
 ## Manual installation
 
