@@ -98,7 +98,7 @@
 #     max: 3.5
 #
 #
-# # polar interactions, i.e., hydrogen bonds without angle restraints
+# polar interactions, i.e., hydrogen bonds without angle restraints
 # polar_D:Lig_A:NA:
 #   Receptor_SMARTS:
 #     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
@@ -117,6 +117,8 @@
 #   Distance:
 #     min: 0.5
 #     max: 3.5
+
+
 #
 # # weak polar interactions, i.e., weak hydrogen bonds without angle restraints
 # # C–H···O interaction
@@ -128,9 +130,9 @@
 #   Distance:
 #     min: 0.5
 #     max: 3.5
-#
-# # weak polar interactions, i.e., weak hydrogen bonds without angle restraints
-# # C–H···O interaction
+# #
+# # # weak polar interactions, i.e., weak hydrogen bonds without angle restraints
+# # # C–H···O interaction
 # weak_polar_D:NA_A:Lig:
 #   Receptor_SMARTS:
 #     - '[#6!H0]'
@@ -199,26 +201,50 @@
 #
 #
 # # Halogen bond, for debugging
-# # C-X...A-A'
+# # C-X⋯A-A'
 
-halogen_bond:
+# halogen_bond:
+#   Receptor_SMARTS:
+#     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # A - HBA
+#     - '[!#1]'                                                           # A' - any atom but hydrogen
+#   Ligand_SMARTS:
+#     - '[Cl,Br,I;X1;$([Cl,Br,I]-[#6])]'                                  # X
+#     - '[#6]'                                                            # any C
+#   Distance:
+#     min: 0.5
+#     max: 4
+#   Angle1:
+#     min: 135
+#     max: 195
+#   Angle2:
+#     min: 90
+#     max: 150
+
+
+# Halogen multipolar interactions
+# O=C⋯X-A
+# "Related to, but distinct from halogen bonds are multipolar interactions between halogen atoms and carbonyl carbon or amide nitrogen"
+#  Medchemcomm. 2017 Oct 1; 8(10): 1970–1981. Published online 2017 Sep 26. doi: 10.1039/c7md00381a
+
+multipolar_halogen_bond:
   Receptor_SMARTS:
-    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # A - HBA
-    - '[!#1]'                                                           # A' - any atom but hydrogen
+    - '[$([OH0]=[CX3,c]);!$([OH0]=[CX3,c]-[OH,O-])]'    # carbonyl oxygen (non bodning)
+    - '[$([CX3,c]=[OH0]);!$([CX3,c](=[OH0])-[OH,O-])]'  # carbonyl carbon, forms the bond
   Ligand_SMARTS:
-    - '[Cl,Br,I;X1;$([Cl,Br,I]-[#6])]'                                  # X
-    - '[#6]'                                                            # any C
+    - '[F,Cl,Br,I]'    # halogen, forms the bond
+    - '[#6]'          # any carbon atom connected to the halogen
   Distance:
     min: 0.5
-    max: 4
+    max: 3.65
   Angle1:
-    min: 135
-    max: 195
+    min: 70     # receptor, teta2 - O=C⋯X
+    max: 110    # receptor, teta2 - O=C⋯X
   Angle2:
-    min: 90
-    max: 150
+    min: 0     # ligand, teta1 - C⋯X-#6
+    max: 360    # ligand, teta1 - C⋯X-#6
 
-# MAX_HAL_DIST = 4.0
-# HALOGEN_ACC_ANGLE = 165.0  # Preffered Donor-Halogen-Acceptor angle in Halogen Bond (Auffinger et al., 2004)
-# HALOGEN_DON_ANGLE = 120.0 # Preffered Halogen-Acceptor-Acceptor' angle in Halogen Bond (Auffinger et al., 2004)
-# HALOGEN_ANGLE_DEV = 30.0 # Tolerated halogen angles deviation
+# powinno być: FIXME !!!
+# Angle2:
+#   min: 90     # ligand, teta1 - C⋯X-#6
+#   max: 180    # ligand, teta1 - C⋯X-#6
+#
