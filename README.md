@@ -16,7 +16,7 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 ![Last modified](https://img.shields.io/github/last-commit/n-szulc/fingeRNAt?color=green)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-[![Check Markdown links](https://github.com/n-szulc/fingeRNAt/actions/workflows/action-links.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/action-links.yml)
+[![Check Markdown links](https://github.com/n-szulc/fingeRNAt/actions/workflows/action-links.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/action-links.yml) [![Plugin Yaml Lint](https://github.com/n-szulc/fingeRNAt/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/yamllint.yml)
 
 
 <!-- TOC START min:1 max:6 link:true asterisk:false update:true -->
@@ -425,6 +425,8 @@ The interactions will be added as new columns to the standard SIFts outputs (wor
 > **_NOTE 2:_** In case two SMARTS are given for the receptor/ligand, receptor's atom 1 and receptor's atom 2 (and/or ligand's atom 1 and ligand's atom 2) will be considered only if bound (this will be detected by the fingeRNAt).
 
 ### YAML template
+
+[![Yaml Lint](https://github.com/n-szulc/fingeRNAt/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/yamllint.yml)
 
 Each interaction title will be used as interaction name in the proper column of SIFt outputs or as *Interaction* in `-detail` output.
 
