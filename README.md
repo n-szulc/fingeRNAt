@@ -349,8 +349,7 @@ The interactions will be added as new columns to the standard SIFts outputs (wor
 Examples of various SMARTS patterns are available at [the Daylight website](https://www.daylight.com/dayhtml_tutorials/languages/smarts/smarts_examples.html). To check if the defined SMARTS will hit desired atoms/groups you may want to use [our Jupyter Notebook](https://github.com/n-szulc/fingeRNAt-additional/blob/master/SMARTS_checker/SMARTS-playground.ipynb).
 
 
-[Sample YAML file](code/custom-interactions.yaml) is provided with the fingeRNAt code.
-
+[Sample YAML file](code/custom-interactions.yaml) is provided with the fingeRNAt code. To validate your yaml file syntax you can use [http://www.yamllint.com/](an online validator).
 
 
 > **_NOTE:_** Additional interactions can be calculated only for the fingerprint type `FULL`.
