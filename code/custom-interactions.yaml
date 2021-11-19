@@ -1,7 +1,8 @@
 ---
 ### User defined interactions YAML file
 ### For full documentation and description see:
-### https://github.com/n-szulc/fingeRNAt/blob/master/README.md#user-defined-interactions
+### https://github.com/n-szulc/fingeRNAt/blob/master/README.md
+###   -> user-defined-interactions
 ### To use include a given interaction in the detection procedure,
 ### just umcomment the desired block.
 ###  you can validate this yaml file for correct syntax at
@@ -23,7 +24,6 @@
 ### POINT-POINT INTERACTIONS, DISTANCE ONLY
 ### provide two SMARTS patterns defining two atoms
 ### and min and max distance between them
-
 
 
 ### any contact between NA and ligand (finds all atoms but hydrogens)
@@ -48,8 +48,6 @@
 #   Distance:
 #     min: 0.5
 #     max: 5.5
-
-
 
 ###  Nucleic acid - amino-acid
 ###  any contact between any nucleic acid atom and amino acid war-head moiety
@@ -226,3 +224,4 @@ multipolar_halogen_bond:
 # Angle2:
 #   min: 90     # ligand, teta1 - C⋯X-#6
 #   max: 180    # ligand, teta1 - C⋯X-#6
+...
