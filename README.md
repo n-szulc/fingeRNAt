@@ -22,7 +22,6 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 <!-- TOC START min:1 max:6 link:true asterisk:false update:true -->
 - [Overview](#overview)
 	- [What is the Structural Interaction Fingerprint (SIFt)?](#what-is-the-structural-interaction-fingerprint-sift)
-	- [What are the Structural Interaction Fingerprint (SIFt) applications?](#what-are-the-structural-interaction-fingerprint-sift-applications)
 - [Installation](#installation)
 	- [Conda environment (the recommended method)](#conda-environment-the-recommended-method)
 	- [Using apt-get](#using-apt-get)
@@ -37,11 +36,11 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 	- [Structural Interaction Fingerprint (SIFt) types](#structural-interaction-fingerprint-sift-types)
 	- [Interactions with inorganic ions](#interactions-with-inorganic-ions)
 	- [User-defined interactions](#user-defined-interactions)
-			- [Point-point interactions, distance only](#point-point-interactions-distance-only)
-			- [Point-point interactions, distance and angle](#point-point-interactions-distance-and-angle)
-				- [*Variant 1*](#variant-1)
-				- [*Variant 2*](#variant-2)
-			- [Point-point interactions, distance and two angles](#point-point-interactions-distance-and-two-angles)
+		- [Point-point interactions, distance only](#point-point-interactions-distance-only)
+		- [Point-point interactions, distance and angle](#point-point-interactions-distance-and-angle)
+			- [*Variant 1*](#variant-1)
+			- [*Variant 2*](#variant-2)
+		- [Point-point interactions, distance and two angles](#point-point-interactions-distance-and-two-angles)
 	- [User-defined thresholds](#user-defined-thresholds)
 	- [Outputs](#outputs)
 		- [`FULL`](#full)
@@ -71,18 +70,7 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 - [Running fingeRNAt in parallel](#running-fingernat-in-parallel)
 - [Documentation](#documentation)
 - [Unit test](#unit-test)
-- [Detection of interactions](#detection-of-interactions)
-	- [Nucleic acid properties](#nucleic-acid-properties)
-	- [Ligand properties](#ligand-properties)
-	- [Molecular Interactions' Geometric Rules](#molecular-interactions-geometric-rules)
-	- [1. Hydrogen bonds](#1-hydrogen-bonds)
-	- [2. Halogen bonds](#2-halogen-bonds)
-	- [3. Cation - anion interactions](#3-cation---anion-interactions)
-	- [4. Pi - cation & 5. Pi - anion interactions](#4-pi---cation--5-pi---anion-interactions)
-	- [6. Pi - stacking interactions](#6-pi---stacking-interactions)
-	- [7. Ion-mediated interactions](#7-ion-mediated-interactions)
-	- [8. Water-mediated interactions](#8-water-mediated-interactions)
-	- [9. Lipophilic interactions](#9-lipophilic-interactions)
+- [Implementation details](#implementation-details)
 - [Contributors](#contributors)
 - [Feedback](#feedback)
 - [Acknowledgments](#acknowledgments)
@@ -92,7 +80,7 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 
 # Overview
 
-fingeRNAt is a a Python 3.8  software tool for detecting non-covalent interactions formed within complexes of nucleic acids with ligands.
+fingeRNAt is a a Python 3 software tool for detecting non-covalent interactions formed within complexes of nucleic acids with ligands.
 
 Interactions are encoded and saved i.e. in the form of bioinformatic-friendly **Structural Interaction Fingerprint (SIFt)** - a binary string, where the respective bit in the fingerprint is set to 1 in case of a presence of a particular interaction and to 0 otherwise. This enables **high-throughput analysis** of the interaction data using data analysis techniques.
 
@@ -102,7 +90,7 @@ Interactions can be calculated for the following complexes:
 <img src="docs/README_pics/detected_interactions.png" width="900" />
 </p>
 
-fingeRNAt runs under Python 3.5 - 3.8 on Linux, macOS and Windows.
+fingeRNAt runs under Python 3.5 - 3.9 on Linux, macOS, and Windows.
 
 ## What is the Structural Interaction Fingerprint (SIFt)?
 
@@ -125,12 +113,6 @@ Structural Interaction Fingerprint (**SIFt**) is a binary string, describing exi
 
 Therefore, **the interactions are represented in a unified fashion, thus allowing for easy high-throughput computational analysis**, as they provide a full picture of all interactions within the complex.
 
-## What are the Structural Interaction Fingerprint (SIFt) applications?
-
-* Machine Learning
-* Clustering
-* Comparison of interaction modes
-
 # Installation
 
 Recommended fingeRNAt usage is in conda environment.
@@ -142,17 +124,14 @@ Recommended fingeRNAt usage is in conda environment.
   Please refer to [conda manual](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) and install conda version with Python 3.x according to your operating system.
 
 
-2. Download fingeRNAt repository
+2. Download fingeRNAt
 
-      Manually - click on the green field `Clone or download`, then `Download ZIP`
-
-      **or**
-
-      Clone it into the desired location [requires [git](https://git-scm.com/downloads) installation]
-
+      Clone the repository:
       `git clone --depth=1 https://github.com/n-szulc/fingernat.git`
 
-3. Restore conda environment
+			Or download the latest stable release from [releases page](https://github.com/n-szulc/fingeRNAt/releases).
+
+3. Create conda environment
 
       `conda env create -f fingeRNAt/env/fingeRNAt_env.yml`
 
@@ -193,11 +172,13 @@ Singularity image with the fineRNAt suite is available in [the current releases]
 singularity pull library://filips/default/fingernat:latest
 ```
 
+For usage examples of the image, see the [section below](#singularity-image-1).
+
 ## Manual installation
 
 Required dependencies are:
 
-- python 3.8
+- python 3
 - openbabel 3.1.1
 - numpy  
 - pandas
@@ -376,7 +357,7 @@ Examples of various SMARTS patterns are available at [the Daylight website](http
 
 Three types of interactions are currently supported:
 
-#### Point-point interactions, distance only
+### Point-point interactions, distance only
 
 ![](docs/README_pics/README-6548b738.png)
 
@@ -402,9 +383,9 @@ NA-AA:
 
 
 
-#### Point-point interactions, distance and angle
+### Point-point interactions, distance and angle
 
-##### *Variant 1*
+#### *Variant 1*
 
 ![](docs/README_pics/README-b072b7b8.png)
 
@@ -436,7 +417,7 @@ weak_hbond1:
 ```
 
 
-##### *Variant 2*
+#### *Variant 2*
 
 ![](docs/README_pics/README-e6004ef9.png)
 
@@ -468,7 +449,7 @@ weak_hbond2:
 ```
 
 
-#### Point-point interactions, distance and two angles
+### Point-point interactions, distance and two angles
 
 ![](docs/README_pics/README-7adb04a2.png)
 
@@ -515,7 +496,7 @@ multipolar_halogen_bond:
 
 ## User-defined thresholds
 
-All the default thresholds can be changed in `code/config.py`
+All the default thresholds can be changed in `code/config.py`.
 
 ## Outputs
 
@@ -835,7 +816,7 @@ It calculates the selected Distance Metric for all SIFt vs. all SIFt from input 
 
 ## Installation
 
-fingerDISt, similarly like fingeRNAt, requires Python 3.5 - 3.8, and may be run from within fingeRNAt's environment, but it is not obligatory. No external modules are needed.
+fingerDISt, similarly like fingeRNAt, requires Python 3.5 - 3.9, and may be run from within fingeRNAt's environment, but it is not obligatory. No external modules are needed.
 
 ## Usage
 
@@ -940,7 +921,7 @@ fingeRNAt.py -r tests/1aju_model1.pdb -l tests/ligands.sdf -detail -verbose
 singularity exec ./singularity-fingernat.img obabel tests/ligands.sdf -O tests/ligands.pdbqt -f 1 -l 1
 ```
 
-Tested at the [Interdisciplinary Centre for Mathematical and Computational Modelling UW](https://icm.edu.pl/en/about-icm/) and [LUMI Supercomputer](https://www.lumi-supercomputer.eu/).
+Tested at the [Interdisciplinary Centre for Mathematical and Computational Modelling UW](https://icm.edu.pl/en/about-icm/) and [LUMI Supercomputer](https://www.lumi-supercomputer.eu/) - thanks!
 
 See the singularity image in action:
 
@@ -949,7 +930,7 @@ See the singularity image in action:
 
 # Running fingeRNAt in parallel
 
-One can easily parallelize fingeRNAt e.g., for parallel processing of multiple ligands/liagnd sets:
+One can easily parallelize fingeRNAt with [GNU parallel](https://www.gnu.org/software/parallel/). E.g., for parallel processing of multiple ligands/liagnd sets:
 
 ```
 # calculate fingerprints for all sdf ligands from firectory ligands
@@ -982,132 +963,19 @@ To run a unit test:
 cd tests
 python fingeRNAt_test.py
 ```
+# Implementation details
 
-# Detection of interactions
-
-Inspired by [PLIP](https://github.com/pharmai/plip) implementation. Applies to SIFt type `FULL`.
-
-## Nucleic acid properties
-
-The nucleic acid's detected properties are as follows:
-
-* Hydrogen Bonds Acceptors & Donors - detected with OpenBabel
-* Halogen Bonds Acceptors - detected with OpenBabel (same as Hydrogen Bonds Acceptors)
-* Negative charges - assigned to *both* oxygens (OP1 & OP2) of each residue's phosphate group
-* Aromatic rings -  detected with OpenBabel
-
-## Ligand properties
-
-The ligand's detected properties are as follows:
-
-* Hydrogen Bonds Acceptors & Donors - detected with OpenBabel
-* Halogen Bonds Donors - detected with OpenBabel
-* Positive & Negative charges - detected with OpenBabel
-* Aromatic rings - detected with RDKit
-* Lipophilic atoms - detected with RDKit
-
-## Molecular Interactions' Geometric Rules
-
-fingeRNAt detects the following nine non-covalent interactions:
-
-<img src="docs/README_pics/interactions-explanation.png" width="900"/>
-
-
-## 1. Hydrogen bonds
-
-  Geometric rule:
-  - |D - A| < 3.9 &#8491;
-	(*Torshin, Weber, & Harrison*, 2002)
-
-
-  > **_NOTE:_** If hydrogens are present in RNA/DNA structure, fingeRNAt can be run with parameter `-dha`, that additionaly calculates Donor-Hydrogen-Acceptor angle  used as supplementary criteria in hydrogen bonds detection:&nbsp;&nbsp;&nbsp;&nbsp;
-  100&deg; <   D-H-A angle < 260&deg; <br/>
-  Parameter `-dha` applies only to `FULL` SIFt type, as `SIMPLE` & `PBS` do not calculate hydrogen bonds.
-
-## 2. Halogen bonds
-
-  Geometric rules:
-
-  - |X - A| < 4.0 &#8491;
-  (*Auffinger et al.*, 2004)
-  - C-X-A angle ~ 165&deg; &#177; 30&deg;
-  (*Auffinger et al.*, 2004)
-  - X-A-A' angle ~ 120&deg; &#177; 30&deg;
-  (*Auffinger et al.*, 2004)
-
-## 3. Cation - anion interactions
-
-  Geometric rule:
-
-  - 0.5 &#8491; < |cation - anion| < 5.5 &#8491;
-  (*Barlow and Thornton*, 1983)
-
-  > **_NOTE:_** fingeRNAt considers both oxygens from phosphate group (OP1 and OP2) of RNA/DNA as negatively charged.
-
-## 4. Pi - cation & 5. Pi - anion interactions
-
-  Geometric rules:
-
-  - |cation/anion - aromatic ring center| < 6.0 &#8491;
-  (*Gallivan and Dougherty*, 1999)
-  - angle between the ring plane and the line between cation/anion - ring center ~ 90&deg; &#177; 30&deg;
-
- > **_NOTE:_** In case of Pi - cation interaction, aromatic ring is only from the nucleic acid side (as nucleic acids are negatively charged). However, Pi - anion interaction is considered both ways: (i) nucleic acid's aromatic ring - ligands's anion and (ii) nucleic acid's anion (from phosphate group; see above) - ligand's aromatic ring.
-
-## 6. Pi - stacking interactions
-
-  Geometric rules:
-
-  * Common rules for all Pi - stacking interactions' types:
-
-    * |rings' centroids| < 5.5 &#8491;
-    (*McGaughey*, 1998)
-    * rings' outset < 2.0 &#8491;
-
-  * For sandwich & parallel - displaced:
-    * angle between the ring planes < 30&deg;
-
-  * For T - shaped:
-    * angle between the ring planes ~ 90&deg; &#177; 30&deg;
-
-> **_NOTE:_** fingeRNAt considers all three abovementioned Pi - stacking interactions' types.
-
-##  7. Ion-mediated interactions
-
-  Geometric rules:
-
-  * |ligand's nitrogen/oxygen/sulphur - ion| <= X
-  * |nucleic acid's nitrogen/oxygen - ion| <= X, where:
-    * X = 3.2 &#8491; for magnesium ion (*Zheng et al.*, 2015)
-    * X = 3.9 &#8491; for potassium ion (*Zheng et al.*, 2008)
-    * X = 3.6 &#8491; for sodium ion (*Zheng et al.*, 2008)
-    * X = 3.5 &#8491; for other ions (*Zheng et al.*, 2008)
-
-## 8. Water-mediated interactions
-
-> **_NOTE:_**  Only if fingeRNAt was called with `-h2o` parameter.
-
-  Geometric rules:
-  * |ligand's hydrogen bond donor/acceptor - water (oxygen)| <= 3.5 &#8491;
-	(*Poornima & Dean*, 1995)
-  * |nucleic acid's hydrogen bond donor/acceptor - water (oxygen)| <= 3.5 &#8491;
-	(*Poornima & Dean*, 1995)
-
-## 9. Lipophilic interactions
-
-  Geometric rule:
-  * |nucleic acid's carbon - ligand's lipophilic atom| <= 4.0 &#8491;
-	(*Padroni et al.*, 2020)
+See: [implementation details](implementation.md).
 
 # Contributors
 
 Natalia Szulc, @n-szulc ![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen)
+Filip Stefaniak, @filipsPL ![](https://img.shields.io/badge/fstefaniak-%40iimcb.gov.pl-brightgreen)
 
-Filip Stefaniak, @filipsPL ![](https://img.shields.io/badge/fstefaniak-%40genesilico.pl-brightgreen)
 
 # Feedback
 
-We welcome any feedback, please send an email to Natalia Szulc  ![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen)
+We welcome any feedback, please send an email to Natalia Szulc  ![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen) or submit a bug report.
 
 
 # Acknowledgments
