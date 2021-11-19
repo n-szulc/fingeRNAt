@@ -649,7 +649,10 @@ see -> [DETAIL_1aju_model1.pdb_ligands.sdf_FULL.tsv](example_outputs/DETAIL_1aju
 
 ## PyMOL visualization
 
-Dedicated PyMOL plugin was created to visualize detected interactions based on `-detail` outputs (see -> [Detail mode](#detail-mode)).
+Detected interactions can be visualized using the dedicated PyMOL plugin, available in [the plugin repository](https://github.com/filipsPL/fingernat-pymol-plugin).
+To visualize interactions in this plugin, use the [`-detail` outputs mode](#detail-mode).
+
+![](docs/README_pics/README-c74e2a5f.png)
 
 ## Usage examples
 
@@ -968,9 +971,10 @@ See: [implementation details](implementation.md).
 
 # Contributors
 
-Natalia Szulc, @n-szulc ![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen)
-Filip Stefaniak, @filipsPL ![](https://img.shields.io/badge/fstefaniak-%40iimcb.gov.pl-brightgreen)
-
+| :octocat:       | github                                   | contact                                                                  |
+| --------------- | ---------------------------------------- | ------------------------------------------------------------------------ |
+| Natalia Szulc   | [@n-szulc](https://github.com/n-szulc)   | ![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen)     |
+| Filip Stefaniak | [@filipsPL](https://github.com/filipsPL) | ![](https://img.shields.io/badge/fstefaniak-%40iimcb.gov.pl-brightgreen) |
 
 # Feedback
 
