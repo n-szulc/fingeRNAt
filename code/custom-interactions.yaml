@@ -215,9 +215,9 @@
 
 multipolar_halogen_bond:
   Receptor_SMARTS:
-# carbonyl oxygen (non bodning)
+    # carbonyl oxygen (non bodning)
     - '[$([OH0]=[CX3,c]);!$([OH0]=[CX3,c]-[OH,O-])]'
-# carbonyl carbon, forms the bond
+    # carbonyl carbon, forms the bond
     - '[$([CX3,c]=[OH0]);!$([CX3,c](=[OH0])-[OH,O-])]'
   Ligand_SMARTS:
     - '[F,Cl,Br,I]'    # halogen, forms the bond
