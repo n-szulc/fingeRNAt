@@ -426,7 +426,7 @@ The interactions will be added as new columns to the standard SIFts outputs (wor
 
 Each interaction title will be used as interaction name in the proper column of SIFt outputs or as *Interaction* in `-detail` output.
 
-See example YAML file -> [custom-interactions.yaml](example_inputs/custom-interactions.yaml)
+See example YAML file -> [custom-interactions.yaml](code/custom-interactions.yaml)
 
 ## User-defined thresholds
 
