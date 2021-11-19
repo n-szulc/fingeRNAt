@@ -37,8 +37,11 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 	- [Structural Interaction Fingerprint (SIFt) types](#structural-interaction-fingerprint-sift-types)
 	- [Interactions with inorganic ions](#interactions-with-inorganic-ions)
 	- [User-defined interactions](#user-defined-interactions)
-		- [Interaction types](#interaction-types)
-		- [YAML template](#yaml-template)
+			- [Point-point interactions, distance only](#point-point-interactions-distance-only)
+			- [Point-point interactions, distance and angle](#point-point-interactions-distance-and-angle)
+				- [*Variant 1*](#variant-1)
+				- [*Variant 2*](#variant-2)
+			- [Point-point interactions, distance and two angles](#point-point-interactions-distance-and-two-angles)
 	- [User-defined thresholds](#user-defined-thresholds)
 	- [Outputs](#outputs)
 		- [`FULL`](#full)
@@ -358,79 +361,157 @@ see -> [3d2v.pdb_IONS_SIMPLE.tsv](example_outputs/3d2v.pdb_IONS_SIMPLE.tsv)
 
 ## User-defined interactions
 
-The user may provide additional multiple interactions to be calculated in the form of up to 2 SMARTS ([SMILES arbitrary target specification](https://en.wikipedia.org/wiki/SMILES_arbitrary_target_specification)) for both receptor and ligand, passed in the YAML file (see -> [YAML template](#yaml-template)).
+The user may define custom interactions to be detected. [SMARTS](https://en.wikipedia.org/wiki/SMILES_arbitrary_target_specification)) patterns are used to define interacting atoms. Interaction definitions are encoded in a simple [YAML](https://en.wikipedia.org/wiki/YAML) file.
 
-The interactions will be added as new columns to the standard SIFts outputs (works also with all the wrappers) or as new rows to `-detail` outputs.
+The interactions will be added as new columns to the standard SIFts outputs (works also with all the wrappers) or as new rows to `-detail` outputs, an can be visualized using the pymol plugin.
+
+Examples of various SMARTS patterns are available at [the Daylight website](https://www.daylight.com/dayhtml_tutorials/languages/smarts/smarts_examples.html). To check if the defined SMARTS will hit desired atoms/groups you may want to use [our Jupyter Notebook](https://github.com/n-szulc/fingeRNAt-additional/blob/master/SMARTS_checker/SMARTS-playground.ipynb).
+
+
+[Sample YAML file](code/custom-interactions.yaml) is provided with the fingeRNAt code.
+
+
 
 > **_NOTE:_** Additional interactions can be calculated only for the fingerprint type `FULL`.
 
-### Interaction types
+Three types of interactions are currently supported:
 
-**1. Contact between defined atoms**
+#### Point-point interactions, distance only
 
-   Given:
+![](docs/README_pics/README-6548b738.png)
 
-   - 1 SMARTS for the receptor
-   - 1 SMARTS for the ligand
-   - minimum and maximum distance
+Given:
+- 1 SMARTS for the receptor
+- 1 SMARTS for the ligand
+- minimum and maximum distance
 
-   Detects atoms fulfilling SMARTS conditions for the receptor and all ligands, checks if distance between each pair of such atoms is within the provided distance range. If so, the interaction is detected.
+Detects atoms fulfilling SMARTS conditions for the receptor and all ligands, checks if distance between each pair of such atoms is within the provided distance range. If so, the interaction is detected.
 
-**2. Contact between defined atoms and angle**
+Example:
 
-   *Variant 1*
+```yaml
+NA-AA:
+  Receptor_SMARTS:
+    - '[!#1]'
+  Ligand_SMARTS:
+    - '[NX3,NX4+][CX4H]([*])[CX3](=[OX1])[O,N]'
+  Distance:
+    min:                0.5
+    max:                3.5
+```
 
-   Given:
 
-   - 1 SMARTS for the receptor
-   - 2 SMARTS for the ligand
-   - minimum and maximum distance
-   - minimum and maximum angle
 
-   Detects atoms fulfilling SMARTS conditions for the receptor and all ligands.
+#### Point-point interactions, distance and angle
 
-   Checks if distance between atoms fulfilling receptor's SMARTS and first ligand's SMARTS is within the provided distance range. If so, the angle between the three atoms is calculated. If it's value is within the provided angle range, the interaction is detected.
+##### *Variant 1*
 
-  *Variant 2*
+![](docs/README_pics/README-b072b7b8.png)
 
-   Given:
+Given:
 
-   - 2 SMARTS for the receptor
-   - 1 SMARTS for the ligand
-   - minimum and maximum distance
-   - minimum and maximum angle
+- 1 SMARTS for the receptor
+- 2 SMARTS for the ligand
+- minimum and maximum distance
+- minimum and maximum angle
 
-   Detects atoms fulfilling SMARTS conditions for the receptor and all ligands.
+Detects atoms fulfilling SMARTS conditions for the receptor and all ligands.
 
-   Checks if distance between atoms fulfilling receptor's second SMARTS and ligand's SMARTS is within the provided distance range. If so, the angle between the three atoms is calculated. If it's value is within the provided angle range, the interaction is detected.
+Checks if distance between atoms fulfilling receptor's SMARTS and first ligand's SMARTS is within the provided distance range. If so, the angle between the three atoms is calculated. If it's value is within the provided angle range, the interaction is detected.
 
-**3. Contact between defined atoms and two angles**
+Example:
+```yaml
+weak_hbond1:
+  Receptor_SMARTS:
+    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
+  Ligand_SMARTS:
+    - '[$([#1][!H0;#7,#8,#9])]'   # hydrogens in hydrogen bond donors
+    - '[!H0;#7,#8,#9]'            # heavy atoms in hydrogen bond donors
+  Distance:
+    min:                0.5
+    max:                3.5
+  Angle1:
+    min:                140
+    max:                180
+```
 
-   Given:
 
-   - 2 SMARTS for the receptor
-   - 2 SMARTS for the ligand
-   - minimum and maximum distance
-   - minimum and maximum angle no 1
-   - minimum and maximum angle no 2
+##### *Variant 2*
 
-   Detects atoms fulfilling SMARTS conditions for the receptor and all ligands.
+![](docs/README_pics/README-e6004ef9.png)
 
-   Checks if distance between atoms fulfilling receptor's second SMARTS and first ligand's SMARTS is within the provided distance range. If so, the angle between the receptor's atom 1 - receptor's atom 2 - ligand's atom 1 is calculated.
+Given:
 
-   If it's value is within the provided angle no 1 range, the angle between the receptor's atom 2 - ligand's atom 1 - ligand's atom 2 is calculated. If it's value is within the provided angle no 2 range, the interaction is detected.
+- 2 SMARTS for the receptor
+- 1 SMARTS for the ligand
+- minimum and maximum distance
+- minimum and maximum angle
+
+Detects atoms fulfilling SMARTS conditions for the receptor and all ligands.
+
+Checks if distance between atoms fulfilling receptor's second SMARTS and ligand's SMARTS is within the provided distance range. If so, the angle between the three atoms is calculated. If it's value is within the provided angle range, the interaction is detected.
+
+Example:
+```yaml
+weak_hbond2:
+  Receptor_SMARTS:
+    - '[!H0;#7,#8,#9]'            # heavy atoms in hydrogen bond donors
+    - '[$([#1][!H0;#7,#8,#9])]'   # hydrogens in hydrogen bond donors
+  Ligand_SMARTS:
+    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
+  Distance:
+    min:                0.5
+    max:                3.5
+  Angle1:
+    min:                140
+    max:                180
+```
+
+
+#### Point-point interactions, distance and two angles
+
+![](docs/README_pics/README-7adb04a2.png)
+
+Given:
+
+- 2 SMARTS for the receptor
+- 2 SMARTS for the ligand
+- minimum and maximum distance
+- minimum and maximum angle no 1
+- minimum and maximum angle no 2
+
+Detects atoms fulfilling SMARTS conditions for the receptor and all ligands.
+
+Checks if distance between atoms fulfilling receptor's second SMARTS and first ligand's SMARTS is within the provided distance range. If so, the angle between the receptor's atom 1 - receptor's atom 2 - ligand's atom 1 is calculated.
+
+If it's value is within the provided angle no 1 range, the angle between the receptor's atom 2 - ligand's atom 1 - ligand's atom 2 is calculated. If it's value is within the provided angle no 2 range, the interaction is detected.
 
 > **_NOTE:_** If atoms that do not belong to the receptor (e.g. ions/water present in the structure) will be found for any of the receptor's SMARTS, or atoms belonging to receptor's residue with < 4 atoms, they will not be considered.
 
 > **_NOTE 2:_** In case two SMARTS are given for the receptor/ligand, receptor's atom 1 and receptor's atom 2 (and/or ligand's atom 1 and ligand's atom 2) will be considered only if bound (this will be detected by the fingeRNAt).
 
-### YAML template
+Example:
+```yaml
+multipolar_halogen_bond:
+  Receptor_SMARTS:
+    # carbonyl oxygen (non bodning)
+    - '[$([OH0]=[CX3,c]);!$([OH0]=[CX3,c]-[OH,O-])]'
+    # carbonyl carbon, forms the bond
+    - '[$([CX3,c]=[OH0]);!$([CX3,c](=[OH0])-[OH,O-])]'
+  Ligand_SMARTS:
+    - '[F,Cl,Br,I]'    # halogen, forms the bond
+    - '[#6]'          # any carbon atom connected to the halogen
+  Distance:
+    min: 0.5
+    max: 3.65
+  Angle1:
+    min: 70     # receptor, teta2 - O=C⋯X
+    max: 110    # receptor, teta2 - O=C⋯X
+  Angle2:
+    min: 90      # ligand, teta1 - C⋯X-#6
+    max: 180     # ligand, teta1 - C⋯X-#6
+```
 
-[![Yaml Lint](https://github.com/n-szulc/fingeRNAt/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/yamllint.yml)
-
-Each interaction title will be used as interaction name in the proper column of SIFt outputs or as *Interaction* in `-detail` output.
-
-See example YAML file -> [custom-interactions.yaml](code/custom-interactions.yaml)
 
 ## User-defined thresholds
 
