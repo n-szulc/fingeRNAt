@@ -797,7 +797,7 @@ fingerDISt calculates the following Distance Metrics:
 * Soergel
 * Tversky
 
-Some of a Distance Metrics calculations were implemented based on code [github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py](github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py) under MIT license.
+Some of a Distance Metrics calculations were implemented based on the [crux-fr-sprint code](https://github.com/varun-parthasarathy/crux-fr-sprint/blob/master/DistanceMetrics.py) under MIT license.
 
 > **_NOTE:_** **Tanimoto coefficient works only for SIFt with binary values**, therefore it may not work on input SIFt wrapped with `Counter` wrapper.
 
