@@ -206,24 +206,6 @@
 # # Halogen bond, for debugging
 # # C-X⋯A-A'
 
-# halogen_bond:
-#   Receptor_SMARTS:
-#     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # A - HBA
-#     - '[!#1]'                                                           # A' - any atom but hydrogen
-#   Ligand_SMARTS:
-#     - '[Cl,Br,I;X1;$([Cl,Br,I]-[#6])]'                                  # X
-#     - '[#6]'                                                            # any C
-#   Distance:
-#     min:                0.5
-#     max:                4
-#   Angle1:
-#     min:                135
-#     max:                195
-#   Angle2:
-#     min:                90
-#     max:                150
-
-
 # Halogen multipolar interactions
 # O=C⋯X-A
 # "Related to, but distinct from halogen bonds are multipolar interactions
@@ -239,14 +221,14 @@ multipolar_halogen_bond:
     - '[F,Cl,Br,I]'    # halogen, forms the bond
     - '[#6]'          # any carbon atom connected to the halogen
   Distance:
-    min:                  0.5
-    max:                  3.65
+    min: 0.5
+    max: 3.65
   Angle1:
-    min:                  70     # receptor, teta2 - O=C⋯X
-    max:                  110    # receptor, teta2 - O=C⋯X
+    min: 70     # receptor, teta2 - O=C⋯X
+    max: 110    # receptor, teta2 - O=C⋯X
   Angle2:
-    min:                  0     # ligand, teta1 - C⋯X-#6
-    max:                  360    # ligand, teta1 - C⋯X-#6
+    min: 0      # ligand, teta1 - C⋯X-#6
+    max: 360    # ligand, teta1 - C⋯X-#6
 
 # powinno być:            FIXME !!!
 # Angle2:
