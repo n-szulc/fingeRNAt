@@ -7,6 +7,8 @@
 ###  you can validate this yaml file for correct syntax at
 ### http://www.yamllint.com/
 
+### ------------------------------------------------------------------- ###
+
 
 #
 #  __          _ _     _
@@ -22,18 +24,6 @@
 ### provide two SMARTS patterns defining two atoms
 ### and min and max distance between them
 
-# name_of_the_interaction:
-#   Receptor_SMARTS:
-#    - ''                   # SMARTS pattern for the receptor
-#   Ligand_SMARTS:
-#    - ''                   # SMARTS pattern for the ligand
-#   Distance:
-#     min:                0.5              # minimum distance cutoff, Å
-#     max:                3.5              # maximum distance cutoff, Å
-
-
-
-### ------------------------------------------------------------------- ###
 
 
 ### any contact between NA and ligand (finds all atoms but hydrogens)
@@ -44,8 +34,8 @@
 #   Ligand_SMARTS:
 #     - '[!#1]'
 #   Distance:
-#     min:                0.5
-#     max:                3.5
+#     min: 0.5
+#     max: 3.5
 
 
 ### cation - anion interactions
@@ -56,8 +46,8 @@
 #   Ligand_SMARTS:
 #     - '[+]'
 #   Distance:
-#     min:                0.5
-#     max:                5.5
+#     min: 0.5
+#     max: 5.5
 
 
 
@@ -71,8 +61,8 @@
 #   Ligand_SMARTS:
 #     - '[NX3,NX4+][CX4H]([*])[CX3](=[OX1])[O,N]'
 #   Distance:
-#     min:                0.5
-#     max:                3.5
+#     min: 0.5
+#     max: 3.5
 
 
 ###  polar interactions, i.e., hydrogen bonds without angle restraints
@@ -83,8 +73,8 @@
 #   Ligand_SMARTS:
 #     - '[N!H0v3,N!H0+v4,OH+0,SH+0,nH+0]'
 #   Distance:
-#     min:                0.5
-#     max:                3.5
+#     min: 0.5
+#     max: 3.5
 
 
 
@@ -96,8 +86,8 @@
 #   Ligand_SMARTS:
 #     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
 #   Distance:
-#     min:                0.5
-#     max:                3.5
+#     min: 0.5
+#     max: 3.5
 
 
 
@@ -110,8 +100,8 @@
 #   Ligand_SMARTS:
 #     - '[#6!H0]'
 #   Distance:
-#     min:                0.5
-#     max:                3.5
+#     min: 0.5
+#     max: 3.5
 
 
 ###  weak polar interactions, i.e., weak hydrogen bonds without angle restraints
@@ -123,8 +113,8 @@
 #   Ligand_SMARTS:
 #     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
 #   Distance:
-#     min:                0.5
-#     max:                3.5
+#     min: 0.5
+#     max: 3.5
 
 
 
@@ -140,8 +130,8 @@
 #   Ligand_SMARTS:
 #     - '[$([CX3,c]=[OH0]);!$([CX3,c](=[OH0])-[OH,O-])]' # carbonyl carbon
 #   Distance:
-#     min:                0.5              # minimum distance cutoff, Å
-#     max:                3.6              # maximum distance cutoff, Å
+#     min: 0.5              # minimum distance cutoff, Å
+#     max: 3.6              # maximum distance cutoff, Å
 
 
 # ### ---------------------------------------------------------------------- ###
@@ -170,11 +160,11 @@
 #   Ligand_SMARTS:
 #     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
 #   Distance:
-#     min:                0.5
-#     max:                3.5
+#     min: 0.5
+#     max: 3.5
 #   Angle1:
-#     min:                140
-#     max:                180
+#     min: 140
+#     max: 180
 
 ### Nucleic acid as acceptor, ligand as donor
 # weak_hbond_D:Lig_A:NA:
@@ -184,11 +174,11 @@
 #     - '[$([#1][!H0;#7,#8,#9])]'   # hydrogens in hydrogen bond donors
 #     - '[!H0;#7,#8,#9]'            # heavy atoms in hydrogen bond donors
 #   Distance:
-#     min:                0.5
-#     max:                3.5
+#     min: 0.5
+#     max: 3.5
 #   Angle1:
-#     min:                140
-#     max:                180
+#     min: 140
+#     max: 180
 
 
 
@@ -234,6 +224,6 @@ multipolar_halogen_bond:
 
 # powinno być:            FIXME !!!
 # Angle2:
-#   min:                  90     # ligand, teta1 - C⋯X-#6
-#   max:                  180    # ligand, teta1 - C⋯X-#6
+#   min: 90     # ligand, teta1 - C⋯X-#6
+#   max: 180    # ligand, teta1 - C⋯X-#6
 #
