@@ -1101,9 +1101,9 @@ def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coo
                                 result[-1] = 1
                                 interaction_found = True
                             else:
-                                lr = vector(np.array(rna_atom[1]), np.array(ligand_atom[1]))
+                                lr = vector(np.array(rna_atom[1]), np.array(ligand_atom[0]))
                                 ll = vector(np.array(ligand_atom[0]), np.array(ligand_atom[1]))
-                                angle2 = calculate_angle(lr, ll)
+                                angle2 = 180 - calculate_angle(lr, ll)
                                 if angle2_min < angle2 < angle2_max:
                                     result[-1] = 1
                                     interaction_found = True
@@ -1131,7 +1131,7 @@ def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coo
                         debug_dict_ligand[ligand_name][ligand_atom[1]][0],
                         round(ligand_atom[1][0], 4), round(ligand_atom[1][1], 4),  round(ligand_atom[1][2], 4),
                         res_name.split(':')[2], res_name.split(':')[0], res_name.split(':')[1], debug_dict_rna[(rna_atom[0][0], rna_atom[0][1], rna_atom[0][2])],
-                        rna_atom[0][0], rna_atom[0][1], rna_atom[0][1],
+                        rna_atom[0][0], rna_atom[0][1], rna_atom[0][2],
                         np.round(dist, 4)])
 
                     if interaction_found and not detail:
