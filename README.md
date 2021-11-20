@@ -932,7 +932,7 @@ See the singularity image in action:
 
 # Running fingeRNAt in parallel
 
-One can easily parallelize fingeRNAt with [GNU parallel](https://www.gnu.org/software/parallel/). E.g., for parallel processing of multiple ligands/liagnd sets:
+One can easily parallelize fingeRNAt with [GNU parallel](https://www.gnu.org/software/parallel/). E.g., for parallel processing of multiple ligands/ligand sets:
 
 ```
 # calculate fingerprints for all sdf ligands from firectory ligands
