@@ -342,11 +342,11 @@ see -> [3d2v.pdb_IONS_SIMPLE.tsv](example_outputs/3d2v.pdb_IONS_SIMPLE.tsv)
 
 ## User-defined interactions
 
-The user may define custom interactions to be detected. [SMARTS](https://en.wikipedia.org/wiki/SMILES_arbitrary_target_specification)) patterns are used to define interacting atoms. Interaction definitions are encoded in a simple [YAML](https://en.wikipedia.org/wiki/YAML) file.
+The user may define custom interactions to be detected. [SMARTS](https://en.wikipedia.org/wiki/SMILES_arbitrary_target_specification) patterns are used to define interacting atoms. Interaction definitions are encoded in a simple [YAML](https://en.wikipedia.org/wiki/YAML) file.
 
 The interactions will be added as new columns to the standard SIFts outputs (works also with all the wrappers) or as new rows to `-detail` outputs, an can be visualized using the pymol plugin.
 
-Examples of various SMARTS patterns are available at [the Daylight website](https://www.daylight.com/dayhtml_tutorials/languages/smarts/smarts_examples.html). To check if the defined SMARTS will hit desired atoms/groups you may want to use [our Jupyter Notebook](https://github.com/n-szulc/fingeRNAt-additional/blob/master/SMARTS_checker/SMARTS-playground.ipynb).
+Examples of various SMARTS patterns are available at [daylight.com](https://www.daylight.com/dayhtml_tutorials/languages/smarts/smarts_examples.html). To check if the defined SMARTS will hit desired atoms/groups you may want to use [our Jupyter Notebook](https://github.com/n-szulc/fingeRNAt-additional/blob/master/SMARTS_checker/SMARTS-playground.ipynb).
 
 
 [Sample YAML file](code/custom-interactions.yaml) is provided with the fingeRNAt code. To validate your yaml file syntax you can use [an online validator](https://codebeautify.org/yaml-validator).
