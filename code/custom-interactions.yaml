@@ -217,11 +217,7 @@ multipolar_halogen_bond:
     min: 70     # receptor, teta2 - O=C⋯X
     max: 110    # receptor, teta2 - O=C⋯X
   Angle2:
-    min: 0      # ligand, teta1 - C⋯X-#6
-    max: 360    # ligand, teta1 - C⋯X-#6
+    min: 90     # ligand, teta1 - C⋯X-#6
+    max: 180    # ligand, teta1 - C⋯X-#6
 
-# powinno być:            FIXME !!!
-# Angle2:
-#   min: 90     # ligand, teta1 - C⋯X-#6
-#   max: 180    # ligand, teta1 - C⋯X-#6
 ...
