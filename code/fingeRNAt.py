@@ -1110,28 +1110,50 @@ def detect_user_def_interaction(res_name, residue_atoms, ligand_name, ligand_coo
 
                     if interaction_found and debug:
                         global new_interactions_info
+
                         if interaction_type not in new_interactions_info.keys():
                             new_interactions_info[interaction_type] = []
+
                         if angle1_min is None:
                             new_interactions_info[interaction_type].append('{} - {} \ndist: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(dist, 4))
                             + '{}:{}:{}\t{} atom {}'.format(res_name.split(':')[1], res_name.split(':')[0], debug_dict_rna[(rna_atom[0][0], rna_atom[0][1], rna_atom[0][2])], debug_dict_ligand[ligand_name][ligand_atom[1]][0], ligand_name))
                         else:
-                            if angle2_min is None:
-                                new_interactions_info[interaction_type].append('{} - {} \ndist: {} angle: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(dist, 4), round(angle1, 4))
-                                + '{}:{}:{}\t{} atom {}'.format(res_name.split(':')[1], res_name.split(':')[0], debug_dict_rna[(rna_atom[0][0], rna_atom[0][1], rna_atom[0][2])], debug_dict_ligand[ligand_name][ligand_atom[1]][0], ligand_name))
-                            else:
+                            if angle2_min is None: # 3 SMARTS; 1 for receptor & 2 for ligands
+                                if rna_atom[1] is None:
+                                    new_interactions_info[interaction_type].append('{} - {} \ndist: {} angle: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(dist, 4), round(angle1, 4))
+                                    + '{}:{}:{}\t{} atom {}'.format(res_name.split(':')[1], res_name.split(':')[0], debug_dict_rna[(rna_atom[0][0], rna_atom[0][1], rna_atom[0][2])], debug_dict_ligand[ligand_name][ligand_atom[0]][0], ligand_name))
+                                else:  # 3 SMARTS; 2 for receptor & 1 for ligands
+                                    new_interactions_info[interaction_type].append('{} - {} \ndist: {} angle: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(dist, 4), round(angle1, 4))
+                                    + '{}:{}:{}\t{} atom {}'.format(res_name.split(':')[1], res_name.split(':')[0], debug_dict_rna[(rna_atom[1][0], rna_atom[1][1], rna_atom[1][2])], debug_dict_ligand[ligand_name][ligand_atom[1]][0], ligand_name))
+                            else: # 4 SMARTS; 2 for receptor & 2 for ligands
                                 new_interactions_info[interaction_type].append('{} - {} \ndist: {} angle1: {} angle2: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, np.round(dist, 4), round(angle1, 4), round(angle2, 4))
-                                + '{}:{}:{}\t{} atom {}'.format(res_name.split(':')[1], res_name.split(':')[0], debug_dict_rna[(rna_atom[0][0], rna_atom[0][1], rna_atom[0][2])], debug_dict_ligand[ligand_name][ligand_atom[1]][0], ligand_name))
+                                + '{}:{}:{}\t{} atom {}'.format(res_name.split(':')[1], res_name.split(':')[0], debug_dict_rna[(rna_atom[1][0], rna_atom[1][1], rna_atom[1][2])], debug_dict_ligand[ligand_name][ligand_atom[0]][0], ligand_name))
 
                     if interaction_found and detail:
                         global detail_list
                         ligand_name_detail = ligand_name.split('^')[0]
                         ligand_pose_detail = ligand_name.split('^')[1]
-                        detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][ligand_atom[1]][1], interaction_type,
-                        debug_dict_ligand[ligand_name][ligand_atom[1]][0],
-                        round(ligand_atom[1][0], 4), round(ligand_atom[1][1], 4),  round(ligand_atom[1][2], 4),
-                        res_name.split(':')[2], res_name.split(':')[0], res_name.split(':')[1], debug_dict_rna[(rna_atom[0][0], rna_atom[0][1], rna_atom[0][2])],
-                        rna_atom[0][0], rna_atom[0][1], rna_atom[0][2],
+
+                        if angle1_min is None:
+                            lig_index = 1
+                            rna_index = 0
+                        else:
+                            if angle2_min is None:
+                                if rna_atom[1] is None:
+                                    lig_index = 0
+                                    rna_index = 0
+                                else:
+                                    lig_index = 1
+                                    rna_index = 1
+                            else:
+                                lig_index = 0
+                                rna_index = 1
+
+                        detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][ligand_atom[lig_index]][1], interaction_type,
+                        debug_dict_ligand[ligand_name][ligand_atom[lig_index]][0],
+                        round(ligand_atom[lig_index][0], 4), round(ligand_atom[lig_index][1], 4),  round(ligand_atom[lig_index][2], 4),
+                        res_name.split(':')[2], res_name.split(':')[0], res_name.split(':')[1], debug_dict_rna[(rna_atom[rna_index][0], rna_atom[rna_index][1], rna_atom[rna_index][2])],
+                        rna_atom[rna_index][0], rna_atom[rna_index][1], rna_atom[rna_index][2],
                         np.round(dist, 4)])
 
                     if interaction_found and not detail:
@@ -1491,7 +1513,7 @@ if __name__ == "__main__":
                 FUNCTIONS[fingerprint] += len(additionalInteractions.keys())
                 dict_rna_coords_to_res_ids = rna_coords_residue_index_dict(structure)
                 user_defined_all_atoms = find_atoms_from_SMARTS(structure, ligands_mols, additionalInteractions, dict_rna_coords_to_res_ids, verbose)
-                print(user_defined_all_atoms)
+
                 if debug:
                     for k in user_defined_all_atoms.keys():
                         user_def_receptor_atoms[k] = {}
