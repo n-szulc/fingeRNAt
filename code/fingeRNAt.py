@@ -399,13 +399,13 @@ def calculate_HAL(residue, acceptors_RNA, ligand_name, ligand_donors_coords):
                                     global HAL_info
                                     HAL_info += '***\n'
                                     HAL_info += ('{} acceptor - {} donor\ndist: {}; C-X-O angle: {}; X-O-Y angle: {}\n'.format(filename_RNA.split(sys_sep)[-1], ligand_name, round(dist, 4), round(angle_acc, 4), round(angle_don, 4)))
-                                    HAL_info += ('{}:{}:{}\t{} atom of {}\n'.format(residue.GetChain(), residue.GetNum(), residue.GetAtomID(RNA_acceptor_set[0]).strip(), debug_dict_ligand[ligand_name][(donor[0][0], donor[0][1], donor[0][2])][0], ligand_name))
+                                    HAL_info += ('{}:{}:{}\t{} atom of {}\n'.format(residue.GetChain(), residue.GetNum(), residue.GetAtomID(RNA_acceptor_set[0]).strip(), debug_dict_ligand[ligand_name][(donor[1][0], donor[1][1], donor[1][2])][0], ligand_name))
 
                                 if detail:
                                     global detail_list
-                                    detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][(donor[0][0], donor[0][1], donor[0][2])][1], 'HAL',
-                                    debug_dict_ligand[ligand_name][(donor[0][0], donor[0][1], donor[0][2])][0],
-                                    donor[0][0], donor[0][1],  donor[0][2],
+                                    detail_list.append([ligand_name.split('^')[0], ligand_name.split('^')[1], debug_dict_ligand[ligand_name][(donor[1][0], donor[1][1], donor[1][2])][1], 'HAL',
+                                    debug_dict_ligand[ligand_name][(donor[1][0], donor[1][1], donor[1][2])][0],
+                                    donor[1][0], donor[1][1],  donor[1][2],
                                     residue.GetName(), residue.GetNum(), residue.GetChain(), residue.GetAtomID(RNA_acceptor_set[0]).strip(),
                                     RNA_acc_coords[0], RNA_acc_coords[1], RNA_acc_coords[2],
                                     dist])
