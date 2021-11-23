@@ -98,11 +98,11 @@ polar_Don-NA__Acc:Lig:
 ### Hydrogen Bond;
 ### and
 ### PROTEINS: Structure, Function, and Bioinformatics 67:128–141 (2007)
-### SMARTS including H!
+### SMARTS od fonor includes H, receptor should not
 
 weak_polar_Don-Lig__Acc-NA:
   Receptor_SMARTS:
-    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
+    - '[!$([#1,#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
   Ligand_SMARTS:
     - '[#1;$([#1]-[C])]' # hydrogen connected to carbon
   Distance:
@@ -117,7 +117,7 @@ weak_polar_Don-NA__Acc-Lig:
   Receptor_SMARTS:
     - '[#1;$([#1]-[C])]' # hydrogen connected to carbon
   Ligand_SMARTS:
-    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
+    - '[!$([#1,#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
   Distance:
     min: 0.5
     max: 3.05
@@ -161,7 +161,7 @@ carbonyl_interaction:
 ### Hydrogen Bond;
 ### and
 ### PROTEINS: Structure, Function, and Bioinformatics 67:128–141 (2007)
-### SMARTS including H!
+### SMARTS od donor includes H, receptor should not
 
 
 ### Nucleic acid as donor, ligand as acceptor
@@ -170,7 +170,7 @@ weak_hbond_Don-NA__Acc-Lig:
     - '[#6!H0]'              # C in hydrogen bond donor
     - '[#1;$([#1]-[C])]'    # hydrogen connected to C
   Ligand_SMARTS:
-    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
+    - '[!$([#1,#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
   Distance:
     # H···O
     min: 0.5
@@ -184,7 +184,7 @@ weak_hbond_Don-NA__Acc-Lig:
 ### Nucleic acid as acceptor, ligand as donor
 weak_hbond_Don-Lig__Acc-NA:
   Receptor_SMARTS:
-    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
+    - '[!$([#1,#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
   Ligand_SMARTS:
     - '[#1;$([#1]-[C])]'   # hydrogen connected to C
     - '[#6!H0]'            # C in hydrogen bond donor
