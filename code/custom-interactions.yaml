@@ -67,7 +67,7 @@ NA-AA:
 #
 polar_Don-Lig__Acc-NA:
   Receptor_SMARTS:
-    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
+    - '[!$([#1,#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
   Ligand_SMARTS:
     - '[N!H0v3,N!H0+v4,OH+0,SH+0,nH+0]'
   Distance:
@@ -82,7 +82,7 @@ polar_Don-NA__Acc:Lig:
   Receptor_SMARTS:
     - '[N!H0v3,N!H0+v4,OH+0,SH+0,nH+0]'
   Ligand_SMARTS:
-    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
+    - '[!$([#1,#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
   Distance:
     min: 0.5
     max: 3.5
@@ -91,7 +91,13 @@ polar_Don-NA__Acc:Lig:
 
 ###  weak polar interactions, i.e., weak hydrogen bonds without angle restraints
 ### C–H···O interaction
-#
+### J. Am. Chem. Soc. 1999, 121, 9411-9422
+### Fundamental Properties of the CH‚‚‚O Interaction: Is It a True
+### Hydrogen Bond;
+### and
+### PROTEINS: Structure, Function, and Bioinformatics 67:128–141 (2007)
+### SMARTS including H!
+
 weak_polar_Don-Lig__Acc-NA:
   Receptor_SMARTS:
     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
@@ -99,7 +105,7 @@ weak_polar_Don-Lig__Acc-NA:
     - '[#6!H0]'
   Distance:
     min: 0.5
-    max: 3.5
+    max: 3.05
 
 
 ###  weak polar interactions, i.e., weak hydrogen bonds without angle restraints
@@ -112,7 +118,7 @@ weak_polar_Don-NA__Acc-Lig:
     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
   Distance:
     min: 0.5
-    max: 3.5
+    max: 3.05
 
 
 
@@ -149,6 +155,12 @@ carbonyl_interaction:
 
 ### weak hydrogen bonds (C–H···O interaction) with an angle term
 ### J. Am. Chem. Soc. 1999, 121, 9411-9422
+### Fundamental Properties of the CH‚‚‚O Interaction: Is It a True
+### Hydrogen Bond;
+### and
+### PROTEINS: Structure, Function, and Bioinformatics 67:128–141 (2007)
+### SMARTS including H!
+
 
 ### Nucleic acid as donor, ligand as acceptor
 weak_hbond_Don-NA__Acc-Lig:
@@ -158,10 +170,13 @@ weak_hbond_Don-NA__Acc-Lig:
   Ligand_SMARTS:
     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
   Distance:
+    # H···O
     min: 0.5
-    max: 3.5
+    max: 3.05
   Angle1:
-    min: 140
+    # PROTEINS: Structure, Function, and Bioinformatics 67:128–141 (2007)
+    # C–H···O
+    min: 90
     max: 180
 
 ### Nucleic acid as acceptor, ligand as donor
@@ -172,10 +187,13 @@ weak_hbond_Don-Lig__Acc-NA:
     - '[$([#1][!H0;#7,#8,#9])]'   # hydrogens in hydrogen bond donors
     - '[!H0;#7,#8,#9]'            # heavy atoms in hydrogen bond donors
   Distance:
+    # H···O
     min: 0.5
-    max: 3.5
+    max: 3.05
   Angle1:
-    min: 140
+    # PROTEINS: Structure, Function, and Bioinformatics 67:128–141 (2007)
+    # C–H···O
+    min: 90
     max: 180
 
 
