@@ -38,9 +38,9 @@ any_contact:
     max: 3.5
 
 
-### cation - anion interactions
+### cation - anion interactions, with atoms having explicit charges
 #
-cation-anion_debug:
+cation-anion_explicit:
   Receptor_SMARTS:
     - '[-]'
   Ligand_SMARTS:
