@@ -401,18 +401,21 @@ Checks if distance between atoms fulfilling receptor's SMARTS and first ligand's
 
 Example:
 ```yaml
-weak_hbond1:
+weak_hbond_Don-Lig__Acc-NA:
   Receptor_SMARTS:
-    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
+    - '[!$([#1,#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
   Ligand_SMARTS:
-    - '[$([#1][!H0;#7,#8,#9])]'   # hydrogens in hydrogen bond donors
-    - '[!H0;#7,#8,#9]'            # heavy atoms in hydrogen bond donors
+    - '[#1;$([#1]-[C])]'   # hydrogen connected to C
+    - '[#6!H0]'            # C in hydrogen bond donor
   Distance:
-    min:                0.5
-    max:                3.5
+    # H···O
+    min: 0.5
+    max: 3.05
   Angle1:
-    min:                140
-    max:                180
+    # PROTEINS: Structure, Function, and Bioinformatics 67:128–141 (2007)
+    # C–H···O
+    min: 90
+    max: 180
 ```
 
 
@@ -433,18 +436,21 @@ Checks if distance between atoms fulfilling receptor's second SMARTS and ligand'
 
 Example:
 ```yaml
-weak_hbond2:
+weak_hbond_Don-NA__Acc-Lig:
   Receptor_SMARTS:
-    - '[!H0;#7,#8,#9]'            # heavy atoms in hydrogen bond donors
-    - '[$([#1][!H0;#7,#8,#9])]'   # hydrogens in hydrogen bond donors
+    - '[#6!H0]'              # C in hydrogen bond donor
+    - '[#1;$([#1]-[C])]'    # hydrogen connected to C
   Ligand_SMARTS:
-    - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
+    - '[!$([#1,#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
   Distance:
-    min:                0.5
-    max:                3.5
+    # H···O
+    min: 0.5
+    max: 3.05
   Angle1:
-    min:                140
-    max:                180
+    # PROTEINS: Structure, Function, and Bioinformatics 67:128–141 (2007)
+    # C–H···O
+    min: 90
+    max: 180
 ```
 
 
@@ -488,8 +494,8 @@ multipolar_halogen_bond:
     min: 70     # receptor, teta2 - O=C⋯X
     max: 110    # receptor, teta2 - O=C⋯X
   Angle2:
-    min: 90      # ligand, teta1 - C⋯X-#6
-    max: 180     # ligand, teta1 - C⋯X-#6
+    min: 90     # ligand, teta1 - C⋯X-#6
+    max: 180    # ligand, teta1 - C⋯X-#6
 ```
 
 
