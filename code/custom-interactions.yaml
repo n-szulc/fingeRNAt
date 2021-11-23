@@ -104,7 +104,7 @@ weak_polar_Don-Lig__Acc-NA:
   Receptor_SMARTS:
     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
   Ligand_SMARTS:
-    - '[#6!H0]'
+    - '[#1;$([#1]-[#6])]' # hydrogen connected to carbon
   Distance:
     min: 0.5
     max: 3.05
@@ -115,7 +115,7 @@ weak_polar_Don-Lig__Acc-NA:
 #
 weak_polar_Don-NA__Acc-Lig:
   Receptor_SMARTS:
-    - '[#6!H0]'
+    - '[#1;$([#1]-[#6])]' # hydrogen connected to carbon
   Ligand_SMARTS:
     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
   Distance:
