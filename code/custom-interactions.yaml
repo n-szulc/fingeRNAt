@@ -64,7 +64,8 @@ NA-AA:
 
 
 ###  polar interactions, i.e., hydrogen bonds without angle restraints
-#
+### hydrogen not included
+
 polar_Don-Lig__Acc-NA:
   Receptor_SMARTS:
     - '[!$([#1,#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
@@ -77,7 +78,8 @@ polar_Don-Lig__Acc-NA:
 
 
 ###  polar interactions, i.e., hydrogen bonds without angle restraints
-#
+### hydrogen not included
+
 polar_Don-NA__Acc:Lig:
   Receptor_SMARTS:
     - '[N!H0v3,N!H0+v4,OH+0,SH+0,nH+0]'
