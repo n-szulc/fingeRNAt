@@ -65,7 +65,7 @@ NA-AA:
 
 ###  polar interactions, i.e., hydrogen bonds without angle restraints
 #
-polar_D:Lig_A:NA:
+polar_Don-Lig__Acc-NA:
   Receptor_SMARTS:
     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
   Ligand_SMARTS:
@@ -78,7 +78,7 @@ polar_D:Lig_A:NA:
 
 ###  polar interactions, i.e., hydrogen bonds without angle restraints
 #
-polar_D:NA_A:Lig:
+polar_Don-NA__Acc:Lig:
   Receptor_SMARTS:
     - '[N!H0v3,N!H0+v4,OH+0,SH+0,nH+0]'
   Ligand_SMARTS:
@@ -92,7 +92,7 @@ polar_D:NA_A:Lig:
 ###  weak polar interactions, i.e., weak hydrogen bonds without angle restraints
 ### C–H···O interaction
 #
-weak_polar_D:Lig_A:NA:
+weak_polar_Don-Lig__Acc-NA:
   Receptor_SMARTS:
     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
   Ligand_SMARTS:
@@ -105,7 +105,7 @@ weak_polar_D:Lig_A:NA:
 ###  weak polar interactions, i.e., weak hydrogen bonds without angle restraints
 ###  C–H···O interaction
 #
-weak_polar_D:NA_A:Lig:
+weak_polar_Don-NA__Acc-Lig:
   Receptor_SMARTS:
     - '[#6!H0]'
   Ligand_SMARTS:
@@ -151,7 +151,7 @@ carbonyl_interaction:
 ### J. Am. Chem. Soc. 1999, 121, 9411-9422
 
 ### Nucleic acid as donor, ligand as acceptor
-weak_hbond_D:NA_A:Lig:
+weak_hbond_Don-NA__Acc-Lig:
   Receptor_SMARTS:
     - '[!H0;#7,#8,#9]'            # heavy atoms in hydrogen bond donors
     - '[$([#1][!H0;#7,#8,#9])]'   # hydrogens in hydrogen bond donors
@@ -165,7 +165,7 @@ weak_hbond_D:NA_A:Lig:
     max: 180
 
 ### Nucleic acid as acceptor, ligand as donor
-weak_hbond_D:Lig_A:NA:
+weak_hbond_Don-Lig__Acc-NA:
   Receptor_SMARTS:
     - '[!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
   Ligand_SMARTS:
