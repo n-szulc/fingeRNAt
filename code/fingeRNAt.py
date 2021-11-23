@@ -1750,9 +1750,15 @@ if __name__ == "__main__":
 
         # Save output as tsv
         if output:
+            if not os.path.isdir(output):
+               print('The output directory is not present. Creating a new one..')
+               os.mkdir(output)
+
             if not filename_ligand: filename_ligand='IONS'
+
             output_proper = output
             save_name = filename_RNA.split(sys_sep)[-1] + '_' + filename_ligand.split(sys_sep)[-1] + '_' + fingerprint
+
             if analysis in FUNCTIONS.keys():
                 if output[-1] == sys_sep:
                     output_proper += save_name
