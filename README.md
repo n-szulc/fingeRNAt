@@ -984,7 +984,7 @@ See: [implementation details](implementation.md).
 
 # Feedback
 
-We welcome any feedback, please send an email to Natalia Szulc  ![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen) or submit a bug report.
+We welcome any feedback, please send an email to Natalia Szulc  ![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen) or [submit a bug report](https://github.com/n-szulc/fingeRNAt/issues).
 
 
 # Acknowledgments
