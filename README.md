@@ -950,7 +950,7 @@ find ligands/ -type f -name "*.sdf" | parallel --progress  "fingeRNAt.py -r rna.
 find ligands/ -type f -name "*.sdf" | parallel --progress  "singularity exec ./singularity-fingernat.img fingeRNAt.py -r rna.pdb -l {}"
 ```
 
-See [GNU Parallel](https://www.gnu.org/software/parallel/) for a full documentation.
+See GNU Parallel for a full documentation.
 
 # Documentation
 
