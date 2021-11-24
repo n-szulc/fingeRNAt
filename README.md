@@ -72,7 +72,7 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 - [Unit test](#unit-test)
 - [Implementation details](#implementation-details)
 - [Contributors](#contributors)
-- [Feedback](#feedback)
+- [Feedback, issues, and questions](#feedback-issues-and-questions)
 - [Acknowledgments](#acknowledgments)
 - [How to cite](#how-to-cite)
 - [License](#license)
@@ -982,19 +982,20 @@ See: [implementation details](implementation.md).
 | Natalia Szulc   | [@n-szulc](https://github.com/n-szulc)   | ![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen)     |
 | Filip Stefaniak | [@filipsPL](https://github.com/filipsPL) | ![](https://img.shields.io/badge/fstefaniak-%40iimcb.gov.pl-brightgreen) |
 
-# Feedback
+# Feedback, issues, and questions
 
 We welcome any feedback, please send an email to Natalia Szulc  ![](https://img.shields.io/badge/nszulc-%40iimcb.gov.pl-brightgreen) or [submit a bug report](https://github.com/n-szulc/fingeRNAt/issues).
+
+Discussion and questions may be asked on [the discussion page](https://github.com/n-szulc/fingeRNAt/discussions).
 
 
 # Acknowledgments
 
-Special thanks of gratitude to [Masoud Farsani](https://github.com/mafarsani), [Pritha Ghosh](https://github.com/prithaghosh) and Tomasz Wirecki for their invaluable feedback as well as to Prof. Janusz M. Bujnicki and the entire [Bujnicki Lab](http://genesilico.pl) for all the support and project guidelines.
+Special thanks of gratitude to [Masoud Farsani](https://github.com/mafarsani), [Pritha Ghosh](https://github.com/prithaghosh) and [Tomasz Wirecki](https://github.com/fryzjergda/) for their invaluable feedback as well as to Prof. Janusz M. Bujnicki and the entire [Bujnicki Lab](http://genesilico.pl) for all the support and project guidelines.
 
 Extensive script testing provided by Zuzanna Mackiewicz has been a great help in developing this tool.
 
 Assistance provided by [Open Babel Community](http://openbabel.org) was greatly appreciated.
-
 
 # How to cite
 
