@@ -217,16 +217,16 @@ fingeRNAt accepts the following parameters:
 |---|---|
 | `-r`   | path to RNA/DNA structure; see -> [Inputs](#Inputs)  |
 |  `[-l]` |  path to ligands file; see -> [Inputs](#Inputs) |
-| `[-f]`  | optional Structural Interactions Fingerprint (SIFt) type; see -> [SIFt types](#structural-interaction-fingerprints-sift-types); available types are: `FULL` [default], &nbsp;&nbsp;`SIMPLE`, &nbsp;&nbsp;`PBS`|
-| `[-addH]`  | optional module name to be used to add hydrogens to ligands' structures; see -> [Additional notes](#Inputs); available modules are: `OpenBabel` [default], &nbsp;&nbsp;`RDKit`, &nbsp;&nbsp;`None`    |
-| `[-wrapper]`  |  optional SIFt results wrapper; see -> [Wrappers](#Wrappers); available types are: `ACUG`, &nbsp;&nbsp;`PuPy`, &nbsp;&nbsp;`Counter` |
+| `[-f]`  | optional Structural Interactions Fingerprint (SIFt) type; see -> [SIFt types](#structural-interaction-fingerprints-sift-types); <br />available types are: `FULL` [default], &nbsp;&nbsp;`SIMPLE`, &nbsp;&nbsp;`PBS`|
+| `[-addH]`  | optional module name to be used to add hydrogens to ligands' structures; see -> [Additional notes](#Inputs); <br />available modules are: `OpenBabel` [default], &nbsp;&nbsp;`RDKit`, &nbsp;&nbsp;`None`    |
+| `[-wrapper]`  |  optional SIFt results wrapper; see -> [Wrappers](#Wrappers);<br />available types are: `ACUG`, &nbsp;&nbsp;`PuPy`, &nbsp;&nbsp;`Counter` |
 | `[-o]`  |  optional path to save output |
-| `[-h2o]`  |  optional detection of water-mediated interactions; applies only to SIFt type `FULL` and its wrappers; if not passed, all columns containing information about water-mediated interactions are empty (`None`) |
-| `[-dha]`  |  optional Donor-Hydrogen-Acceptor angle calculation when detecting hydrogen bonds; see -> [1. Hydrogen Bonds](#1-hydrogen-bonds) |
-|  `[-custom]` | path to yaml file with information about additional interactions to be calculated; see -> [User-defined interactions](#User-defined-interactions) |
-| `[-fingerDISt]`  | fingerDISt Distance Metrics to be calculated (fingerDISt will be directly run on the SIFts output file);  see -> [Usage examples](#usage-examples-1) |
+| `[-h2o]`  |  optional detection of water-mediated interactions; applies only to SIFt type `FULL` and its wrappers; <br />if not passed, all columns containing information about water-mediated interactions are empty (`None`) |
+| `[-dha]`  |  optional Donor-Hydrogen-Acceptor angle calculation when detecting hydrogen bonds;<br />see -> [1. Hydrogen Bonds](#1-hydrogen-bonds) |
+|  `[-custom]` | path to yaml file with information about additional interactions to be calculated;<br />see -> [User-defined interactions](#User-defined-interactions) |
+| `[-fingerDISt]`  | fingerDISt Distance Metrics to be calculated (fingerDISt will be directly run on the SIFts output file);<br />see -> [Usage examples](#usage-examples-1) |
 | `[-print]`  |  print detected interactions for each nucleic acid - ligand complex on screen |
-|  `[-detail]`  | generate an additional file with detailed data on detected interactions; see -> [PyMOL visualization](#pymol-visualization) |
+|  `[-detail]`  | generate an additional file with detailed data on detected interactions;<br />see -> [PyMOL visualization](#pymol-visualization) |
 |  `[-verbose]` | provides additional information about performed calculations at the given moment  |
 | `[-debug]`  |  enters debug mode, see -> [Debbuging mode](#debugging-mode) |
 |  `[-h]` |  show help message |
