@@ -9,3 +9,4 @@ Ligand_name	3d2v.pdb#A#SIMPLE	3d2v.pdb#C#SIMPLE	3d2v.pdb#U#SIMPLE	3d2v.pdb#G#SIM
 3D2V-native-protonated^8	1	1	1	1
 3D2V-native-protonated^9	1	1	1	1
 3D2V-native-protonated^10	1	1	1	1
+fluoroligand-for_multipolar^1	0	0	0	1
