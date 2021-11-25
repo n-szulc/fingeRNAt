@@ -1,0 +1,243 @@
+---
+### User defined interactions YAML file
+### For full documentation and description see:
+### https://github.com/n-szulc/fingeRNAt/blob/master/README.md
+###   -> user-defined-interactions
+### To use include a given interaction in the detection procedure,
+### just umcomment the desired block.
+###  you can validate this yaml file for correct syntax at
+### http://www.yamllint.com/
+
+### ------------------------------------------------------------------- ###
+
+
+#
+#  __          _ _     _
+# /  |        | (_)   | |
+# `| |      __| |_ ___| |_ __ _ _ __   ___ ___
+#  | |     / _` | / __| __/ _` | '_ \ / __/ _ \
+# _| |__  | (_| | \__ \ || (_| | | | | (_|  __/
+# \___(_)  \__,_|_|___/\__\__,_|_| |_|\___\___|
+#
+#
+
+### POINT-POINT INTERACTIONS, DISTANCE ONLY
+### provide two SMARTS patterns defining two atoms
+### and min and max distance between them
+
+
+### any contact between NA and ligand (finds all atoms but hydrogens)
+#
+any_contact:
+  Receptor_SMARTS:
+    - '[!#1]'
+  Ligand_SMARTS:
+    - '[!#1]'
+  Distance:
+    min: 0.5
+    max: 3.5
+
+
+### cation - anion interactions, with atoms having explicit charges
+#
+cation-anion_explicit:
+  Receptor_SMARTS:
+    - '[-]'
+  Ligand_SMARTS:
+    - '[+]'
+  Distance:
+    min: 0.5
+    max: 5.5
+
+###  Nucleic acid - amino-acid
+###  any contact between any nucleic acid atom and amino acid war-head moiety
+###  as a ligand
+#
+NA-AA:
+  Receptor_SMARTS:
+    - '[!#1]'
+  Ligand_SMARTS:
+    - '[NX3,NX4+][CX4H]([*])[CX3](=[OX1])[O,N]'
+  Distance:
+    min: 0.5
+    max: 3.5
+
+
+###  polar interactions, i.e., hydrogen bonds without angle restraints
+### hydrogen not included
+
+polar_Don-Lig__Acc-NA:
+  Receptor_SMARTS:
+    - '[!$([#1,#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
+  Ligand_SMARTS:
+    - '[N!H0v3,N!H0+v4,OH+0,SH+0,nH+0]'
+  Distance:
+    min: 0.5
+    max: 3.5
+
+
+
+###  polar interactions, i.e., hydrogen bonds without angle restraints
+### hydrogen not included
+
+polar_Don-NA__Acc:Lig:
+  Receptor_SMARTS:
+    - '[N!H0v3,N!H0+v4,OH+0,SH+0,nH+0]'
+  Ligand_SMARTS:
+    - '[!$([#1,#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
+  Distance:
+    min: 0.5
+    max: 3.5
+
+
+
+###  weak polar interactions, i.e., weak hydrogen bonds without angle restraints
+### C–H···O interaction
+### J. Am. Chem. Soc. 1999, 121, 9411-9422
+### Fundamental Properties of the CH‚‚‚O Interaction: Is It a True
+### Hydrogen Bond;
+### and
+### PROTEINS: Structure, Function, and Bioinformatics 67:128–141 (2007)
+### SMARTS od fonor includes H, receptor should not
+
+weak_polar_Don-Lig__Acc-NA:
+  Receptor_SMARTS:
+    - '[!$([#1,#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
+  Ligand_SMARTS:
+    - '[#1;$([#1]-[C])]' # hydrogen connected to carbon
+  Distance:
+    min: 0.5
+    max: 3.05
+
+
+###  weak polar interactions, i.e., weak hydrogen bonds without angle restraints
+###  C–H···O interaction
+#
+weak_polar_Don-NA__Acc-Lig:
+  Receptor_SMARTS:
+    - '[#1;$([#1]-[C])]' # hydrogen connected to carbon
+  Ligand_SMARTS:
+    - '[!$([#1,#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]'
+  Distance:
+    min: 0.5
+    max: 3.05
+
+
+
+###  carbonyl-carbonyl
+###  Acta Cryst. (1998). B54, 320-329 doi: 10.1107/S0108768198001463
+###  J Mol Biol. 2017 Feb 3; 429(3): 365–371. doi: 10.1016/j.jmb.2016.12.004
+###  n→π* Interactions Are Competitive with Hydrogen Bonds.
+###      DOI:10.1021/acs.orglett.6b01655Corpus ID: 45227553
+#
+carbonyl_interaction:
+  Receptor_SMARTS:
+    - '[$([OH0]=[CX3,c]);!$([OH0]=[CX3,c]-[OH,O-])]'   # carbonyl oxygen
+  Ligand_SMARTS:
+    - '[$([CX3,c]=[OH0]);!$([CX3,c](=[OH0])-[OH,O-])]' # carbonyl carbon
+  Distance:
+    min: 0.5              # minimum distance cutoff, Å
+    max: 3.6              # maximum distance cutoff, Å
+
+
+# ### ---------------------------------------------------------------------- ###
+
+#  _____         _ _     _                               _
+# / __  \       | (_)   | |      _                      | |
+# `' / /'     __| |_ ___| |_   _| |_    __ _ _ __   __ _| | ___
+#   / /      / _` | / __| __| |_   _|  / _` | '_ \ / _` | |/ _ \
+# ./ /____  | (_| | \__ \ |_    |_|   | (_| | | | | (_| | |  __/
+# \_____(_)  \__,_|_|___/\__|          \__,_|_| |_|\__, |_|\___|
+#                                                   __/ |
+#                                                  |___/
+
+
+### POINT-POINT INTERACTIONS, DISTANCE AND ANGLE
+
+
+### weak hydrogen bonds (C–H···O interaction) with an angle term
+### J. Am. Chem. Soc. 1999, 121, 9411-9422
+### Fundamental Properties of the CH‚‚‚O Interaction: Is It a True
+### Hydrogen Bond;
+### and
+### PROTEINS: Structure, Function, and Bioinformatics 67:128–141 (2007)
+### SMARTS od donor includes H, receptor should not
+
+
+### Nucleic acid as donor, ligand as acceptor
+weak_hbond_Don-NA__Acc-Lig:
+  Receptor_SMARTS:
+    - '[#6!H0]'              # C in hydrogen bond donor
+    - '[#1;$([#1]-[C])]'    # hydrogen connected to C
+  Ligand_SMARTS:
+    - '[!$([#1,#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
+  Distance:
+    # H···O
+    min: 0.5
+    max: 3.05
+  Angle1:
+    # PROTEINS: Structure, Function, and Bioinformatics 67:128–141 (2007)
+    # C–H···O
+    min: 90
+    max: 180
+
+### Nucleic acid as acceptor, ligand as donor
+weak_hbond_Don-Lig__Acc-NA:
+  Receptor_SMARTS:
+    - '[!$([#1,#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])]' # HBA
+  Ligand_SMARTS:
+    - '[#1;$([#1]-[C])]'   # hydrogen connected to C
+    - '[#6!H0]'            # C in hydrogen bond donor
+  Distance:
+    # H···O
+    min: 0.5
+    max: 3.05
+  Angle1:
+    # PROTEINS: Structure, Function, and Bioinformatics 67:128–141 (2007)
+    # C–H···O
+    min: 90
+    max: 180
+
+
+
+# ### ---------------------------------------------------------------------- ###
+
+#  _____         _ _     _             _____                     _
+# |____ |       | (_)   | |      _    / __  \                   | |
+#     / /     __| |_ ___| |_   _| |_  `' / /'   __ _ _ __   __ _| | ___  ___
+#     \ \    / _` | / __| __| |_   _|   / /    / _` | '_ \ / _` | |/ _ \/ __|
+# .___/ /   | (_| | \__ \ |_    |_|   ./ /___ | (_| | | | | (_| | |  __/\__ \
+# \____(_)   \__,_|_|___/\__|         \_____/  \__,_|_| |_|\__, |_|\___||___/
+#                                                           __/ |
+#                                                          |___/
+
+
+### POINT-POINT INTERACTIONS, DISTANCE AND TWO ANGLES
+
+### multipolar halogen interaction
+### O=C⋯X-A
+### "Related to, but distinct from halogen bonds are multipolar interactions
+### between halogen atoms and carbonyl carbon or amide nitrogen"
+### Medchemcomm. 2017 Oct 1; 8(10): 1970–1981. Published online
+### 2017 Sep 26. doi:       10.1039/c7md00381a
+
+multipolar_halogen_bond:
+  Receptor_SMARTS:
+    # carbonyl oxygen (non bodning)
+    - '[$([OH0]=[CX3,c]);!$([OH0]=[CX3,c]-[OH,O-])]'
+    # carbonyl carbon, forms the bond
+    - '[$([CX3,c]=[OH0]);!$([CX3,c](=[OH0])-[OH,O-])]'
+  Ligand_SMARTS:
+    - '[F,Cl,Br,I]'    # halogen, forms the bond
+    - '[#6]'          # any carbon atom connected to the halogen
+  Distance:
+    min: 0.5
+    max: 3.65
+  Angle1:
+    min: 70     # receptor, teta2 - O=C⋯X
+    max: 110    # receptor, teta2 - O=C⋯X
+  Angle2:
+    min: 90     # ligand, teta1 - C⋯X-#6
+    max: 180    # ligand, teta1 - C⋯X-#6
+
+...
