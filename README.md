@@ -15,7 +15,6 @@ state and is being actively
 developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 ![Last modified](https://img.shields.io/github/last-commit/n-szulc/fingeRNAt?color=green)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-
 [![Check Markdown links](https://github.com/n-szulc/fingeRNAt/actions/workflows/action-links.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/action-links.yml) [![Plugin Yaml Lint](https://github.com/n-szulc/fingeRNAt/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/yamllint.yml)
 
 
