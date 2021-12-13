@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-fingerDIST is a software to calculate different Distance Metrics based on Structural Interaction Fingerprint (SIFt).
+fingerDISt is a software to calculate different Distance Metrics based on Structural Interaction Fingerprint (SIFt).
 
 Authors:
 Natalia A. Szulc, nszulc@iimcb.gov.pl
