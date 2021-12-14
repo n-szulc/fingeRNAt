@@ -1,4 +1,4 @@
-name: CI (conda)
+name: Install in conda env
 on:
   push:
     paths:
@@ -9,9 +9,9 @@ jobs:
     strategy:
       matrix:
         os: ['ubuntu-18.04', 'ubuntu-20.04', 'macos-latest', 'windows-latest']
-        # os: ['ubuntu-latest']
-        python-version: [3.5, 3.7, 3.8, 3.9]
-        # python-version: [3.8]
+        os: ['ubuntu-latest', 'windows-latest']
+        # python-version: [3.5, 3.7, 3.8, 3.9]
+        python-version: [3.8]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -28,6 +28,7 @@ jobs:
       - name: run test
         shell: pwsh
         run: |
+          conda list
           conda env list
           cd tests
           python fingeRNAt_test.py
