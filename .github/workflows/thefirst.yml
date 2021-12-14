@@ -4,6 +4,7 @@ on:
     paths:
     - '**.py'
     - '.github/workflows/thefirst.yml'
+    - 'env/fingeRNAt_env.yml'
 jobs:
   build:
     strategy:
