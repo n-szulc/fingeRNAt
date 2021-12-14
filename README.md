@@ -141,8 +141,8 @@ To install fingernat at Debian and Debian-like systems using repository packages
 
 ```
 # install packages
-apt-get update && apt-get --no-install-recommends -y install openbabel python3.9-minimal python3-openbabel python3-pip python-is-python3 \
-		python3-pandas python3-numpy python3-rdkit python3-tqdm
+sudo apt-get update && sudo apt-get --no-install-recommends -y install openbabel python3.9-minimal python3-openbabel python3-pip python-is-python3 \
+python3-pandas python3-numpy python3-rdkit python3-tqdm python3-yaml
 
 # clone the fingeRNAt repository:
 git clone --depth=1 https://github.com/n-szulc/fingernat.git
