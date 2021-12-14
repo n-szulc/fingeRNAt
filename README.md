@@ -157,7 +157,7 @@ git clone --depth=1 https://github.com/n-szulc/fingernat.git
 
 [![Ubuntu install from apt and pip](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-pip-install.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-pip-install.yml)
 
-To install fingernat at Debian and Debian-like systems using repository packages and pip-installed packages (tested under Debian stable).
+To install fingernat at Debian and Debian-like systems using repository packages and pip-installed packages (tested under Debian stable and Ubuntu-latest).
 
 ```
 # install a minimal python and openbabel tool box:
