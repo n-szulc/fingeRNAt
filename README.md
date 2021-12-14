@@ -8,7 +8,7 @@ fingeRNAt is a software tool for detecting non-covalent interactions formed with
 
 
 [![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-360/)
-[![CI (conda)](https://github.com/n-szulc/fingeRNAt/workflows/CI%20(conda)/badge.svg?branch=master)](https://github.com/n-szulc/fingeRNAt/actions?query=workflow%3A%22CI+%28conda%29%22) [![Ubuntu install from apt](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-install.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-install.yml)
+[![CI (conda)](https://github.com/n-szulc/fingeRNAt/actions/workflows/thefirst.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/thefirst.yml)  [![Ubuntu install from apt](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-install.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-install.yml)
 ![python](https://img.shields.io/badge/Python%20tested-3.9.x%20%7C%203.8.x%20%7C%203.7.x%20%7C%203.6.x%20%7C%203.5.x%20-blue)
 [![Project Status: Active - The project has reached a stable, usable
 state and is being actively
@@ -118,7 +118,7 @@ Recommended fingeRNAt usage is in conda environment.
 
 ## Conda environment (the recommended method)
 
-[![CI (conda)](https://github.com/n-szulc/fingeRNAt/workflows/CI%20(conda)/badge.svg?branch=master)](https://github.com/n-szulc/fingeRNAt/actions?query=workflow%3A%22CI+%28conda%29%22) 
+[![CI (conda)](https://github.com/n-szulc/fingeRNAt/actions/workflows/thefirst.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/thefirst.yml)
 
 1. Install conda
 
