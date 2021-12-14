@@ -25,10 +25,13 @@ jobs:
           python-version: ${{ matrix.python-version }}
           environment-file: env/fingeRNAt_env.yml
           activate-environment: fingernat
-      - name: run test
+      - name: list packages
         shell: pwsh
         run: |
           conda list
+      - name: run test
+        shell: pwsh
+        run: |
           conda env list
           cd tests
           python fingeRNAt_test.py
