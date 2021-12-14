@@ -1,4 +1,4 @@
-name: CI (conda)
+name: Ubuntu install from apt
 on:
   push:
     paths:
