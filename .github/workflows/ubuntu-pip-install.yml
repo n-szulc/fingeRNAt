@@ -3,7 +3,7 @@ on:
   push:
     paths:
     - '**.py'
-    - '.github/workflows/ubuntu+pip-install.yml'
+    - '.github/workflows/ubuntu-pip-install.yml'
 jobs:
   build:
     strategy:
