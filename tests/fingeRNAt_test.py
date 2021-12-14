@@ -8,7 +8,7 @@ yaml = 'custom-interactions.yaml'
 
 program_path = '..' + sys_sep + 'code' + sys_sep + 'fingeRNAt.py'
 test_inputs_path = 'test_inputs' + sys_sep
-test_ouptuts_path = 'outputs' + sys_sep
+test_outputs_path = 'outputs' + sys_sep
 test_ex_outputs_path = 'expected_outputs' + sys_sep
 
 def run_test():
@@ -22,8 +22,8 @@ def run_test():
         for j in range(len(fingerprints)):
             for l in range(len(ligands[i])):
                 if fingerprints[j] == 'FULL':
-                    #command = 'python %s -r %s -l %s -f %s -wrapper ACUG,PuPy,Counter -h2o -o outputs -detail -custom %s' %(program_path, test_inputs_path + RNA[i], test_inputs_path + ligands[i][l], fingerprints[j], test_inputs_path + yaml)
-                    command = 'python %s -r %s -l %s -f %s -wrapper ACUG,PuPy,Counter -h2o -o outputs -detail' %(program_path, test_inputs_path + RNA[i], test_inputs_path + ligands[i][l], fingerprints[j])
+                    command = 'python %s -r %s -l %s -f %s -wrapper ACUG,PuPy,Counter -h2o -o outputs -detail -custom %s' %(program_path, test_inputs_path + RNA[i], test_inputs_path + ligands[i][l], fingerprints[j], test_inputs_path + yaml)
+                    #command = 'python %s -r %s -l %s -f %s -wrapper ACUG,PuPy,Counter -h2o -o outputs -detail' %(program_path, test_inputs_path + RNA[i], test_inputs_path + ligands[i][l], fingerprints[j])
 
                 else:
                     command = 'python %s -r %s -l %s -f %s -wrapper ACUG,PuPy,Counter -h2o -o outputs -detail' %(program_path, test_inputs_path + RNA[i], test_inputs_path + ligands[i][l], fingerprints[j])
@@ -42,10 +42,13 @@ def run_test():
             files = [f for f in files if not f[0] == '.']
             for name in files:
             	try:
-                    out = subprocess.check_output('comm -3 %s %s' %(test_ouptuts_path + name, test_ex_outputs_path + name), shell = True)
+                    out = subprocess.check_output('comm -3 %s %s' %(test_outputs_path + name, test_ex_outputs_path + name), shell = True)
                     if len(out) != 0:
                         OK = False
-                        print ('%s and %s differ!' %(test_ouptuts_path + name, test_ex_outputs_path + name))
+                        print ('%s and %s differ!' %(test_outputs_path + name, test_ex_outputs_path + name))
+                        out2 = subprocess.call('diff -y %s %s' %(test_outputs_path + name, test_ex_outputs_path + name), shell = True)
+                        #print(out2)
+
             	except:
                 		mssg = '# Something is wrong, attention needed! #'
 		                print('#'*len(mssg))
