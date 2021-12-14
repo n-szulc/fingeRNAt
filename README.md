@@ -7,14 +7,15 @@ Welcome to fingeRNAt's README
 fingeRNAt is a software tool for detecting non-covalent interactions formed within complexes of nucleic acids with ligands.
 
 
-[![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-360/)
-[![CI (conda)](https://github.com/n-szulc/fingeRNAt/workflows/CI%20(conda)/badge.svg?branch=master)](https://github.com/n-szulc/fingeRNAt/actions?query=workflow%3A%22CI+%28conda%29%22)
-![python](https://img.shields.io/badge/Python%20tested-3.9.x%20%7C%203.8.x%20%7C%203.7.x%20%7C%203.6.x%20%7C%203.5.x%20-blue)
+[![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-360/) ![python](https://img.shields.io/badge/Python%20tested-3.9.x%20%7C%203.8.x%20%7C%203.7.x%20%7C%203.6.x%20%7C%203.5.x%20-blue)
 [![Project Status: Active - The project has reached a stable, usable
 state and is being actively
 developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 ![Last modified](https://img.shields.io/github/last-commit/n-szulc/fingeRNAt?color=green)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+
+[![CI (conda)](https://github.com/n-szulc/fingeRNAt/actions/workflows/thefirst.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/thefirst.yml)  [![Ubuntu install from apt](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-install.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-install.yml) [![Ubuntu install from apt and pip](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-pip-install.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-pip-install.yml)
 [![Check Markdown links](https://github.com/n-szulc/fingeRNAt/actions/workflows/action-links.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/action-links.yml) [![Plugin Yaml Lint](https://github.com/n-szulc/fingeRNAt/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/yamllint.yml)
 
 
@@ -118,6 +119,8 @@ Recommended fingeRNAt usage is in conda environment.
 
 ## Conda environment (the recommended method)
 
+[![CI (conda)](https://github.com/n-szulc/fingeRNAt/actions/workflows/thefirst.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/thefirst.yml)
+
 1. Install conda
 
   Please refer to [conda manual](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) and install conda version with Python 3.x according to your operating system.
@@ -137,12 +140,14 @@ Recommended fingeRNAt usage is in conda environment.
 
 ## Using apt-get
 
-To install fingernat at Debian and Debian-like systems using repository packages (tested under Debian stable).
+[![Ubuntu install from apt](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-install.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-install.yml)
+
+To install fingernat at Debian and Debian-like systems using repository packages (tested under Debian stable and Ubuntu-latest).
 
 ```
 # install packages
-apt-get update && apt-get --no-install-recommends -y install openbabel python3.9-minimal python3-openbabel python3-pip python-is-python3 \
-		python3-pandas python3-numpy python3-rdkit python3-tqdm
+sudo apt-get update && sudo apt-get --no-install-recommends -y install openbabel python3.9-minimal python3-openbabel python3-pip python-is-python3 \
+python3-pandas python3-numpy python3-rdkit python3-tqdm python3-yaml
 
 # clone the fingeRNAt repository:
 git clone --depth=1 https://github.com/n-szulc/fingernat.git
@@ -150,7 +155,9 @@ git clone --depth=1 https://github.com/n-szulc/fingernat.git
 
 ## Using pip and apt-get
 
-To install fingernat at Debian and Debian-like systems using repository packages and pip-installed packages (tested under Debian stable).
+[![Ubuntu install from apt and pip](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-pip-install.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-pip-install.yml)
+
+To install fingernat at Debian and Debian-like systems using repository packages and pip-installed packages (tested under Debian stable and Ubuntu-latest).
 
 ```
 # install a minimal python and openbabel tool box:
