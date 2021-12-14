@@ -240,3 +240,4 @@ multipolar_halogen_bond:
     min: 90     # ligand, teta1 - C⋯X-#6
     max: 180    # ligand, teta1 - C⋯X-#6
 
+...
