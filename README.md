@@ -15,7 +15,8 @@ developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repo
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 
-[![CI (conda)](https://github.com/n-szulc/fingeRNAt/actions/workflows/thefirst.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/thefirst.yml)  [![Ubuntu install from apt](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-install.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-install.yml) [![Check Markdown links](https://github.com/n-szulc/fingeRNAt/actions/workflows/action-links.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/action-links.yml) [![Plugin Yaml Lint](https://github.com/n-szulc/fingeRNAt/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/yamllint.yml)
+[![CI (conda)](https://github.com/n-szulc/fingeRNAt/actions/workflows/thefirst.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/thefirst.yml)  [![Ubuntu install from apt](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-install.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-install.yml) [![Ubuntu install from apt and pip](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-pip-install.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-pip-install.yml)
+[![Check Markdown links](https://github.com/n-szulc/fingeRNAt/actions/workflows/action-links.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/action-links.yml) [![Plugin Yaml Lint](https://github.com/n-szulc/fingeRNAt/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/yamllint.yml)
 
 
 <!-- TOC START min:1 max:6 link:true asterisk:false update:true -->
@@ -153,6 +154,8 @@ git clone --depth=1 https://github.com/n-szulc/fingernat.git
 ```
 
 ## Using pip and apt-get
+
+[![Ubuntu install from apt and pip](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-pip-install.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-pip-install.yml)
 
 To install fingernat at Debian and Debian-like systems using repository packages and pip-installed packages (tested under Debian stable).
 
