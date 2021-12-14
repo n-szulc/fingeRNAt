@@ -1,0 +1,29 @@
+name: Ubuntu install from apt and pip
+on:
+  push:
+    paths:
+    - '**.py'
+    - '.github/workflows/ubuntu+pip-install.yml'
+jobs:
+  build:
+    strategy:
+      matrix:
+        # os: ['ubuntu-18.04', 'ubuntu-20.04']
+        os: ['ubuntu-latest']
+        # python-version: [3.5, 3.7, 3.8, 3.9]
+        # python-version: [3.8]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install package
+        run: |
+          sudo apt-get update && sudo apt-get --no-install-recommends -y install openbabel python3.9-minimal python3-openbabel python3-pip python-is-python3
+          pip install -r env/fingeRNAt_pip.txt
+      - name: run test
+        shell: pwsh
+        run: |
+          conda env list
+          cd tests
+          python fingeRNAt_test.py
