@@ -22,7 +22,9 @@ def run_test():
         for j in range(len(fingerprints)):
             for l in range(len(ligands[i])):
                 if fingerprints[j] == 'FULL':
-                    command = 'python %s -r %s -l %s -f %s -wrapper ACUG,PuPy,Counter -h2o -o outputs -detail -custom %s' %(program_path, test_inputs_path + RNA[i], test_inputs_path + ligands[i][l], fingerprints[j], test_inputs_path + yaml)
+                    #command = 'python %s -r %s -l %s -f %s -wrapper ACUG,PuPy,Counter -h2o -o outputs -detail -custom %s' %(program_path, test_inputs_path + RNA[i], test_inputs_path + ligands[i][l], fingerprints[j], test_inputs_path + yaml)
+                    command = 'python %s -r %s -l %s -f %s -wrapper ACUG,PuPy,Counter -h2o -o outputs -detail' %(program_path, test_inputs_path + RNA[i], test_inputs_path + ligands[i][l], fingerprints[j])
+
                 else:
                     command = 'python %s -r %s -l %s -f %s -wrapper ACUG,PuPy,Counter -h2o -o outputs -detail' %(program_path, test_inputs_path + RNA[i], test_inputs_path + ligands[i][l], fingerprints[j])
                 if subprocess.call(command, shell = True):
