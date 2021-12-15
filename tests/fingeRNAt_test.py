@@ -29,8 +29,6 @@ def run_test():
                 if subprocess.call(command, shell = True):
                     print ('fingeRNAt had problem running %s on %s  and %s' % (fingerprints[j], test_inputs_path + RNA[i], test_inputs_path + ligands[i][l]))
                     OK = False
-                else:
-                    subprocess.call('rm %s*tsv' %(test_outputs_path), shell = True)
 
 
 
@@ -39,11 +37,11 @@ def run_test():
             files = [f for f in files if not f[0] == '.']
             for name in files:
             	try:
-                    out = subprocess.check_output('comm -3 %s %s' %(test_outputs_path + name, test_ex_outputs_path + name), shell = True)
+                    out = subprocess.check_output('comm -3 %s %s' %(test_outputs_path + 'debug.txt', test_ex_outputs_path + 'debug.txt'), shell = True)
                     if len(out) != 0:
                         OK = False
-                        print ('%s and %s differ!' %(test_outputs_path + name, test_ex_outputs_path + name))
-                        subprocess.call('cat %s' %(test_outputs_path + name), shell = True)
+                        print ('%s and %s differ!' %(test_outputs_path + 'debug.txt', test_ex_outputs_path + 'debug.txt'))
+                        subprocess.call('cat %s' %(test_outputs_path + 'debug.txt'), shell = True)
 
             	except:
                 		mssg = '# Something is wrong, attention needed! #'
