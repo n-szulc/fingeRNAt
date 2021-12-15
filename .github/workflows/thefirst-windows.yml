@@ -36,6 +36,9 @@ jobs:
           conda env list
           cd tests
           echo "------------------------------------"
-          cat fingeRNAt_test.py
-          echo "------------------------------------"
-          python fingeRNAt_test.py
+          ./just_run.sh
+      - uses: actions/upload-artifact@v2
+        with:
+          name: outfiles
+          path: tests/outputs/
+          retention-days: 5
