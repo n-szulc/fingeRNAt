@@ -1,16 +1,16 @@
-name: Install in conda env
+name: Install in conda env - windowz
 on:
   push:
     paths:
     - '**.py'
-    - '.github/workflows/thefirst.yml'
+    - '.github/workflows/thefirst-windows.yml'
     - 'env/fingeRNAt_env.yml'
 jobs:
   build:
     strategy:
       matrix:
         # os: ['ubuntu-18.04', 'ubuntu-20.04', 'macos-latest', 'windows-latest']
-        os: ['ubuntu-latest']
+        os: ['windows-latest']
         # python-version: [3.5, 3.7, 3.8, 3.9]
         python-version: [3.8]
     runs-on: ${{ matrix.os }}
