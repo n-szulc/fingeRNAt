@@ -3,7 +3,7 @@ on:
   push:
     paths:
     - '**.py'
-    - '.github/workflows/thefirst.yml'
+    - '.github/workflows/thefirst-windows.yml'
     - 'env/fingeRNAt_env.yml'
 jobs:
   build:
