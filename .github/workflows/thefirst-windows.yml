@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         # os: ['ubuntu-18.04', 'ubuntu-20.04', 'macos-latest', 'windows-latest']
-        os: ['windows-latest']
+        os: ['windows-2022']
         # python-version: [3.5, 3.7, 3.8, 3.9]
         python-version: [3.8]
     runs-on: ${{ matrix.os }}
@@ -35,4 +35,5 @@ jobs:
         run: |
           conda env list
           cd tests
+          cat fingeRNAt_test.py
           python fingeRNAt_test.py
