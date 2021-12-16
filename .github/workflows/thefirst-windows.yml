@@ -5,6 +5,7 @@ on:
     - '**.py'
     - '.github/workflows/thefirst-windows.yml'
     - 'env/fingeRNAt_env.yml'
+    - 'tests/just_run.sh'
 jobs:
   build:
     strategy:
@@ -12,7 +13,7 @@ jobs:
         # os: ['ubuntu-18.04', 'ubuntu-20.04', 'macos-latest', 'windows-latest']
         os: ['windows-latest']
         # python-version: [3.5, 3.7, 3.8, 3.9]
-        python-version: [3.8]
+        python-version: [3.9]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -35,4 +36,9 @@ jobs:
         run: |
           conda env list
           cd tests
-          python fingeRNAt_test.py
+          python ../code/fingeRNAt.py -r test_inputs/3d2v.pdb -l test_inputs/redocked.sdf -f FULL -h2o -o -custom test_inputs/custom-interactions.yaml -detail -debug > outputs/debug.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: outfiles
+          path: tests/
+          retention-days: 5
