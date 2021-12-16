@@ -36,9 +36,9 @@ jobs:
         run: |
           conda env list
           cd tests
-          python fingeRNAt_test.py
+          python ../code/fingeRNAt.py -r test_inputs/3d2v.pdb -l test_inputs/redocked.sdf -f FULL -h2o -o -custom test_inputs/custom-interactions.yaml -detail -debug > outputs/debug.txt
       - uses: actions/upload-artifact@v2
         with:
           name: outfiles
-          path: tests/outputs/
+          path: tests/
           retention-days: 5
