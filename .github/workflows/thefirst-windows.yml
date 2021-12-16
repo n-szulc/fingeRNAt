@@ -36,7 +36,7 @@ jobs:
         run: |
           conda env list
           cd tests
-          python ../code/fingeRNAt.py -r test_inputs/3d2v.pdb -l test_inputs/redocked.sdf -f FULL -h2o -o -custom test_inputs/custom-interactions.yaml -detail -debug > debug.txt
+          python ../code/fingeRNAt.py -r test_inputs/3d2v.pdb -l test_inputs/redocked.sdf -f FULL -h2o -custom test_inputs/custom-interactions.yaml -detail -debug > debug.txt
       - uses: actions/upload-artifact@v2
         with:
           name: outfiles
