@@ -43,7 +43,7 @@ def run_test():
                     if len(out) != 0:
                         OK = False
                         print ('%s and %s differ!' %(test_outputs_path + name, test_ex_outputs_path + name))
-                        subprocess.call('cat %s' %(test_outputs_path + name), shell = True)
+                        #subprocess.call('cat %s' %(test_outputs_path + name), shell = True)
 
             	except:
                 		mssg = '# Something is wrong, attention needed! #'
