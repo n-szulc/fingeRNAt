@@ -37,7 +37,7 @@ def run_test():
             files = [f for f in files if not f[0] == '.']
             for name in files:
             	try:
-                    subprocess.call('cat %s' %(test_outputs_path + name), shell = True)
+                    #subprocess.call('cat %s' %(test_outputs_path + name), shell = True)
 
                     out = subprocess.check_output('comm -3 %s %s' %(test_outputs_path + name, test_ex_outputs_path + name), shell = True)
                     if len(out) != 0:
