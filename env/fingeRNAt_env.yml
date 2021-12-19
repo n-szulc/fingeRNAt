@@ -5,7 +5,7 @@ channels:
   - defaults
 dependencies:
   - numpy
-  - openbabel=3.1.0
+  - openbabel=3.0.0
   - pandas
   - python>=3.5
   - rdkit
