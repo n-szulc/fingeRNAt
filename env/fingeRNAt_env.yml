@@ -1,11 +1,10 @@
 name: fingernat
 channels:
-  - openbabel
   - conda-forge
   - defaults
 dependencies:
   - numpy
-  - openbabel=3.0.0
+  - openbabel=3.1.1
   - pandas
   - python>=3.5
   - rdkit
