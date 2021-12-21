@@ -131,7 +131,7 @@ Recommended fingeRNAt usage is in conda environment.
       Clone the repository:
       `git clone --depth=1 https://github.com/n-szulc/fingernat.git`
 
-			Or download the latest stable release from [releases page](https://github.com/n-szulc/fingeRNAt/releases).
+      Or download the latest stable release from the [releases page](https://github.com/n-szulc/fingeRNAt/releases).
 
 3. Create conda environment
 
@@ -208,6 +208,7 @@ cd fingeRNAt
 python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf
 ```
 
+See the output file with SIFts in the `outputs/` directory.
 
 ## fingeRNAt in action
 
