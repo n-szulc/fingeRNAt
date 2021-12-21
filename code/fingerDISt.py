@@ -12,7 +12,7 @@ If you use this software, please cite:
 Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak
 [in preparation]
 
-Requires Python 3.5 - 3.8
+Requires Python 3.5 - 3.9
 '''
 
 import argparse
@@ -128,6 +128,9 @@ if __name__ == "__main__":
         df_results.index.name = 'Ligand_name'
 
         if output:
+            if not os.path.isdir(output):
+               print('The output directory is not present. Creating a new one..')
+               os.mkdir(output)
             output_proper = output
             save_name = filename_SIFt.split(sys_sep)[-1] + '_' + m
             if output[-1] == sys_sep: # default output name, location specified
