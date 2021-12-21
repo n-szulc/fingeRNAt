@@ -841,7 +841,7 @@ fingerDISt accepts the following parameters:
 
 1. `-i `: path to tsv/csv file with calculated SIFs
 
-  ✨ fingeRNAt outputs are fingerDISt inputs ✨
+  ✨ **fingeRNAt outputs are fingerDISt inputs** ✨
 
 ### Distance Metrics
 
@@ -883,13 +883,13 @@ Sample output of running `python code/fingerDISt.py -i tests/expected_outputs/1a
 
 `python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_FULL.tsv -m manhattan,square_euclidean,euclidean,half_square_euclidean,cosine_similarity,tanimoto,soergel,tversky`
 
-- Calculate two Distance Metrics on SIFts inputs type `PBS` wrapped with `ACUG` wrapper and save the output to user-specified location with the default filename.
+- Calculate two Distance Metrics on SIFts inputs type `PBS` wrapped with `ACUG` wrapper and save the output to user-specified location.
 
-`python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_PBS_ACUG.tsv -m manhattan,square_euclidean -o my_dir/`
+`python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_PBS_ACUG.tsv -m manhattan,square_euclidean -o my_dir`
 
 - Calculate one Distance Metric on SIFts inputs type `SIMPLE`, print it on the screen and save the output to the user-specified location.
 
-`python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_SIMPLE.tsv -m tanimoto -verbose -o my_dir/my_filename/`
+`python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_SIMPLE.tsv -m tanimoto -verbose -o my_dir`
 
 - Call fingerDISt directly from the fingeRNAt (will calculate the passed Distance Metrics on the calculated SIFts output (however not any wrapped one) and save the result in the same location).
 
