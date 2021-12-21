@@ -820,7 +820,7 @@ fingerDISt, similarly like fingeRNAt, requires Python 3.5 - 3.9, and may be run 
 ```bash
 cd fingeRNAt
 
-python code/fingerDISt.py -i example_outputs/FULL/1aju_model1.pdb_ligands.sdf_FULL.tsv -m tanimoto
+python code/fingerDISt.py -i example_outputs/1aju_model1.pdb_ligands.sdf_FULL.tsv -m tanimoto
 ```
 
 ### Parameters description
