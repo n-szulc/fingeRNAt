@@ -7,7 +7,7 @@ Welcome to fingeRNAt's README
 fingeRNAt is a software tool for detecting non-covalent interactions formed within complexes of nucleic acids with ligands.
 
 
-[![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-360/) ![python](https://img.shields.io/badge/Python%20tested-3.9.x%20%7C%203.8.x%20%7C%203.7.x%20%7C%203.6.x%20%7C%203.5.x%20-blue)
+[![Python 3.9](https://img.shields.io/badge/python-3.9-blue.svg)](https://www.python.org/downloads/release/python-360/) ![python](https://img.shields.io/badge/Python%20tested-3.9.x%20%7C%203.8.x%20%7C%203.7.x%20%7C%203.6.x%20%7C%203.5.x%20-blue)
 [![Project Status: Active - The project has reached a stable, usable
 state and is being actively
 developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
@@ -923,7 +923,7 @@ See the singularity image in action:
 
 # Running fingeRNAt in parallel
 
-One can easily parallelize fingeRNAt with [GNU parallel](https://www.gnu.org/software/parallel/). E.g., for parallel processing of multiple ligands/ligand sets:
+One can easily parallelize fingeRNAt with [GNU parallel](https://www.gnu.org/software/parallel/), e.g., for parallel processing of multiple ligands/ligand sets:
 
 ```
 # calculate fingerprints for all sdf ligands from firectory ligands
