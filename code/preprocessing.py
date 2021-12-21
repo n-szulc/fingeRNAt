@@ -5,6 +5,7 @@ import yaml
 from openbabel import openbabel
 from openbabel import pybel
 from rdkit import Chem
+from rdkit.Chem import AllChem
 
 from tqdm import tqdm
 import collections
@@ -638,8 +639,7 @@ def addHwithRDKit(sdfFileIN, sdfFileOUT):
     :rtype: None
     """
 
-    from rdkit import Chem
-    from rdkit.Chem import AllChem
+
 
     suppl = Chem.SDMolSupplier(sdfFileIN, sanitize=False)
 
