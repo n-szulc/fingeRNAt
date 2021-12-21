@@ -843,8 +843,6 @@ fingerDISt accepts the following parameters:
 
   **fingeRNAt outputs are fingerDISt inputs**
 
-  Example inputs may be found in `fingeRNAt/tests/expected_outputs`.
-
 ### Distance Metrics
 
 fingerDISt calculates the following Distance Metrics:
