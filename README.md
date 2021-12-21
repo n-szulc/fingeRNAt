@@ -891,7 +891,7 @@ Sample output of running `python code/fingerDISt.py -i tests/expected_outputs/1a
 
 `python code/fingerDISt.py -i tests/expected_outputs/1aju_model1.pdb_ligands.sdf_SIMPLE.tsv -m tanimoto -verbose -o my_dir`
 
-- Call fingerDISt directly from the fingeRNAt (will calculate the passed Distance Metrics on the calculated SIFts output (however not any wrapped one) and save the result in the same location).
+- **Call fingerDISt directly from the fingeRNAt** (will calculate the passed Distance Metrics on the calculated SIFts output (however not any wrapped one output) and save the result in the same default/given location).
 
 `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -fingerDISt tanimoto,tversky`
 
