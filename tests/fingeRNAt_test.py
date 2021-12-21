@@ -1,9 +1,9 @@
 import subprocess, os, sys, traceback, shutil
 
 sys_sep = os.sep
-RNA = ['3d2v.pdb']
-ligands = [['redocked.sdf']]
-fingerprints = ['FULL']
+RNA = ['1aju_model1.pdb', '3d2v.pdb']
+ligands = [['ligands.sdf'], ['redocked.sdf', 'various.sdf']]
+fingerprints = ['SIMPLE', 'PBS', 'FULL']
 yaml = 'custom-interactions.yaml'
 
 program_path = '..' + sys_sep + 'code' + sys_sep + 'fingeRNAt.py'
@@ -22,14 +22,17 @@ def run_test():
         for j in range(len(fingerprints)):
             for l in range(len(ligands[i])):
                 if fingerprints[j] == 'FULL':
-                    #subprocess.call("> %sdebug.txt" %(test_outputs_path), shell = True)
-                    command = 'python %s -r %s -l %s -f %s -h2o -o outputs -custom %s' %(program_path, test_inputs_path + RNA[i], test_inputs_path + ligands[i][l], fingerprints[j], test_inputs_path + yaml)
-
-                    #command = 'python %s -r %s -l %s -f %s -wrapper ACUG,PuPy,Counter -h2o -o outputs -detail' %(program_path, test_inputs_path + RNA[i], test_inputs_path + ligands[i][l], fingerprints[j])
+                    command = 'python %s -r %s -l %s -f %s -wrapper ACUG,PuPy,Counter -h2o -o outputs -detail -custom %s' %(program_path, test_inputs_path + RNA[i], test_inputs_path + ligands[i][l], fingerprints[j], test_inputs_path + yaml)
+                else:
+                    command = 'python %s -r %s -l %s -f %s -wrapper ACUG,PuPy,Counter -h2o -o outputs -detail' %(program_path, test_inputs_path + RNA[i], test_inputs_path + ligands[i][l], fingerprints[j])
                 if subprocess.call(command, shell = True):
                     print ('fingeRNAt had problem running %s on %s  and %s' % (fingerprints[j], test_inputs_path + RNA[i], test_inputs_path + ligands[i][l]))
                     OK = False
 
+    for k in ['SIMPLE', 'PBS']:
+        if subprocess.call('python %s -r test_inputs%s3d2v.pdb -f %s -wrapper ACUG,PuPy,Counter -o outputs -detail' %(program_path, sys_sep, k), shell = True):
+            print ('fingeRNAt had problem running %s on test_inputs%s3d2v.pdb when treating ions as ligands' %(k, sys_sep))
+            OK = False
 
 
     if OK:
@@ -37,13 +40,10 @@ def run_test():
             files = [f for f in files if not f[0] == '.']
             for name in files:
             	try:
-                    #subprocess.call('cat %s' %(test_outputs_path + name), shell = True)
-
                     out = subprocess.check_output('comm -3 %s %s' %(test_outputs_path + name, test_ex_outputs_path + name), shell = True)
                     if len(out) != 0:
                         OK = False
                         print ('%s and %s differ!' %(test_outputs_path + name, test_ex_outputs_path + name))
-                        #subprocess.call('cat %s' %(test_outputs_path + name), shell = True)
 
             	except:
                 		mssg = '# Something is wrong, attention needed! #'

@@ -1,0 +1,1231 @@
+Ligand_1
+  RxDock  02152114163D
+librxdock.so/0.1.0
+ 10  9  0  0  0  0  0  0  0  0999 V2000
+   -7.2856   42.0173   -6.2681 C   0  0  0  0  0  0
+   -6.5097   40.9682   -7.0217 C   0  0  0  0  0  0
+   -6.8924   40.5500   -8.1141 O   0  0  0  0  0  0
+   -5.2445   40.4709   -6.3553 C   0  0  0  0  0  0
+   -4.0575   40.4764   -7.3087 C   0  0  0  0  0  0
+   -3.3911   42.1725   -7.4043 S   0  0  0  0  0  0
+   -4.6347   42.9034   -8.5279 C   0  0  0  0  0  0
+   -4.0858   44.1892   -9.1450 C   0  0  0  0  0  0
+   -5.0263   44.7745  -10.0411 O   0  0  0  0  0  0
+   -5.7789   45.0607   -9.4897 H   0  0  0  0  0  0
+  1  2  1  0  0  0
+  2  3  2  0  0  0
+  2  4  1  0  0  0
+  4  5  1  0  0  0
+  5  6  1  0  0  0
+  6  7  1  0  0  0
+  7  8  1  0  0  0
+  8  9  1  0  0  0
+  9 10  1  0  0  0
+M  END
+>  <CHROM.0>
+-1.82679996,-84.32002643,-170.30668847,58.63718881,-62.21741525,-49.14354993
+-60.23078926
+
+>  <CHROM.1>
+-131.10095863,80.60389074,-78.04014170,-161.61391637,179.21390933,66.47089279
+-5.03146004,42.12301379,-7.79623907,1.97628709,0.03661623,2.49990574
+
+>  <Name>
+Ligand_1
+
+>  <RI>
+369
+
+>  <Rbt.Current_Directory>
+/home/filips/IIMCB/fingernat/jonowe-i-woda
+
+>  <Rbt.Executable>
+rbdock/0.1.0
+
+>  <Rbt.Library>
+librxdock.so/0.1.0
+
+>  <Rbt.Parameter_File>
+/home/filips/miniconda2/envs/docking-rdock/share/rxdock-2013.1.1_148c5bd1-1/data/scripts/dock_solv.prm
+
+>  <Rbt.Receptor>
+system.prm
+
+>  <SCORE>
+-66.9189
+
+>  <SCORE.INTER>
+-21.0733
+
+>  <SCORE.INTER.CONST>
+1
+
+>  <SCORE.INTER.POLAR>
+-2.41117
+
+>  <SCORE.INTER.ROT>
+5
+
+>  <SCORE.INTER.SOLV>
+5.90112
+
+>  <SCORE.INTER.VDW>
+-14.912
+
+>  <SCORE.INTER.norm>
+-2.34148
+
+>  <SCORE.INTRA>
+1.10921
+
+>  <SCORE.INTRA.DIHEDRAL>
+4.04906
+
+>  <SCORE.INTRA.DIHEDRAL.0>
+1.23734
+
+>  <SCORE.INTRA.POLAR>
+0
+
+>  <SCORE.INTRA.POLAR.0>
+0
+
+>  <SCORE.INTRA.REPUL>
+0
+
+>  <SCORE.INTRA.REPUL.0>
+0
+
+>  <SCORE.INTRA.SOLV>
+0.190113
+
+>  <SCORE.INTRA.SOLV.lig_0>
+-11.0842
+
+>  <SCORE.INTRA.VDW>
+-1.01037
+
+>  <SCORE.INTRA.VDW.0>
+0.326886
+
+>  <SCORE.INTRA.norm>
+0.123246
+
+>  <SCORE.RESTR>
+0
+
+>  <SCORE.RESTR.CAVITY>
+0
+
+>  <SCORE.RESTR.norm>
+0
+
+>  <SCORE.SYSTEM>
+-46.9548
+
+>  <SCORE.SYSTEM.CONST>
+0
+
+>  <SCORE.SYSTEM.DIHEDRAL>
+11.531
+
+>  <SCORE.SYSTEM.POLAR>
+-9.67697
+
+>  <SCORE.SYSTEM.SOLV>
+0.11553
+
+>  <SCORE.SYSTEM.VDW>
+-2.92881
+
+>  <SCORE.SYSTEM.norm>
+-5.2172
+
+>  <SCORE.heavy>
+9
+
+>  <SCORE.norm>
+-7.43543
+
+$$$$
+Ligand_2
+  RxDock  02152114163D
+librxdock.so/0.1.0
+ 10 10  0  0  0  0  0  0  0  0999 V2000
+   -8.8309   38.0763   -4.4946 N   0  3  0  0  0  0
+   -9.4299   39.2696   -3.8291 C   0  0  0  0  0  0
+  -10.4502   38.8073   -2.7879 C   0  0  0  0  0  0
+   -9.8030   38.1497   -1.5686 C   0  0  0  0  0  0
+   -8.7302   39.0461   -0.9563 C   0  0  0  0  0  0
+   -7.6775   39.4485   -1.9850 C   0  0  0  0  0  0
+   -8.3129   40.1102   -3.2086 C   0  0  0  0  0  0
+   -9.5473   37.5202   -4.9807 H   0  0  0  0  0  0
+   -8.3573   37.4493   -3.8320 H   0  0  0  0  0  0
+   -8.1356   38.3546   -5.2006 H   0  0  0  0  0  0
+  1  2  1  0  0  0
+  1  8  1  0  0  0
+  1  9  1  0  0  0
+  1 10  1  0  0  0
+  2  3  1  0  0  0
+  2  7  1  0  0  0
+  3  4  1  0  0  0
+  4  5  1  0  0  0
+  5  6  1  0  0  0
+  6  7  1  0  0  0
+M  END
+>  <CHROM.0>
+-1.69012907,139.00554849,-169.76599919,55.37817662,-169.80653384,-46.08486752
+-102.03355104
+
+>  <CHROM.1>
+61.02136224,-9.01891342,38.94758876,-2.73798105,1.70112675,-0.55635939,-1.63636213
+
+>  <Name>
+Ligand_2
+
+>  <RI>
+369
+
+>  <Rbt.Current_Directory>
+/home/filips/IIMCB/fingernat/jonowe-i-woda
+
+>  <Rbt.Executable>
+rbdock/0.1.0
+
+>  <Rbt.Library>
+librxdock.so/0.1.0
+
+>  <Rbt.Parameter_File>
+/home/filips/miniconda2/envs/docking-rdock/share/rxdock-2013.1.1_148c5bd1-1/data/scripts/dock_solv.prm
+
+>  <Rbt.Receptor>
+system.prm
+
+>  <SCORE>
+-56.6425
+
+>  <SCORE.INTER>
+-16.3788
+
+>  <SCORE.INTER.CONST>
+1
+
+>  <SCORE.INTER.POLAR>
+-1.88479
+
+>  <SCORE.INTER.ROT>
+0
+
+>  <SCORE.INTER.SOLV>
+10.2551
+
+>  <SCORE.INTER.VDW>
+-11.6549
+
+>  <SCORE.INTER.norm>
+-2.33983
+
+>  <SCORE.INTRA>
+-0.00324223
+
+>  <SCORE.INTRA.DIHEDRAL>
+-0.0120827
+
+>  <SCORE.INTRA.DIHEDRAL.0>
+0.027456
+
+>  <SCORE.INTRA.POLAR>
+0
+
+>  <SCORE.INTRA.POLAR.0>
+0
+
+>  <SCORE.INTRA.REPUL>
+0
+
+>  <SCORE.INTRA.REPUL.0>
+0
+
+>  <SCORE.INTRA.SOLV>
+2.83521e-05
+
+>  <SCORE.INTRA.SOLV.lig_0>
+-20.5345
+
+>  <SCORE.INTRA.VDW>
+0.00278494
+
+>  <SCORE.INTRA.VDW.0>
+-0.203364
+
+>  <SCORE.INTRA.norm>
+-0.000463175
+
+>  <SCORE.RESTR>
+0
+
+>  <SCORE.RESTR.CAVITY>
+0
+
+>  <SCORE.RESTR.norm>
+0
+
+>  <SCORE.SYSTEM>
+-40.2605
+
+>  <SCORE.SYSTEM.CONST>
+0
+
+>  <SCORE.SYSTEM.DIHEDRAL>
+20.6291
+
+>  <SCORE.SYSTEM.POLAR>
+-10.0434
+
+>  <SCORE.SYSTEM.SOLV>
+-0.234041
+
+>  <SCORE.SYSTEM.VDW>
+-0.16082
+
+>  <SCORE.SYSTEM.norm>
+-5.7515
+
+>  <SCORE.heavy>
+7
+
+>  <SCORE.norm>
+-8.09179
+
+$$$$
+Ligand_3
+  RxDock  02152114163D
+librxdock.so/0.1.0
+  9  9  0  0  0  0  0  0  0  0999 V2000
+   -2.7685   43.9823   -9.0435 O   0  5  0  0  0  0
+   -4.0043   43.6922   -9.1272 C   0  0  0  0  0  0
+   -4.8641   44.3046   -9.8372 O   0  0  0  0  0  0
+   -4.4956   42.5140   -8.3081 C   0  0  0  0  0  0
+   -3.6143   41.4966   -7.9066 C   0  0  0  0  0  0
+   -4.0641   40.4137   -7.1473 C   0  0  0  0  0  0
+   -5.4062   40.3296   -6.7810 C   0  0  0  0  0  0
+   -6.2975   41.3267   -7.1728 C   0  0  0  0  0  0
+   -5.8444   42.4106   -7.9287 C   0  0  0  0  0  0
+  1  2  1  0  0  0
+  2  3  2  0  0  0
+  2  4  1  0  0  0
+  4  5  2  0  0  0
+  4  9  1  0  0  0
+  5  6  1  0  0  0
+  6  7  2  0  0  0
+  7  8  1  0  0  0
+  8  9  2  0  0  0
+M  END
+>  <CHROM.0>
+-0.78188632,-83.52399179,-169.76059704,56.66747631,-59.60097088,-46.11404375
+-61.07812562
+
+>  <CHROM.1>
+-23.97035041,-4.56284073,42.35269145,-8.19357812,-1.24063700,-0.06319123
+2.55456258
+
+>  <Name>
+Ligand_3
+
+>  <RI>
+369
+
+>  <Rbt.Current_Directory>
+/home/filips/IIMCB/fingernat/jonowe-i-woda
+
+>  <Rbt.Executable>
+rbdock/0.1.0
+
+>  <Rbt.Library>
+librxdock.so/0.1.0
+
+>  <Rbt.Parameter_File>
+/home/filips/miniconda2/envs/docking-rdock/share/rxdock-2013.1.1_148c5bd1-1/data/scripts/dock_solv.prm
+
+>  <Rbt.Receptor>
+system.prm
+
+>  <SCORE>
+-60.1181
+
+>  <SCORE.INTER>
+-14.0965
+
+>  <SCORE.INTER.CONST>
+1
+
+>  <SCORE.INTER.POLAR>
+-1.83712
+
+>  <SCORE.INTER.ROT>
+1
+
+>  <SCORE.INTER.SOLV>
+10.5009
+
+>  <SCORE.INTER.VDW>
+-11.0409
+
+>  <SCORE.INTER.norm>
+-1.56628
+
+>  <SCORE.INTRA>
+0.882549
+
+>  <SCORE.INTRA.DIHEDRAL>
+2.11484
+
+>  <SCORE.INTRA.DIHEDRAL.0>
+0.00019882
+
+>  <SCORE.INTRA.POLAR>
+0
+
+>  <SCORE.INTRA.POLAR.0>
+0
+
+>  <SCORE.INTRA.REPUL>
+0
+
+>  <SCORE.INTRA.REPUL.0>
+0
+
+>  <SCORE.INTRA.SOLV>
+-0.0332886
+
+>  <SCORE.INTRA.SOLV.lig_0>
+-28.2489
+
+>  <SCORE.INTRA.VDW>
+-0.158226
+
+>  <SCORE.INTRA.VDW.0>
+0.0755936
+
+>  <SCORE.INTRA.norm>
+0.098061
+
+>  <SCORE.RESTR>
+0
+
+>  <SCORE.RESTR.CAVITY>
+0
+
+>  <SCORE.RESTR.norm>
+0
+
+>  <SCORE.SYSTEM>
+-46.9042
+
+>  <SCORE.SYSTEM.CONST>
+0
+
+>  <SCORE.SYSTEM.DIHEDRAL>
+11.8208
+
+>  <SCORE.SYSTEM.POLAR>
+-9.7372
+
+>  <SCORE.SYSTEM.SOLV>
+0.131782
+
+>  <SCORE.SYSTEM.VDW>
+-2.79633
+
+>  <SCORE.SYSTEM.norm>
+-5.21158
+
+>  <SCORE.heavy>
+9
+
+>  <SCORE.norm>
+-6.67979
+
+$$$$
+Ligand_4
+  RxDock  02152114163D
+librxdock.so/0.1.0
+ 12 12  0  0  0  0  0  0  0  0999 V2000
+   -8.7781   37.7394   -5.2282 F   0  0  0  0  0  0
+   -9.0671   38.1774   -3.9952 C   0  0  0  0  0  0
+   -8.1727   39.0018   -3.3231 C   0  0  0  0  0  0
+   -7.0213   39.3589   -3.9082 F   0  0  0  0  0  0
+   -8.4722   39.4556   -2.0442 C   0  0  0  0  0  0
+   -7.6099   40.2506   -1.3962 F   0  0  0  0  0  0
+   -9.6661   39.0847   -1.4371 C   0  0  0  0  0  0
+   -9.9550   39.5222   -0.2039 F   0  0  0  0  0  0
+  -10.5602   38.2599   -2.1089 C   0  0  0  0  0  0
+  -11.7107   37.9010   -1.5230 F   0  0  0  0  0  0
+  -10.2610   37.8066   -3.3882 C   0  0  0  0  0  0
+  -11.1238   37.0121   -4.0363 F   0  0  0  0  0  0
+  1  2  1  0  0  0
+  2  3  2  0  0  0
+  2 11  1  0  0  0
+  3  4  1  0  0  0
+  3  5  1  0  0  0
+  5  6  1  0  0  0
+  5  7  2  0  0  0
+  7  8  1  0  0  0
+  7  9  1  0  0  0
+  9 10  1  0  0  0
+  9 11  2  0  0  0
+ 11 12  1  0  0  0
+M  END
+>  <CHROM.0>
+-0.83892268,136.44136973,-169.75057804,60.24357452,-59.20019120,-48.07202899
+-61.19177822
+
+>  <CHROM.1>
+-9.36649540,38.63082109,-2.71601310,1.28163577,-0.46486001,-2.02250603
+
+>  <Name>
+Ligand_4
+
+>  <RI>
+369
+
+>  <Rbt.Current_Directory>
+/home/filips/IIMCB/fingernat/jonowe-i-woda
+
+>  <Rbt.Executable>
+rbdock/0.1.0
+
+>  <Rbt.Library>
+librxdock.so/0.1.0
+
+>  <Rbt.Parameter_File>
+/home/filips/miniconda2/envs/docking-rdock/share/rxdock-2013.1.1_148c5bd1-1/data/scripts/dock_solv.prm
+
+>  <Rbt.Receptor>
+system.prm
+
+>  <SCORE>
+-56.5922
+
+>  <SCORE.INTER>
+-13.018
+
+>  <SCORE.INTER.CONST>
+1
+
+>  <SCORE.INTER.POLAR>
+0
+
+>  <SCORE.INTER.ROT>
+0
+
+>  <SCORE.INTER.SOLV>
+3.19817
+
+>  <SCORE.INTER.VDW>
+-13.3447
+
+>  <SCORE.INTER.norm>
+-1.08483
+
+>  <SCORE.INTRA>
+0
+
+>  <SCORE.INTRA.DIHEDRAL>
+0
+
+>  <SCORE.INTRA.DIHEDRAL.0>
+0
+
+>  <SCORE.INTRA.POLAR>
+0
+
+>  <SCORE.INTRA.POLAR.0>
+0
+
+>  <SCORE.INTRA.REPUL>
+0
+
+>  <SCORE.INTRA.REPUL.0>
+0
+
+>  <SCORE.INTRA.SOLV>
+0
+
+>  <SCORE.INTRA.SOLV.lig_0>
+1.21437
+
+>  <SCORE.INTRA.VDW>
+0
+
+>  <SCORE.INTRA.VDW.0>
+0
+
+>  <SCORE.INTRA.norm>
+0
+
+>  <SCORE.RESTR>
+0
+
+>  <SCORE.RESTR.CAVITY>
+0
+
+>  <SCORE.RESTR.norm>
+0
+
+>  <SCORE.SYSTEM>
+-43.5742
+
+>  <SCORE.SYSTEM.CONST>
+0
+
+>  <SCORE.SYSTEM.DIHEDRAL>
+14.8178
+
+>  <SCORE.SYSTEM.POLAR>
+-10.0079
+
+>  <SCORE.SYSTEM.SOLV>
+0.00144247
+
+>  <SCORE.SYSTEM.VDW>
+-0.629584
+
+>  <SCORE.SYSTEM.norm>
+-3.63118
+
+>  <SCORE.heavy>
+12
+
+>  <SCORE.norm>
+-4.71601
+
+$$$$
+Ligand_5
+  RxDock  02152114163D
+librxdock.so/0.1.0
+  5  4  0  0  0  0  0  0  0  0999 V2000
+   -8.4526   39.3925   -1.6976 C   0  0  0  0  0  0
+   -9.6840   38.6175   -1.2553 C   0  0  0  0  0  0
+  -10.5926   38.2953   -2.4440 C   0  0  0  0  0  0
+  -11.8719   37.5839   -1.9841 C   0  0  0  0  0  0
+  -12.9895   37.3613   -3.4189 S   0  5  0  0  0  0
+  1  2  1  0  0  0
+  2  3  1  0  0  0
+  3  4  1  0  0  0
+  4  5  1  0  0  0
+M  END
+>  <CHROM.0>
+-0.85538435,64.08046227,-168.96362803,60.46247275,-171.63165730,-58.14491872
+-61.63253279
+
+>  <CHROM.1>
+-176.77079190,174.80485621,-11.15180710,38.08325921,-2.40934107,-0.27405508
+-0.48058987,-1.33551571
+
+>  <Name>
+Ligand_5
+
+>  <RI>
+369
+
+>  <Rbt.Current_Directory>
+/home/filips/IIMCB/fingernat/jonowe-i-woda
+
+>  <Rbt.Executable>
+rbdock/0.1.0
+
+>  <Rbt.Library>
+librxdock.so/0.1.0
+
+>  <Rbt.Parameter_File>
+/home/filips/miniconda2/envs/docking-rdock/share/rxdock-2013.1.1_148c5bd1-1/data/scripts/dock_solv.prm
+
+>  <Rbt.Receptor>
+system.prm
+
+>  <SCORE>
+-62.8994
+
+>  <SCORE.INTER>
+-16.766
+
+>  <SCORE.INTER.CONST>
+1
+
+>  <SCORE.INTER.POLAR>
+0
+
+>  <SCORE.INTER.ROT>
+2
+
+>  <SCORE.INTER.SOLV>
+4.60719
+
+>  <SCORE.INTER.VDW>
+-17.6464
+
+>  <SCORE.INTER.norm>
+-3.35321
+
+>  <SCORE.INTRA>
+0.0721222
+
+>  <SCORE.INTRA.DIHEDRAL>
+0.145119
+
+>  <SCORE.INTRA.DIHEDRAL.0>
+1.22816e-08
+
+>  <SCORE.INTRA.POLAR>
+0
+
+>  <SCORE.INTRA.POLAR.0>
+0
+
+>  <SCORE.INTRA.REPUL>
+0
+
+>  <SCORE.INTRA.REPUL.0>
+0
+
+>  <SCORE.INTRA.SOLV>
+0.000253715
+
+>  <SCORE.INTRA.SOLV.lig_0>
+-2.10921
+
+>  <SCORE.INTRA.VDW>
+-0.000564069
+
+>  <SCORE.INTRA.VDW.0>
+-0.293183
+
+>  <SCORE.INTRA.norm>
+0.0144244
+
+>  <SCORE.RESTR>
+0
+
+>  <SCORE.RESTR.CAVITY>
+0
+
+>  <SCORE.RESTR.norm>
+0
+
+>  <SCORE.SYSTEM>
+-46.2055
+
+>  <SCORE.SYSTEM.CONST>
+0
+
+>  <SCORE.SYSTEM.DIHEDRAL>
+9.16539
+
+>  <SCORE.SYSTEM.POLAR>
+-9.63013
+
+>  <SCORE.SYSTEM.SOLV>
+-0.205281
+
+>  <SCORE.SYSTEM.VDW>
+-1.68995
+
+>  <SCORE.SYSTEM.norm>
+-9.24111
+
+>  <SCORE.heavy>
+5
+
+>  <SCORE.norm>
+-12.5799
+
+$$$$
+adenine
+  RxDock  02152114163D
+librxdock.so/0.1.0
+ 13 14  0  0  0  0  0  0  0  0999 V2000
+   -6.9752   43.2190   -6.4989 N   0  0  0  0  0  0
+   -6.9235   42.2326   -5.5409 C   0  0  0  0  0  0
+   -6.1427   41.0718   -5.6711 C   0  0  0  0  0  0
+   -5.2933   40.6131   -6.6614 N   0  0  0  0  0  0
+   -4.8488   39.4574   -6.2136 C   0  0  0  0  0  0
+   -5.3721   39.1479   -4.9873 N   0  0  0  0  0  0
+   -6.1984   40.1706   -4.6226 C   0  0  0  0  0  0
+   -6.9075   40.2706   -3.4896 N   0  0  0  0  0  0
+   -7.6116   41.4216   -3.4747 C   0  0  0  0  0  0
+   -7.6615   42.3898   -4.4169 N   0  0  0  0  0  0
+   -6.4338   43.1138   -7.3444 H   0  0  0  0  0  0
+   -7.5665   44.0163   -6.3294 H   0  0  0  0  0  0
+   -5.1911   38.3213   -4.4387 H   0  0  0  0  0  0
+  1  2  1  0  0  0
+  1 11  1  0  0  0
+  1 12  1  0  0  0
+  2  3  2  0  0  0
+  2 10  1  0  0  0
+  3  4  1  0  0  0
+  3  7  1  0  0  0
+  4  5  2  0  0  0
+  5  6  1  0  0  0
+  6  7  1  0  0  0
+  6 13  1  0  0  0
+  7  8  2  0  0  0
+  8  9  1  0  0  0
+  9 10  2  0  0  0
+M  END
+>  <CHROM.0>
+-169.52103564,138.60349765,-170.31116571,63.02881286,-171.92762190,-48.51689969
+-60.60550117
+
+>  <CHROM.1>
+-6.39468593,41.01888642,-5.17662675,-2.65830390,-0.87501607,2.32733956
+
+>  <Name>
+adenine
+
+>  <RI>
+369
+
+>  <Rbt.Current_Directory>
+/home/filips/IIMCB/fingernat/jonowe-i-woda
+
+>  <Rbt.Executable>
+rbdock/0.1.0
+
+>  <Rbt.Library>
+librxdock.so/0.1.0
+
+>  <Rbt.Parameter_File>
+/home/filips/miniconda2/envs/docking-rdock/share/rxdock-2013.1.1_148c5bd1-1/data/scripts/dock_solv.prm
+
+>  <Rbt.Receptor>
+system.prm
+
+>  <SCORE>
+-61.0768
+
+>  <SCORE.INTER>
+-18.7433
+
+>  <SCORE.INTER.CONST>
+1
+
+>  <SCORE.INTER.POLAR>
+-1.70249
+
+>  <SCORE.INTER.ROT>
+0
+
+>  <SCORE.INTER.SOLV>
+4.8602
+
+>  <SCORE.INTER.VDW>
+-12.0407
+
+>  <SCORE.INTER.norm>
+-1.87433
+
+>  <SCORE.INTRA>
+0
+
+>  <SCORE.INTRA.DIHEDRAL>
+0
+
+>  <SCORE.INTRA.DIHEDRAL.0>
+0
+
+>  <SCORE.INTRA.POLAR>
+0
+
+>  <SCORE.INTRA.POLAR.0>
+0
+
+>  <SCORE.INTRA.REPUL>
+0
+
+>  <SCORE.INTRA.REPUL.0>
+0
+
+>  <SCORE.INTRA.SOLV>
+0
+
+>  <SCORE.INTRA.SOLV.lig_0>
+-16.7998
+
+>  <SCORE.INTRA.VDW>
+0
+
+>  <SCORE.INTRA.VDW.0>
+0
+
+>  <SCORE.INTRA.norm>
+0
+
+>  <SCORE.RESTR>
+0
+
+>  <SCORE.RESTR.CAVITY>
+0
+
+>  <SCORE.RESTR.norm>
+0
+
+>  <SCORE.SYSTEM>
+-42.3334
+
+>  <SCORE.SYSTEM.CONST>
+0
+
+>  <SCORE.SYSTEM.DIHEDRAL>
+8.42104
+
+>  <SCORE.SYSTEM.POLAR>
+-8.97271
+
+>  <SCORE.SYSTEM.SOLV>
+-0.181286
+
+>  <SCORE.SYSTEM.VDW>
+-1.05983
+
+>  <SCORE.SYSTEM.norm>
+-4.23334
+
+>  <SCORE.heavy>
+10
+
+>  <SCORE.norm>
+-6.10768
+
+$$$$
+ligand_6
+  RxDock  02152114163D
+librxdock.so/0.1.0
+  7  6  0  0  0  0  0  0  0  0999 V2000
+   -2.0154   44.3388  -10.5046 O   0  0  0  0  0  0
+   -2.6889   43.5974   -9.5050 C   0  0  0  0  0  0
+   -3.7691   44.3341   -8.9624 O   0  0  0  0  0  0
+   -4.6703   44.7509   -9.9683 C   0  0  0  0  0  0
+   -4.1958   45.9620  -10.5192 O   0  0  0  0  0  0
+   -1.2128   43.8313  -10.7132 H   0  0  0  0  0  0
+   -4.4816   46.6382   -9.8842 H   0  0  0  0  0  0
+  1  2  1  0  0  0
+  1  6  1  0  0  0
+  2  3  1  0  0  0
+  3  4  1  0  0  0
+  4  5  1  0  0  0
+  5  7  1  0  0  0
+M  END
+>  <CHROM.0>
+-51.71304113,138.47938080,-169.84883901,59.47919312,56.16253404,-49.70806122
+-59.89027437
+
+>  <CHROM.1>
+170.75488536,55.88563703,-85.07409837,-80.66539237,-3.44116886,44.63448409
+-9.91023697,-0.49783507,0.40963862,-0.75389392
+
+>  <Name>
+ligand_6
+
+>  <RI>
+369
+
+>  <Rbt.Current_Directory>
+/home/filips/IIMCB/fingernat/jonowe-i-woda
+
+>  <Rbt.Executable>
+rbdock/0.1.0
+
+>  <Rbt.Library>
+librxdock.so/0.1.0
+
+>  <Rbt.Parameter_File>
+/home/filips/miniconda2/envs/docking-rdock/share/rxdock-2013.1.1_148c5bd1-1/data/scripts/dock_solv.prm
+
+>  <Rbt.Receptor>
+system.prm
+
+>  <SCORE>
+-43.5738
+
+>  <SCORE.INTER>
+-24.5996
+
+>  <SCORE.INTER.CONST>
+1
+
+>  <SCORE.INTER.POLAR>
+-6.62261
+
+>  <SCORE.INTER.ROT>
+2
+
+>  <SCORE.INTER.SOLV>
+13.0577
+
+>  <SCORE.INTER.VDW>
+-3.61026
+
+>  <SCORE.INTER.norm>
+-4.91992
+
+>  <SCORE.INTRA>
+1.10537
+
+>  <SCORE.INTRA.DIHEDRAL>
+-0.0538785
+
+>  <SCORE.INTRA.DIHEDRAL.0>
+5.14215
+
+>  <SCORE.INTRA.POLAR>
+0
+
+>  <SCORE.INTRA.POLAR.0>
+0
+
+>  <SCORE.INTRA.REPUL>
+0
+
+>  <SCORE.INTRA.REPUL.0>
+0
+
+>  <SCORE.INTRA.SOLV>
+0.967529
+
+>  <SCORE.INTRA.SOLV.lig_0>
+-13.4143
+
+>  <SCORE.INTRA.VDW>
+0.648545
+
+>  <SCORE.INTRA.VDW.0>
+0.0771915
+
+>  <SCORE.INTRA.norm>
+0.221074
+
+>  <SCORE.RESTR>
+0
+
+>  <SCORE.RESTR.CAVITY>
+0
+
+>  <SCORE.RESTR.norm>
+0
+
+>  <SCORE.SYSTEM>
+-20.0795
+
+>  <SCORE.SYSTEM.CONST>
+0
+
+>  <SCORE.SYSTEM.DIHEDRAL>
+7.90134
+
+>  <SCORE.SYSTEM.POLAR>
+-8.5583
+
+>  <SCORE.SYSTEM.SOLV>
+-0.00499856
+
+>  <SCORE.SYSTEM.VDW>
+12.5092
+
+>  <SCORE.SYSTEM.norm>
+-4.01591
+
+>  <SCORE.heavy>
+5
+
+>  <SCORE.norm>
+-8.71476
+
+$$$$
+3D2V-native-protonated
+  RxDock  02152114163D
+librxdock.so/0.1.0
+ 27 28  0  0  0  0  0  0  0  0999 V2000
+   -8.7645   38.7776    1.0307 C   0  0  0  0  0  0
+   -6.8982   41.4905   -5.7701 C   0  0  0  0  0  0
+   -4.0420   41.1166   -6.6971 C   0  0  0  0  0  0
+   -3.5757   40.7232   -8.0960 C   0  0  0  0  0  0
+   -3.2037   41.8845   -8.8495 O   0  0  0  0  0  0
+   -4.2994   42.7086   -9.6775 P   0  0  0  0  0  0
+   -2.8957   45.2127   -9.6317 P   0  0  0  0  0  0
+   -4.9870   37.6339   -5.5212 C   0  0  0  0  0  0
+   -9.3339   38.0779   -1.2884 N   0  0  0  0  0  0
+   -5.0416   41.7949  -10.7616 O   0  5  0  0  0  0
+   -1.4896   45.5035   -9.9791 O   0  0  0  0  0  0
+   -6.2976   37.7850   -5.0886 C   0  0  0  0  0  0
+   -8.6351   38.8981   -0.4882 C   0  0  0  0  0  0
+   -5.4320   43.4033   -8.7431 O   0  0  0  0  0  0
+   -3.0425   44.8765   -8.0625 O   0  5  0  0  0  0
+   -6.9144   39.0336   -5.1753 N   0  3  0  0  0  0
+   -7.8200   39.8277   -1.0057 N   0  0  0  0  0  0
+   -3.5096   43.9442  -10.3975 O   0  0  0  0  0  0
+   -3.7990   46.4708   -9.8814 O   0  0  0  0  0  0
+   -6.2053   40.1257   -5.6870 C   0  0  0  0  0  0
+   -7.6897   39.9540   -2.3314 C   0  0  0  0  0  0
+   -6.8759   40.8816   -2.8365 N   0  0  0  0  0  0
+   -4.8890   39.9737   -6.1255 C   0  0  0  0  0  0
+   -8.4004   39.1141   -3.1808 C   0  0  0  0  0  0
+   -4.2913   38.7219   -6.0316 C   0  0  0  0  0  0
+   -9.2360   38.1636   -2.6047 C   0  0  0  0  0  0
+   -8.3094   39.1929   -4.7058 C   0  0  0  0  0  0
+  1 13  1  0  0  0
+  3  4  1  0  0  0
+  4  5  1  0  0  0
+  5  6  1  0  0  0
+  6 10  1  0  0  0
+  6 14  2  0  0  0
+  6 18  1  0  0  0
+  7 11  1  0  0  0
+  7 15  1  0  0  0
+  7 19  2  0  0  0
+  8 25  4  0  0  0
+  9 26  4  0  0  0
+  8 12  4  0  0  0
+  9 13  4  0  0  0
+ 13 17  4  0  0  0
+ 12 16  4  0  0  0
+ 16 20  4  0  0  0
+  7 18  1  0  0  0
+  2 20  1  0  0  0
+ 17 21  4  0  0  0
+ 21 22  1  0  0  0
+  3 23  1  0  0  0
+ 20 23  4  0  0  0
+ 21 24  4  0  0  0
+ 24 27  1  0  0  0
+ 23 25  4  0  0  0
+ 24 26  4  0  0  0
+ 16 27  1  0  0  0
+M  END
+>  <CHROM.0>
+-47.22174712,-103.57353324,39.12556512,57.45627092,-67.88530205,-66.91434197
+-179.47482791
+
+>  <CHROM.1>
+159.52868453,-86.58865358,-58.39659649,-70.22936116,129.80420633,-122.83010456
+57.01889808,71.07213832,-5.48898517,41.37418314,-6.33581043,2.84920531,-1.07394326
+-2.85999443
+
+>  <Name>
+3D2V-native-protonated
+
+>  <RI>
+369
+
+>  <Rbt.Current_Directory>
+/home/filips/IIMCB/fingernat/jonowe-i-woda
+
+>  <Rbt.Executable>
+rbdock/0.1.0
+
+>  <Rbt.Library>
+librxdock.so/0.1.0
+
+>  <Rbt.Parameter_File>
+/home/filips/miniconda2/envs/docking-rdock/share/rxdock-2013.1.1_148c5bd1-1/data/scripts/dock_solv.prm
+
+>  <Rbt.Receptor>
+system.prm
+
+>  <SCORE>
+38.4599
+
+>  <SCORE.INTER>
+40.8058
+
+>  <SCORE.INTER.CONST>
+1
+
+>  <SCORE.INTER.POLAR>
+-4.67424
+
+>  <SCORE.INTER.ROT>
+8
+
+>  <SCORE.INTER.SOLV>
+42.1927
+
+>  <SCORE.INTER.VDW>
+19.7871
+
+>  <SCORE.INTER.norm>
+1.51132
+
+>  <SCORE.INTRA>
+4.34457
+
+>  <SCORE.INTRA.DIHEDRAL>
+3.64519
+
+>  <SCORE.INTRA.DIHEDRAL.0>
+8.28871
+
+>  <SCORE.INTRA.POLAR>
+0
+
+>  <SCORE.INTRA.POLAR.0>
+0
+
+>  <SCORE.INTRA.REPUL>
+0
+
+>  <SCORE.INTRA.REPUL.0>
+0
+
+>  <SCORE.INTRA.SOLV>
+5.36329
+
+>  <SCORE.INTRA.SOLV.lig_0>
+-83.647
+
+>  <SCORE.INTRA.VDW>
+-0.159672
+
+>  <SCORE.INTRA.VDW.0>
+-3.29555
+
+>  <SCORE.INTRA.norm>
+0.16091
+
+>  <SCORE.RESTR>
+0
+
+>  <SCORE.RESTR.CAVITY>
+0
+
+>  <SCORE.RESTR.norm>
+0
+
+>  <SCORE.SYSTEM>
+-6.69043
+
+>  <SCORE.SYSTEM.CONST>
+0
+
+>  <SCORE.SYSTEM.DIHEDRAL>
+9.94565
+
+>  <SCORE.SYSTEM.POLAR>
+-5.25019
+
+>  <SCORE.SYSTEM.SOLV>
+-0.219806
+
+>  <SCORE.SYSTEM.VDW>
+9.7984
+
+>  <SCORE.SYSTEM.norm>
+-0.247794
+
+>  <SCORE.heavy>
+27
+
+>  <SCORE.norm>
+1.42444
+
+$$$$
