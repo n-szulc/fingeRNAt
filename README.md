@@ -841,7 +841,7 @@ fingerDISt accepts the following parameters:
 
 1. `-i `: path to tsv/csv file with calculated SIFs
 
-  **fingeRNAt outputs are fingerDISt inputs**
+  ✨ fingeRNAt outputs are fingerDISt inputs ✨
 
 ### Distance Metrics
 
