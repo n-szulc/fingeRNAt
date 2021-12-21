@@ -128,10 +128,13 @@ Recommended fingeRNAt usage is in conda environment.
 
 2. Download fingeRNAt
 
-      Clone the repository:
+      Clone the repository
+      
       `git clone --depth=1 https://github.com/n-szulc/fingernat.git`
 
-      Or download the latest stable release from the [releases page](https://github.com/n-szulc/fingeRNAt/releases).
+      Or 
+      
+      Download the latest stable release from the [releases page](https://github.com/n-szulc/fingeRNAt/releases).
 
 3. Create conda environment
 
