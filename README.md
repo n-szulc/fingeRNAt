@@ -90,7 +90,7 @@ Interactions can be calculated for the following complexes:
 <img src="docs/README_pics/detected_interactions.png" width="900" />
 </p>
 
-fingeRNAt runs under Python 3.5 - 3.9 on Linux, macOS, and Windows.
+fingeRNAt runs under Python 3.5 - 3.9 on Linux and macOS.
 
 ## What is the Structural Interaction Fingerprint (SIFt)?
 
