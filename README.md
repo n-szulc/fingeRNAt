@@ -655,7 +655,7 @@ To visualize interactions in this plugin, use the [`-detail` outputs mode](#deta
 
 - Calculate SIFt `FULL` with user-defined interactions and table containing details on each detected interaction with the default filenames in the `outputs` directory.
 
- `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -custom example_inputs/custom-interactions.yaml -detail`
+ `python code/fingeRNAt.py -r example_inputs/1aju_model1.pdb -l example_inputs/ligands.sdf -custom code/custom-interactions.yaml -detail`
 
 - Calculate SIFt `SIMPLE` and save the output in the user-declared location with the default filename.
 
