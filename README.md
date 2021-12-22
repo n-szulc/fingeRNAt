@@ -129,11 +129,11 @@ Recommended fingeRNAt usage is in conda environment.
 2. Download fingeRNAt
 
       Clone the repository
-      
+
       `git clone --depth=1 https://github.com/n-szulc/fingernat.git`
 
-      Or 
-      
+      Or
+
       Download the latest stable release from the [releases page](https://github.com/n-szulc/fingeRNAt/releases).
 
 3. Create conda environment
@@ -145,7 +145,7 @@ Recommended fingeRNAt usage is in conda environment.
 
 [![Ubuntu install from apt](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-install.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-install.yml)
 
-To install fingernat at Debian and Debian-like systems using repository packages (tested under Debian stable and Ubuntu-latest).
+To install fingernat at Debian and Debian-like systems using repository packages (tested under Debian 11 stable and Ubuntu 20.04).
 
 ```
 # install packages
@@ -160,7 +160,7 @@ git clone --depth=1 https://github.com/n-szulc/fingernat.git
 
 [![Ubuntu install from apt and pip](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-pip-install.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-pip-install.yml)
 
-To install fingernat at Debian and Debian-like systems using repository packages and pip-installed packages (tested under Debian stable and Ubuntu-latest).
+To install fingernat at Debian and Debian-like systems using repository packages and pip-installed packages (tested under Debian 11 stable and Ubuntu 20.04).
 
 ```
 # install a minimal python and openbabel tool box:
