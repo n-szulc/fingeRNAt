@@ -121,6 +121,8 @@ Recommended fingeRNAt usage is in a conda environment.
 
 [![CI (conda)](https://github.com/n-szulc/fingeRNAt/actions/workflows/thefirst.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/thefirst.yml)
 
+Tested under Debian (11 stable), Ubuntu (18.04, 20.04, and 21.10), and macOS (10.15 and 11).
+
 1. Install conda
 
       Please refer to the [conda manual](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) and install the conda version with Python 3.x according to your operating system.
@@ -129,11 +131,11 @@ Recommended fingeRNAt usage is in a conda environment.
 2. Download fingeRNAt
 
       Clone the repository
-      
+
       `git clone --depth=1 https://github.com/n-szulc/fingernat.git`
 
-      Or 
-      
+      Or
+
       Download the latest stable release from the [releases page](https://github.com/n-szulc/fingeRNAt/releases).
 
 3. Create conda environment
@@ -145,7 +147,7 @@ Recommended fingeRNAt usage is in a conda environment.
 
 [![Ubuntu install from apt](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-install.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-install.yml)
 
-To install fingeRNAt at Debian and Debian-like systems using repository packages (tested under Debian stable and Ubuntu-latest):
+To install fingeRNAt at Debian and Debian-like systems using repository packages (tested under Debian 11 stable and Ubuntu 20.04):
 
 ```
 # install packages
@@ -160,7 +162,7 @@ git clone --depth=1 https://github.com/n-szulc/fingernat.git
 
 [![Ubuntu install from apt and pip](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-pip-install.yml/badge.svg)](https://github.com/n-szulc/fingeRNAt/actions/workflows/ubuntu-pip-install.yml)
 
-To install fingeRNAt at Debian and Debian-like systems using repository packages and pip-installed packages (tested under Debian stable and Ubuntu-latest):
+To install fingeRNAt at Debian and Debian-like systems using repository packages and pip-installed packages (tested under Debian 11 stable and Ubuntu 20.04):
 
 ```
 # install a minimal python and openbabel tool box:
@@ -175,7 +177,7 @@ git clone --depth=1 https://github.com/n-szulc/fingernat.git
 
 ## Singularity image
 
-Singularity image with the fineRNAt suite is available in the sylabs cloud: [cloud.sylabs.io](https://cloud.sylabs.io/library/filips/default/fingernat). 
+Singularity image with the fineRNAt suite is available in the sylabs cloud: [cloud.sylabs.io](https://cloud.sylabs.io/library/filips/default/fingernat).
 
 To fetch the latest image directly, run:
 
@@ -354,7 +356,7 @@ Given:
 - 1 SMARTS for the ligand
 - minimum and maximum distance
 
-Detects atoms fulfilling SMARTS conditions for the receptor and all ligands. 
+Detects atoms fulfilling SMARTS conditions for the receptor and all ligands.
 
 Checks if the distance between each pair of such atoms is within the provided distance range. If so, the interaction is detected.
 
@@ -731,7 +733,7 @@ The debugging mode may be used with each SIFt type and provides the following in
 
 ## Warnings/Errors
 
-Please pay attention to the following types of errors: **Could not sanitize molecule ending on line ...**. 
+Please pay attention to the following types of errors: **Could not sanitize molecule ending on line ...**.
 
 This means that the RDKit library used by the fingeRNAt cannot properly read the molecule.
 
