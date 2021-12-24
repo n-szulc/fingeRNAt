@@ -979,12 +979,10 @@ Assistance provided by [OpenBabel Community](http://openbabel.org) was greatly a
 
 If you use this software, please cite:
 
-*fingeRNAt - a novel tool for high-throughput analysis of nucleic acid-ligand interactions*
-
-bioRxiv
-
-Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak
-[in preparation]
+**fingeRNAt - a novel tool for high-throughput analysis of nucleic acid-ligand interactions**  
+Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak  
+*bioRxiv*  
+doi: [10.1101/2021.12.23.474073](https://doi.org/10.1101/2021.12.23.474073)
 
 # License
 
