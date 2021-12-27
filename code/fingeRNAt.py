@@ -7,15 +7,20 @@ fingeRNAt is a software tool for detecting non-covalent interactions formed with
 Interactions are encoded and saved i.e. in the form of bioinformatic-friendly Structural Interaction Fingerprint (SIFt) - a binary string, where the respective bit in the fingerprint is set to 1 in case of a presence of a particular interaction and to 0 otherwise.
 This enables high-throughput analysis of the interaction data using data analysis techniques.
 
-Authors:\n
+fingeRNAt requires Python 3.5 - 3.8
+
+**Authors:**\n
 Natalia A. Szulc, nszulc@iimcb.gov.pl\n
 Filip Stefaniak, fstefaniak@iimcb.gov.pl
 
-If you use this software, please cite:\n
+**If you use this software, please cite:**\n
+*fingeRNAt - a novel tool for high-throughput analysis of nucleic acid-ligand interactions*\n
 Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak\n
-[in preparation]
+bioRxiv\n
+doi: `10.1101/2021.12.23.474073 <https://doi.org/10.1101/2021.12.23.474073>`_
 
-fingeRNAt requires Python 3.5 - 3.8
+
+
 '''
 
 import argparse
