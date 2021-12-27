@@ -4,15 +4,20 @@
 '''
 fingerDISt is a software to calculate different Distance Metrics based on Structural Interaction Fingerprint (SIFt).
 
-Authors:
-Natalia A. Szulc, nszulc@iimcb.gov.pl
+fingerDISt requires Python 3.5 - 3.9
+
+**Authors:**\n
+Natalia A. Szulc, nszulc@iimcb.gov.pl\n
 Filip Stefaniak, fstefaniak@iimcb.gov.pl
 
-If you use this software, please cite:
-Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak
-[in preparation]
+**If you use this software, please cite:**\n
+*fingeRNAt - a novel tool for high-throughput analysis of nucleic acid-ligand interactions*\n
+Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak\n
+bioRxiv\n
+doi: `10.1101/2021.12.23.474073 <https://doi.org/10.1101/2021.12.23.474073>`_
 
-Requires Python 3.5 - 3.9
+
+
 '''
 
 import argparse
