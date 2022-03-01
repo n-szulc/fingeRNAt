@@ -986,6 +986,8 @@ Natalia A. Szulc, Zuzanna Mackiewicz, Janusz M. Bujnicki, Filip Stefaniak
 *bioRxiv*  
 doi: [10.1101/2021.12.23.474073](https://doi.org/10.1101/2021.12.23.474073)
 
+Supplementary code and data regarding the manuscript can be found [here](https://github.com/n-szulc/fingeRNAt-supplementary).
+
 # License
 
 fingeRNAt is licensed under the GNU General Public License v3.0.
