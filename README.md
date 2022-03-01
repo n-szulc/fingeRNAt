@@ -92,6 +92,8 @@ Interactions can be calculated for the following complexes:
 
 fingeRNAt runs under Python 3.5 - 3.9 on Linux and macOS.
 
+Supplementary code and data regarding the manuscript can be found [here](https://github.com/n-szulc/fingeRNAt-supplementary).
+
 ## What is the Structural Interaction Fingerprint (SIFt)?
 
 Structural Interaction Fingerprint (**SIFt**) is a binary string describing the existence (1/0) of specified molecular interactions between all receptor's residues and the ligand (*Deng et al.*, 2004).
