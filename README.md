@@ -238,7 +238,7 @@ fingeRNAt accepts the following parameters:
 | `[-wrapper]`  |  optional SIFt results' wrapper; see -> [Wrappers](#Wrappers);<br />available types are: `ACUG`, &nbsp;&nbsp;`PuPy`, &nbsp;&nbsp;`Counter` |
 | `[-o]`  |  optional path to save output |
 | `[-h2o]`  |  optional detection of water-mediated interactions; applies only to SIFt type `FULL` and its wrappers; <br />if not passed, all columns containing information about water-mediated interactions are empty (`None`) |
-| `[-dha]`  |  optional Donor-Hydrogen-Acceptor angle calculation when detecting hydrogen bonds;<br />see -> [1. Hydrogen Bonds](#1-hydrogen-bonds) |
+| `[-dha]`  |  optional Donor-Hydrogen-Acceptor angle calculation when detecting hydrogen bonds;<br />see -> [Hydrogen Bonds](#https://github.com/n-szulc/fingeRNAt/blob/master/implementation.md#1-hydrogen-bonds) |
 |  `[-custom]` | path to yaml file with information about additional interactions to be calculated;<br />see -> [User-defined interactions](#User-defined-interactions) |
 | `[-fingerDISt]`  | fingerDISt Distance Metrics to be calculated (fingerDISt will be directly run on the SIFts output file);<br />see -> [Usage examples](#usage-examples-1) |
 | `[-print]`  |  print detected interactions for each nucleic acid - ligand complex on screen |
