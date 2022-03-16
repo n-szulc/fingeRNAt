@@ -55,7 +55,7 @@ fingeRNAt detects the following nine non-covalent interactions:
 	(*Torshin, Weber, & Harrison*, 2002)
 
 
-  > **_NOTE:_** If hydrogens are present in RNA/DNA structure, fingeRNAt can be run with parameter `-dha`, that additionaly calculates Donor-Hydrogen-Acceptor angle  used as supplementary criteria in hydrogen bonds detection:<br/>100&deg; < D-H-A angle < 260&deg; (Adasme et al., 2021)<br/>
+  > **_NOTE:_** If hydrogens are present in RNA/DNA structure, fingeRNAt can be run with parameter `-dha`, that additionaly calculates Donor-Hydrogen-Acceptor angle  used as supplementary criteria in hydrogen bonds detection:<br/>100&deg; < D-H-A angle < 260&deg; (*Adasme et al.*, 2021)<br/>
   Parameter `-dha` applies only to `FULL` SIFt type, as `SIMPLE` & `PBS` do not calculate hydrogen bonds.
 
 ## 2. Halogen bonds
